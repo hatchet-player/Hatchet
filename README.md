@@ -1,8 +1,4 @@
-# This project is essentially abandoned
-There is no one working on it.
-There isn't much sense in adding any new issues in the issue tracker unless you want to fix them yourself.
-
-# WHAT TOMAHAWK IS
+# TOMAHAWK
 
 Tomahawk is a free multi-source and cross-platform music player. An application that can play not only your local files, but also stream from services like Spotify, Beats, SoundCloud, Google Music, YouTube and many others. You can even connect with your friends' Tomahawks, share your musical gems or listen along with them. Let the music play!
 
@@ -57,56 +53,6 @@ You can download one of our nightly or stable builds:
 |**NIGHTLY** | [**latest**](http://download.tomahawk-player.org/nightly/mac/Tomahawk-latest.dmg) | [**latest**](http://download.tomahawk-player.org/nightly/windows/tomahawk-latest.exe) | [**latest**](https://launchpad.net/~tomahawk/+archive/ubuntu/nightly) (Ubuntu) |
 |**STABLE** | [**0.8.4**](http://download.tomahawk-player.org/Tomahawk-0.8.4.dmg) | [**0.8.4**](http://download.tomahawk-player.org/tomahawk-0.8.4.exe) | [**0.8.4**](http://www.tomahawk-player.org/#page-about) (various distros) |
 
-## BUILD TOMAHAWK
-
-... or you can compile it yourself:
-
-    $ mkdir build && cd build
-    $ cmake ..
-    $ make
-
-### Detailed Build Instructions
-
-| Linux: | [Arch](http://wiki.tomahawk-player.org/index.php/Building_ArchLinux_package) **-** [Debian](http://wiki.tomahawk-player.org/index.php/Building_on_Debian) **-** [Fedora](http://wiki.tomahawk-player.org/index.php/Building_on_Fedora) **-** [openSUSE](http://wiki.tomahawk-player.org/index.php/Building_on_openSUSE) **-** [Ubuntu](http://wiki.tomahawk-player.org/index.php/Building_on_Ubuntu) |
-|------:|:------|
-| **Windows**: | [**Windows**](http://wiki.tomahawk-player.org/index.php/Building_Windows_Binary) |
-| **Mac**: | [**OS X**](http://wiki.tomahawk-player.org/index.php/Building_OS_X_Application_Bundle) |
-
-### Dependencies
-
-Required dependencies:
-
-* [CMake 3](http://www.cmake.org/)
-* [Qt >= 5.4.0](http://qt-project.org/)
-* [VLC 2.1.0](https://videolan.org/vlc/)
-* [SQLite 3.6.22](http://www.sqlite.org/)
-* [TagLib 1.8](https://taglib.github.io/)
-* [Boost 1.3](http://www.boost.org/)
-* [Lucene++ 3.0.6](https://github.com/luceneplusplus/LucenePlusPlus/)
-* [Attica 5.6.0](http://ftp.kde.org/stable/attica/)
-* [QuaZip 0.4.3](http://quazip.sourceforge.net/)
-* [liblastfm 1.0.9](https://github.com/lastfm/liblastfm/)
-* [QtKeychain 0.1](https://github.com/frankosterfeld/qtkeychain/)
-* [Sparsehash](https://code.google.com/p/sparsehash/)
-* [GnuTLS](http://gnutls.org/)
-
-If you are using Qt>5.6 you need to build and install QtWebKit
-
-* [QtWebKit](https://github.com/qt/qtwebkit)
-
-The following dependencies are optional (but *recommended*):
-
-* [Jreen 1.1.1](http://qutim.org/jreen/)
-* [Snorenotify 0.5.2](https://github.com/Snorenotify/Snorenotify/)
-
-Third party libraries that we ship with our source:
-
-* [MiniUPnP 1.6](http://miniupnp.free.fr/)
-* [Qocoa](https://github.com/mikemcquaid/Qocoa/)
-* [libqnetwm](https://code.google.com/p/libqnetwm/)
-* [libqxt](http://libqxt.org/) (QxtWeb module)
-* [SPMediaKeyTap](https://github.com/nevyn/SPMediaKeyTap/)
-* [kdSingleApplicationGuard](http://www.kdab.com/)
 
 ## SUPPORT TOMAHAWK
 
@@ -148,4 +94,4 @@ PLUG-INS / RESOLVER SETTINGS
 
 ![Settings](https://dchtm6r471mui.cloudfront.net/hackpad.com_ZRZMJDdxrVe_p.242147_1410998587408_prefs.jpg)
 
-##Enjoy!
+## Enjoy!
