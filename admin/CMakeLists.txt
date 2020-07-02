@@ -1,3 +1,0 @@
-IF(WIN32)
-    INSTALL(DIRECTORY win DESTINATION share/tomahawk/admin )
-ENDIF(WIN32)
