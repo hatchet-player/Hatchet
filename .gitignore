@@ -1,9 +1,10 @@
 src/accounts/tomahawk
-*-build/*
-build/*
+build*/*
+!buildfiles/*
 .directory
 *.a
 *.o
+*.out
 ._*
 *.user
 *.swp
@@ -15,9 +16,6 @@ moc_*
 .kdev4
 *.kdev4
 *.kate-swp
-clang/
-win/
-gcc/
 tags
 .DS_Store
 *.autosave
