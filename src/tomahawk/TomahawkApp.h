@@ -63,7 +63,7 @@ namespace Tomahawk
     }
 }
 
-#ifdef LIBLASTFM_FOUND
+#ifdef HAVE_LIBLASTFM
     #include <lastfm5/NetworkAccessManager.h>
     #include "Scrobbler.h"
 #endif
@@ -145,7 +145,7 @@ private:
     QString m_queuedUrl;
     QFile m_logFile;
 
-#ifdef LIBLASTFM_FOUND
+#ifdef HAVE_LIBLASTFM
     Scrobbler* m_scrobbler;
 #endif
 

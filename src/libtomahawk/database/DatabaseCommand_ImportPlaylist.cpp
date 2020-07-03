@@ -20,11 +20,12 @@
 
 #include <QSqlQuery>
 
-#include "tomahawk/Query.h"
-#include "tomahawk/Playlist.h"
+#include "Query.h"
+#include "Playlist.h"
 #include "DatabaseImpl.h"
 #include "utils/Logger.h"
 
+using namespace Tomahawk;
 
 void
 DatabaseCommand_ImportPlaylist::exec( DatabaseImpl * dbi )
@@ -58,4 +59,3 @@ DatabaseCommand_ImportPlaylist::exec( DatabaseImpl * dbi )
     emit done(pid);
     */
 }
-

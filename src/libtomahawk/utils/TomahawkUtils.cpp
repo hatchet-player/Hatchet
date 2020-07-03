@@ -31,7 +31,7 @@
 #include "TomahawkVersion.h"
 #include "Track.h"
 
-#ifdef LIBLASTFM_FOUND
+#ifdef HAVE_LIBLASTFM
 #include <lastfm5/ws.h>
 #endif
 
@@ -65,7 +65,7 @@
     #include <sys/sysctl.h>
 #endif
 
-#ifdef QCA2_FOUND
+#ifdef HAVE_QCA2
     #include <QtCrypto>
 #endif
 
