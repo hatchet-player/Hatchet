@@ -1,3 +1,4 @@
+#include "AudioEngine.h"
 #include "AudioOutput.h"
 
 #include <stdint.h>

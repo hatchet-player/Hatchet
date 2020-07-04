@@ -1,0 +1,182 @@
+# tomahawk project build options
+#============================================================================
+
+
+# compiler args
+#============================================================================
+option(
+    'ldflags',
+    type : 'array',
+    value : [
+        '-L/usr/local/lib',
+        '-L/usr/lib',
+        '-L/lib'],
+    description : 'Link flags')
+
+option(
+    'cxxflags',
+    type : 'array',
+    value : [
+        '-Wdeprecated', 
+        '-Wno-non-virtual-dtor',
+        '-Wno-unused-parameter'],
+    description : 'C build flags')
+
+option(
+    'with_tools',
+    type : 'boolean',
+    value : 'true',
+    description : 'Build tomahawk tools')
+
+option(
+    'with_tests',
+    type : 'boolean',
+    value : 'false',
+    description : 'Build tomahawk with tests')
+
+option(
+    'with_gui',
+    type : 'boolean',
+    value : 'true',
+    description : 'Build tomahawk with tests')
+
+
+# link args
+#============================================================================
+option(
+    'zlib_link_args', 
+    type : 'array', 
+    value : [
+        '-lz'], 
+    description : 'link args for zlib')
+
+option(
+    'boost_link_args', 
+    type : 'array', 
+    value : [
+        # '-L/usr/lib64',
+        '-lboost_system',
+        '-lboost_context',
+        '-lboost_regex',
+        '-lboost_iostreams'], 
+    description : 'link args for boost')
+
+option(
+    'quazip_link_args', 
+    type : 'array', 
+    value : [
+        '-lquazip5'],
+    description : 'link args for KF5 attica')
+
+option(
+    'sparsehash_link_args', 
+    type : 'array', 
+    value : [
+        '-I/usr/include/sparsehash'],
+    description : 'link args for KF5 attica')
+
+option(
+    'kf5attica_link_args', 
+    type : 'array', 
+    value : [
+        '-lKF5Attica'],
+    description : 'link args for KF5 attica')
+
+
+option(
+    'qt5_link_args', 
+    type : 'array', 
+    value : [
+        '-I/usr/lib/qt',
+        '-lQt5Core',
+        '-lQt5Concurrent',
+        '-lQt5Gui',
+        '-lQt5Network',
+        '-lQt5Sql',
+        '-lQt5Svg',
+        '-lQt5UiTools',
+        '-lQt5WebKitWidgets',
+        '-lQt5Widgets',
+        '-lQt5Xml'],
+    description : 'link args for Qt5')
+
+option(
+    'qt5_x11_link_args', 
+    type : 'string', 
+    value : '-lQt5X11Extras',
+    description : 'link args for Qt5')
+
+option(
+    'qca2_link_args', 
+    type : 'array', 
+    value : [
+        '-lqca-qt5'],
+    description : 'link args for Qca2')
+
+option(
+    'liblastfm_link_args', 
+    type : 'array', 
+    value : [
+        '-llastfm5'],
+    description : 'link args for LibLastFM')
+
+option(
+    'libvlc_link_args', 
+    type : 'array', 
+    value : [
+        '-lvlc'],
+    description : 'link args for LibLastFM')
+
+option(
+    'gnutls_link_args', 
+    type : 'array', 
+    value : [
+        '-lgnutls'],
+    description : 'link args for gnutls')
+
+option(
+    'taglib_link_args', 
+    type : 'array', 
+    value : [
+        '-ltag'],
+    description : 'link args for taglib')
+
+option(
+    'echonest_link_args', 
+    type : 'array', 
+    value : [
+        '-lechonest5'],
+    description : 'link args for echonest')
+
+# optional dependancies
+#============================================================================
+option(
+    'with_crashreporter',
+    type : 'boolean',
+    value : 'true',
+    description : 'Build tomahawk with qt5 crash reporter')
+
+option(
+    'with_echonest',
+    type : 'boolean',
+    value : 'true',
+    description : 'Build tomahawk with echonest')
+
+option(
+    'with_taglib',
+    type : 'boolean',
+    value : 'true',
+    description : 'Build tomahawk with taglib')
+
+option(
+    'with_liblastfm',
+    type : 'boolean',
+    value : 'true',
+    description : 'Build tomahawk with liblastfm')
+
+option(
+    'with_telepathy',
+    type : 'boolean',
+    value : 'true',
+    description : 'Build tomahawk with Telepathy-Qt')
+    

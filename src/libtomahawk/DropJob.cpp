@@ -45,9 +45,9 @@
 #include "Source.h"
 #include "ViewManager.h"
 
-#ifdef QCA2_FOUND
+#ifdef HAVE_QCA2
 #include "utils/GroovesharkParser.h"
-#endif //QCA2_FOUND
+#endif //HAVE_QCA2
 
 
 using namespace Tomahawk;
@@ -301,10 +301,10 @@ DropJob::isDropType( DropJob::DropType desired, const QMimeData* data )
 
         if ( url.contains( "rdio.com" ) && url.contains( "people" ) && url.contains( "playlist" ) )
             return true;
-#ifdef QCA2_FOUND
+#ifdef HAVE_QCA2
         if ( url.contains( "grooveshark.com" ) && url.contains( "playlist" ) )
             return true;
-#endif //QCA2_FOUND
+#endif //HAVE_QCA2
         if ( ShortenedLinkParser::handlesUrl( url ) )
             return true;
 
@@ -667,7 +667,7 @@ DropJob::handleSpotifyUrls( const QString& urlsRaw )
 void
 DropJob::handleGroovesharkUrls ( const QString& urlsRaw )
 {
-#ifdef QCA2_FOUND
+#ifdef HAVE_QCA2
     QStringList urls = urlsRaw.split( QRegExp( "\\s+" ), QString::SkipEmptyParts );
     tDebug() << "Got Grooveshark urls!" << urls;
 
@@ -714,7 +714,7 @@ DropJob::handleAllUrls( const QString& urls )
               && ( urls.contains( "playlist" ) || urls.contains( "artist" ) || urls.contains( "album" ) || urls.contains( "track" ) )
               && s_canParseSpotifyPlaylists )
         handleSpotifyUrls( urls );
-#ifdef QCA2_FOUND
+#ifdef HAVE_QCA2
     else if ( urls.contains( "grooveshark.com" ) )
         handleGroovesharkUrls( urls );
 #endif

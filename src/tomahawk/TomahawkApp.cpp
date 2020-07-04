@@ -562,7 +562,7 @@ TomahawkApp::initServent()
 void
 TomahawkApp::initFactoriesForAccountManager()
 {
-#ifdef LIBLASTFM_FOUND
+#ifdef HAVE_LIBLASTFM
     Tomahawk::Accounts::LastFmAccountFactory* lastfmFactory = new Tomahawk::Accounts::LastFmAccountFactory();
     m_accountManager.data()->addAccountFactory( lastfmFactory );
 #endif
@@ -676,7 +676,7 @@ TomahawkApp::onInfoSystemReady()
         m_mainwindow->showSettingsDialog();
     }
 
-#ifdef LIBLASTFM_FOUND
+#ifdef HAVE_LIBLASTFM
     tDebug() << "Init Scrobbler.";
     m_scrobbler = new Scrobbler( this );
 #endif

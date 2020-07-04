@@ -26,6 +26,14 @@
 
 #include "DllMacro.h"
 
+// #include "DatabaseImpl.h"
+// #include "DatabaseCommandLoggable.h"
+// #include "Source.h"
+// #include "Typedefs.h"
+
+namespace Tomahawk
+{
+
 class Playlist;
 
 class DLLEXPORT DatabaseCommand_ImportPlaylist : public DatabaseCommand
@@ -36,7 +44,7 @@ public:
         : DatabaseCommand(parent), m_playlist(p)
     {}
 
-    virtual void exec(DatabaseImpl *);
+    virtual void exec( DatabaseImpl* lib );
     virtual bool doesMutates() const { return true; }
     virtual QString commandname() const { return "importplaylist"; }
 
@@ -47,4 +55,5 @@ private:
     Playlist * m_playlist;
 };
 
+}
 #endif // DATABASECOMMAND_ADDFILES_H
