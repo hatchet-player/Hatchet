@@ -22,7 +22,7 @@
 #include "utils/TomahawkUtils.h"
 #include "utils/Logger.h"
 #include "utils/NetworkAccessManager.h"
-#include "TomahawkVersion.h"
+#include "HatchetVersion.h"
 
 #include <QNetworkReply>
 #include <QDomDocument>

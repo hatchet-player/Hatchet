@@ -25,7 +25,7 @@
 #include "utils/Logger.h"
 #include "utils/TomahawkUtilsGui.h"
 
-#include "TomahawkVersion.h"
+#include "HatchetVersion.h"
 
 #include <libsnore/application.h>
 #include <libsnore/notification/icon.h>

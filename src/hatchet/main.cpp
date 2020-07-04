@@ -41,7 +41,7 @@
 #endif
 
 #ifdef WITH_CRASHREPORTER
-    #include "TomahawkVersion.h"
+    #include "HatchetVersion.h"
     #include "libcrashreporter-handler/Handler.h"
 #endif
 

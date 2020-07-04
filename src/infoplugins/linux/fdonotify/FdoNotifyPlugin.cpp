@@ -49,7 +49,7 @@
 #include "utils/Logger.h"
 #include "utils/TomahawkUtilsGui.h"
 
-#include "TomahawkVersion.h"
+#include "HatchetVersion.h"
 
 #include <QDBusConnection>
 #include <QDBusPendingCallWatcher>

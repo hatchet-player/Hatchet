@@ -35,7 +35,7 @@
 #include "utils/NetworkProxyFactory.h"
 
 #include "config.h"
-#include "TomahawkVersion.h"
+#include "HatchetVersion.h"
 
 #include <jreen/jid.h>
 #include <jreen/capabilities.h>

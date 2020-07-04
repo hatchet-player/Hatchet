@@ -24,7 +24,7 @@
 #include "PluginLoader_p.h"
 
 #include "config.h"
-#include "TomahawkVersion.h"
+#include "HatchetVersion.h"
 
 #include "utils/Logger.h"
 

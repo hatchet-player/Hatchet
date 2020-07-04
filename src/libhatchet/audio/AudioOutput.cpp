@@ -21,7 +21,7 @@
 
 #include "AudioEngine.h"
 #include "AudioOutput.h"
-#include "TomahawkVersion.h"
+#include "HatchetVersion.h"
 #include "TomahawkSettings.h"
 
 #include "audio/MediaStream.h"

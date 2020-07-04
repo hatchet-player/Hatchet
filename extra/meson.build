@@ -23,7 +23,7 @@ config_h = configure_file(
 add_project_arguments('-include', 'extra/config.h', language : 'cpp')
 
 
-# build TomahawkVersion.h
+# build HatchetVersion.h
 #---------------------------------------------------
 version_hh = configuration_data()
 version_hh.set_quoted('TOMAHAWK_ORGANIZATION_NAME', tomahawk_organization_name)
@@ -37,10 +37,10 @@ version_hh.set_quoted('TOMAHAWK_SYSTEM', tomahawk_system)
 
 tomahawkversion_h = configure_file(
     input : 'HatchetVersion.h.in',
-    output : 'TomahawkVersion.h',
+    output : 'HatchetVersion.h',
     configuration : version_hh)
 
-add_project_arguments('-include', 'extra/TomahawkVersion.h', language : 'cpp')
+add_project_arguments('-include', 'extra/HatchetVersion.h', language : 'cpp')
 
 
 # install headers

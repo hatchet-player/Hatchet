@@ -21,7 +21,7 @@
 
 #include "TomahawkApp.h"
 
-#include "TomahawkVersion.h"
+#include "HatchetVersion.h"
 #include "AclRegistryImpl.h"
 #include "Album.h"
 #include "Artist.h"

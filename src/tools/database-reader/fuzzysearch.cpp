@@ -1,7 +1,7 @@
 #include "database/Database.h"
 #include "database/DatabaseCommand_Resolve.h"
 #include "utils/TomahawkUtils.h"
-#include "TomahawkVersion.h"
+#include "HatchetVersion.h"
 #include "Typedefs.h"
 
 #include <QCoreApplication>

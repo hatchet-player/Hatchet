@@ -40,7 +40,7 @@
 #include "ScriptEngine.h"
 #include "SourceList.h"
 #include "TomahawkSettings.h"
-#include "TomahawkVersion.h"
+#include "HatchetVersion.h"
 #include "Track.h"
 #include "ScriptInfoPlugin.h"
 #include "JSAccount.h"

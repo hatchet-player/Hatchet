@@ -28,7 +28,7 @@
 #include "SharedTimeLine.h"
 #include "Source.h"
 #include "TomahawkSettings.h"
-#include "TomahawkVersion.h"
+#include "HatchetVersion.h"
 #include "Track.h"
 
 #ifdef HAVE_LIBLASTFM

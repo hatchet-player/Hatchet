@@ -28,7 +28,7 @@
 #include "utils/TomahawkUtils.h"
 #include "utils/TomahawkUtilsGui.h"
 #include "TomahawkSettings.h"
-#include "TomahawkVersion.h"
+#include "HatchetVersion.h"
 #include "JSAccount.h"
 
 #include <QDir>

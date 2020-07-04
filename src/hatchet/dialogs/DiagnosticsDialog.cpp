@@ -22,7 +22,7 @@
 #include "ui_DiagnosticsDialog.h"
 
 #include "config.h"
-#include "TomahawkVersion.h"
+#include "HatchetVersion.h"
 
 #include "SourceList.h"
 
