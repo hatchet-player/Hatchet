@@ -20,7 +20,7 @@
 #include "TopLovedTracksModel_p.h"
 
 #include "database/Database.h"
-#include "database/DatabaseCommand_GenericSelect.h"
+#include "database/commands/GenericSelect.h"
 #include "Source.h"
 
 using namespace Hatchet;

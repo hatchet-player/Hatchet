@@ -21,9 +21,9 @@
 
 #include "LastFmAccount.h"
 #include "database/Database.h"
-#include "database/DatabaseCommand_LogPlayback.h"
-#include <database/DatabaseCommand_LoadSocialActions.h>
-#include <database/DatabaseCommand_SocialAction.h>
+#include "database/commands/LogPlayback.h"
+#include <database/commands/LoadSocialActions.h>
+#include <database/commands/SocialAction.h>
 #include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
 #include "utils/Closure.h"

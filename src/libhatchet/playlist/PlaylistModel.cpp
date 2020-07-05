@@ -24,7 +24,7 @@
 #include <QTreeView>
 
 #include "database/Database.h"
-#include "database/DatabaseCommand_PlaybackHistory.h"
+#include "database/commands/PlaybackHistory.h"
 #include "playlist/dynamic/GeneratorInterface.h"
 #include "utils/Logger.h"
 #include "utils/HatchetUtils.h"

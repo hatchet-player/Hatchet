@@ -19,11 +19,11 @@
 #include "NetworkActivityWorker_p.h"
 
 #include "database/Database.h"
-#include "database/DatabaseCommand_CalculatePlaytime.h"
-#include "database/DatabaseCommand_LoadAllPlaylists.h"
-#include "database/DatabaseCommand_LoadAllSources.h"
-#include "database/DatabaseCommand_TrendingArtists.h"
-#include "database/DatabaseCommand_TrendingTracks.h"
+#include "database/commands/CalculatePlaytime.h"
+#include "database/commands/LoadAllPlaylists.h"
+#include "database/commands/LoadAllSources.h"
+#include "database/commands/TrendingArtists.h"
+#include "database/commands/TrendingTracks.h"
 #include "database/DatabaseImpl.h"
 #include "NetworkActivityWidget.h"
 

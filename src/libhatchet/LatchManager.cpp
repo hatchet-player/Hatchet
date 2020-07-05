@@ -24,7 +24,7 @@
 #include "database/Database.h"
 
 #include "SourceList.h"
-#include "database/DatabaseCommand_SocialAction.h"
+#include "database/commands/SocialAction.h"
 #include "SourcePlaylistInterface.h"
 
 #include <QAction>

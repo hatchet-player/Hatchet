@@ -24,7 +24,7 @@
 #include "utils/HatchetUtils.h"
 #include "utils/HatchetCache.h"
 #include "HatchetSettings.h"
-#include "database/DatabaseCommand_CollectionAttributes.h"
+#include "database/commands/CollectionAttributes.h"
 #include "database/Database.h"
 #include "utils/Logger.h"
 #include "SourceList.h"

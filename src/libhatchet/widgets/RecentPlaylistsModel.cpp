@@ -22,7 +22,7 @@
 #include "audio/AudioEngine.h"
 #include "collection/Collection.h"
 #include "database/Database.h"
-#include "database/DatabaseCommand_LoadAllSortedPlaylists.h"
+#include "database/commands/LoadAllSortedPlaylists.h"
 #include "network/Servent.h"
 #include "playlist/dynamic/DynamicPlaylist.h"
 #include "utils/Logger.h"

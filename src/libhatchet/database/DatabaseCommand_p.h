@@ -21,7 +21,7 @@
 #ifndef DATABASECOMMAND_P_H
 #define DATABASECOMMAND_P_H
 
-#include "DatabaseCommand.h"
+#include "database/DatabaseCommand.h"
 
 namespace Hatchet
 {

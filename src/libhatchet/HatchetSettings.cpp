@@ -21,7 +21,7 @@
 #include "HatchetSettings.h"
 
 #include "collection/Collection.h"
-#include "database/DatabaseCommand_UpdateSearchIndex.h"
+#include "database/commands/UpdateSearchIndex.h"
 #include "database/Database.h"
 #include "database/fuzzyindex/DatabaseFuzzyIndex.h"
 #include "infosystem/InfoSystemCache.h"

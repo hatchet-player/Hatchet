@@ -22,7 +22,7 @@
 
 #include "Playlist.h"
 #include "Source.h"
-#include "database/DatabaseCommand_LoadAllSortedPlaylists.h"
+#include "database/commands/LoadAllSortedPlaylists.h"
 
 #include <QModelIndex>
 #include <QTimer>

@@ -24,8 +24,8 @@
 #include "collection/Collection.h"
 #include "database/Database.h"
 #include "database/DatabaseImpl.h"
-#include "database/DatabaseCommand_LogPlayback.h"
-#include "database/DatabaseCommand_ModifyInboxEntry.h"
+#include "database/commands/LogPlayback.h"
+#include "database/commands/ModifyInboxEntry.h"
 #include "resolvers/Resolver.h"
 #include "utils/Logger.h"
 

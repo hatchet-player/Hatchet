@@ -28,7 +28,7 @@
 #include <lucene++/LuceneHeaders.h>
 
 #include "Query.h"
-#include "database/DatabaseCommand_UpdateSearchIndex.h"
+#include "database/commands/UpdateSearchIndex.h"
 
 class FuzzyIndex : public QObject
 {

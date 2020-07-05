@@ -24,7 +24,7 @@
 #include "playlist/dynamic/GeneratorInterface.h"
 #include "playlist/dynamic/GeneratorFactory.h"
 #include "playlist/dynamic/DynamicControl.h"
-#include "database/DatabaseCommand_CollectionAttributes.h"
+#include "database/commands/CollectionAttributes.h"
 
 #include "DllMacro.h"
 

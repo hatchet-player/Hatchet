@@ -24,7 +24,7 @@
 #include "playlist/dynamic/GeneratorInterface.h"
 #include "playlist/dynamic/GeneratorFactory.h"
 #include "playlist/dynamic/DynamicControl.h"
-#include "database/DatabaseCommand_GenericSelect.h"
+#include "database/commands/GenericSelect.h"
 #include "DllMacro.h"
 
 namespace Hatchet

@@ -19,7 +19,7 @@
 #include "DatabaseResolver.h"
 
 #include "database/Database.h"
-#include "database/DatabaseCommand_Resolve.h"
+#include "database/commands/Resolve.h"
 #include "network/Servent.h"
 #include "utils/Logger.h"
 

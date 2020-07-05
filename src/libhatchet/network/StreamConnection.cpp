@@ -20,7 +20,7 @@
 
 #include "StreamConnection.h"
 
-#include "database/DatabaseCommand_LoadFiles.h"
+#include "database/commands/LoadFiles.h"
 #include "database/Database.h"
 #include "network/ControlConnection.h"
 #include "network/Servent.h"

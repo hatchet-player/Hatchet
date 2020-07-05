@@ -1,5 +1,5 @@
 #include "database/Database.h"
-#include "database/DatabaseCommand_Resolve.h"
+#include "database/commands/Resolve.h"
 #include "utils/HatchetUtils.h"
 #include "HatchetVersion.h"
 #include "Typedefs.h"

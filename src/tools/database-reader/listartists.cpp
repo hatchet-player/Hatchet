@@ -1,5 +1,5 @@
 #include "database/Database.h"
-#include "database/DatabaseCommand_AllArtists.h"
+#include "database/commands/AllArtists.h"
 #include "utils/HatchetUtils.h"
 #include "HatchetVersion.h"
 #include "Typedefs.h"

@@ -32,8 +32,8 @@
 #include "playlist/TrackDetailView.h"
 #include "widgets/BasicHeader.h"
 
-#include "database/DatabaseCommand_AllTracks.h"
-#include "database/DatabaseCommand_AllAlbums.h"
+#include "database/commands/AllTracks.h"
+#include "database/commands/AllAlbums.h"
 
 #include "utils/HatchetStyle.h"
 #include "utils/HatchetUtilsGui.h"

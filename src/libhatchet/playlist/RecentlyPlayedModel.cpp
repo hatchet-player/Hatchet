@@ -24,7 +24,7 @@
 #include "Source.h"
 #include "SourceList.h"
 #include "database/Database.h"
-#include "database/DatabaseCommand_PlaybackHistory.h"
+#include "database/commands/PlaybackHistory.h"
 #include "PlayableItem.h"
 #include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
