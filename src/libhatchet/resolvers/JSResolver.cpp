@@ -1,22 +1,22 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *   Copyright 2013,      Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "JSResolver_p.h"
@@ -28,7 +28,7 @@
 #include "jobview/ErrorStatusMessage.h"
 #include "utils/Logger.h"
 #include "utils/NetworkAccessManager.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 
 #include "Artist.h"
 #include "Album.h"
@@ -39,7 +39,7 @@
 #include "ScriptCollection.h"
 #include "ScriptEngine.h"
 #include "SourceList.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "HatchetVersion.h"
 #include "Track.h"
 #include "ScriptInfoPlugin.h"
@@ -60,10 +60,10 @@
 #include <QMetaProperty>
 #include <QWebFrame>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 JSResolver::JSResolver( const QString& accountId, const QString& scriptPath, const QStringList& additionalScriptPaths )
-    : Tomahawk::ExternalResolverGui( scriptPath )
+    : Hatchet::ExternalResolverGui( scriptPath )
     , ScriptPlugin( scriptobject_ptr() )
     , d_ptr( new JSResolverPrivate( this, accountId, scriptPath, additionalScriptPaths ) )
 {
@@ -77,12 +77,12 @@ JSResolver::JSResolver( const QString& accountId, const QString& scriptPath, con
     d->scriptAccount->setIcon( icon( QSize( 0, 0 ) ) );
 
     // set the icon, if we launch properly we'll get the icon the resolver reports
-    d->icon = TomahawkUtils::defaultPixmap( TomahawkUtils::DefaultResolver, TomahawkUtils::Original, QSize( 128, 128 ) );
+    d->icon = HatchetUtils::defaultPixmap( HatchetUtils::DefaultResolver, HatchetUtils::Original, QSize( 128, 128 ) );
 
     if ( !QFile::exists( filePath() ) )
     {
         tLog() << Q_FUNC_INFO << "Failed loading JavaScript resolver:" << scriptPath;
-        d->error = Tomahawk::ExternalResolver::FileNotFound;
+        d->error = Hatchet::ExternalResolver::FileNotFound;
     }
     else
     {
@@ -99,7 +99,7 @@ JSResolver::~JSResolver()
 }
 
 
-Tomahawk::ExternalResolver* JSResolver::factory( const QString& accountId, const QString& scriptPath, const QStringList& additionalScriptPaths )
+Hatchet::ExternalResolver* JSResolver::factory( const QString& accountId, const QString& scriptPath, const QStringList& additionalScriptPaths )
 {
     ExternalResolver* res = nullptr;
 
@@ -114,7 +114,7 @@ Tomahawk::ExternalResolver* JSResolver::factory( const QString& accountId, const
 }
 
 
-Tomahawk::ExternalResolver::Capabilities
+Hatchet::ExternalResolver::Capabilities
 JSResolver::capabilities() const
 {
     Q_D( const JSResolver );
@@ -179,10 +179,10 @@ JSResolver::reload()
     if ( QFile::exists( filePath() ) )
     {
         init();
-        d->error = Tomahawk::ExternalResolver::NoError;
+        d->error = Hatchet::ExternalResolver::NoError;
     } else
     {
-        d->error = Tomahawk::ExternalResolver::FileNotFound;
+        d->error = Hatchet::ExternalResolver::FileNotFound;
     }
 }
 
@@ -202,7 +202,7 @@ JSResolver::init()
     Q_D( JSResolver );
 
     QString lucenePath = d->accountId + ".lucene";
-    QDir luceneDir( TomahawkUtils::appDataDir().absoluteFilePath( lucenePath ) );
+    QDir luceneDir( HatchetUtils::appDataDir().absoluteFilePath( lucenePath ) );
     if ( luceneDir.exists() )
     {
         d->fuzzyIndex.reset( new FuzzyIndex( this, lucenePath, false ) );
@@ -216,10 +216,10 @@ JSResolver::init()
     }
     const QByteArray scriptContents = scriptFile.readAll();
 
-    // tomahawk.js
+    // hatchet.js
     {
-        // add c++ part of tomahawk javascript library
-        d->scriptAccount->addToJavaScriptWindowObject( "Tomahawk", d->resolverHelper );
+        // add c++ part of hatchet javascript library
+        d->scriptAccount->addToJavaScriptWindowObject( "Hatchet", d->resolverHelper );
 
         // load es6-promises shim
         d->scriptAccount->loadScript( RESPATH "js/rsvp-latest.min.js" );
@@ -237,16 +237,16 @@ JSResolver::init()
             d->scriptAccount->loadScript( RESPATH "js/cryptojs/" +  jsfile );
         }
 
-        // Load tomahawk.js
-        d->scriptAccount->loadScript( RESPATH "js/tomahawk.js" );
+        // Load hatchet.js
+        d->scriptAccount->loadScript( RESPATH "js/hatchet.js" );
     }
 
-    // tomahawk-infosystem.js
+    // hatchet-infosystem.js
     {
         // TODO: be smarter about this, only include this if the resolver supports infoplugins
 
         // add deps
-        d->scriptAccount->loadScript( RESPATH "js/tomahawk-infosystem.js" );
+        d->scriptAccount->loadScript( RESPATH "js/hatchet-infosystem.js" );
     }
 
     // add resolver dependencies, if any
@@ -257,7 +257,7 @@ JSResolver::init()
     d->scriptAccount->loadScript( filePath() );
 
     // HACK: register resolver object
-    d->scriptAccount->evaluateJavaScript( "Tomahawk.PluginManager.registerPlugin('resolver', Tomahawk.resolver.instance);" );
+    d->scriptAccount->evaluateJavaScript( "Hatchet.PluginManager.registerPlugin('resolver', Hatchet.resolver.instance);" );
     // init resolver
     scriptObject()->syncInvoke( "init" );
 
@@ -289,7 +289,7 @@ JSResolver::init()
     // if we still couldn't load the cover, set the default resolver icon
     if ( d->icon.isNull() )
     {
-        d->icon = TomahawkUtils::defaultPixmap( TomahawkUtils::DefaultResolver, TomahawkUtils::Original, QSize( 128, 128 ) );
+        d->icon = HatchetUtils::defaultPixmap( HatchetUtils::DefaultResolver, HatchetUtils::Original, QSize( 128, 128 ) );
     }
 
     // load config widget and apply settings
@@ -314,7 +314,7 @@ JSResolver::start()
     d->resolverHelper->start();
 
     if ( d->ready )
-        Tomahawk::Pipeline::instance()->addResolver( this );
+        Hatchet::Pipeline::instance()->addResolver( this );
     else
         init();
 
@@ -357,7 +357,7 @@ JSResolver::lookupUrl( const QString& url )
 
     QVariantMap arguments;
     arguments["url"] = url;
-    Tomahawk::ScriptJob* job = scriptObject()->invoke( "lookupUrl", arguments );
+    Hatchet::ScriptJob* job = scriptObject()->invoke( "lookupUrl", arguments );
     connect( job, SIGNAL( done( QVariantMap ) ), SLOT( onLookupUrlRequestDone( QVariantMap ) ) );
     job->setProperty( "url", url );
     job->start();
@@ -392,8 +392,8 @@ JSResolver::onLookupUrlRequestDone( const QVariantMap& result )
         album_ptr album = Album::get( Artist::get( artist, true ), name );
         m_pendingUrl = url;
         m_pendingAlbum = album;
-        connect( album.data(), SIGNAL( tracksAdded( QList<Tomahawk::query_ptr>, Tomahawk::ModelMode, Tomahawk::collection_ptr ) ),
-                 SLOT( tracksAdded( QList<Tomahawk::query_ptr>, Tomahawk::ModelMode, Tomahawk::collection_ptr ) ) );
+        connect( album.data(), SIGNAL( tracksAdded( QList<Hatchet::query_ptr>, Hatchet::ModelMode, Hatchet::collection_ptr ) ),
+                 SLOT( tracksAdded( QList<Hatchet::query_ptr>, Hatchet::ModelMode, Hatchet::collection_ptr ) ) );
         if ( !album->tracks().isEmpty() )
         {
             emit informationFound( url, album.objectCast<QObject>() );
@@ -401,7 +401,7 @@ JSResolver::onLookupUrlRequestDone( const QVariantMap& result )
     }
     else if ( type == UrlTypeTrack )
     {
-        Tomahawk::query_ptr query = parseTrack( result );
+        Hatchet::query_ptr query = parseTrack( result );
         if ( query.isNull() )
         {
             // A valid track result shoud have non-empty title and artist.
@@ -432,7 +432,7 @@ JSResolver::onLookupUrlRequestDone( const QVariantMap& result )
 
         // Get all information to build a new playlist but do not build it until we know,
         // if it is really handled as a playlist and not as a set of tracks.
-        Tomahawk::source_ptr source = SourceList::instance()->getLocal();
+        Hatchet::source_ptr source = SourceList::instance()->getLocal();
         const QString title = result.value( "title" ).toString();
         const QString info = result.value( "info" ).toString();
         const QString creator = result.value( "creator" ).toString();
@@ -468,11 +468,11 @@ JSResolver::onLookupUrlRequestDone( const QVariantMap& result )
 
         // Get all information to build a new playlist but do not build it until we know,
         // if it is really handled as a playlist and not as a set of tracks.
-        Tomahawk::source_ptr source = SourceList::instance()->getLocal();
+        Hatchet::source_ptr source = SourceList::instance()->getLocal();
         QSharedPointer<XspfPlaylistTemplate> pltemplate( new XspfPlaylistTemplate( xspfUrl, source, guid ) );
-        NewClosure( pltemplate, SIGNAL( tracksLoaded( QList< Tomahawk::query_ptr > ) ),
-                    this, SLOT( pltemplateTracksLoadedForUrl( QString, Tomahawk::playlisttemplate_ptr ) ),
-                    url, pltemplate.objectCast<Tomahawk::PlaylistTemplate>() );
+        NewClosure( pltemplate, SIGNAL( tracksLoaded( QList< Hatchet::query_ptr > ) ),
+                    this, SLOT( pltemplateTracksLoadedForUrl( QString, Hatchet::playlisttemplate_ptr ) ),
+                    url, pltemplate.objectCast<Hatchet::PlaylistTemplate>() );
         tLog( LOGVERBOSE ) << Q_FUNC_INFO << name() << "Got playlist for " << url;
         pltemplate->load();
     }
@@ -495,7 +495,7 @@ JSResolver::parseTrack( const QVariantMap& track )
         return query_ptr();
     }
 
-    Tomahawk::query_ptr query = Tomahawk::Query::get( artist, title, album );
+    Hatchet::query_ptr query = Hatchet::Query::get( artist, title, album );
     QString resultHint = track.value( "hint" ).toString();
     if ( !resultHint.isEmpty() )
     {
@@ -528,7 +528,7 @@ JSResolver::pltemplateTracksLoadedForUrl( const QString& url, const playlisttemp
 }
 
 
-Tomahawk::ExternalResolver::ErrorState
+Hatchet::ExternalResolver::ErrorState
 JSResolver::error() const
 {
     Q_D( const JSResolver );
@@ -538,7 +538,7 @@ JSResolver::error() const
 
 
 void
-JSResolver::resolve( const Tomahawk::query_ptr& query )
+JSResolver::resolve( const Hatchet::query_ptr& query )
 {
     ScriptJob* job = scriptAccount()->resolve( scriptObject(), query, "resolver" );
     connect( job, SIGNAL( done( QVariantMap ) ), SLOT( onResolveRequestDone( QVariantMap ) ) );
@@ -558,29 +558,29 @@ JSResolver::onResolveRequestDone( const QVariantMap& data )
 
     if ( job->error() )
     {
-        Tomahawk::Pipeline::instance()->reportError( qid, this );
+        Hatchet::Pipeline::instance()->reportError( qid, this );
     }
     else
     {
         if ( !data.value( "artists" ).isNull() )
         {
             QList< artist_ptr > artists = scriptAccount()->parseArtistVariantList( data.value( "artists" ).toList() );
-            Tomahawk::Pipeline::instance()->reportArtists( qid, artists );
+            Hatchet::Pipeline::instance()->reportArtists( qid, artists );
         }
 
         if ( !data.value( "albums" ).isNull() )
         {
             QList< album_ptr > albums = scriptAccount()->parseAlbumVariantList( data.value( "albums" ).toList() );
-            Tomahawk::Pipeline::instance()->reportAlbums( qid, albums );
+            Hatchet::Pipeline::instance()->reportAlbums( qid, albums );
         }
 
-        QList< Tomahawk::result_ptr > results = scriptAccount()->parseResultVariantList( data.value( "tracks" ).toList() );
+        QList< Hatchet::result_ptr > results = scriptAccount()->parseResultVariantList( data.value( "tracks" ).toList() );
         foreach( const result_ptr& result, results )
         {
             result->setResolvedByResolver( this );
             result->setFriendlySource( name() );
         }
-        Tomahawk::Pipeline::instance()->reportResults( qid, this, results );
+        Hatchet::Pipeline::instance()->reportResults( qid, this, results );
     }
 
     sender()->deleteLater();
@@ -596,7 +596,7 @@ JSResolver::stop()
 
     scriptAccount()->stop();
 
-    Tomahawk::Pipeline::instance()->removeResolver( this );
+    Hatchet::Pipeline::instance()->removeResolver( this );
     emit stopped();
 }
 
@@ -681,7 +681,7 @@ JSResolver::scriptAccount() const
 
 
 void
-JSResolver::onCapabilitiesChanged( Tomahawk::ExternalResolver::Capabilities capabilities )
+JSResolver::onCapabilitiesChanged( Hatchet::ExternalResolver::Capabilities capabilities )
 {
     Q_D( JSResolver );
 
@@ -699,7 +699,7 @@ JSResolver::resolverUserConfig()
 QString
 JSResolver::instanceUUID()
 {
-    return Tomahawk::Database::instance()->impl()->dbid();
+    return Hatchet::Database::instance()->impl()->dbid();
 }
 
 

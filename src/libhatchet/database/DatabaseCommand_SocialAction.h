@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2011, Christopher Reichert <creichert07@gmail.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef DATABASECOMMAND_SOCIALACTION_H
@@ -29,14 +29,14 @@
 
 #include "DllMacro.h"
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 /**
  * \class DatabaseCommand_SocialAction
  * \brief Database command used to write social actions to database.
  *
- * This Database command allows Tomahawk to write social actions to
+ * This Database command allows Hatchet to write social actions to
  * the local database. These social actions can be interfaced with social
  * networking API's such as LastFm, Facebook, or Twitter to allow the user
  * to sync these actions with their accounts on these sites.
@@ -65,14 +65,14 @@ public:
 
     /**
      * \brief Overloaded constructor for DatabaseCommand_SocialAction.
-     * \param track A Tomahawk Track object.
+     * \param track A Hatchet Track object.
      * \param action Name of the social action to be written to the database.
      * \param comment Comment associated with this social action.
      * \param parent Parent class.
      *
      * Constructor which creates a new database command for the specified social action.
      */
-    explicit DatabaseCommand_SocialAction( const Tomahawk::trackdata_ptr& track, QString action, QString comment = QString(), QObject* parent = 0 )
+    explicit DatabaseCommand_SocialAction( const Hatchet::trackdata_ptr& track, QString action, QString comment = QString(), QObject* parent = 0 )
         : DatabaseCommandLoggable( parent )
         , m_track( track )
         , m_comment( comment )
@@ -179,7 +179,7 @@ public:
     bool groupable() const Q_DECL_OVERRIDE { return true; }
 
 protected:
-    Tomahawk::trackdata_ptr m_track;
+    Hatchet::trackdata_ptr m_track;
 
 private:
     QString m_artist;

@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *   Copyright 2014,      Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ResolverAccount.h"
@@ -38,7 +38,7 @@
 #include "Pipeline.h"
 #include "PlaylistEntry.h"
 #include "Source.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "HatchetVersion.h"
 
 
@@ -53,7 +53,7 @@
 
 #define MANUALRESOLVERS_DIR "manualresolvers"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 using namespace Accounts;
 
 Account*
@@ -64,7 +64,7 @@ ResolverAccountFactory::createAccount( const QString& accountId )
     Q_ASSERT( !accountId.isEmpty() );
 
     // If it's an attica resolver, return it instead so we get an icon
-    const bool isFromAttica = TomahawkSettings::instance()->value( QString( "accounts/%1/atticaresolver" ).arg( accountId ), false ).toBool();
+    const bool isFromAttica = HatchetSettings::instance()->value( QString( "accounts/%1/atticaresolver" ).arg( accountId ), false ).toBool();
     if ( isFromAttica )
         return new AtticaResolverAccount( accountId );
     else
@@ -152,14 +152,14 @@ ResolverAccountFactory::createFromPath( const QString& path, const QString& fact
             }
         }
 
-        if ( !configuration[ "tomahawkVersion" ].isNull() )
+        if ( !configuration[ "hatchetVersion" ].isNull() )
         {
-            QString thVer = TOMAHAWK_VERSION;
-            QString requiredVer = configuration[ "tomahawkVersion" ].toString();
+            QString thVer = HATCHET_VERSION;
+            QString requiredVer = configuration[ "hatchetVersion" ].toString();
 
-            if ( TomahawkUtils::compareVersionStrings( thVer, requiredVer ) < 0 )
+            if ( HatchetUtils::compareVersionStrings( thVer, requiredVer ) < 0 )
             {
-                displayError( tr( "Resolver installation error: Tomahawk %1 or newer is required." )
+                displayError( tr( "Resolver installation error: Hatchet %1 or newer is required." )
                               .arg( requiredVer ) );
                 return 0;
             }
@@ -177,7 +177,7 @@ ResolverAccountFactory::installAxe( QString& realPath, QVariantHash& configurati
 {
     const QFileInfo pathInfo( realPath );
     QString uniqueName = uuid();
-    QDir dir( TomahawkUtils::extractScriptPayload( pathInfo.filePath(),
+    QDir dir( HatchetUtils::extractScriptPayload( pathInfo.filePath(),
                                                     uniqueName,
                                                     MANUALRESOLVERS_DIR ) );
     if ( !( dir.exists() && dir.isReadable() ) ) //decompression fubar
@@ -212,7 +212,7 @@ ResolverAccountFactory::installAxe( QString& realPath, QVariantHash& configurati
 
         if ( npI.exists() && npI.isDir() )
         {
-            TomahawkUtils::removeDirectory( namePath );
+            HatchetUtils::removeDirectory( namePath );
         }
 
         dir.rename( uniqueName, name );
@@ -245,7 +245,7 @@ ResolverAccountFactory::metadataFromJsonFile( const QString& path )
     if ( metadataFile.open( QIODevice::ReadOnly | QIODevice::Text ) )
     {
         bool ok;
-        QVariantMap variant = TomahawkUtils::parseJson( metadataFile.readAll(), &ok ).toMap();
+        QVariantMap variant = HatchetUtils::parseJson( metadataFile.readAll(), &ok ).toMap();
 
         if ( ok )
         {
@@ -270,8 +270,8 @@ ResolverAccountFactory::metadataFromJsonFile( const QString& path )
                 result[ "revision" ] = variant[ "revision" ];
             if ( !variant[ "timestamp" ].isNull() )
                 result[ "timestamp" ] = variant[ "timestamp" ];
-            if ( !variant[ "tomahawkVersion" ].isNull() )
-                result[ "tomahawkVersion" ] = variant[ "tomahawkVersion" ];
+            if ( !variant[ "hatchetVersion" ].isNull() )
+                result[ "hatchetVersion" ] = variant[ "hatchetVersion" ];
             if ( !variant[ "platform" ].isNull() )
                 result[ "platform" ] = variant[ "platform" ];
         }
@@ -374,7 +374,7 @@ ResolverAccount::hookupResolver()
     if ( configuration().contains( "scripts" ) )
         additionalPaths = configuration().value( "scripts" ).toStringList();
 
-    Tomahawk::ExternalResolver* er = Pipeline::instance()->addScriptResolver( accountId(), mainScriptPath, additionalPaths );
+    Hatchet::ExternalResolver* er = Pipeline::instance()->addScriptResolver( accountId(), mainScriptPath, additionalPaths );
     m_resolver = QPointer< ExternalResolverGui >( qobject_cast< ExternalResolverGui* >( er ) );
     connect( m_resolver.data(), SIGNAL( changed() ), this, SLOT( resolverChanged() ) );
 
@@ -524,11 +524,11 @@ ResolverAccount::removeBundle()
     if ( bundleDir.isEmpty() )
         return;
 
-    QString expectedPath = TomahawkUtils::appDataDir().absoluteFilePath( QString( "%1/%2" ).arg( MANUALRESOLVERS_DIR ).arg( bundleDir ) );
+    QString expectedPath = HatchetUtils::appDataDir().absoluteFilePath( QString( "%1/%2" ).arg( MANUALRESOLVERS_DIR ).arg( bundleDir ) );
     QFileInfo fi( expectedPath );
     if ( fi.exists() && fi.isDir() && fi.isWritable() )
     {
-        TomahawkUtils::removeDirectory( expectedPath );
+        HatchetUtils::removeDirectory( expectedPath );
     }
 }
 
@@ -537,7 +537,7 @@ void
 ResolverAccount::testConfig()
 {
     // HACK: move to JSAccount once we have that properly
-    JSResolver* resolver = qobject_cast< Tomahawk::JSResolver* >( m_resolver );
+    JSResolver* resolver = qobject_cast< Hatchet::JSResolver* >( m_resolver );
     if ( resolver )
     {
         QVariantMap data = resolver->loadDataFromWidgets();
@@ -582,7 +582,7 @@ ResolverAccount::onTestConfig( const QVariant& result )
 AtticaResolverAccount::AtticaResolverAccount( const QString& accountId )
     : ResolverAccount( accountId )
 {
-    TomahawkSettings::instance()->setValue( QString( "accounts/%1/atticaresolver" ).arg( accountId ), true );
+    HatchetSettings::instance()->setValue( QString( "accounts/%1/atticaresolver" ).arg( accountId ), true );
 
     init();
     m_atticaId = configuration().value( "atticaId" ).toString();
@@ -598,7 +598,7 @@ AtticaResolverAccount::AtticaResolverAccount( const QString& accountId, const QS
     conf[ "atticaId" ] = atticaId;
     setConfiguration( conf );
 
-    TomahawkSettings::instance()->setValue( QString( "accounts/%1/atticaresolver" ).arg( accountId ), true );
+    HatchetSettings::instance()->setValue( QString( "accounts/%1/atticaresolver" ).arg( accountId ), true );
 
     init();
     sync();

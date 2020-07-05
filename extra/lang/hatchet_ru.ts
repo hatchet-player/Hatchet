@@ -2,19 +2,19 @@
 <context>
     <name>ACLJobDelegate</name>
     <message>
-        <location filename="../src/libtomahawk/jobview/AclJobItem.cpp" line="67"/>
+        <location filename="../src/libhatchet/jobview/AclJobItem.cpp" line="67"/>
         <source>Allow %1 to
 connect and stream from you?</source>
         <translation>Разрешить %1 
 подключиться и слушать ваш поток?</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/jobview/AclJobItem.cpp" line="83"/>
+        <location filename="../src/libhatchet/jobview/AclJobItem.cpp" line="83"/>
         <source>Allow Streaming</source>
         <translation>Разрешить поток</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/jobview/AclJobItem.cpp" line="86"/>
+        <location filename="../src/libhatchet/jobview/AclJobItem.cpp" line="86"/>
         <source>Deny Access</source>
         <translation>Запретить доступ</translation>
     </message>
@@ -22,7 +22,7 @@ connect and stream from you?</source>
 <context>
     <name>ACLJobItem</name>
     <message>
-        <location filename="../src/libtomahawk/jobview/AclJobItem.cpp" line="185"/>
+        <location filename="../src/libhatchet/jobview/AclJobItem.cpp" line="185"/>
         <source>%applicationName needs you to decide whether %1 is allowed to connect.</source>
         <translation type="unfinished"/>
     </message>
@@ -30,7 +30,7 @@ connect and stream from you?</source>
 <context>
     <name>AccountFactoryWrapper</name>
     <message>
-        <location filename="../src/libtomahawk/accounts/AccountFactoryWrapper.cpp" line="42"/>
+        <location filename="../src/libhatchet/accounts/AccountFactoryWrapper.cpp" line="42"/>
         <source>Add Account</source>
         <translation>Добавить учетную запись</translation>
     </message>
@@ -38,17 +38,17 @@ connect and stream from you?</source>
 <context>
     <name>AccountFactoryWrapperDelegate</name>
     <message>
-        <location filename="../src/libtomahawk/accounts/AccountFactoryWrapperDelegate.cpp" line="103"/>
+        <location filename="../src/libhatchet/accounts/AccountFactoryWrapperDelegate.cpp" line="103"/>
         <source>Online</source>
         <translation>В сети</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/AccountFactoryWrapperDelegate.cpp" line="108"/>
+        <location filename="../src/libhatchet/accounts/AccountFactoryWrapperDelegate.cpp" line="108"/>
         <source>Connecting...</source>
         <translation>Соединяюсь...</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/AccountFactoryWrapperDelegate.cpp" line="113"/>
+        <location filename="../src/libhatchet/accounts/AccountFactoryWrapperDelegate.cpp" line="113"/>
         <source>Offline</source>
         <translation>Не в сети</translation>
     </message>
@@ -56,18 +56,18 @@ connect and stream from you?</source>
 <context>
     <name>AccountListWidget</name>
     <message>
-        <location filename="../src/tomahawk/widgets/AccountListWidget.cpp" line="64"/>
+        <location filename="../src/hatchet/widgets/AccountListWidget.cpp" line="64"/>
         <source>Connections</source>
         <translation>Соединения</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/widgets/AccountListWidget.cpp" line="72"/>
-        <location filename="../src/tomahawk/widgets/AccountListWidget.cpp" line="243"/>
+        <location filename="../src/hatchet/widgets/AccountListWidget.cpp" line="72"/>
+        <location filename="../src/hatchet/widgets/AccountListWidget.cpp" line="243"/>
         <source>Connect &amp;All</source>
         <translation>Включить &amp;все</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/widgets/AccountListWidget.cpp" line="242"/>
+        <location filename="../src/hatchet/widgets/AccountListWidget.cpp" line="242"/>
         <source>Disconnect &amp;All</source>
         <translation>Выключить &amp;все</translation>
     </message>
@@ -75,7 +75,7 @@ connect and stream from you?</source>
 <context>
     <name>AccountWidget</name>
     <message>
-        <location filename="../src/tomahawk/widgets/AccountWidget.cpp" line="131"/>
+        <location filename="../src/hatchet/widgets/AccountWidget.cpp" line="131"/>
         <source>Invite</source>
         <translation>Пригласить</translation>
     </message>
@@ -83,7 +83,7 @@ connect and stream from you?</source>
 <context>
     <name>AccountsToolButton</name>
     <message>
-        <location filename="../src/tomahawk/widgets/AccountsToolButton.cpp" line="90"/>
+        <location filename="../src/hatchet/widgets/AccountsToolButton.cpp" line="90"/>
         <source>Configure Accounts</source>
         <translation>Настройка аккаунтов</translation>
     </message>
@@ -91,204 +91,204 @@ connect and stream from you?</source>
 <context>
     <name>ActionCollection</name>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="65"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="65"/>
         <source>&amp;Listen Along</source>
         <translation>&amp;Слушать вместе</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="68"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="68"/>
         <source>Stop &amp;Listening Along</source>
         <translation>&amp;Прекратить слушать вместе</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="72"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="72"/>
         <source>&amp;Follow in Real-Time</source>
         <translation>&amp;Следить в реальном времени</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="77"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="77"/>
         <source>&amp;Listen Privately</source>
         <translation>&amp;Слушать наедине</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="82"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="82"/>
         <source>&amp;Load Playlist</source>
         <translation>&amp;Загрузить плей-лист</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="83"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="83"/>
         <source>&amp;Load Station</source>
         <translation>&amp;Загрузить станцию</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="84"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="84"/>
         <source>&amp;Rename Playlist</source>
         <translation>&amp;Переименовать плей-лист</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="85"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="85"/>
         <source>&amp;Rename Station</source>
         <translation>&amp;Переименовать станцию</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="86"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="86"/>
         <source>&amp;Copy Playlist Link</source>
         <translation>&amp;Скопировать ссылку на плей-лист</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="87"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="87"/>
         <source>&amp;Play</source>
         <translation>&amp;Играть</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="91"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="91"/>
         <source>&amp;Stop</source>
         <translation>&amp;Стоп</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="92"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="92"/>
         <source>&amp;Previous Track</source>
         <translation>&amp;Предыдущая</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="95"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="95"/>
         <source>&amp;Next Track</source>
         <translation>&amp;Следующая</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="98"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="98"/>
         <source>&amp;Quit</source>
         <translation>&amp;Выход</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="112"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="112"/>
         <source>U&amp;pdate Collection</source>
         <translation>О&amp;бновить коллекцию</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="113"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="113"/>
         <source>Fully &amp;Rescan Collection</source>
         <translation>Полное &amp;сканирование коллекции
 </translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="116"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="116"/>
         <source>&amp;Configure %applicationName...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="118"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="118"/>
         <source>Create Playlist</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="121"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="121"/>
         <source>Create Station</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="138"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="138"/>
         <source>About &amp;%applicationName...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="149"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="149"/>
         <source>%applicationName 0.8</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="111"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="111"/>
         <source>Import Playlist...</source>
         <translation>Импортировать плей-лист</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="114"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="114"/>
         <source>Show Offline Friends</source>
         <translation>Показать друзей не в сети</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="125"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="125"/>
         <source>Minimize</source>
         <translation>Свернуть</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="127"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="127"/>
         <source>Zoom</source>
         <translation>Увеличить</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="129"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="129"/>
         <source>Enter Full Screen</source>
         <translation>Переход в полноэкранный режим</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="132"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="132"/>
         <source>Hide Menu Bar</source>
         <translation>Спрятать строку меню</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="136"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="136"/>
         <source>Diagnostics...</source>
         <translation>Диагностика</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="140"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="140"/>
         <source>&amp;Legal Information...</source>
         <translation>&amp;Юридическая информация</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="142"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="142"/>
         <source>&amp;View Logfile</source>
         <translation>&amp;Показать логи</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="145"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="145"/>
         <source>Check For Updates...</source>
         <translation>Проверить обновления...</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="151"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="151"/>
         <source>Report a Bug</source>
         <translation>Сообщить об ошибке</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="152"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="152"/>
         <source>Get Support</source>
         <translation>Запросить поддержку</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="153"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="153"/>
         <source>Help Us Translate</source>
         <translation>Помогите нам с переводом</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="163"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="163"/>
         <source>&amp;Controls</source>
         <translation>&amp;Управление</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="180"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="180"/>
         <source>&amp;Settings</source>
         <translation>&amp;Настройки</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="187"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="187"/>
         <source>&amp;Help</source>
         <translation>&amp;Помощь</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="196"/>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="266"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="196"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="266"/>
         <source>What&apos;s New in ...</source>
         <translation>Что нового в...</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="222"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="222"/>
         <source>&amp;Window</source>
         <translation>&amp;Окно</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ActionCollection.cpp" line="239"/>
+        <location filename="../src/libhatchet/ActionCollection.cpp" line="239"/>
         <source>Main Menu</source>
         <translation>Главное меню</translation>
     </message>
@@ -296,7 +296,7 @@ connect and stream from you?</source>
 <context>
     <name>AlbumInfoWidget</name>
     <message>
-        <location filename="../src/libtomahawk/viewpages/AlbumViewPage.cpp" line="62"/>
+        <location filename="../src/libhatchet/viewpages/AlbumViewPage.cpp" line="62"/>
         <source>Album Details</source>
         <translation>Подробности альбома</translation>
     </message>
@@ -304,13 +304,13 @@ connect and stream from you?</source>
 <context>
     <name>AlbumModel</name>
     <message>
-        <location filename="../src/libtomahawk/playlist/AlbumModel.cpp" line="61"/>
-        <location filename="../src/libtomahawk/playlist/AlbumModel.cpp" line="98"/>
+        <location filename="../src/libhatchet/playlist/AlbumModel.cpp" line="61"/>
+        <location filename="../src/libhatchet/playlist/AlbumModel.cpp" line="98"/>
         <source>All albums from %1</source>
         <translation>Все альбомы из %1</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/AlbumModel.cpp" line="100"/>
+        <location filename="../src/libhatchet/playlist/AlbumModel.cpp" line="100"/>
         <source>All albums</source>
         <translation>Все альбомы</translation>
     </message>
@@ -318,60 +318,60 @@ connect and stream from you?</source>
 <context>
     <name>ArtistInfoWidget</name>
     <message>
-        <location filename="../src/libtomahawk/viewpages/ArtistViewPage.ui" line="50"/>
+        <location filename="../src/libhatchet/viewpages/ArtistViewPage.ui" line="50"/>
         <source>Top Albums</source>
         <translation>Популярные альбомы</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/ArtistViewPage.ui" line="110"/>
+        <location filename="../src/libhatchet/viewpages/ArtistViewPage.ui" line="110"/>
         <source>Top Hits</source>
         <translation>Хиты</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/ArtistViewPage.ui" line="76"/>
-        <location filename="../src/libtomahawk/viewpages/ArtistViewPage.ui" line="136"/>
+        <location filename="../src/libhatchet/viewpages/ArtistViewPage.ui" line="76"/>
+        <location filename="../src/libhatchet/viewpages/ArtistViewPage.ui" line="136"/>
         <source>Show More</source>
         <translation>Показать больше</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/ArtistViewPage.ui" line="173"/>
-        <location filename="../src/libtomahawk/viewpages/ArtistViewPage.cpp" line="147"/>
+        <location filename="../src/libhatchet/viewpages/ArtistViewPage.ui" line="173"/>
+        <location filename="../src/libhatchet/viewpages/ArtistViewPage.cpp" line="147"/>
         <source>Biography</source>
         <translation>Биография</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/ArtistViewPage.ui" line="267"/>
-        <location filename="../src/libtomahawk/viewpages/ArtistViewPage.cpp" line="148"/>
+        <location filename="../src/libhatchet/viewpages/ArtistViewPage.ui" line="267"/>
+        <location filename="../src/libhatchet/viewpages/ArtistViewPage.cpp" line="148"/>
         <source>Related Artists</source>
         <translation>Похожие исполнители</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/ArtistViewPage.cpp" line="94"/>
+        <location filename="../src/libhatchet/viewpages/ArtistViewPage.cpp" line="94"/>
         <source>Sorry, we could not find any albums for this artist!</source>
         <translation>К сожалению, мы не смогли найти никаких альбомов этого исполнителя!</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/ArtistViewPage.cpp" line="73"/>
+        <location filename="../src/libhatchet/viewpages/ArtistViewPage.cpp" line="73"/>
         <source>Sorry, we could not find any related artists!</source>
         <translation>К сожалению, мы не смогли найти никаких исполнители!</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/ArtistViewPage.cpp" line="115"/>
+        <location filename="../src/libhatchet/viewpages/ArtistViewPage.cpp" line="115"/>
         <source>Sorry, we could not find any top hits for this artist!</source>
         <translation>К сожалению, мы не смогли найти никаких хитов этого исполнителя!</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/ArtistViewPage.cpp" line="146"/>
+        <location filename="../src/libhatchet/viewpages/ArtistViewPage.cpp" line="146"/>
         <source>Music</source>
         <translation>Музыка</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/ArtistViewPage.cpp" line="185"/>
+        <location filename="../src/libhatchet/viewpages/ArtistViewPage.cpp" line="185"/>
         <source>Songs</source>
         <translation>Песни</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/ArtistViewPage.cpp" line="201"/>
+        <location filename="../src/libhatchet/viewpages/ArtistViewPage.cpp" line="201"/>
         <source>Albums</source>
         <translation>Альбомы</translation>
     </message>
@@ -379,29 +379,29 @@ connect and stream from you?</source>
 <context>
     <name>AudioControls</name>
     <message>
-        <location filename="../src/tomahawk/AudioControls.cpp" line="109"/>
-        <location filename="../src/tomahawk/AudioControls.cpp" line="341"/>
+        <location filename="../src/hatchet/AudioControls.cpp" line="109"/>
+        <location filename="../src/hatchet/AudioControls.cpp" line="341"/>
         <source>Shuffle</source>
         <translation>В случайном порядке</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/AudioControls.cpp" line="110"/>
-        <location filename="../src/tomahawk/AudioControls.cpp" line="342"/>
+        <location filename="../src/hatchet/AudioControls.cpp" line="110"/>
+        <location filename="../src/hatchet/AudioControls.cpp" line="342"/>
         <source>Repeat</source>
         <translation>Повторять</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/AudioControls.cpp" line="339"/>
+        <location filename="../src/hatchet/AudioControls.cpp" line="339"/>
         <source>Time Elapsed</source>
         <translation>Прошедшее время</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/AudioControls.cpp" line="340"/>
+        <location filename="../src/hatchet/AudioControls.cpp" line="340"/>
         <source>Time Remaining</source>
         <translation>Оставшееся время</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/AudioControls.cpp" line="345"/>
+        <location filename="../src/hatchet/AudioControls.cpp" line="345"/>
         <source>Playing from %1</source>
         <translation>Воспроизводит из %1</translation>
     </message>
@@ -409,22 +409,22 @@ connect and stream from you?</source>
 <context>
     <name>AudioEngine</name>
     <message>
-        <location filename="../src/libtomahawk/audio/AudioEngine.cpp" line="912"/>
+        <location filename="../src/libhatchet/audio/AudioEngine.cpp" line="912"/>
         <source>Sorry, %applicationName couldn&apos;t find the track &apos;%1&apos; by %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/audio/AudioEngine.cpp" line="936"/>
+        <location filename="../src/libhatchet/audio/AudioEngine.cpp" line="936"/>
         <source>Sorry, %applicationName couldn&apos;t find the artist &apos;%1&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/audio/AudioEngine.cpp" line="962"/>
+        <location filename="../src/libhatchet/audio/AudioEngine.cpp" line="962"/>
         <source>Sorry, %applicationName couldn&apos;t find the album &apos;%1&apos; by %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/audio/AudioEngine.cpp" line="999"/>
+        <location filename="../src/libhatchet/audio/AudioEngine.cpp" line="999"/>
         <source>Sorry, couldn&apos;t find any playable tracks</source>
         <translation>К сожалению, не удалось найти воспроизводимых треков</translation>
     </message>
@@ -432,7 +432,7 @@ connect and stream from you?</source>
 <context>
     <name>CaptionLabel</name>
     <message>
-        <location filename="../src/libtomahawk/widgets/CaptionLabel.cpp" line="71"/>
+        <location filename="../src/libhatchet/widgets/CaptionLabel.cpp" line="71"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
@@ -440,24 +440,24 @@ connect and stream from you?</source>
 <context>
     <name>CategoryAddItem</name>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/CategoryItems.cpp" line="65"/>
+        <location filename="../src/hatchet/sourcetree/items/CategoryItems.cpp" line="65"/>
         <source>Create new Playlist</source>
         <translation>Создать новый плей-лист</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/CategoryItems.cpp" line="68"/>
+        <location filename="../src/hatchet/sourcetree/items/CategoryItems.cpp" line="68"/>
         <source>Create new Station</source>
         <translation>Создать новую станцию</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/CategoryItems.cpp" line="186"/>
-        <location filename="../src/tomahawk/sourcetree/items/CategoryItems.cpp" line="295"/>
+        <location filename="../src/hatchet/sourcetree/items/CategoryItems.cpp" line="186"/>
+        <location filename="../src/hatchet/sourcetree/items/CategoryItems.cpp" line="295"/>
         <source>New Station</source>
         <translation>Новая станция</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/CategoryItems.cpp" line="186"/>
-        <location filename="../src/tomahawk/sourcetree/items/CategoryItems.cpp" line="295"/>
+        <location filename="../src/hatchet/sourcetree/items/CategoryItems.cpp" line="186"/>
+        <location filename="../src/hatchet/sourcetree/items/CategoryItems.cpp" line="295"/>
         <source>%1 Station</source>
         <translation>%1 станция</translation>
     </message>
@@ -465,12 +465,12 @@ connect and stream from you?</source>
 <context>
     <name>CategoryItem</name>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/CategoryItems.cpp" line="391"/>
+        <location filename="../src/hatchet/sourcetree/items/CategoryItems.cpp" line="391"/>
         <source>Playlists</source>
         <translation>Плей-листы</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/CategoryItems.cpp" line="393"/>
+        <location filename="../src/hatchet/sourcetree/items/CategoryItems.cpp" line="393"/>
         <source>Stations</source>
         <translation>Станции</translation>
     </message>
@@ -478,7 +478,7 @@ connect and stream from you?</source>
 <context>
     <name>ClearButton</name>
     <message>
-        <location filename="../src/libtomahawk/widgets/searchlineedit/ClearButton.cpp" line="38"/>
+        <location filename="../src/libhatchet/widgets/searchlineedit/ClearButton.cpp" line="38"/>
         <source>Clear</source>
         <translation>Очистить</translation>
     </message>
@@ -486,7 +486,7 @@ connect and stream from you?</source>
 <context>
     <name>CollectionItem</name>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/CollectionItem.cpp" line="38"/>
+        <location filename="../src/hatchet/sourcetree/items/CollectionItem.cpp" line="38"/>
         <source>Collection</source>
         <translation>Коллекция</translation>
     </message>
@@ -494,37 +494,37 @@ connect and stream from you?</source>
 <context>
     <name>CollectionViewPage</name>
     <message>
-        <location filename="../src/libtomahawk/viewpages/CollectionViewPage.cpp" line="83"/>
+        <location filename="../src/libhatchet/viewpages/CollectionViewPage.cpp" line="83"/>
         <source>Sorry, there are no albums in this collection!</source>
         <translation>К сожалению, в этой коллекции нет ни одного альбома!</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/CollectionViewPage.cpp" line="95"/>
+        <location filename="../src/libhatchet/viewpages/CollectionViewPage.cpp" line="95"/>
         <source>Artists</source>
         <translation>Исполнители</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/CollectionViewPage.cpp" line="96"/>
+        <location filename="../src/libhatchet/viewpages/CollectionViewPage.cpp" line="96"/>
         <source>Albums</source>
         <translation>Альбомы</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/CollectionViewPage.cpp" line="97"/>
+        <location filename="../src/libhatchet/viewpages/CollectionViewPage.cpp" line="97"/>
         <source>Songs</source>
         <translation>Песни</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/CollectionViewPage.cpp" line="125"/>
+        <location filename="../src/libhatchet/viewpages/CollectionViewPage.cpp" line="125"/>
         <source>Download All</source>
         <translation>Скачать все</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/CollectionViewPage.cpp" line="430"/>
+        <location filename="../src/libhatchet/viewpages/CollectionViewPage.cpp" line="430"/>
         <source>After you have scanned your music collection you will find your tracks right here.</source>
         <translation>После того как вы отсканируете вашу музыкальную коллекцию, вы найдете ваши треки прямо здесь.</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/CollectionViewPage.cpp" line="433"/>
+        <location filename="../src/libhatchet/viewpages/CollectionViewPage.cpp" line="433"/>
         <source>This collection is empty.</source>
         <translation>Эта коллекция пустая.</translation>
     </message>
@@ -532,7 +532,7 @@ connect and stream from you?</source>
 <context>
     <name>ColumnItemDelegate</name>
     <message>
-        <location filename="../src/libtomahawk/playlist/ColumnItemDelegate.cpp" line="191"/>
+        <location filename="../src/libhatchet/playlist/ColumnItemDelegate.cpp" line="191"/>
         <source>Unknown</source>
         <translation>Неизвестный</translation>
     </message>
@@ -540,7 +540,7 @@ connect and stream from you?</source>
 <context>
     <name>ColumnView</name>
     <message>
-        <location filename="../src/libtomahawk/playlist/ColumnView.cpp" line="284"/>
+        <location filename="../src/libhatchet/playlist/ColumnView.cpp" line="284"/>
         <source>Sorry, your filter &apos;%1&apos; did not match any results.</source>
         <translation>К сожалению, фильтр &apos;%1&apos; не дал результатов.</translation>
     </message>
@@ -548,32 +548,32 @@ connect and stream from you?</source>
 <context>
     <name>ColumnViewPreviewWidget</name>
     <message>
-        <location filename="../src/libtomahawk/playlist/ColumnViewPreviewWidget.cpp" line="111"/>
+        <location filename="../src/libhatchet/playlist/ColumnViewPreviewWidget.cpp" line="111"/>
         <source>Composer:</source>
         <translation>Композитор:</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/ColumnViewPreviewWidget.cpp" line="118"/>
+        <location filename="../src/libhatchet/playlist/ColumnViewPreviewWidget.cpp" line="118"/>
         <source>Duration:</source>
         <translation>Продолжительность:</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/ColumnViewPreviewWidget.cpp" line="125"/>
+        <location filename="../src/libhatchet/playlist/ColumnViewPreviewWidget.cpp" line="125"/>
         <source>Bitrate:</source>
         <translation>Битрейт:</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/ColumnViewPreviewWidget.cpp" line="132"/>
+        <location filename="../src/libhatchet/playlist/ColumnViewPreviewWidget.cpp" line="132"/>
         <source>Year:</source>
         <translation>Год:</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/ColumnViewPreviewWidget.cpp" line="139"/>
+        <location filename="../src/libhatchet/playlist/ColumnViewPreviewWidget.cpp" line="139"/>
         <source>Age:</source>
         <translation>Возраст:</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/ColumnViewPreviewWidget.cpp" line="217"/>
+        <location filename="../src/libhatchet/playlist/ColumnViewPreviewWidget.cpp" line="217"/>
         <source>%1 kbps</source>
         <translation>%1 кбит/с</translation>
     </message>
@@ -581,17 +581,17 @@ connect and stream from you?</source>
 <context>
     <name>ContextView</name>
     <message>
-        <location filename="../src/libtomahawk/playlist/ContextView.cpp" line="143"/>
+        <location filename="../src/libhatchet/playlist/ContextView.cpp" line="143"/>
         <source>Playlist Details</source>
         <translation>Подробности списка воспроизведения</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/ContextView.cpp" line="277"/>
+        <location filename="../src/libhatchet/playlist/ContextView.cpp" line="277"/>
         <source>This playlist is currently empty.</source>
         <translation>Этот плей-лист сейчас пуст.</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/ContextView.cpp" line="279"/>
+        <location filename="../src/libhatchet/playlist/ContextView.cpp" line="279"/>
         <source>This playlist is currently empty. Add some tracks to it and enjoy the music!</source>
         <translation>Этот плей-лист сейчас пуст. Добавьте в него треки и наслаждайтесь музыкой!</translation>
     </message>
@@ -599,33 +599,33 @@ connect and stream from you?</source>
 <context>
     <name>DelegateConfigWrapper</name>
     <message>
-        <location filename="../src/libtomahawk/accounts/DelegateConfigWrapper.cpp" line="39"/>
+        <location filename="../src/libhatchet/accounts/DelegateConfigWrapper.cpp" line="39"/>
         <source>%1 Config</source>
         <comment>Window title for account config windows</comment>
         <translation>%1 Конфиг</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/DelegateConfigWrapper.cpp" line="60"/>
+        <location filename="../src/libhatchet/accounts/DelegateConfigWrapper.cpp" line="60"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/DelegateConfigWrapper.cpp" line="92"/>
+        <location filename="../src/libhatchet/accounts/DelegateConfigWrapper.cpp" line="92"/>
         <source>Delete Account</source>
         <translation>Удалить аккаунт</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/DelegateConfigWrapper.cpp" line="121"/>
+        <location filename="../src/libhatchet/accounts/DelegateConfigWrapper.cpp" line="121"/>
         <source>Config Error</source>
         <translation>Неверная конфигурация</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/DelegateConfigWrapper.cpp" line="177"/>
+        <location filename="../src/libhatchet/accounts/DelegateConfigWrapper.cpp" line="177"/>
         <source>About this Account</source>
         <translation>Об этом аккаунте</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/DelegateConfigWrapper.cpp" line="230"/>
+        <location filename="../src/libhatchet/accounts/DelegateConfigWrapper.cpp" line="230"/>
         <source>Your config is invalid.</source>
         <translation>Ваш конфиг неверный.</translation>
     </message>
@@ -633,17 +633,17 @@ connect and stream from you?</source>
 <context>
     <name>DiagnosticsDialog</name>
     <message>
-        <location filename="../src/tomahawk/dialogs/DiagnosticsDialog.ui" line="20"/>
-        <source>Tomahawk Diagnostics</source>
+        <location filename="../src/hatchet/dialogs/DiagnosticsDialog.ui" line="20"/>
+        <source>Hatchet Diagnostics</source>
         <translation>Диагностика</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/DiagnosticsDialog.ui" line="42"/>
+        <location filename="../src/hatchet/dialogs/DiagnosticsDialog.ui" line="42"/>
         <source>&amp;Copy to Clipboard</source>
         <translation>&amp;Скопировать в буфер обмена</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/DiagnosticsDialog.ui" line="49"/>
+        <location filename="../src/hatchet/dialogs/DiagnosticsDialog.ui" line="49"/>
         <source>Open &amp;Log-file</source>
         <translation>Открыть &amp;log файл</translation>
     </message>
@@ -651,7 +651,7 @@ connect and stream from you?</source>
 <context>
     <name>DownloadManager</name>
     <message>
-        <location filename="../src/libtomahawk/DownloadManager.cpp" line="286"/>
+        <location filename="../src/libhatchet/DownloadManager.cpp" line="286"/>
         <source>%applicationName finished downloading %1 by %2.</source>
         <translation type="unfinished"/>
     </message>
@@ -659,97 +659,97 @@ connect and stream from you?</source>
 <context>
     <name>EchonestSteerer</name>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestSteerer.cpp" line="63"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestSteerer.cpp" line="63"/>
         <source>Steer this station:</source>
         <translation>Управлять этой станцией:</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestSteerer.cpp" line="86"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestSteerer.cpp" line="86"/>
         <source>Much less</source>
         <translation>Намного менее</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestSteerer.cpp" line="87"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestSteerer.cpp" line="87"/>
         <source>Less</source>
         <translation>Менее</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestSteerer.cpp" line="88"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestSteerer.cpp" line="88"/>
         <source>A bit less</source>
         <translation>Немного менее</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestSteerer.cpp" line="89"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestSteerer.cpp" line="89"/>
         <source>Keep at current</source>
         <translation>Оставить на текущей</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestSteerer.cpp" line="90"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestSteerer.cpp" line="90"/>
         <source>A bit more</source>
         <translation>Немного более</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestSteerer.cpp" line="91"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestSteerer.cpp" line="91"/>
         <source>More</source>
         <translation>Более</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestSteerer.cpp" line="92"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestSteerer.cpp" line="92"/>
         <source>Much more</source>
         <translation>Намного более</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestSteerer.cpp" line="95"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestSteerer.cpp" line="95"/>
         <source>Tempo</source>
         <translation>Ритмичная</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestSteerer.cpp" line="96"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestSteerer.cpp" line="96"/>
         <source>Loudness</source>
         <translation>Громкая</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestSteerer.cpp" line="97"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestSteerer.cpp" line="97"/>
         <source>Danceability</source>
         <translation>Танцевальная</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestSteerer.cpp" line="98"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestSteerer.cpp" line="98"/>
         <source>Energy</source>
         <translation>Энергичная</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestSteerer.cpp" line="99"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestSteerer.cpp" line="99"/>
         <source>Song Hotttnesss</source>
         <translation>Горячие песни</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestSteerer.cpp" line="100"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestSteerer.cpp" line="100"/>
         <source>Artist Hotttnesss</source>
         <translation>Горячие исполнители</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestSteerer.cpp" line="101"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestSteerer.cpp" line="101"/>
         <source>Artist Familiarity</source>
         <translation>Схожие исполнители</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestSteerer.cpp" line="102"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestSteerer.cpp" line="102"/>
         <source>By Description</source>
         <translation>По описанию</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestSteerer.cpp" line="110"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestSteerer.cpp" line="110"/>
         <source>Enter a description</source>
         <translation>Введите описание</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestSteerer.cpp" line="117"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestSteerer.cpp" line="117"/>
         <source>Apply steering command</source>
         <translation>Применить команду управления</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestSteerer.cpp" line="123"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestSteerer.cpp" line="123"/>
         <source>Reset all steering commands</source>
         <translation>Сбросить все команды управления</translation>
     </message>
@@ -757,7 +757,7 @@ connect and stream from you?</source>
 <context>
     <name>FilterHeader</name>
     <message>
-        <location filename="../src/libtomahawk/widgets/FilterHeader.cpp" line="29"/>
+        <location filename="../src/libhatchet/widgets/FilterHeader.cpp" line="29"/>
         <source>Filter...</source>
         <translation>Фильтр...</translation>
     </message>
@@ -765,17 +765,17 @@ connect and stream from you?</source>
 <context>
     <name>GlobalActionManager</name>
     <message>
-        <location filename="../src/libtomahawk/GlobalActionManager.cpp" line="127"/>
+        <location filename="../src/libhatchet/GlobalActionManager.cpp" line="127"/>
         <source>Resolver installation from file %1 failed.</source>
         <translation>Установка преобразователя из файла %1 не удалось.</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/GlobalActionManager.cpp" line="135"/>
+        <location filename="../src/libhatchet/GlobalActionManager.cpp" line="135"/>
         <source>Install plug-in</source>
         <translation>Установить плагин</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/GlobalActionManager.cpp" line="136"/>
+        <location filename="../src/libhatchet/GlobalActionManager.cpp" line="136"/>
         <source>&lt;b&gt;%1&lt;/b&gt; %2&lt;br/&gt;by &lt;b&gt;%3&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;You are attempting to install a %applicationName plug-in from an unknown source. Plug-ins from untrusted sources may put your data at risk.&lt;br/&gt;Do you want to install this plug-in?</source>
         <translation type="unfinished"/>
     </message>
@@ -827,7 +827,7 @@ Password (OTP)</source>
 <context>
     <name>HeaderWidget</name>
     <message>
-        <location filename="../src/libtomahawk/widgets/HeaderWidget.ui" line="73"/>
+        <location filename="../src/libhatchet/widgets/HeaderWidget.ui" line="73"/>
         <source>Refresh</source>
         <translation>Обновить</translation>
     </message>
@@ -835,22 +835,22 @@ Password (OTP)</source>
 <context>
     <name>HistoryWidget</name>
     <message>
-        <location filename="../src/libtomahawk/widgets/HistoryWidget.cpp" line="46"/>
+        <location filename="../src/libhatchet/widgets/HistoryWidget.cpp" line="46"/>
         <source>Recently Played Tracks</source>
         <translation>Недавно воспроизводимые композиции</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/widgets/HistoryWidget.cpp" line="49"/>
+        <location filename="../src/libhatchet/widgets/HistoryWidget.cpp" line="49"/>
         <source>Your recently played tracks</source>
         <translation>Ваши недавно воспроизводимые композиции</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/widgets/HistoryWidget.cpp" line="51"/>
+        <location filename="../src/libhatchet/widgets/HistoryWidget.cpp" line="51"/>
         <source>%1&apos;s recently played tracks</source>
         <translation>%1 недавно воспроизводимых композиций</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/widgets/HistoryWidget.cpp" line="57"/>
+        <location filename="../src/libhatchet/widgets/HistoryWidget.cpp" line="57"/>
         <source>Sorry, we could not find any recent plays!</source>
         <translation>К сожалению, мы не смогли найти никаких недавних воспроизведений!</translation>
     </message>
@@ -858,27 +858,27 @@ Password (OTP)</source>
 <context>
     <name>HostDialog</name>
     <message>
-        <location filename="../src/tomahawk/dialogs/HostDialog.ui" line="17"/>
+        <location filename="../src/hatchet/dialogs/HostDialog.ui" line="17"/>
         <source>Host Settings</source>
         <translation>Настройки хоста</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/HostDialog.ui" line="35"/>
+        <location filename="../src/hatchet/dialogs/HostDialog.ui" line="35"/>
         <source>Configure your external IP address or host name here. Make sure to manually forward the selected port to this host on your router.</source>
         <translation>Настройте здесь внешний IP-адрес или имя хоста. Укажите вручную выбранный порт этого хоста на маршрутизаторе.</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/HostDialog.ui" line="53"/>
+        <location filename="../src/hatchet/dialogs/HostDialog.ui" line="53"/>
         <source>Static Host Name:</source>
         <translation>Статическое имя хоста:</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/HostDialog.ui" line="69"/>
+        <location filename="../src/hatchet/dialogs/HostDialog.ui" line="69"/>
         <source>Static Port:</source>
         <translation>Статический порт:</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/HostDialog.ui" line="106"/>
+        <location filename="../src/hatchet/dialogs/HostDialog.ui" line="106"/>
         <source>Automatically detect external IP address</source>
         <translation>Автоматическое определение внешнего IP-адреса</translation>
     </message>
@@ -886,7 +886,7 @@ Password (OTP)</source>
 <context>
     <name>InboxItem</name>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/InboxItem.cpp" line="35"/>
+        <location filename="../src/hatchet/sourcetree/items/InboxItem.cpp" line="35"/>
         <source>Inbox</source>
         <translation>Входящие</translation>
     </message>
@@ -894,12 +894,12 @@ Password (OTP)</source>
 <context>
     <name>InboxJobItem</name>
     <message>
-        <location filename="../src/libtomahawk/jobview/InboxJobItem.cpp" line="67"/>
+        <location filename="../src/libhatchet/jobview/InboxJobItem.cpp" line="67"/>
         <source>Sent %1 by %2 to %3.</source>
         <translation>Отправил %1 при помощи %2 %3.</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/jobview/InboxJobItem.cpp" line="72"/>
+        <location filename="../src/libhatchet/jobview/InboxJobItem.cpp" line="72"/>
         <source>%1 sent you %2 by %3.</source>
         <translation>%1 отправил вам %2 при помощи %3</translation>
     </message>
@@ -907,12 +907,12 @@ Password (OTP)</source>
 <context>
     <name>InboxPage</name>
     <message>
-        <location filename="../src/libtomahawk/playlist/InboxView.cpp" line="84"/>
+        <location filename="../src/libhatchet/playlist/InboxView.cpp" line="84"/>
         <source>Inbox Details</source>
         <translation>Сведения о входящих</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/InboxView.cpp" line="93"/>
+        <location filename="../src/libhatchet/playlist/InboxView.cpp" line="93"/>
         <source>Your friends have not shared any recommendations with you yet. Connect with them and share your musical gems!</source>
         <translation>Ваши друзья еще не разделяют с вами никаких рекомендаций. Свяжитесь с ними и поделитесь своими музыкальными жемчужинами!</translation>
     </message>
@@ -920,7 +920,7 @@ Password (OTP)</source>
 <context>
     <name>IndexingJobItem</name>
     <message>
-        <location filename="../src/libtomahawk/jobview/IndexingJobItem.cpp" line="33"/>
+        <location filename="../src/libhatchet/jobview/IndexingJobItem.cpp" line="33"/>
         <source>Indexing Music Library</source>
         <translation>Индексация музыкальной библиотеки</translation>
     </message>
@@ -928,32 +928,32 @@ Password (OTP)</source>
 <context>
     <name>LastFmConfig</name>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmConfig.ui" line="38"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmConfig.ui" line="38"/>
         <source>Scrobble tracks to Last.fm</source>
         <translation>Скроблинг треков Last.fm</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmConfig.ui" line="47"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmConfig.ui" line="47"/>
         <source>Username:</source>
         <translation>Имя пользователя:</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmConfig.ui" line="57"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmConfig.ui" line="57"/>
         <source>Password:</source>
         <translation>Пароль:</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmConfig.ui" line="73"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmConfig.ui" line="73"/>
         <source>Test Login</source>
         <translation>Проверить</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmConfig.ui" line="80"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmConfig.ui" line="80"/>
         <source>Import Playback History</source>
         <translation>Импортировать историю воспроизведений</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmConfig.ui" line="87"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmConfig.ui" line="87"/>
         <source>Synchronize Loved Tracks</source>
         <translation>Синхронизировать любимые песни</translation>
     </message>
@@ -961,7 +961,7 @@ Password (OTP)</source>
 <context>
     <name>LatchedStatusItem</name>
     <message>
-        <location filename="../src/libtomahawk/jobview/LatchedStatusItem.cpp" line="33"/>
+        <location filename="../src/libhatchet/jobview/LatchedStatusItem.cpp" line="33"/>
         <source>%1 is listening along with you!</source>
         <translation>%1 слушает вместе с вами!</translation>
     </message>
@@ -969,50 +969,50 @@ Password (OTP)</source>
 <context>
     <name>LoadPlaylist</name>
     <message>
-        <location filename="../src/tomahawk/dialogs/LoadPlaylistDialog.ui" line="14"/>
+        <location filename="../src/hatchet/dialogs/LoadPlaylistDialog.ui" line="14"/>
         <source>Load Playlist</source>
         <translation>Загрузить плей-лист</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/LoadPlaylistDialog.ui" line="20"/>
+        <location filename="../src/hatchet/dialogs/LoadPlaylistDialog.ui" line="20"/>
         <source>Enter the URL of the hosted playlist (e.g. .xspf format) or click the button to select a local M3U of XSPF playlist to import.</source>
         <translation>Введите адрес размещенного список воспроизведения (например, формата .xspf), или нажмите кнопку, чтобы выбрать для импорта локальный список воспроизведения M3U или XSPF.</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/LoadPlaylistDialog.ui" line="35"/>
+        <location filename="../src/hatchet/dialogs/LoadPlaylistDialog.ui" line="35"/>
         <source>Playlist URL</source>
         <translation>Адрес плей-листа (URI)</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/LoadPlaylistDialog.ui" line="42"/>
+        <location filename="../src/hatchet/dialogs/LoadPlaylistDialog.ui" line="42"/>
         <source>Enter URL...</source>
         <translation>Введите ссылку на плейлист (URI)...</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/LoadPlaylistDialog.ui" line="55"/>
+        <location filename="../src/hatchet/dialogs/LoadPlaylistDialog.ui" line="55"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/LoadPlaylistDialog.ui" line="64"/>
+        <location filename="../src/hatchet/dialogs/LoadPlaylistDialog.ui" line="64"/>
         <source>Automatically Update (upon changes to hosted playlist)</source>
         <translation>Автоматическое обновление (при изменениях размещения списока воспроизведения)</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/LoadPlaylistDialog.ui" line="79"/>
-        <source>To import a playlist from Spotify, Rdio, Beats, etc. - simply drag the link into Tomahawk.</source>
-        <translation>Чтобы импортировать список воспроизведения из Spotify, Rdio, Beats и т.д. - просто перетащите ссылку в Tomahawk.</translation>
+        <location filename="../src/hatchet/dialogs/LoadPlaylistDialog.ui" line="79"/>
+        <source>To import a playlist from Spotify, Rdio, Beats, etc. - simply drag the link into Hatchet.</source>
+        <translation>Чтобы импортировать список воспроизведения из Spotify, Rdio, Beats и т.д. - просто перетащите ссылку в Hatchet.</translation>
     </message>
 </context>
 <context>
     <name>LoadPlaylistDialog</name>
     <message>
-        <location filename="../src/tomahawk/dialogs/LoadPlaylistDialog.cpp" line="56"/>
+        <location filename="../src/hatchet/dialogs/LoadPlaylistDialog.cpp" line="56"/>
         <source>Load Playlist</source>
         <translation>Загрузить плей-лист</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/LoadPlaylistDialog.cpp" line="56"/>
+        <location filename="../src/hatchet/dialogs/LoadPlaylistDialog.cpp" line="56"/>
         <source>Playlists (*.xspf *.m3u *.jspf)</source>
         <translation>Плейлисты (*.xspf *.m3u *.jspf)</translation>
     </message>
@@ -1020,32 +1020,32 @@ Password (OTP)</source>
 <context>
     <name>LovedTracksItem</name>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/LovedTracksItem.cpp" line="58"/>
+        <location filename="../src/hatchet/sourcetree/items/LovedTracksItem.cpp" line="58"/>
         <source>Top Loved Tracks</source>
         <translation>Топ любимых песен</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/LovedTracksItem.cpp" line="60"/>
+        <location filename="../src/hatchet/sourcetree/items/LovedTracksItem.cpp" line="60"/>
         <source>Favorites</source>
         <translation>Избранное</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/LovedTracksItem.cpp" line="86"/>
+        <location filename="../src/hatchet/sourcetree/items/LovedTracksItem.cpp" line="86"/>
         <source>Sorry, we could not find any of your Favorites!</source>
         <translation>К сожалению, мы не смогли найти никакого избранного!</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/LovedTracksItem.cpp" line="89"/>
+        <location filename="../src/hatchet/sourcetree/items/LovedTracksItem.cpp" line="89"/>
         <source>The most loved tracks from all your friends</source>
         <translation>Самые любимые треки от всех ваших друзей</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/LovedTracksItem.cpp" line="95"/>
+        <location filename="../src/hatchet/sourcetree/items/LovedTracksItem.cpp" line="95"/>
         <source>All of your loved tracks</source>
         <translation>Все ваши любимые песни</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/LovedTracksItem.cpp" line="97"/>
+        <location filename="../src/hatchet/sourcetree/items/LovedTracksItem.cpp" line="97"/>
         <source>All of %1&apos;s loved tracks</source>
         <translation>Все любимые песни %1 </translation>
     </message>
@@ -1053,119 +1053,119 @@ Password (OTP)</source>
 <context>
     <name>MetadataEditor</name>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.ui" line="30"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.ui" line="30"/>
         <source>Tags</source>
         <translation>Теги</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.ui" line="39"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.ui" line="39"/>
         <source>Title:</source>
         <translation>Название:</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.ui" line="49"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.ui" line="49"/>
         <source>Title...</source>
         <translation>Название...</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.ui" line="56"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.ui" line="56"/>
         <source>Artist:</source>
         <translation>Исполнитель:</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.ui" line="66"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.ui" line="66"/>
         <source>Artist...</source>
         <translation>Исполнитель...</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.ui" line="73"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.ui" line="73"/>
         <source>Album:</source>
         <translation>Альбом:</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.ui" line="83"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.ui" line="83"/>
         <source>Album...</source>
         <translation>Альбом...</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.ui" line="90"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.ui" line="90"/>
         <source>Track Number:</source>
         <translation>Номер дорожки:</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.ui" line="119"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.ui" line="119"/>
         <source>Duration:</source>
         <translation>Продолжительность:</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.ui" line="129"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.ui" line="129"/>
         <source>00.00</source>
         <translation>00.00</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.ui" line="136"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.ui" line="136"/>
         <source>Year:</source>
         <translation>Год:</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.ui" line="162"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.ui" line="162"/>
         <source>Bitrate:</source>
         <translation>Битрей:</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.ui" line="183"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.ui" line="183"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.ui" line="189"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.ui" line="189"/>
         <source>File Name:</source>
         <translation>Имя файла:</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.ui" line="199"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.ui" line="199"/>
         <source>File Name...</source>
         <translation>Имя файла...</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.ui" line="206"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.ui" line="206"/>
         <source>File Size...</source>
         <translation>Размер Файла...</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.ui" line="212"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.ui" line="212"/>
         <source>File size...</source>
         <translation>Размер файла...</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.ui" line="219"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.ui" line="219"/>
         <source>File Size:</source>
         <translation>Размер Файла:</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.ui" line="235"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.ui" line="235"/>
         <source>Back</source>
         <translation>Назад</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.ui" line="245"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.ui" line="245"/>
         <source>Forward</source>
         <translation>Вперед</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.cpp" line="185"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.cpp" line="185"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.cpp" line="185"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.cpp" line="185"/>
         <source>Could not write tags to file:
 %1</source>
         <translation>Не удалось записать теги в файл:
 %1</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/filemetadata/MetadataEditor.cpp" line="396"/>
+        <location filename="../src/libhatchet/filemetadata/MetadataEditor.cpp" line="396"/>
         <source>Properties</source>
         <translation>Свойства</translation>
     </message>
@@ -1191,113 +1191,113 @@ Password (OTP)</source>
 <context>
     <name>PlayableModel</name>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="50"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="50"/>
         <source>Artist</source>
         <translation>Исполнитель</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="50"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="50"/>
         <source>Title</source>
         <translation>Название</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="50"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="50"/>
         <source>Composer</source>
         <translation>Композитор</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="50"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="50"/>
         <source>Album</source>
         <translation>Альбом</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="50"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="50"/>
         <source>Track</source>
         <translation>Песня</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="50"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="50"/>
         <source>Duration</source>
         <translation>Продолжительность</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="50"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="50"/>
         <source>Download</source>
         <translation>Скачать</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="51"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="51"/>
         <source>Bitrate</source>
         <translation>Битрей</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="51"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="51"/>
         <source>Age</source>
         <translation>Возраст</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="51"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="51"/>
         <source>Year</source>
         <translation>Год</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="51"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="51"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="51"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="51"/>
         <source>Origin</source>
         <translation>Расположение</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="51"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="51"/>
         <source>Accuracy</source>
         <translation>Совпадение</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="896"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="896"/>
         <source>Perfect match</source>
         <translation>Превосходное</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="897"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="897"/>
         <source>Very good match</source>
         <translation>Очень хорошое</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="898"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="898"/>
         <source>Good match</source>
         <translation>Хорошое</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="899"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="899"/>
         <source>Vague match</source>
         <translation>Расплывчатое</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="900"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="900"/>
         <source>Bad match</source>
         <translation>Плохое совпадение</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="901"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="901"/>
         <source>Very bad match</source>
         <translation>Очень плохое совпадение</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="902"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="902"/>
         <source>Not available</source>
         <translation>Недоступно</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="903"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="903"/>
         <source>Searching...</source>
         <translation>Ищу...</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="51"/>
-        <location filename="../src/libtomahawk/playlist/PlayableModel.cpp" line="392"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="51"/>
+        <location filename="../src/libhatchet/playlist/PlayableModel.cpp" line="392"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
@@ -1305,14 +1305,14 @@ Password (OTP)</source>
 <context>
     <name>PlaylistItemDelegate</name>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlaylistItemDelegate.cpp" line="141"/>
-        <location filename="../src/libtomahawk/playlist/PlaylistItemDelegate.cpp" line="278"/>
+        <location filename="../src/libhatchet/playlist/PlaylistItemDelegate.cpp" line="141"/>
+        <location filename="../src/libhatchet/playlist/PlaylistItemDelegate.cpp" line="278"/>
         <source>Download %1</source>
         <translation>Скачать %1</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlaylistItemDelegate.cpp" line="289"/>
-        <location filename="../src/libtomahawk/playlist/PlaylistItemDelegate.cpp" line="304"/>
+        <location filename="../src/libhatchet/playlist/PlaylistItemDelegate.cpp" line="289"/>
+        <location filename="../src/libhatchet/playlist/PlaylistItemDelegate.cpp" line="304"/>
         <source>View in Finder</source>
         <translation>Открыть в поиске</translation>
     </message>
@@ -1320,23 +1320,23 @@ Password (OTP)</source>
 <context>
     <name>PlaylistModel</name>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlaylistModel.cpp" line="144"/>
+        <location filename="../src/libhatchet/playlist/PlaylistModel.cpp" line="144"/>
         <source>A playlist you created %1.</source>
         <translation>Плей-лист, который вы создали %1.</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlaylistModel.cpp" line="149"/>
-        <location filename="../src/libtomahawk/playlist/PlaylistModel.cpp" line="156"/>
+        <location filename="../src/libhatchet/playlist/PlaylistModel.cpp" line="149"/>
+        <location filename="../src/libhatchet/playlist/PlaylistModel.cpp" line="156"/>
         <source>A playlist by %1, created %2.</source>
         <translation>Плей-лист %1, создан %2.</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlaylistModel.cpp" line="205"/>
+        <location filename="../src/libhatchet/playlist/PlaylistModel.cpp" line="205"/>
         <source>All tracks by %1 on album %2</source>
         <translation>Все песни %1 альбома %2</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/PlaylistModel.cpp" line="232"/>
+        <location filename="../src/libhatchet/playlist/PlaylistModel.cpp" line="232"/>
         <source>All tracks by %1</source>
         <translation>Все песни %1</translation>
     </message>
@@ -1344,59 +1344,59 @@ Password (OTP)</source>
 <context>
     <name>ProxyDialog</name>
     <message>
-        <location filename="../src/tomahawk/dialogs/ProxyDialog.ui" line="17"/>
+        <location filename="../src/hatchet/dialogs/ProxyDialog.ui" line="17"/>
         <source>Proxy Settings</source>
         <translation>Настройки прокси</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/ProxyDialog.ui" line="37"/>
+        <location filename="../src/hatchet/dialogs/ProxyDialog.ui" line="37"/>
         <source>Hostname of proxy server</source>
         <translation>Имя хоста прокси сервера</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/ProxyDialog.ui" line="44"/>
+        <location filename="../src/hatchet/dialogs/ProxyDialog.ui" line="44"/>
         <source>Host</source>
         <translation>Хост</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/ProxyDialog.ui" line="51"/>
+        <location filename="../src/hatchet/dialogs/ProxyDialog.ui" line="51"/>
         <source>Port</source>
         <translation>Порт</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/ProxyDialog.ui" line="71"/>
+        <location filename="../src/hatchet/dialogs/ProxyDialog.ui" line="71"/>
         <source>Proxy login</source>
         <translation>Введите логин</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/ProxyDialog.ui" line="78"/>
+        <location filename="../src/hatchet/dialogs/ProxyDialog.ui" line="78"/>
         <source>User</source>
         <translation>Логин</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/ProxyDialog.ui" line="85"/>
+        <location filename="../src/hatchet/dialogs/ProxyDialog.ui" line="85"/>
         <source>Password</source>
         <translation>Пароль</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/ProxyDialog.ui" line="95"/>
+        <location filename="../src/hatchet/dialogs/ProxyDialog.ui" line="95"/>
         <source>Proxy password</source>
         <translation>Введите пароль</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/ProxyDialog.ui" line="102"/>
+        <location filename="../src/hatchet/dialogs/ProxyDialog.ui" line="102"/>
         <source>No Proxy Hosts:
 (Overrides system proxy)</source>
         <translation>Не использовать прокси:
 (переопределение прокси)</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/ProxyDialog.ui" line="110"/>
+        <location filename="../src/hatchet/dialogs/ProxyDialog.ui" line="110"/>
         <source>localhost *.example.com (space separated)</source>
         <translation>localhost *.example.com (разделять пробелами)</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/ProxyDialog.ui" line="127"/>
+        <location filename="../src/hatchet/dialogs/ProxyDialog.ui" line="127"/>
         <source>Use proxy for DNS lookups?</source>
         <translation>Использовать прокси для поиска DNS?</translation>
     </message>
@@ -1404,134 +1404,134 @@ Password (OTP)</source>
 <context>
     <name>QObject</name>
     <message numerus="yes">
-        <location filename="../src/libtomahawk/utils/TomahawkUtils.cpp" line="262"/>
+        <location filename="../src/libhatchet/utils/HatchetUtils.cpp" line="262"/>
         <source>%n year(s) ago</source>
         <translation><numerusform>%n год назад</numerusform><numerusform>%n года назад</numerusform><numerusform>%n лет назад</numerusform><numerusform>%n лет назад</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libtomahawk/utils/TomahawkUtils.cpp" line="264"/>
+        <location filename="../src/libhatchet/utils/HatchetUtils.cpp" line="264"/>
         <source>%n year(s)</source>
         <translation><numerusform>%n год</numerusform><numerusform>%n года</numerusform><numerusform>%n лет</numerusform><numerusform>%n лет</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libtomahawk/utils/TomahawkUtils.cpp" line="270"/>
+        <location filename="../src/libhatchet/utils/HatchetUtils.cpp" line="270"/>
         <source>%n month(s) ago</source>
         <translation><numerusform>%n месяц назад</numerusform><numerusform>%n месяца назад</numerusform><numerusform>%n месяцей назад</numerusform><numerusform>%n месяцей назад</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libtomahawk/utils/TomahawkUtils.cpp" line="272"/>
+        <location filename="../src/libhatchet/utils/HatchetUtils.cpp" line="272"/>
         <source>%n month(s)</source>
         <translation><numerusform>%n месяц</numerusform><numerusform>%n месяца</numerusform><numerusform>%n месяцей</numerusform><numerusform>%n месяцей</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libtomahawk/utils/TomahawkUtils.cpp" line="278"/>
+        <location filename="../src/libhatchet/utils/HatchetUtils.cpp" line="278"/>
         <source>%n week(s) ago</source>
         <translation><numerusform>%n неделю назад</numerusform><numerusform>%n недели назад</numerusform><numerusform>%n недель назад</numerusform><numerusform>%n недель назад</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libtomahawk/utils/TomahawkUtils.cpp" line="280"/>
+        <location filename="../src/libhatchet/utils/HatchetUtils.cpp" line="280"/>
         <source>%n week(s)</source>
         <translation><numerusform>%n неделю</numerusform><numerusform>%n недели</numerusform><numerusform>%n недель</numerusform><numerusform>%n недель</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libtomahawk/utils/TomahawkUtils.cpp" line="286"/>
+        <location filename="../src/libhatchet/utils/HatchetUtils.cpp" line="286"/>
         <source>%n day(s) ago</source>
         <translation><numerusform>%n день назад</numerusform><numerusform>%n дня назад</numerusform><numerusform>%n дней назад</numerusform><numerusform>%n дней назад</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libtomahawk/utils/TomahawkUtils.cpp" line="288"/>
+        <location filename="../src/libhatchet/utils/HatchetUtils.cpp" line="288"/>
         <source>%n day(s)</source>
         <translation><numerusform>%n день</numerusform><numerusform>%n дня</numerusform><numerusform>%n дней</numerusform><numerusform>%n дней</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libtomahawk/utils/TomahawkUtils.cpp" line="294"/>
+        <location filename="../src/libhatchet/utils/HatchetUtils.cpp" line="294"/>
         <source>%n hour(s) ago</source>
         <translation><numerusform>%n час назад</numerusform><numerusform>%n часа назад</numerusform><numerusform>%n часов назад</numerusform><numerusform>%n часов назад</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libtomahawk/utils/TomahawkUtils.cpp" line="296"/>
+        <location filename="../src/libhatchet/utils/HatchetUtils.cpp" line="296"/>
         <source>%n hour(s)</source>
         <translation><numerusform>%n час</numerusform><numerusform>%n часа</numerusform><numerusform>%n часов</numerusform><numerusform>%n часов</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/utils/TomahawkUtils.cpp" line="302"/>
+        <location filename="../src/libhatchet/utils/HatchetUtils.cpp" line="302"/>
         <source>%1 minutes ago</source>
         <translation>%1 минут(ы) назад</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/utils/TomahawkUtils.cpp" line="304"/>
+        <location filename="../src/libhatchet/utils/HatchetUtils.cpp" line="304"/>
         <source>%1 minutes</source>
         <translation>%1 минут(ы)</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/utils/TomahawkUtils.cpp" line="308"/>
+        <location filename="../src/libhatchet/utils/HatchetUtils.cpp" line="308"/>
         <source>just now</source>
         <translation>только что</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/Account.cpp" line="38"/>
+        <location filename="../src/libhatchet/accounts/Account.cpp" line="38"/>
         <source>Friend Finders</source>
         <translation>Среди друзей</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/Account.cpp" line="40"/>
+        <location filename="../src/libhatchet/accounts/Account.cpp" line="40"/>
         <source>Music Finders</source>
         <translation>Среди музыкальных сервисов</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/Account.cpp" line="43"/>
+        <location filename="../src/libhatchet/accounts/Account.cpp" line="43"/>
         <source>Status Updaters</source>
         <translation>Статус обновления</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="550"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="550"/>
         <source>Songs </source>
         <comment>Beginning of a sentence summary</comment>
         <translation>Песни</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="579"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="579"/>
         <source>No configured filters!</source>
         <translation>Фильтры не настроены!</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="593"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="593"/>
         <source> and </source>
         <comment>Inserted between items in a list of two</comment>
         <translation> и </translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="595"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="604"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="608"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="624"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="595"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="604"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="608"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="624"/>
         <source>, </source>
         <comment>Inserted between items in a list</comment>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="597"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="606"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="622"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="629"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="597"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="606"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="622"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="629"/>
         <source>.</source>
         <comment>Inserted when ending a sentence summary</comment>
         <translation>.</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="610"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="610"/>
         <source>, and </source>
         <comment>Inserted between the last two items in a list of more than two</comment>
         <translation>, и </translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="621"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="621"/>
         <source>and </source>
         <comment>Inserted before the last item in a list</comment>
         <translation>и </translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="629"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="629"/>
         <source>and </source>
         <comment>Inserted before the sorting summary in a sentence summary</comment>
         <translation>и </translation>
@@ -1540,12 +1540,12 @@ Password (OTP)</source>
 <context>
     <name>QSQLiteResult</name>
     <message>
-        <location filename="../src/libtomahawk/database/TomahawkSqlQuery.cpp" line="91"/>
+        <location filename="../src/libhatchet/database/HatchetSqlQuery.cpp" line="91"/>
         <source>No query</source>
         <translation>Нет запроса</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/database/TomahawkSqlQuery.cpp" line="92"/>
+        <location filename="../src/libhatchet/database/HatchetSqlQuery.cpp" line="92"/>
         <source>Parameter count mismatch</source>
         <translation>Несовпадение числа экземпляров параметра</translation>
     </message>
@@ -1553,7 +1553,7 @@ Password (OTP)</source>
 <context>
     <name>QueueItem</name>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/QueueItem.cpp" line="39"/>
+        <location filename="../src/hatchet/sourcetree/items/QueueItem.cpp" line="39"/>
         <source>Queue</source>
         <translation>Очередь</translation>
     </message>
@@ -1561,22 +1561,22 @@ Password (OTP)</source>
 <context>
     <name>QueueView</name>
     <message>
-        <location filename="../src/libtomahawk/playlist/QueueView.ui" line="41"/>
+        <location filename="../src/libhatchet/playlist/QueueView.ui" line="41"/>
         <source>Open Queue</source>
         <translation>Показать очередь</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/QueueView.cpp" line="39"/>
+        <location filename="../src/libhatchet/playlist/QueueView.cpp" line="39"/>
         <source>Queue Details</source>
         <translation>Подробности очереди</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/QueueView.cpp" line="49"/>
+        <location filename="../src/libhatchet/playlist/QueueView.cpp" line="49"/>
         <source>Queue</source>
         <translation>Очередь</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/QueueView.cpp" line="53"/>
+        <location filename="../src/libhatchet/playlist/QueueView.cpp" line="53"/>
         <source>The queue is currently empty. Drop something to enqueue it!</source>
         <translation>Очередь пуста. Добавьте что-нибудь в очередь!</translation>
     </message>
@@ -1584,12 +1584,12 @@ Password (OTP)</source>
 <context>
     <name>ResolverConfigDelegate</name>
     <message>
-        <location filename="../src/tomahawk/ResolverConfigDelegate.cpp" line="111"/>
+        <location filename="../src/hatchet/ResolverConfigDelegate.cpp" line="111"/>
         <source>Not found: %1</source>
         <translation>Не найдено: %1</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/ResolverConfigDelegate.cpp" line="114"/>
+        <location filename="../src/hatchet/ResolverConfigDelegate.cpp" line="114"/>
         <source>Failed to load: %1</source>
         <translation>Ошибка при загрузке: %1</translation>
     </message>
@@ -1597,7 +1597,7 @@ Password (OTP)</source>
 <context>
     <name>ScannerStatusItem</name>
     <message>
-        <location filename="../src/libtomahawk/jobview/ScannerStatusItem.cpp" line="55"/>
+        <location filename="../src/libhatchet/jobview/ScannerStatusItem.cpp" line="55"/>
         <source>Scanning Collection</source>
         <translation>Сканирование коллекции</translation>
     </message>
@@ -1605,7 +1605,7 @@ Password (OTP)</source>
 <context>
     <name>ScriptCollectionHeader</name>
     <message>
-        <location filename="../src/libtomahawk/widgets/ScriptCollectionHeader.cpp" line="48"/>
+        <location filename="../src/libhatchet/widgets/ScriptCollectionHeader.cpp" line="48"/>
         <source>Reload Collection</source>
         <translation>Перезагрузить коллекцию</translation>
     </message>
@@ -1613,7 +1613,7 @@ Password (OTP)</source>
 <context>
     <name>SearchLineEdit</name>
     <message>
-        <location filename="../src/libtomahawk/widgets/searchlineedit/SearchLineEdit.cpp" line="58"/>
+        <location filename="../src/libhatchet/widgets/searchlineedit/SearchLineEdit.cpp" line="58"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
@@ -1621,52 +1621,52 @@ Password (OTP)</source>
 <context>
     <name>SearchWidget</name>
     <message>
-        <location filename="../src/libtomahawk/viewpages/SearchViewPage.h" line="54"/>
+        <location filename="../src/libhatchet/viewpages/SearchViewPage.h" line="54"/>
         <source>Search: %1</source>
         <translation>Поиск: %1</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/SearchViewPage.h" line="55"/>
+        <location filename="../src/libhatchet/viewpages/SearchViewPage.h" line="55"/>
         <source>Results for &apos;%1&apos;</source>
         <translation>Результаты для &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/SearchViewPage.ui" line="41"/>
-        <location filename="../src/libtomahawk/viewpages/SearchViewPage.cpp" line="146"/>
+        <location filename="../src/libhatchet/viewpages/SearchViewPage.ui" line="41"/>
+        <location filename="../src/libhatchet/viewpages/SearchViewPage.cpp" line="146"/>
         <source>Songs</source>
         <translation>Песни</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/SearchViewPage.ui" line="67"/>
-        <location filename="../src/libtomahawk/viewpages/SearchViewPage.ui" line="127"/>
-        <location filename="../src/libtomahawk/viewpages/SearchViewPage.ui" line="187"/>
+        <location filename="../src/libhatchet/viewpages/SearchViewPage.ui" line="67"/>
+        <location filename="../src/libhatchet/viewpages/SearchViewPage.ui" line="127"/>
+        <location filename="../src/libhatchet/viewpages/SearchViewPage.ui" line="187"/>
         <source>Show More</source>
         <translation>Показать больше</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/SearchViewPage.ui" line="101"/>
-        <location filename="../src/libtomahawk/viewpages/SearchViewPage.cpp" line="158"/>
+        <location filename="../src/libhatchet/viewpages/SearchViewPage.ui" line="101"/>
+        <location filename="../src/libhatchet/viewpages/SearchViewPage.cpp" line="158"/>
         <source>Artists</source>
         <translation>Исполнители</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/SearchViewPage.ui" line="161"/>
-        <location filename="../src/libtomahawk/viewpages/SearchViewPage.cpp" line="188"/>
+        <location filename="../src/libhatchet/viewpages/SearchViewPage.ui" line="161"/>
+        <location filename="../src/libhatchet/viewpages/SearchViewPage.cpp" line="188"/>
         <source>Albums</source>
         <translation>Альбомы</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/SearchViewPage.cpp" line="65"/>
+        <location filename="../src/libhatchet/viewpages/SearchViewPage.cpp" line="65"/>
         <source>Sorry, we could not find any artists!</source>
         <translation>К сожалению, мы не смогли найти никаких исполнителей!</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/SearchViewPage.cpp" line="86"/>
+        <location filename="../src/libhatchet/viewpages/SearchViewPage.cpp" line="86"/>
         <source>Sorry, we could not find any albums!</source>
         <translation>К сожалению, мы не смогли найти никаких альбомов!</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/SearchViewPage.cpp" line="108"/>
+        <location filename="../src/libhatchet/viewpages/SearchViewPage.cpp" line="108"/>
         <source>Sorry, we could not find any songs!</source>
         <translation>К сожалению, мы не смогли найти никаких песен!</translation>
     </message>
@@ -1674,12 +1674,12 @@ Password (OTP)</source>
 <context>
     <name>Servent</name>
     <message>
-        <location filename="../src/libtomahawk/network/Servent.cpp" line="1003"/>
+        <location filename="../src/libhatchet/network/Servent.cpp" line="1003"/>
         <source>Automatically detecting external IP failed: Could not parse JSON response.</source>
         <translation>Не удалось автоматически определить внешний IP адрес: Не могу разобрать ответ JSON.</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/network/Servent.cpp" line="1016"/>
+        <location filename="../src/libhatchet/network/Servent.cpp" line="1016"/>
         <source>Automatically detecting external IP failed: %1</source>
         <translation>Не удалось автоматически определить внешний IP: %1</translation>
     </message>
@@ -1687,108 +1687,108 @@ Password (OTP)</source>
 <context>
     <name>SettingsDialog</name>
     <message>
-        <location filename="../src/tomahawk/dialogs/SettingsDialog.cpp" line="265"/>
+        <location filename="../src/hatchet/dialogs/SettingsDialog.cpp" line="265"/>
         <source>Collection</source>
         <translation>Коллекция</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/SettingsDialog.cpp" line="268"/>
+        <location filename="../src/hatchet/dialogs/SettingsDialog.cpp" line="268"/>
         <source>Advanced</source>
         <translation>Дополнительно</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/SettingsDialog.cpp" line="165"/>
+        <location filename="../src/hatchet/dialogs/SettingsDialog.cpp" line="165"/>
         <source>All</source>
         <translation>Все</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/SettingsDialog.cpp" line="138"/>
+        <location filename="../src/hatchet/dialogs/SettingsDialog.cpp" line="138"/>
         <source>Install Plug-In...</source>
         <translation>Установить плагин...</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/SettingsDialog.cpp" line="326"/>
-        <source>Some changed settings will not take effect until Tomahawk is restarted</source>
-        <translation>Некоторые измененные настройки не вступят в силу до перезапуска Tomahawk</translation>
+        <location filename="../src/hatchet/dialogs/SettingsDialog.cpp" line="326"/>
+        <source>Some changed settings will not take effect until Hatchet is restarted</source>
+        <translation>Некоторые измененные настройки не вступят в силу до перезапуска Hatchet</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/SettingsDialog.cpp" line="260"/>
-        <source>Configure the accounts and services used by Tomahawk to search and retrieve music, find your friends and update your status.</source>
-        <translation>Настройка аккаунтов и сервисов используемых Tomahawk для поиска и извлечения музыки, найти друзей и обновить статус.</translation>
+        <location filename="../src/hatchet/dialogs/SettingsDialog.cpp" line="260"/>
+        <source>Configure the accounts and services used by Hatchet to search and retrieve music, find your friends and update your status.</source>
+        <translation>Настройка аккаунтов и сервисов используемых Hatchet для поиска и извлечения музыки, найти друзей и обновить статус.</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/SettingsDialog.cpp" line="221"/>
+        <location filename="../src/hatchet/dialogs/SettingsDialog.cpp" line="221"/>
         <source>MP3</source>
         <translation>MP3</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/SettingsDialog.cpp" line="222"/>
+        <location filename="../src/hatchet/dialogs/SettingsDialog.cpp" line="222"/>
         <source>FLAC</source>
         <translation>FLAC</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/SettingsDialog.cpp" line="223"/>
+        <location filename="../src/hatchet/dialogs/SettingsDialog.cpp" line="223"/>
         <source>M4A</source>
         <translation>M4A</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/SettingsDialog.cpp" line="224"/>
+        <location filename="../src/hatchet/dialogs/SettingsDialog.cpp" line="224"/>
         <source>MP4</source>
         <translation>MP4</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/SettingsDialog.cpp" line="260"/>
+        <location filename="../src/hatchet/dialogs/SettingsDialog.cpp" line="260"/>
         <source>Plug-Ins</source>
         <translation>Плагины</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/SettingsDialog.cpp" line="265"/>
-        <source>Manage how Tomahawk finds music on your computer.</source>
-        <translation>Определить где Tomahawk искать музыку на вашем компьютере.</translation>
+        <location filename="../src/hatchet/dialogs/SettingsDialog.cpp" line="265"/>
+        <source>Manage how Hatchet finds music on your computer.</source>
+        <translation>Определить где Hatchet искать музыку на вашем компьютере.</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/SettingsDialog.cpp" line="268"/>
-        <source>Configure Tomahawk&apos;s advanced settings, including network connectivity settings, browser interaction and more.</source>
-        <translation>Настройка дополнительных возможносте Tomahawk в том числе подключения к сети, интеграцию с браузером, другие.</translation>
+        <location filename="../src/hatchet/dialogs/SettingsDialog.cpp" line="268"/>
+        <source>Configure Hatchet&apos;s advanced settings, including network connectivity settings, browser interaction and more.</source>
+        <translation>Настройка дополнительных возможносте Hatchet в том числе подключения к сети, интеграцию с браузером, другие.</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/SettingsDialog.cpp" line="273"/>
+        <location filename="../src/hatchet/dialogs/SettingsDialog.cpp" line="273"/>
         <source>Downloads</source>
         <translation>Загрузки</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/SettingsDialog.cpp" line="273"/>
-        <source>Configure Tomahawk&apos;s integrated download manager.</source>
+        <location filename="../src/hatchet/dialogs/SettingsDialog.cpp" line="273"/>
+        <source>Configure Hatchet&apos;s integrated download manager.</source>
         <translation>Настройка встроенного менеджера загрузок</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/SettingsDialog.cpp" line="443"/>
-        <location filename="../src/tomahawk/dialogs/SettingsDialog.cpp" line="457"/>
+        <location filename="../src/hatchet/dialogs/SettingsDialog.cpp" line="443"/>
+        <location filename="../src/hatchet/dialogs/SettingsDialog.cpp" line="457"/>
         <source>Open Directory</source>
         <translation>Открыть каталог</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/SettingsDialog.cpp" line="551"/>
+        <location filename="../src/hatchet/dialogs/SettingsDialog.cpp" line="551"/>
         <source>Install resolver from file</source>
         <translation>Установить интерпретатор (resolver) из файла</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/SettingsDialog.cpp" line="553"/>
-        <source>Tomahawk Resolvers (*.axe *.js);;All files (*)</source>
-        <translation>Интерпретаторы Tomahawk (*.axe *.js);;All files (*)</translation>
+        <location filename="../src/hatchet/dialogs/SettingsDialog.cpp" line="553"/>
+        <source>Hatchet Resolvers (*.axe *.js);;All files (*)</source>
+        <translation>Интерпретаторы Hatchet (*.axe *.js);;All files (*)</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/SettingsDialog.cpp" line="570"/>
+        <location filename="../src/hatchet/dialogs/SettingsDialog.cpp" line="570"/>
         <source>Delete all Access Control entries?</source>
         <translation>Удаление всех записей контроля доступа?</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/SettingsDialog.cpp" line="571"/>
+        <location filename="../src/hatchet/dialogs/SettingsDialog.cpp" line="571"/>
         <source>Do you really want to delete all Access Control entries? You will be asked for a decision again for each peer that you connect to.</source>
         <translation>Вы действительно хотите удалить все записи Access Control? Вас заново спросят о каждом соединении к которым вы были подключены.</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/SettingsDialog.cpp" line="326"/>
+        <location filename="../src/hatchet/dialogs/SettingsDialog.cpp" line="326"/>
         <source>Information</source>
         <translation>Инофрмация</translation>
     </message>
@@ -1796,7 +1796,7 @@ Password (OTP)</source>
 <context>
     <name>Settings_Accounts</name>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Accounts.ui" line="57"/>
+        <location filename="../src/hatchet/dialogs/Settings_Accounts.ui" line="57"/>
         <source>Filter by Capability:</source>
         <translation>Фильтр:</translation>
     </message>
@@ -1804,72 +1804,72 @@ Password (OTP)</source>
 <context>
     <name>Settings_Advanced</name>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Advanced.ui" line="38"/>
+        <location filename="../src/hatchet/dialogs/Settings_Advanced.ui" line="38"/>
         <source>Remote Peer Connection Method</source>
         <translation>Метод подключения к удаленным пирам</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Advanced.ui" line="44"/>
+        <location filename="../src/hatchet/dialogs/Settings_Advanced.ui" line="44"/>
         <source>Active (your host needs to be directly reachable)</source>
         <translation>Активное (ваше устройство должно быть доступно напрямую)</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Advanced.ui" line="51"/>
+        <location filename="../src/hatchet/dialogs/Settings_Advanced.ui" line="51"/>
         <source>UPnP / Automatic Port Forwarding (recommended)</source>
         <translation>UPnP / Автоматическое перенаправление портов (рекомендуется)</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Advanced.ui" line="69"/>
+        <location filename="../src/hatchet/dialogs/Settings_Advanced.ui" line="69"/>
         <source>Manual Port Forwarding</source>
         <translation>Ручное перенаправление портов</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Advanced.ui" line="82"/>
+        <location filename="../src/hatchet/dialogs/Settings_Advanced.ui" line="82"/>
         <source>Host Settings...</source>
         <translation>Настройки хоста...</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Advanced.ui" line="110"/>
+        <location filename="../src/hatchet/dialogs/Settings_Advanced.ui" line="110"/>
         <source>SOCKS Proxy</source>
         <translation>SOCKS прокси</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Advanced.ui" line="116"/>
+        <location filename="../src/hatchet/dialogs/Settings_Advanced.ui" line="116"/>
         <source>Use SOCKS Proxy</source>
         <translation>Использовать SOCKS прокси</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Advanced.ui" line="145"/>
+        <location filename="../src/hatchet/dialogs/Settings_Advanced.ui" line="145"/>
         <source>Proxy Settings...</source>
         <translation>Настройки прокси...</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Advanced.ui" line="171"/>
+        <location filename="../src/hatchet/dialogs/Settings_Advanced.ui" line="171"/>
         <source>Other Settings</source>
         <translation>Другие настройки</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Advanced.ui" line="180"/>
-        <source>Allow web browsers to interact with Tomahawk (recommended)</source>
-        <translation>Разрешить взаимодействие браузеров с Tomahawk (рекомендуется)</translation>
+        <location filename="../src/hatchet/dialogs/Settings_Advanced.ui" line="180"/>
+        <source>Allow web browsers to interact with Hatchet (recommended)</source>
+        <translation>Разрешить взаимодействие браузеров с Hatchet (рекомендуется)</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Advanced.ui" line="193"/>
-        <source>Allow other computers to interact with Tomahawk (not recommended yet)</source>
-        <translation>Разрешить другим компьютерам взаимодействовать с Tomahawk (не рекомендуется)</translation>
+        <location filename="../src/hatchet/dialogs/Settings_Advanced.ui" line="193"/>
+        <source>Allow other computers to interact with Hatchet (not recommended yet)</source>
+        <translation>Разрешить другим компьютерам взаимодействовать с Hatchet (не рекомендуется)</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Advanced.ui" line="206"/>
-        <source>Send Tomahawk Crash Reports</source>
+        <location filename="../src/hatchet/dialogs/Settings_Advanced.ui" line="206"/>
+        <source>Send Hatchet Crash Reports</source>
         <translation>Посылать отчет об ошибках</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Advanced.ui" line="216"/>
+        <location filename="../src/hatchet/dialogs/Settings_Advanced.ui" line="216"/>
         <source>Show Notifications on song change</source>
         <translation>Показывать уведомление о смене песни</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Advanced.ui" line="244"/>
+        <location filename="../src/hatchet/dialogs/Settings_Advanced.ui" line="244"/>
         <source>Clear All Access Control Entries</source>
         <translation>Очистить все элементы управления доступом</translation>
     </message>
@@ -1877,27 +1877,27 @@ Password (OTP)</source>
 <context>
     <name>Settings_Collection</name>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Collection.ui" line="38"/>
+        <location filename="../src/hatchet/dialogs/Settings_Collection.ui" line="38"/>
         <source>Folders to scan for music:</source>
         <translation>Сканировать папки с музыкой:</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Collection.ui" line="53"/>
-        <source>Due to the unique way Tomahawk works, your music files must at least have Artist &amp; Title metadata/ID3 tags to be added to your Collection.</source>
-        <translation>Благодаря уникальному способу работу Tomahawk, метаданные/ID3-теги ваших музыкальных файлов, по крайней мере Исполнитель и Название, будут добавлены к вашей коллекции.</translation>
+        <location filename="../src/hatchet/dialogs/Settings_Collection.ui" line="53"/>
+        <source>Due to the unique way Hatchet works, your music files must at least have Artist &amp; Title metadata/ID3 tags to be added to your Collection.</source>
+        <translation>Благодаря уникальному способу работу Hatchet, метаданные/ID3-теги ваших музыкальных файлов, по крайней мере Исполнитель и Название, будут добавлены к вашей коллекции.</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Collection.ui" line="76"/>
+        <location filename="../src/hatchet/dialogs/Settings_Collection.ui" line="76"/>
         <source>+</source>
         <translation>+</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Collection.ui" line="83"/>
+        <location filename="../src/hatchet/dialogs/Settings_Collection.ui" line="83"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Collection.ui" line="109"/>
+        <location filename="../src/hatchet/dialogs/Settings_Collection.ui" line="109"/>
         <source>The Echo Nest supports keeping track of your catalog metadata
  and using it to craft personalized radios. Enabling this option
  will allow you (and all your friends) to create automatic playlists
@@ -1908,17 +1908,17 @@ Password (OTP)</source>
 и станций на основе вашего личного вкуса из вашего профиля.</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Collection.ui" line="115"/>
+        <location filename="../src/hatchet/dialogs/Settings_Collection.ui" line="115"/>
         <source>Upload Collection info to enable personalized &quot;User Radio&quot;</source>
         <translation>Загружать сведения коллекции, чтобы включить персональное &quot;Радио пользователя&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Collection.ui" line="128"/>
+        <location filename="../src/hatchet/dialogs/Settings_Collection.ui" line="128"/>
         <source>Watch for changes (automatically update Collection)</source>
         <translation>Наблюдать за изменениями (автообновление коллекции)</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Collection.ui" line="137"/>
+        <location filename="../src/hatchet/dialogs/Settings_Collection.ui" line="137"/>
         <source>Time between scans (in seconds):</source>
         <translation>Промежуток времени сканирования (в секундах):</translation>
     </message>
@@ -1926,22 +1926,22 @@ Password (OTP)</source>
 <context>
     <name>Settings_Downloads</name>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Downloads.ui" line="26"/>
-        <source>Some Plug-Ins enable you to purchase and/or download music directly in Tomahawk.  Set your preferences for the download format and location:</source>
+        <location filename="../src/hatchet/dialogs/Settings_Downloads.ui" line="26"/>
+        <source>Some Plug-Ins enable you to purchase and/or download music directly in Hatchet.  Set your preferences for the download format and location:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Downloads.ui" line="49"/>
+        <location filename="../src/hatchet/dialogs/Settings_Downloads.ui" line="49"/>
         <source>Folder to download music to:</source>
         <translation>Каталог для загрузки музыки</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Downloads.ui" line="68"/>
+        <location filename="../src/hatchet/dialogs/Settings_Downloads.ui" line="68"/>
         <source>Browse...</source>
         <translation>Обзор...</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/dialogs/Settings_Downloads.ui" line="79"/>
+        <location filename="../src/hatchet/dialogs/Settings_Downloads.ui" line="79"/>
         <source>Preferred download format:</source>
         <translation>Предпочтительный формат загрузки:</translation>
     </message>
@@ -1949,12 +1949,12 @@ Password (OTP)</source>
 <context>
     <name>SlideSwitchButton</name>
     <message>
-        <location filename="../src/tomahawk/widgets/SlideSwitchButton.cpp" line="46"/>
+        <location filename="../src/hatchet/widgets/SlideSwitchButton.cpp" line="46"/>
         <source>On</source>
         <translation>Вкл</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/widgets/SlideSwitchButton.cpp" line="47"/>
+        <location filename="../src/hatchet/widgets/SlideSwitchButton.cpp" line="47"/>
         <source>Off</source>
         <translation>Выкл</translation>
     </message>
@@ -1962,32 +1962,32 @@ Password (OTP)</source>
 <context>
     <name>SocialWidget</name>
     <message>
-        <location filename="../src/tomahawk/widgets/SocialWidget.ui" line="28"/>
+        <location filename="../src/hatchet/widgets/SocialWidget.ui" line="28"/>
         <source>Facebook</source>
         <translation>Facebook</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/widgets/SocialWidget.ui" line="38"/>
+        <location filename="../src/hatchet/widgets/SocialWidget.ui" line="38"/>
         <source>Twitter</source>
         <translation>Twitter</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/widgets/SocialWidget.cpp" line="71"/>
+        <location filename="../src/hatchet/widgets/SocialWidget.cpp" line="71"/>
         <source>Tweet</source>
         <translation>Твитнуть</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/widgets/SocialWidget.cpp" line="169"/>
+        <location filename="../src/hatchet/widgets/SocialWidget.cpp" line="169"/>
         <source>Listening to &quot;%1&quot; by %2. %3</source>
         <translation>Прослушивание  &quot;%1&quot; %2. %3</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/widgets/SocialWidget.cpp" line="171"/>
+        <location filename="../src/hatchet/widgets/SocialWidget.cpp" line="171"/>
         <source>Listening to &quot;%1&quot; by %2 on &quot;%3&quot;. %4</source>
         <translation>Слушает песню &quot;%1&quot;  %2 альбома &quot;%3&quot;. %4</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/widgets/SocialWidget.cpp" line="202"/>
+        <location filename="../src/hatchet/widgets/SocialWidget.cpp" line="202"/>
         <source>%1 characters left</source>
         <translation>Осталось %1 символов</translation>
     </message>
@@ -1995,24 +1995,24 @@ Password (OTP)</source>
 <context>
     <name>SourceDelegate</name>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourceDelegate.cpp" line="235"/>
+        <location filename="../src/hatchet/sourcetree/SourceDelegate.cpp" line="235"/>
         <source>All available tracks</source>
         <translation>Все доступные песни</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourceDelegate.cpp" line="343"/>
+        <location filename="../src/hatchet/sourcetree/SourceDelegate.cpp" line="343"/>
         <source>Drop to send tracks</source>
         <translation>Добавьте треки для отправки</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourceDelegate.cpp" line="406"/>
-        <location filename="../src/tomahawk/sourcetree/SourceDelegate.cpp" line="434"/>
+        <location filename="../src/hatchet/sourcetree/SourceDelegate.cpp" line="406"/>
+        <location filename="../src/hatchet/sourcetree/SourceDelegate.cpp" line="434"/>
         <source>Show</source>
         <translation>Показать</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourceDelegate.cpp" line="408"/>
-        <location filename="../src/tomahawk/sourcetree/SourceDelegate.cpp" line="436"/>
+        <location filename="../src/hatchet/sourcetree/SourceDelegate.cpp" line="408"/>
+        <location filename="../src/hatchet/sourcetree/SourceDelegate.cpp" line="436"/>
         <source>Hide</source>
         <translation>Скрыть</translation>
     </message>
@@ -2020,32 +2020,32 @@ Password (OTP)</source>
 <context>
     <name>SourceInfoWidget</name>
     <message>
-        <location filename="../src/libtomahawk/viewpages/SourceViewPage.ui" line="30"/>
+        <location filename="../src/libhatchet/viewpages/SourceViewPage.ui" line="30"/>
         <source>Recent Albums</source>
         <translation>Последние альбомы</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/SourceViewPage.ui" line="74"/>
+        <location filename="../src/libhatchet/viewpages/SourceViewPage.ui" line="74"/>
         <source>Latest Additions</source>
         <translation>Последние добавленые</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/SourceViewPage.ui" line="88"/>
+        <location filename="../src/libhatchet/viewpages/SourceViewPage.ui" line="88"/>
         <source>Recently Played Tracks</source>
         <translation>Последние воспроизводимые дорожки</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/SourceViewPage.cpp" line="70"/>
+        <location filename="../src/libhatchet/viewpages/SourceViewPage.cpp" line="70"/>
         <source>New Additions</source>
         <translation>Последние добавленные</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/SourceViewPage.cpp" line="73"/>
+        <location filename="../src/libhatchet/viewpages/SourceViewPage.cpp" line="73"/>
         <source>My recent activity</source>
         <translation>Моя последняя активность</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/SourceViewPage.cpp" line="77"/>
+        <location filename="../src/libhatchet/viewpages/SourceViewPage.cpp" line="77"/>
         <source>Recent activity from %1</source>
         <translation>Последняя активная из %1</translation>
     </message>
@@ -2053,33 +2053,33 @@ Password (OTP)</source>
 <context>
     <name>SourceItem</name>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/SourceItem.cpp" line="80"/>
-        <location filename="../src/tomahawk/sourcetree/items/SourceItem.cpp" line="586"/>
+        <location filename="../src/hatchet/sourcetree/items/SourceItem.cpp" line="80"/>
+        <location filename="../src/hatchet/sourcetree/items/SourceItem.cpp" line="586"/>
         <source>Latest Additions</source>
         <translation>Последние добавленые</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/SourceItem.cpp" line="85"/>
+        <location filename="../src/hatchet/sourcetree/items/SourceItem.cpp" line="85"/>
         <source>History</source>
         <translation>История</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/SourceItem.cpp" line="149"/>
+        <location filename="../src/hatchet/sourcetree/items/SourceItem.cpp" line="149"/>
         <source>SuperCollection</source>
         <translation>Общая коллекция</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/SourceItem.cpp" line="589"/>
+        <location filename="../src/hatchet/sourcetree/items/SourceItem.cpp" line="589"/>
         <source>Latest additions to your collection</source>
         <translation>Новые поступления в коллекцию</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/SourceItem.cpp" line="591"/>
+        <location filename="../src/hatchet/sourcetree/items/SourceItem.cpp" line="591"/>
         <source>Latest additions to %1&apos;s collection</source>
         <translation>Новые поступления в коллекции % 1</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/SourceItem.cpp" line="595"/>
+        <location filename="../src/hatchet/sourcetree/items/SourceItem.cpp" line="595"/>
         <source>Sorry, we could not find any recent additions!</source>
         <translation>К сожалению, мы не смогли найти никаких последних добавлений!</translation>
     </message>
@@ -2087,68 +2087,68 @@ Password (OTP)</source>
 <context>
     <name>SourceTreeView</name>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourceTreeView.cpp" line="245"/>
+        <location filename="../src/hatchet/sourcetree/SourceTreeView.cpp" line="245"/>
         <source>&amp;Copy Link</source>
         <translation>&amp;Скопировать ссылку</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourceTreeView.cpp" line="253"/>
+        <location filename="../src/hatchet/sourcetree/SourceTreeView.cpp" line="253"/>
         <source>&amp;Delete %1</source>
         <translation>&amp;Удалить %1</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourceTreeView.cpp" line="257"/>
+        <location filename="../src/hatchet/sourcetree/SourceTreeView.cpp" line="257"/>
         <source>Add to my Playlists</source>
         <translation>Добавить к моим плей-листам</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourceTreeView.cpp" line="259"/>
+        <location filename="../src/hatchet/sourcetree/SourceTreeView.cpp" line="259"/>
         <source>Add to my Automatic Playlists</source>
         <translation>Добавить к моим автоматическим плей-листам</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourceTreeView.cpp" line="261"/>
+        <location filename="../src/hatchet/sourcetree/SourceTreeView.cpp" line="261"/>
         <source>Add to my Stations</source>
         <translation>Добавить к моим станциям</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourceTreeView.cpp" line="249"/>
+        <location filename="../src/hatchet/sourcetree/SourceTreeView.cpp" line="249"/>
         <source>&amp;Export Playlist</source>
         <translation>&amp;Экспорт плей-листа</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourceTreeView.cpp" line="403"/>
+        <location filename="../src/hatchet/sourcetree/SourceTreeView.cpp" line="403"/>
         <source>playlist</source>
         <translation>Плей-лист</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourceTreeView.cpp" line="407"/>
+        <location filename="../src/hatchet/sourcetree/SourceTreeView.cpp" line="407"/>
         <source>automatic playlist</source>
         <translation>Автоматический плей-лист</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourceTreeView.cpp" line="411"/>
+        <location filename="../src/hatchet/sourcetree/SourceTreeView.cpp" line="411"/>
         <source>station</source>
         <translation>Станция</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourceTreeView.cpp" line="440"/>
+        <location filename="../src/hatchet/sourcetree/SourceTreeView.cpp" line="440"/>
         <source>Would you like to delete the %1 &lt;b&gt;&quot;%2&quot;&lt;/b&gt;?</source>
         <comment>e.g. Would you like to delete the playlist named Foobar?</comment>
         <translation>Вы хотите удалить %1 &lt;b&gt;&quot;%2&quot;&lt;/b&gt;?</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourceTreeView.cpp" line="442"/>
+        <location filename="../src/hatchet/sourcetree/SourceTreeView.cpp" line="442"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourceTreeView.cpp" line="547"/>
+        <location filename="../src/hatchet/sourcetree/SourceTreeView.cpp" line="547"/>
         <source>Save XSPF</source>
         <translation>Сохранить XSPF</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourceTreeView.cpp" line="548"/>
+        <location filename="../src/hatchet/sourcetree/SourceTreeView.cpp" line="548"/>
         <source>Playlists (*.xspf)</source>
         <translation>Плей-листы (*.xspf)</translation>
     </message>
@@ -2156,57 +2156,57 @@ Password (OTP)</source>
 <context>
     <name>SourcesModel</name>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourcesModel.cpp" line="96"/>
+        <location filename="../src/hatchet/sourcetree/SourcesModel.cpp" line="96"/>
         <source>Group</source>
         <translation>Группа</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourcesModel.cpp" line="99"/>
+        <location filename="../src/hatchet/sourcetree/SourcesModel.cpp" line="99"/>
         <source>Source</source>
         <translation>Источник</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourcesModel.cpp" line="102"/>
+        <location filename="../src/hatchet/sourcetree/SourcesModel.cpp" line="102"/>
         <source>Collection</source>
         <translation>Коллекция</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourcesModel.cpp" line="105"/>
+        <location filename="../src/hatchet/sourcetree/SourcesModel.cpp" line="105"/>
         <source>Playlist</source>
         <translation>Плей-лист</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourcesModel.cpp" line="108"/>
+        <location filename="../src/hatchet/sourcetree/SourcesModel.cpp" line="108"/>
         <source>Automatic Playlist</source>
         <translation>Автоматический плей-лист</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourcesModel.cpp" line="111"/>
+        <location filename="../src/hatchet/sourcetree/SourcesModel.cpp" line="111"/>
         <source>Station</source>
         <translation>Станция</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourcesModel.cpp" line="311"/>
+        <location filename="../src/hatchet/sourcetree/SourcesModel.cpp" line="311"/>
         <source>Cloud Collections</source>
         <translation>Сборник коллекций</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourcesModel.cpp" line="300"/>
+        <location filename="../src/hatchet/sourcetree/SourcesModel.cpp" line="300"/>
         <source>Discover</source>
         <translation>Открывать</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourcesModel.cpp" line="301"/>
+        <location filename="../src/hatchet/sourcetree/SourcesModel.cpp" line="301"/>
         <source>Open Pages</source>
         <translation>Открыть страницы</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourcesModel.cpp" line="303"/>
+        <location filename="../src/hatchet/sourcetree/SourcesModel.cpp" line="303"/>
         <source>Your Music</source>
         <translation>Ваша музыка</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/SourcesModel.cpp" line="312"/>
+        <location filename="../src/hatchet/sourcetree/SourcesModel.cpp" line="312"/>
         <source>Friends</source>
         <translation>Друзья</translation>
     </message>
@@ -2214,67 +2214,67 @@ Password (OTP)</source>
 <context>
     <name>SpotifyConfig</name>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccountConfig.ui" line="69"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccountConfig.ui" line="69"/>
         <source>Configure your Spotify account</source>
         <translation>Настройка аккаунт Spotify</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccountConfig.ui" line="101"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccountConfig.ui" line="101"/>
         <source>Username or Facebook Email</source>
         <translation>Имя пользователя или Facebook Email</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccountConfig.ui" line="129"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccountConfig.ui" line="129"/>
         <source>Log In</source>
         <translation>Войти</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccountConfig.ui" line="136"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccountConfig.ui" line="136"/>
         <source>Right click on any %applicationNames playlist to sync it to Spotify.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccountConfig.ui" line="153"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccountConfig.ui" line="153"/>
         <source>Select All</source>
         <translation>Выбрать все</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccountConfig.ui" line="166"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccountConfig.ui" line="166"/>
         <source>Sync Starred tracks to Loved tracks</source>
         <translation>Синхронизировать отмеченные песни с любимыми</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccountConfig.ui" line="179"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccountConfig.ui" line="179"/>
         <source>High Quality Streams</source>
         <translation>Поток высокого качества</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccountConfig.ui" line="189"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccountConfig.ui" line="189"/>
         <source>Delete %applicationName playlist when removing synchronization</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccountConfig.ui" line="196"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccountConfig.ui" line="196"/>
         <source>Use this to force Spotify to never announce listening data to Social Networks</source>
         <translation>Используйте это, чтобы запретить Spotify оглашать данные о прослушиваниях в Социальных сетях</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccountConfig.ui" line="199"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccountConfig.ui" line="199"/>
         <source>Always run in Private Mode</source>
         <translation>Всегда работать в приватном режиме</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccountConfig.ui" line="146"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccountConfig.ui" line="146"/>
         <source>Spotify playlists to keep in sync:</source>
         <translation>Синхронизировать плей-листы Spotify:</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccountConfig.ui" line="91"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccountConfig.ui" line="91"/>
         <source>Username:</source>
         <translation>Имя пользователя:</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccountConfig.ui" line="108"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccountConfig.ui" line="108"/>
         <source>Password:</source>
         <translation>Пароль:</translation>
     </message>
@@ -2282,7 +2282,7 @@ Password (OTP)</source>
 <context>
     <name>SpotifyPlaylistUpdater</name>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyPlaylistUpdater.cpp" line="351"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyPlaylistUpdater.cpp" line="351"/>
         <source>Delete associated Spotify playlist?</source>
         <translation>Удалить связанные со Spotify плей-листы?</translation>
     </message>
@@ -2290,70 +2290,70 @@ Password (OTP)</source>
 <context>
     <name>TemporaryPageItem</name>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/TemporaryPageItem.cpp" line="54"/>
+        <location filename="../src/hatchet/sourcetree/items/TemporaryPageItem.cpp" line="54"/>
         <source>Copy Artist Link</source>
         <translation>Скопировать ссылку на исполнителя</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/TemporaryPageItem.cpp" line="61"/>
+        <location filename="../src/hatchet/sourcetree/items/TemporaryPageItem.cpp" line="61"/>
         <source>Copy Album Link</source>
         <translation>Скопировать ссылку на альбом</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/sourcetree/items/TemporaryPageItem.cpp" line="68"/>
+        <location filename="../src/hatchet/sourcetree/items/TemporaryPageItem.cpp" line="68"/>
         <source>Copy Track Link</source>
         <translation>Скопировать ссылку на песню</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Accounts::AccountDelegate</name>
+    <name>Hatchet::Accounts::AccountDelegate</name>
     <message>
-        <location filename="../src/libtomahawk/accounts/AccountDelegate.cpp" line="199"/>
+        <location filename="../src/libhatchet/accounts/AccountDelegate.cpp" line="199"/>
         <source>Add Account</source>
         <translation>Добавить аккаунт</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/AccountDelegate.cpp" line="249"/>
-        <location filename="../src/libtomahawk/accounts/AccountDelegate.cpp" line="666"/>
+        <location filename="../src/libhatchet/accounts/AccountDelegate.cpp" line="249"/>
+        <location filename="../src/libhatchet/accounts/AccountDelegate.cpp" line="666"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/AccountDelegate.cpp" line="363"/>
+        <location filename="../src/libhatchet/accounts/AccountDelegate.cpp" line="363"/>
         <source>%1 downloads</source>
         <translation>%1 загружено</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/AccountDelegate.cpp" line="567"/>
+        <location filename="../src/libhatchet/accounts/AccountDelegate.cpp" line="567"/>
         <source>Online</source>
         <translation>В сети</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/AccountDelegate.cpp" line="572"/>
+        <location filename="../src/libhatchet/accounts/AccountDelegate.cpp" line="572"/>
         <source>Connecting...</source>
         <translation>Соединяюсь...</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/AccountDelegate.cpp" line="577"/>
+        <location filename="../src/libhatchet/accounts/AccountDelegate.cpp" line="577"/>
         <source>Offline</source>
         <translation>Не в сети</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Accounts::AccountModel</name>
+    <name>Hatchet::Accounts::AccountModel</name>
     <message>
-        <location filename="../src/libtomahawk/accounts/AccountModel.cpp" line="564"/>
+        <location filename="../src/libhatchet/accounts/AccountModel.cpp" line="564"/>
         <source>Manual Install Required</source>
         <translation>Ручная установка обязательно</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/AccountModel.cpp" line="567"/>
-        <source>Unfortunately, automatic installation of this resolver is not available or disabled for your platform.&lt;br /&gt;&lt;br /&gt;Please use &quot;Install from file&quot; above, by fetching it from your distribution or compiling it yourself. Further instructions can be found here:&lt;br /&gt;&lt;br /&gt;http://www.tomahawk-player.org/resolvers/%1</source>
-        <translation>К сожалению, автоматическая установка этого интерпретатора не доступна или недоступна для вашей платформы. &lt;br /&gt; &lt;br /&gt; Пожалуйста, используйте &quot;Установить из файла&quot; по получении его из дистрибутива или скомпилируйте его самостоятельно. Дальнейшие инструкции можно найти здесь: &lt;br /&gt; &lt;br /&gt; http://www.tomahawk-player.org/resolvers/%1</translation>
+        <location filename="../src/libhatchet/accounts/AccountModel.cpp" line="567"/>
+        <source>Unfortunately, automatic installation of this resolver is not available or disabled for your platform.&lt;br /&gt;&lt;br /&gt;Please use &quot;Install from file&quot; above, by fetching it from your distribution or compiling it yourself. Further instructions can be found here:&lt;br /&gt;&lt;br /&gt;http://www.hatchet-player.org/resolvers/%1</source>
+        <translation>К сожалению, автоматическая установка этого интерпретатора не доступна или недоступна для вашей платформы. &lt;br /&gt; &lt;br /&gt; Пожалуйста, используйте &quot;Установить из файла&quot; по получении его из дистрибутива или скомпилируйте его самостоятельно. Дальнейшие инструкции можно найти здесь: &lt;br /&gt; &lt;br /&gt; http://www.hatchet-player.org/resolvers/%1</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Accounts::GoogleWrapper</name>
+    <name>Hatchet::Accounts::GoogleWrapper</name>
     <message>
         <location filename="../src/accounts/google/GoogleWrapper.cpp" line="91"/>
         <source>Configure this Google Account</source>
@@ -2382,7 +2382,7 @@ Password (OTP)</source>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Accounts::GoogleWrapperFactory</name>
+    <name>Hatchet::Accounts::GoogleWrapperFactory</name>
     <message>
         <location filename="../src/accounts/google/GoogleWrapper.h" line="44"/>
         <source>Login to directly connect to your Google Talk contacts that also use %applicationName.</source>
@@ -2390,7 +2390,7 @@ Password (OTP)</source>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Accounts::GoogleWrapperSip</name>
+    <name>Hatchet::Accounts::GoogleWrapperSip</name>
     <message>
         <location filename="../src/accounts/google/GoogleWrapper.cpp" line="61"/>
         <source>Enter Google Address</source>
@@ -2408,7 +2408,7 @@ Password (OTP)</source>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Accounts::HatchetAccountConfig</name>
+    <name>Hatchet::Accounts::HatchetAccountConfig</name>
     <message>
         <location filename="../src/accounts/hatchet/account/HatchetAccountConfig.cpp" line="128"/>
         <source>Logged in as: %1</source>
@@ -2431,7 +2431,7 @@ Password (OTP)</source>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Accounts::HatchetAccountFactory</name>
+    <name>Hatchet::Accounts::HatchetAccountFactory</name>
     <message>
         <location filename="../src/accounts/hatchet/account/HatchetAccount.h" line="51"/>
         <source>Connect to Hatchet to capture your playback data, sync your playlists to Android and more.</source>
@@ -2439,202 +2439,202 @@ Password (OTP)</source>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Accounts::LastFmAccountFactory</name>
+    <name>Hatchet::Accounts::LastFmAccountFactory</name>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmAccount.h" line="52"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmAccount.h" line="52"/>
         <source>Scrobble your tracks to last.fm, and find freely downloadable tracks to play</source>
         <translation>Скроблинг ваших песен на last.fm и найти свободные песни для скачивания для воспроизведения</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Accounts::LastFmConfig</name>
+    <name>Hatchet::Accounts::LastFmConfig</name>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmConfig.cpp" line="99"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmConfig.cpp" line="99"/>
         <source>Testing...</source>
         <translation>Тестирую...</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmConfig.cpp" line="121"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmConfig.cpp" line="121"/>
         <source>Test Login</source>
         <translation>Проверить вход</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmConfig.cpp" line="131"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmConfig.cpp" line="131"/>
         <source>Importing %1</source>
         <comment>e.g. Importing 2012/01/01</comment>
         <translation>Импортирование %1</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmConfig.cpp" line="134"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmConfig.cpp" line="134"/>
         <source>Importing History...</source>
         <translation>Импортирование истории...</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmConfig.cpp" line="203"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmConfig.cpp" line="203"/>
         <source>History Incomplete. Resume</source>
         <extracomment>Text on a button that resumes import</extracomment>
         <translation>Импорт истории не завершен. Продолжить</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmConfig.cpp" line="208"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmConfig.cpp" line="208"/>
         <source>Playback History Imported</source>
         <translation>История воспроизведений импортирована</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmConfig.cpp" line="231"/>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmConfig.cpp" line="247"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmConfig.cpp" line="231"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmConfig.cpp" line="247"/>
         <source>Failed</source>
         <translation>Неудача</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmConfig.cpp" line="236"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmConfig.cpp" line="236"/>
         <source>Success</source>
         <translation>Успех</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmConfig.cpp" line="253"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmConfig.cpp" line="253"/>
         <source>Could not contact server</source>
         <translation>Не удается связаться с сервером</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmConfig.cpp" line="267"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmConfig.cpp" line="267"/>
         <source>Synchronizing...</source>
         <translation>Синхронизация...</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmConfig.cpp" line="431"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmConfig.cpp" line="431"/>
         <source>Synchronization Finished</source>
         <translation>Синхронизация закончена</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Accounts::ResolverAccountFactory</name>
+    <name>Hatchet::Accounts::ResolverAccountFactory</name>
     <message>
-        <location filename="../src/libtomahawk/accounts/ResolverAccount.cpp" line="119"/>
+        <location filename="../src/libhatchet/accounts/ResolverAccount.cpp" line="119"/>
         <source>Resolver installation error: cannot open bundle.</source>
         <translation>Ошибка установки интерпретатора: невозможно открыть набор.</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/ResolverAccount.cpp" line="125"/>
+        <location filename="../src/libhatchet/accounts/ResolverAccount.cpp" line="125"/>
         <source>Resolver installation error: incomplete bundle.</source>
         <translation>Ошибка установки интерпретатора: набор неполон. </translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/ResolverAccount.cpp" line="163"/>
+        <location filename="../src/libhatchet/accounts/ResolverAccount.cpp" line="163"/>
         <source>Resolver installation error: bad metadata in bundle.</source>
         <translation>Ошибка установки интерпретатора: неправильные метаданные в наборе.</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/ResolverAccount.cpp" line="199"/>
+        <location filename="../src/libhatchet/accounts/ResolverAccount.cpp" line="199"/>
         <source>Resolver installation error: platform mismatch.</source>
         <translation>Ошибка установки интерпретатора: несовпадение платформы.</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/ResolverAccount.cpp" line="211"/>
-        <source>Resolver installation error: Tomahawk %1 or newer is required.</source>
-        <translation>Ошибка установки интерпретатора: необходим Tomahawk %1 или новее.</translation>
+        <location filename="../src/libhatchet/accounts/ResolverAccount.cpp" line="211"/>
+        <source>Resolver installation error: Hatchet %1 or newer is required.</source>
+        <translation>Ошибка установки интерпретатора: необходим Hatchet %1 или новее.</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Accounts::SpotifyAccount</name>
+    <name>Hatchet::Accounts::SpotifyAccount</name>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccount.cpp" line="520"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccount.cpp" line="520"/>
         <source>Sync with Spotify</source>
         <translation>Синхронизировать с Spotify</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccount.cpp" line="524"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccount.cpp" line="524"/>
         <source>Re-enable syncing with Spotify</source>
         <translation>Повторно включить синхронизацию с Spotify</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccount.cpp" line="532"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccount.cpp" line="532"/>
         <source>Create local copy</source>
         <translation>Создать локальную копию</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccount.cpp" line="548"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccount.cpp" line="548"/>
         <source>Subscribe to playlist changes</source>
         <translation>Следить за изменением плей-листа</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccount.cpp" line="552"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccount.cpp" line="552"/>
         <source>Re-enable playlist subscription</source>
         <translation>Повторно включить слежение за плей-листом</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccount.cpp" line="556"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccount.cpp" line="556"/>
         <source>Stop subscribing to changes</source>
         <translation>Прекратить следить за изменением плей-листа</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccount.cpp" line="576"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccount.cpp" line="576"/>
         <source>Enable Spotify collaborations</source>
         <translation>Включить сотрудничество с Spotify</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccount.cpp" line="578"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccount.cpp" line="578"/>
         <source>Disable Spotify collaborations</source>
         <translation>Выключить сотрудничество с Spotify</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccount.cpp" line="534"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccount.cpp" line="534"/>
         <source>Stop syncing with Spotify</source>
         <translation>Прекратить синхронизацию с Spotify</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Accounts::SpotifyAccountConfig</name>
+    <name>Hatchet::Accounts::SpotifyAccountConfig</name>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccountConfig.cpp" line="202"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccountConfig.cpp" line="202"/>
         <source>Logging in...</source>
         <translation>Вхожу...</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccountConfig.cpp" line="239"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccountConfig.cpp" line="239"/>
         <source>Failed: %1</source>
         <translation>Ошибка: %1</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccountConfig.cpp" line="282"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccountConfig.cpp" line="282"/>
         <source>Logged in as %1</source>
         <translation>Вошли как %1</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccountConfig.cpp" line="284"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccountConfig.cpp" line="284"/>
         <source>Log Out</source>
         <translation>Выйти</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccountConfig.cpp" line="302"/>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccountConfig.cpp" line="314"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccountConfig.cpp" line="302"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccountConfig.cpp" line="314"/>
         <source>Log In</source>
         <translation>Войти</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Accounts::SpotifyAccountFactory</name>
+    <name>Hatchet::Accounts::SpotifyAccountFactory</name>
     <message>
-        <location filename="../src/libtomahawk/accounts/spotify/SpotifyAccount.h" line="71"/>
+        <location filename="../src/libhatchet/accounts/spotify/SpotifyAccount.h" line="71"/>
         <source>Play music from and sync your playlists with Spotify Premium</source>
         <translation>Слушай музыку и синхронизируй плей-листы с Spotify премиум</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Accounts::TelepathyConfigStorage</name>
+    <name>Hatchet::Accounts::TelepathyConfigStorage</name>
     <message>
-        <location filename="../src/libtomahawk/accounts/configstorage/telepathy/TelepathyConfigStorage.cpp" line="79"/>
+        <location filename="../src/libhatchet/accounts/configstorage/telepathy/TelepathyConfigStorage.cpp" line="79"/>
         <source>the KDE instant messaging framework</source>
         <translation>программный каркас мгновенной передачи сообщений KDE</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/configstorage/telepathy/TelepathyConfigStorage.cpp" line="96"/>
+        <location filename="../src/libhatchet/accounts/configstorage/telepathy/TelepathyConfigStorage.cpp" line="96"/>
         <source>KDE Instant Messaging Accounts</source>
         <translation>Учетные записи мгновенной передачи сообщений KDE</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Accounts::XmppAccountFactory</name>
+    <name>Hatchet::Accounts::XmppAccountFactory</name>
     <message>
         <location filename="../src/accounts/xmpp/XmppAccount.h" line="53"/>
         <source>Login to connect to your Jabber/XMPP contacts that also use %applicationName.</source>
@@ -2642,7 +2642,7 @@ Password (OTP)</source>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Accounts::XmppConfigWidget</name>
+    <name>Hatchet::Accounts::XmppConfigWidget</name>
     <message>
         <location filename="../src/accounts/xmpp/XmppConfigWidget.cpp" line="73"/>
         <source>Account provided by %1.</source>
@@ -2671,7 +2671,7 @@ username@jabber.org</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Accounts::ZeroconfAccount</name>
+    <name>Hatchet::Accounts::ZeroconfAccount</name>
     <message>
         <location filename="../src/accounts/zeroconf/ZeroconfAccount.cpp" line="63"/>
         <location filename="../src/accounts/zeroconf/ZeroconfAccount.cpp" line="64"/>
@@ -2680,7 +2680,7 @@ username@jabber.org</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Accounts::ZeroconfFactory</name>
+    <name>Hatchet::Accounts::ZeroconfFactory</name>
     <message>
         <location filename="../src/accounts/zeroconf/ZeroconfAccount.h" line="45"/>
         <source>Local Network</source>
@@ -2688,177 +2688,177 @@ username@jabber.org</translation>
     </message>
     <message>
         <location filename="../src/accounts/zeroconf/ZeroconfAccount.h" line="46"/>
-        <source>Automatically connect to Tomahawk users on the same local network.</source>
-        <translation>Автоматически подключать к Tomahawk пользователей в одной локальной сети</translation>
+        <source>Automatically connect to Hatchet users on the same local network.</source>
+        <translation>Автоматически подключать к Hatchet пользователей в одной локальной сети</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Collection</name>
+    <name>Hatchet::Collection</name>
     <message>
-        <location filename="../src/libtomahawk/collection/Collection.cpp" line="87"/>
-        <location filename="../src/libtomahawk/collection/Collection.cpp" line="101"/>
+        <location filename="../src/libhatchet/collection/Collection.cpp" line="87"/>
+        <location filename="../src/libhatchet/collection/Collection.cpp" line="101"/>
         <source>Collection</source>
         <translation>Коллекция</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::ContextMenu</name>
+    <name>Hatchet::ContextMenu</name>
     <message>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="127"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="127"/>
         <source>&amp;Play</source>
         <translation>&amp;Воспроизведение</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="130"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="130"/>
         <source>Download</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="133"/>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="275"/>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="326"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="133"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="275"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="326"/>
         <source>Add to &amp;Queue</source>
         <translation>Добавить в &amp;очередь</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="146"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="146"/>
         <source>Add to &amp;Playlist</source>
         <translation>Добавить в &amp;список воспроизведения</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="167"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="167"/>
         <source>Send to &amp;Friend</source>
         <translation>Отправить &amp;другу</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="181"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="181"/>
         <source>Continue Playback after this &amp;Track</source>
         <translation>Продолжить воспроизведение после этой &amp;песни</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="183"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="183"/>
         <source>Stop Playback after this &amp;Track</source>
         <translation>Остановить воспроизведение после этой &amp;песни</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="190"/>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="494"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="190"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="494"/>
         <source>&amp;Love</source>
         <translation>&amp;Любимая</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="204"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="204"/>
         <source>View Similar Tracks to &quot;%1&quot;</source>
         <translation>Показать похожие дорожки &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="283"/>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="334"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="283"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="334"/>
         <source>&amp;Go to &quot;%1&quot;</source>
         <translation>&amp;Перейти к &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="209"/>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="213"/>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="286"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="209"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="213"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="286"/>
         <source>Go to &quot;%1&quot;</source>
         <translation>Перейти к &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="219"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="219"/>
         <source>&amp;Copy Track Link</source>
         <translation>&amp;Скопировать ссылку на песню</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="239"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="239"/>
         <source>Mark as &amp;Listened</source>
         <translation>Отметить как &amp;прослушанное</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="243"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="243"/>
         <source>&amp;Remove Items</source>
         <translation>&amp;Удалить пункты</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="243"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="243"/>
         <source>&amp;Remove Item</source>
         <translation>&amp;Удалить пункт</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="294"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="294"/>
         <source>Copy Album &amp;Link</source>
         <translation>Копировать &amp;ссылку на альбом</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="342"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="342"/>
         <source>Copy Artist &amp;Link</source>
         <translation>Копировать &amp;ссылку на исполнителя</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="489"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="489"/>
         <source>Un-&amp;Love</source>
         <translation>&amp;Нелюбимая</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ContextMenu.cpp" line="222"/>
+        <location filename="../src/libhatchet/ContextMenu.cpp" line="222"/>
         <source>Properties...</source>
         <translation>Свойства...</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::DatabaseCommand_AllAlbums</name>
+    <name>Hatchet::DatabaseCommand_AllAlbums</name>
     <message>
-        <location filename="../src/libtomahawk/database/DatabaseCommand_AllAlbums.cpp" line="119"/>
+        <location filename="../src/libhatchet/database/DatabaseCommand_AllAlbums.cpp" line="119"/>
         <source>Unknown</source>
         <translation>Неизвестный</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::DropJobNotifier</name>
+    <name>Hatchet::DropJobNotifier</name>
     <message>
-        <location filename="../src/libtomahawk/utils/DropJobNotifier.cpp" line="73"/>
+        <location filename="../src/libhatchet/utils/DropJobNotifier.cpp" line="73"/>
         <source>playlist</source>
         <translation>Плей-лист</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/utils/DropJobNotifier.cpp" line="76"/>
+        <location filename="../src/libhatchet/utils/DropJobNotifier.cpp" line="76"/>
         <source>artist</source>
         <translation>Исполнитель</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/utils/DropJobNotifier.cpp" line="79"/>
+        <location filename="../src/libhatchet/utils/DropJobNotifier.cpp" line="79"/>
         <source>track</source>
         <translation>Дорожка</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/utils/DropJobNotifier.cpp" line="82"/>
+        <location filename="../src/libhatchet/utils/DropJobNotifier.cpp" line="82"/>
         <source>album</source>
         <translation>Альбом</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/utils/DropJobNotifier.cpp" line="105"/>
+        <location filename="../src/libhatchet/utils/DropJobNotifier.cpp" line="105"/>
         <source>Fetching %1 from database</source>
         <translation>Выборка %1 из базы данных</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/utils/DropJobNotifier.cpp" line="109"/>
+        <location filename="../src/libhatchet/utils/DropJobNotifier.cpp" line="109"/>
         <source>Parsing %1 %2</source>
         <translation>Анализирую %1 %2</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::DynamicControlList</name>
+    <name>Hatchet::DynamicControlList</name>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/widgets/DynamicControlList.cpp" line="84"/>
+        <location filename="../src/libhatchet/playlist/dynamic/widgets/DynamicControlList.cpp" line="84"/>
         <source>Save Settings</source>
         <translation>Сохранить настройки</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::DynamicModel</name>
+    <name>Hatchet::DynamicModel</name>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/DynamicModel.cpp" line="173"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/DynamicModel.cpp" line="302"/>
+        <location filename="../src/libhatchet/playlist/dynamic/DynamicModel.cpp" line="173"/>
+        <location filename="../src/libhatchet/playlist/dynamic/DynamicModel.cpp" line="302"/>
         <source>Could not find a playable track.
 
 Please change the filters or try again.</source>
@@ -2867,46 +2867,46 @@ Please change the filters or try again.</source>
 Пожалуйста, измените фильтры и попробуйте еще раз.</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/DynamicModel.cpp" line="231"/>
+        <location filename="../src/libhatchet/playlist/dynamic/DynamicModel.cpp" line="231"/>
         <source>Failed to generate preview with the desired filters</source>
         <translation>Не удалось создать предварительный просмотр с желаемым фильтры</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::DynamicSetupWidget</name>
+    <name>Hatchet::DynamicSetupWidget</name>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/widgets/DynamicSetupWidget.cpp" line="53"/>
+        <location filename="../src/libhatchet/playlist/dynamic/widgets/DynamicSetupWidget.cpp" line="53"/>
         <source>Type:</source>
         <translation>Тип:</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/widgets/DynamicSetupWidget.cpp" line="67"/>
+        <location filename="../src/libhatchet/playlist/dynamic/widgets/DynamicSetupWidget.cpp" line="67"/>
         <source>Generate</source>
         <translation>Создать</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::DynamicView</name>
+    <name>Hatchet::DynamicView</name>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/DynamicView.cpp" line="146"/>
+        <location filename="../src/libhatchet/playlist/dynamic/DynamicView.cpp" line="146"/>
         <source>Add some filters above to seed this station!</source>
         <translation>Добавить некоторые фильтры, чтобы увидеть эту станцию​​!</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/DynamicView.cpp" line="151"/>
+        <location filename="../src/libhatchet/playlist/dynamic/DynamicView.cpp" line="151"/>
         <source>Press Generate to get started!</source>
         <translation>Нажмите кнопку Создать, чтобы начать!</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/DynamicView.cpp" line="153"/>
+        <location filename="../src/libhatchet/playlist/dynamic/DynamicView.cpp" line="153"/>
         <source>Add some filters above, and press Generate to get started!</source>
         <translation>Добавьте несколько фильтров выше, а затем нажмите Создать, чтобы начать!</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::DynamicWidget</name>
+    <name>Hatchet::DynamicWidget</name>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/widgets/DynamicWidget.cpp" line="479"/>
+        <location filename="../src/libhatchet/playlist/dynamic/widgets/DynamicWidget.cpp" line="479"/>
         <source>Station ran out of tracks!
 
 Try tweaking the filters for a new set of songs to play.</source>
@@ -2916,534 +2916,534 @@ Try tweaking the filters for a new set of songs to play.</source>
     </message>
 </context>
 <context>
-    <name>Tomahawk::EchonestControl</name>
+    <name>Hatchet::EchonestControl</name>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="165"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="165"/>
         <source>Similar To</source>
         <translation>Похожие на</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="166"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="166"/>
         <source>Limit To</source>
         <translation>Ограничение по</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="170"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="170"/>
         <source>Artist name</source>
         <translation>Имя исполнителя</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="193"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="266"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="289"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="376"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="397"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="468"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="491"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="516"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="193"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="266"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="289"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="376"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="397"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="468"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="491"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="516"/>
         <source>is</source>
         <translation>Это</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="214"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="214"/>
         <source>from user</source>
         <translation>От пользователя</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="223"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="765"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="223"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="765"/>
         <source>No users with Echo Nest Catalogs enabled. Try enabling option in Collection settings</source>
         <translation>Нет пользователей с каталогом Echo Nest. Попробуйте включить настройку в настройках коллекции</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="244"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="244"/>
         <source>similar to</source>
         <translation>похожие на</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="246"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="246"/>
         <source>Enter any combination of song name and artist here...</source>
         <translation>Введите любые комбинации названия песни и исполнителя здесь...</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="267"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="290"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="332"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="338"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="344"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="350"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="356"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="267"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="290"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="332"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="338"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="344"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="350"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="356"/>
         <source>Less</source>
         <translation>Менее</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="267"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="290"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="332"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="338"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="344"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="350"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="356"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="267"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="290"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="332"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="338"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="344"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="350"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="356"/>
         <source>More</source>
         <translation>Более</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="313"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="313"/>
         <source>0 BPM</source>
         <translation>0 BPM</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="313"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="313"/>
         <source>500 BPM</source>
         <translation>500 BPM</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="319"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="319"/>
         <source>0 secs</source>
         <translation>0 сек</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="319"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="319"/>
         <source>3600 secs</source>
         <translation>3600 сек</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="325"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="325"/>
         <source>-100 dB</source>
         <translation>-100 dB</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="325"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="325"/>
         <source>100 dB</source>
         <translation>100 dB</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="362"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="369"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="362"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="369"/>
         <source>-180%1</source>
         <translation>-180%1</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="362"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="369"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="362"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="369"/>
         <source>180%1</source>
         <translation>180%1</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="378"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="378"/>
         <source>Major</source>
         <translation>Мажор</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="379"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="379"/>
         <source>Minor</source>
         <translation>Минор</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="399"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="399"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="400"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="400"/>
         <source>C Sharp</source>
         <translation>До-диез</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="401"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="401"/>
         <source>D</source>
         <translation>D</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="402"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="402"/>
         <source>E Flat</source>
         <translation>Ми-бемоль</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="403"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="403"/>
         <source>E</source>
         <translation>E</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="404"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="404"/>
         <source>F</source>
         <translation>F</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="405"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="405"/>
         <source>F Sharp</source>
         <translation>Фа-диез</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="406"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="406"/>
         <source>G</source>
         <translation>G</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="407"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="407"/>
         <source>A Flat</source>
         <translation>Ля-бемоль</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="408"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="408"/>
         <source>A</source>
         <translation>A</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="409"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="409"/>
         <source>B Flat</source>
         <translation>Си-бемоль</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="410"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="410"/>
         <source>B</source>
         <translation>B</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="429"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="429"/>
         <source>Ascending</source>
         <translation>По возрастанию</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="430"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="430"/>
         <source>Descending</source>
         <translation>По убыванию</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="433"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="433"/>
         <source>Tempo</source>
         <translation>Ритм</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="434"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="434"/>
         <source>Duration</source>
         <translation>Продолжительность</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="435"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="435"/>
         <source>Loudness</source>
         <translation>Громкость</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="436"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="986"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="436"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="986"/>
         <source>Artist Familiarity</source>
         <translation>Схожие исполнители</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="437"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="985"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="437"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="985"/>
         <source>Artist Hotttnesss</source>
         <translation>Горячий исполнитель</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="438"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="986"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="438"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="986"/>
         <source>Song Hotttnesss</source>
         <translation>Горячая песня</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="439"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="439"/>
         <source>Latitude</source>
         <translation>Широта</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="440"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="440"/>
         <source>Longitude</source>
         <translation>Долгота</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="441"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="441"/>
         <source>Mode</source>
         <translation>Режим</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="442"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="442"/>
         <source>Key</source>
         <translation>Ключ</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="443"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="985"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="443"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="985"/>
         <source>Energy</source>
         <translation>Энергичная</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="444"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="984"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="444"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="984"/>
         <source>Danceability</source>
         <translation>Танцевальная</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="492"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="492"/>
         <source>is not</source>
         <translation>Не</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="495"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="495"/>
         <source>Studio</source>
         <comment>Song type: The song was recorded in a studio.</comment>
         <translation>Студийная</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="496"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="496"/>
         <source>Live</source>
         <comment>Song type: The song was a life performance.</comment>
         <translation>Любимая</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="497"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="497"/>
         <source>Acoustic</source>
         <comment>Song type</comment>
         <translation>Акустическая</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="498"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="498"/>
         <source>Electric</source>
         <comment>Song type</comment>
         <translation>Электронная</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="499"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="499"/>
         <source>Christmas</source>
         <comment>Song type: A christmas song</comment>
         <translation>Рождественская</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="519"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="519"/>
         <source>Focused</source>
         <comment>Distribution: Songs that are tightly clustered around the seeds</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="520"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="520"/>
         <source>Wandering</source>
         <comment>Distribution: Songs from a broader range of artists</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="536"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="536"/>
         <source>Classics</source>
         <comment>Genre preset: songs intended to introduce the genre to a novice listener</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="537"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="537"/>
         <source>Popular</source>
         <comment>Genre preset: most popular songs being played in the genre today</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="538"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="538"/>
         <source>Emerging</source>
         <comment>Genre preset: songs that are more popular than expected, but which are unfamiliar to most listeners</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="541"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="541"/>
         <source>Best</source>
         <comment>Genre preset: optimal collection of songs</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="542"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="542"/>
         <source>Mix</source>
         <comment>Genre preset: a varying collection of songs</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="569"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="569"/>
         <source>At Least</source>
         <translation>По крайней мере</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="570"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="570"/>
         <source>At Most</source>
         <translation>Самое большее</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="953"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="953"/>
         <source>only by ~%1</source>
         <translation>только ~ %1</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="955"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="982"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="955"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="982"/>
         <source>similar to ~%1</source>
         <translation>похожие на ~%1</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="959"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="959"/>
         <source>with genre ~%1</source>
         <translation>с жанром ~%1</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="967"/>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="978"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="967"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="978"/>
         <source>from no one</source>
         <translation>ни от кого не</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="971"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="971"/>
         <source>You</source>
         <translation>Ваши</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="972"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="972"/>
         <source>from my radio</source>
         <translation>из моего радио</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="974"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="974"/>
         <source>from %1 radio</source>
         <translation>из %1 радио</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="984"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="984"/>
         <source>Variety</source>
         <translation>Разнообразие</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="987"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="987"/>
         <source>Adventurousness</source>
         <translation>Раскованность</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="993"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="993"/>
         <source>very low</source>
         <translation>Очень низкое</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="995"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="995"/>
         <source>low</source>
         <translation>Низкое</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="997"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="997"/>
         <source>moderate</source>
         <translation>Умеренное</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="999"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="999"/>
         <source>high</source>
         <translation>Высокое</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="1001"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="1001"/>
         <source>very high</source>
         <translation>Очень высокое</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="1002"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="1002"/>
         <source>with %1 %2</source>
         <translation>с %1 %2</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="1006"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="1006"/>
         <source>about %1 BPM</source>
         <translation>около %1 BPM</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="1010"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="1010"/>
         <source>about %n minute(s) long</source>
         <translation><numerusform>Продолжительность около %n минуты</numerusform><numerusform>Продолжительность около %n минут</numerusform><numerusform>Продолжительность около %n минут</numerusform><numerusform>Продолжительность около %n минут</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="1014"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="1014"/>
         <source>about %1 dB</source>
         <translation>около %1 дБ</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="1018"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="1018"/>
         <source>at around %1%2 %3</source>
         <translation>около %1%2 %3</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="1025"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="1025"/>
         <source>in %1</source>
         <translation>в %1</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="1032"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="1032"/>
         <source>in a %1 key</source>
         <translation>в %1 ключ</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="1044"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="1044"/>
         <source>sorted in %1 %2 order</source>
         <translation>отсортированы в %1 %2 порядке</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="1051"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="1051"/>
         <source>with a %1 mood</source>
         <translation>настроение %1</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="1058"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="1058"/>
         <source>in a %1 style</source>
         <translation>в стиле %1</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="1065"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="1065"/>
         <source>where genre is %1</source>
         <translation>где жанр %1</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="1078"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="1078"/>
         <source>where song type is %1</source>
         <translation>где песни типа %1</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="1080"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="1080"/>
         <source>where song type is not %1</source>
         <translation>где песни не типа %1</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="1088"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="1088"/>
         <source>with a %1 distribution</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="1100"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="1100"/>
         <source>preset to %1 collection of %2 genre songs</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="1102"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="1102"/>
         <source>an optimal</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="1104"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="1104"/>
         <source>a mixed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="1108"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="1108"/>
         <source>classic</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="1113"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="1113"/>
         <source>popular</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestControl.cpp" line="1115"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestControl.cpp" line="1115"/>
         <source>emerging</source>
         <translation type="unfinished"/>
     </message>
 </context>
 <context>
-    <name>Tomahawk::GroovesharkParser</name>
+    <name>Hatchet::GroovesharkParser</name>
     <message>
-        <location filename="../src/libtomahawk/utils/GroovesharkParser.cpp" line="239"/>
+        <location filename="../src/libhatchet/utils/GroovesharkParser.cpp" line="239"/>
         <source>Error fetching Grooveshark information from the network!</source>
         <translation>Ошибка выборки информации из сети Grooveshark!</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::InfoSystem::ChartsPlugin</name>
+    <name>Hatchet::InfoSystem::ChartsPlugin</name>
     <message>
         <location filename="../src/infoplugins/generic/charts/ChartsPlugin.cpp" line="578"/>
         <source>Artists</source>
@@ -3461,7 +3461,7 @@ Try tweaking the filters for a new set of songs to play.</source>
     </message>
 </context>
 <context>
-    <name>Tomahawk::InfoSystem::FdoNotifyPlugin</name>
+    <name>Hatchet::InfoSystem::FdoNotifyPlugin</name>
     <message>
         <location filename="../src/infoplugins/linux/fdonotify/FdoNotifyPlugin.cpp" line="271"/>
         <source>on</source>
@@ -3524,35 +3524,35 @@ Try tweaking the filters for a new set of songs to play.</source>
     </message>
 </context>
 <context>
-    <name>Tomahawk::InfoSystem::LastFmInfoPlugin</name>
+    <name>Hatchet::InfoSystem::LastFmInfoPlugin</name>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmInfoPlugin.cpp" line="461"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmInfoPlugin.cpp" line="461"/>
         <source>Top Tracks</source>
         <translation>Топ песен</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmInfoPlugin.cpp" line="464"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmInfoPlugin.cpp" line="464"/>
         <source>Loved Tracks</source>
         <translation>Любимые песни</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmInfoPlugin.cpp" line="467"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmInfoPlugin.cpp" line="467"/>
         <source>Hyped Tracks</source>
         <translation>Раскрученные песни</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmInfoPlugin.cpp" line="473"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmInfoPlugin.cpp" line="473"/>
         <source>Top Artists</source>
         <translation>Топ исполнителей</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/accounts/lastfm/LastFmInfoPlugin.cpp" line="476"/>
+        <location filename="../src/libhatchet/accounts/lastfm/LastFmInfoPlugin.cpp" line="476"/>
         <source>Hyped Artists</source>
         <translation>Раскрученные исполнители</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::InfoSystem::NewReleasesPlugin</name>
+    <name>Hatchet::InfoSystem::NewReleasesPlugin</name>
     <message>
         <location filename="../src/infoplugins/generic/newreleases/NewReleasesPlugin.cpp" line="602"/>
         <source>Albums</source>
@@ -3560,7 +3560,7 @@ Try tweaking the filters for a new set of songs to play.</source>
     </message>
 </context>
 <context>
-    <name>Tomahawk::InfoSystem::SnoreNotifyPlugin</name>
+    <name>Hatchet::InfoSystem::SnoreNotifyPlugin</name>
     <message>
         <location filename="../src/infoplugins/generic/snorenotify/SnoreNotifyPlugin.cpp" line="87"/>
         <source>Notify User</source>
@@ -3643,210 +3643,210 @@ Try tweaking the filters for a new set of songs to play.</source>
     </message>
 </context>
 <context>
-    <name>Tomahawk::ItunesParser</name>
+    <name>Hatchet::ItunesParser</name>
     <message>
-        <location filename="../src/libtomahawk/utils/ItunesParser.cpp" line="182"/>
+        <location filename="../src/libhatchet/utils/ItunesParser.cpp" line="182"/>
         <source>Error fetching iTunes information from the network!</source>
         <translation>Возникла ошибка при получении информации из iTunes!</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::JSPFLoader</name>
+    <name>Hatchet::JSPFLoader</name>
     <message>
-        <location filename="../src/libtomahawk/utils/JspfLoader.cpp" line="150"/>
+        <location filename="../src/libhatchet/utils/JspfLoader.cpp" line="150"/>
         <source>New Playlist</source>
         <translation>Новый плей-лист</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/utils/JspfLoader.cpp" line="176"/>
+        <location filename="../src/libhatchet/utils/JspfLoader.cpp" line="176"/>
         <source>Failed to save tracks</source>
         <translation>Не удалось сохранить треки</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/utils/JspfLoader.cpp" line="176"/>
+        <location filename="../src/libhatchet/utils/JspfLoader.cpp" line="176"/>
         <source>Some tracks in the playlist do not contain an artist and a title. They will be ignored.</source>
         <translation>Некоторые треки в плей-листе не содержат исполнителя и название. Они будут проигнорированы.</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/utils/JspfLoader.cpp" line="201"/>
+        <location filename="../src/libhatchet/utils/JspfLoader.cpp" line="201"/>
         <source>XSPF Error</source>
         <translation>Ошибка XSPF</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/utils/JspfLoader.cpp" line="201"/>
+        <location filename="../src/libhatchet/utils/JspfLoader.cpp" line="201"/>
         <source>This is not a valid XSPF playlist.</source>
         <translation>Это не является допустимым XSPF плей-листом.</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::JSResolver</name>
+    <name>Hatchet::JSResolver</name>
     <message>
-        <location filename="../src/libtomahawk/resolvers/JSResolver.cpp" line="373"/>
+        <location filename="../src/libhatchet/resolvers/JSResolver.cpp" line="373"/>
         <source>Script Resolver Warning: API call %1 returned data synchronously.</source>
         <translation>Предупреждение скриптового интерпретатора: вызов API %1 синхронно вернул данные.</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::LatchManager</name>
+    <name>Hatchet::LatchManager</name>
     <message>
-        <location filename="../src/libtomahawk/LatchManager.cpp" line="96"/>
+        <location filename="../src/libhatchet/LatchManager.cpp" line="96"/>
         <source>&amp;Catch Up</source>
         <translation>&amp;Подхватить</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/LatchManager.cpp" line="133"/>
-        <location filename="../src/libtomahawk/LatchManager.cpp" line="166"/>
+        <location filename="../src/libhatchet/LatchManager.cpp" line="133"/>
+        <location filename="../src/libhatchet/LatchManager.cpp" line="166"/>
         <source>&amp;Listen Along</source>
         <translation>&amp;Слушать Вместе</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::LocalCollection</name>
+    <name>Hatchet::LocalCollection</name>
     <message>
-        <location filename="../src/libtomahawk/database/LocalCollection.cpp" line="42"/>
+        <location filename="../src/libhatchet/database/LocalCollection.cpp" line="42"/>
         <source>Your Collection</source>
         <translation>Ваша коллекция</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::RemoteCollection</name>
+    <name>Hatchet::RemoteCollection</name>
     <message>
-        <location filename="../src/libtomahawk/network/RemoteCollection.cpp" line="36"/>
+        <location filename="../src/libhatchet/network/RemoteCollection.cpp" line="36"/>
         <source>Collection of %1</source>
         <translation>Коллекция %1</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::ScriptCollection</name>
+    <name>Hatchet::ScriptCollection</name>
     <message>
-        <location filename="../src/libtomahawk/resolvers/ScriptCollection.cpp" line="78"/>
+        <location filename="../src/libhatchet/resolvers/ScriptCollection.cpp" line="78"/>
         <source>%1 Collection</source>
         <comment>Name of a collection based on a script pluginsc, e.g. Subsonic Collection</comment>
         <translation>%1 Коллекция</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::ScriptEngine</name>
+    <name>Hatchet::ScriptEngine</name>
     <message>
-        <location filename="../src/libtomahawk/resolvers/ScriptEngine.cpp" line="94"/>
+        <location filename="../src/libhatchet/resolvers/ScriptEngine.cpp" line="94"/>
         <source>Resolver Error: %1:%2 %3</source>
         <translation>Ошибка интерпретатора: %1:%2 %3</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/resolvers/ScriptEngine.cpp" line="112"/>
+        <location filename="../src/libhatchet/resolvers/ScriptEngine.cpp" line="112"/>
         <source>SSL Error</source>
         <translation>Ошибка SSL</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/resolvers/ScriptEngine.cpp" line="113"/>
-        <source>You have asked Tomahawk to connect securely to &lt;b&gt;%1&lt;/b&gt;, but we can&apos;t confirm that your connection is secure:&lt;br&gt;&lt;br&gt;&lt;b&gt;%2&lt;/b&gt;&lt;br&gt;&lt;br&gt;Do you want to trust this connection?</source>
-        <translation>Вы попросили Tomahawk установить защищенное соединение с &lt;b&gt;%1&lt;/b&gt;, но мы не можем подтвердить, что соединение защищено: &lt;br&gt;&lt;br&gt;&lt;b&gt;%2&lt;/b&gt;&lt;br&gt;&lt;br&gt; Вы действительно хотите доверять этому соединению?</translation>
+        <location filename="../src/libhatchet/resolvers/ScriptEngine.cpp" line="113"/>
+        <source>You have asked Hatchet to connect securely to &lt;b&gt;%1&lt;/b&gt;, but we can&apos;t confirm that your connection is secure:&lt;br&gt;&lt;br&gt;&lt;b&gt;%2&lt;/b&gt;&lt;br&gt;&lt;br&gt;Do you want to trust this connection?</source>
+        <translation>Вы попросили Hatchet установить защищенное соединение с &lt;b&gt;%1&lt;/b&gt;, но мы не можем подтвердить, что соединение защищено: &lt;br&gt;&lt;br&gt;&lt;b&gt;%2&lt;/b&gt;&lt;br&gt;&lt;br&gt; Вы действительно хотите доверять этому соединению?</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/resolvers/ScriptEngine.cpp" line="120"/>
+        <location filename="../src/libhatchet/resolvers/ScriptEngine.cpp" line="120"/>
         <source>Trust certificate</source>
         <translation>Доверять сертификату</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::ShortenedLinkParser</name>
+    <name>Hatchet::ShortenedLinkParser</name>
     <message>
-        <location filename="../src/libtomahawk/utils/ShortenedLinkParser.cpp" line="104"/>
+        <location filename="../src/libhatchet/utils/ShortenedLinkParser.cpp" line="104"/>
         <source>Network error parsing shortened link!</source>
         <translation>Ошибка сети при создании короткой ссылки!</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Source</name>
+    <name>Hatchet::Source</name>
     <message>
-        <location filename="../src/libtomahawk/Source.cpp" line="550"/>
+        <location filename="../src/libhatchet/Source.cpp" line="550"/>
         <source>Scanning (%L1 tracks)</source>
         <translation>Сканирование (%L1 песни)</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/Source.cpp" line="535"/>
+        <location filename="../src/libhatchet/Source.cpp" line="535"/>
         <source>Checking</source>
         <translation>Проверяю</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/Source.cpp" line="540"/>
+        <location filename="../src/libhatchet/Source.cpp" line="540"/>
         <source>Syncing</source>
         <translation>Синхронизация</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/Source.cpp" line="545"/>
+        <location filename="../src/libhatchet/Source.cpp" line="545"/>
         <source>Importing</source>
         <translation>Импортирование</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/Source.cpp" line="735"/>
+        <location filename="../src/libhatchet/Source.cpp" line="735"/>
         <source>Saving (%1%)</source>
         <translation>Сохраняю (%1%)</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/Source.cpp" line="822"/>
+        <location filename="../src/libhatchet/Source.cpp" line="822"/>
         <source>Online</source>
         <translation>В сети</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/Source.cpp" line="826"/>
+        <location filename="../src/libhatchet/Source.cpp" line="826"/>
         <source>Offline</source>
         <translation>Не в сети</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::SpotifyParser</name>
+    <name>Hatchet::SpotifyParser</name>
     <message>
-        <location filename="../src/libtomahawk/utils/SpotifyParser.cpp" line="280"/>
+        <location filename="../src/libhatchet/utils/SpotifyParser.cpp" line="280"/>
         <source>Error fetching Spotify information from the network!</source>
         <translation>Возникла ошибка при получении информации из Spotify!</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Track</name>
+    <name>Hatchet::Track</name>
     <message>
-        <location filename="../src/libtomahawk/Track.cpp" line="558"/>
+        <location filename="../src/libhatchet/Track.cpp" line="558"/>
         <source> and </source>
         <translation>и</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/Track.cpp" line="566"/>
+        <location filename="../src/libhatchet/Track.cpp" line="566"/>
         <source>You</source>
         <translation>Ваши</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/Track.cpp" line="568"/>
+        <location filename="../src/libhatchet/Track.cpp" line="568"/>
         <source>you</source>
         <translation>Ваши</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/Track.cpp" line="581"/>
+        <location filename="../src/libhatchet/Track.cpp" line="581"/>
         <source>and</source>
         <translation>и</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libtomahawk/Track.cpp" line="581"/>
+        <location filename="../src/libhatchet/Track.cpp" line="581"/>
         <source>%n other(s)</source>
         <translation><numerusform>%n другого</numerusform><numerusform>%n других</numerusform><numerusform>%n других</numerusform><numerusform>%n других</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libtomahawk/Track.cpp" line="584"/>
+        <location filename="../src/libhatchet/Track.cpp" line="584"/>
         <source>%n people</source>
         <translation><numerusform>%n человек</numerusform><numerusform>%n человека</numerusform><numerusform>%n человек</numerusform><numerusform>%n человек</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/Track.cpp" line="588"/>
+        <location filename="../src/libhatchet/Track.cpp" line="588"/>
         <source>loved this track</source>
         <translation>Полюбить эту композицию</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/Track.cpp" line="590"/>
+        <location filename="../src/libhatchet/Track.cpp" line="590"/>
         <source>sent you this track %1</source>
         <translation>Отправил вам эту композицию %1</translation>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Widgets::ChartsPage</name>
+    <name>Hatchet::Widgets::ChartsPage</name>
     <message>
         <location filename="../src/viewpages/charts/ChartsWidget.h" line="130"/>
         <source>Charts</source>
@@ -3854,7 +3854,7 @@ Try tweaking the filters for a new set of songs to play.</source>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Widgets::Dashboard</name>
+    <name>Hatchet::Widgets::Dashboard</name>
     <message>
         <location filename="../src/viewpages/dashboard/Dashboard.h" line="96"/>
         <source>Feed</source>
@@ -3867,7 +3867,7 @@ Try tweaking the filters for a new set of songs to play.</source>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Widgets::DashboardWidget</name>
+    <name>Hatchet::Widgets::DashboardWidget</name>
     <message>
         <location filename="../src/viewpages/dashboard/Dashboard.cpp" line="78"/>
         <source>Recently Played Tracks</source>
@@ -3880,7 +3880,7 @@ Try tweaking the filters for a new set of songs to play.</source>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Widgets::NetworkActivity</name>
+    <name>Hatchet::Widgets::NetworkActivity</name>
     <message>
         <location filename="../src/viewpages/networkactivity/NetworkActivity.h" line="57"/>
         <source>Trending</source>
@@ -3893,7 +3893,7 @@ Try tweaking the filters for a new set of songs to play.</source>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Widgets::NetworkActivityWidget</name>
+    <name>Hatchet::Widgets::NetworkActivityWidget</name>
     <message>
         <location filename="../src/viewpages/networkactivity/NetworkActivityWidget.cpp" line="71"/>
         <source>Charts</source>
@@ -3946,7 +3946,7 @@ Try tweaking the filters for a new set of songs to play.</source>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Widgets::NewReleasesPage</name>
+    <name>Hatchet::Widgets::NewReleasesPage</name>
     <message>
         <location filename="../src/viewpages/newreleases/NewReleasesWidget.h" line="120"/>
         <source>New Releases</source>
@@ -3954,7 +3954,7 @@ Try tweaking the filters for a new set of songs to play.</source>
     </message>
 </context>
 <context>
-    <name>Tomahawk::Widgets::WhatsNew_0_8</name>
+    <name>Hatchet::Widgets::WhatsNew_0_8</name>
     <message>
         <location filename="../src/viewpages/whatsnew_0_8/WhatsNew_0_8.h" line="89"/>
         <source>What&apos;s new in 0.8?</source>
@@ -3967,304 +3967,304 @@ Try tweaking the filters for a new set of songs to play.</source>
     </message>
 </context>
 <context>
-    <name>Tomahawk::XspfUpdater</name>
+    <name>Hatchet::XspfUpdater</name>
     <message>
-        <location filename="../src/libtomahawk/playlist/XspfUpdater.cpp" line="60"/>
+        <location filename="../src/libhatchet/playlist/XspfUpdater.cpp" line="60"/>
         <source>Automatically update from XSPF</source>
         <translation>Автоматическое обновление из XSPF</translation>
     </message>
 </context>
 <context>
-    <name>TomahawkApp</name>
+    <name>HatchetApp</name>
     <message>
-        <location filename="../src/tomahawk/TomahawkApp.cpp" line="523"/>
+        <location filename="../src/hatchet/HatchetApp.cpp" line="523"/>
         <source>You</source>
         <translation>Ваши</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkApp.cpp" line="611"/>
-        <source>Tomahawk is updating the database. Please wait, this may take a minute!</source>
-        <translation>Tomahawk обновляет базу данных. Подождите, это может занять минуту!</translation>
+        <location filename="../src/hatchet/HatchetApp.cpp" line="611"/>
+        <source>Hatchet is updating the database. Please wait, this may take a minute!</source>
+        <translation>Hatchet обновляет базу данных. Подождите, это может занять минуту!</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkApp.cpp" line="618"/>
-        <source>Tomahawk</source>
-        <translation>Tomahawk</translation>
+        <location filename="../src/hatchet/HatchetApp.cpp" line="618"/>
+        <source>Hatchet</source>
+        <translation>Hatchet</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkApp.cpp" line="729"/>
+        <location filename="../src/hatchet/HatchetApp.cpp" line="729"/>
         <source>Updating database
 </source>
         <translation>Обновление базы данных</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkApp.cpp" line="736"/>
+        <location filename="../src/hatchet/HatchetApp.cpp" line="736"/>
         <source>Updating database
 %1</source>
         <translation>Обновление базы данных
 %1</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkApp.cpp" line="786"/>
+        <location filename="../src/hatchet/HatchetApp.cpp" line="786"/>
         <source>Automatically detecting external IP failed.</source>
         <translation>Не удалось автоматически определить внешний IP.</translation>
     </message>
 </context>
 <context>
-    <name>TomahawkSettings</name>
+    <name>HatchetSettings</name>
     <message>
-        <location filename="../src/libtomahawk/TomahawkSettings.cpp" line="386"/>
+        <location filename="../src/libhatchet/HatchetSettings.cpp" line="386"/>
         <source>Local Network</source>
         <translation>Домашняя сеть</translation>
     </message>
 </context>
 <context>
-    <name>TomahawkTrayIcon</name>
+    <name>HatchetTrayIcon</name>
     <message>
-        <location filename="../src/tomahawk/TomahawkTrayIcon.cpp" line="181"/>
+        <location filename="../src/hatchet/HatchetTrayIcon.cpp" line="181"/>
         <source>&amp;Stop Playback after current Track</source>
         <translation>&amp;Остановить после текущего трека</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkTrayIcon.cpp" line="76"/>
-        <location filename="../src/tomahawk/TomahawkTrayIcon.cpp" line="115"/>
-        <source>Hide Tomahawk Window</source>
-        <translation>Спрятать окно Tomahawk</translation>
+        <location filename="../src/hatchet/HatchetTrayIcon.cpp" line="76"/>
+        <location filename="../src/hatchet/HatchetTrayIcon.cpp" line="115"/>
+        <source>Hide Hatchet Window</source>
+        <translation>Спрятать окно Hatchet</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkTrayIcon.cpp" line="120"/>
-        <source>Show Tomahawk Window</source>
-        <translation>Показать окно Tomahawk</translation>
+        <location filename="../src/hatchet/HatchetTrayIcon.cpp" line="120"/>
+        <source>Show Hatchet Window</source>
+        <translation>Показать окно Hatchet</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkTrayIcon.cpp" line="201"/>
+        <location filename="../src/hatchet/HatchetTrayIcon.cpp" line="201"/>
         <source>Currently not playing.</source>
         <translation>Не воспроизводится.</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkTrayIcon.cpp" line="262"/>
+        <location filename="../src/hatchet/HatchetTrayIcon.cpp" line="262"/>
         <source>Play</source>
         <translation>Играть</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkTrayIcon.cpp" line="290"/>
+        <location filename="../src/hatchet/HatchetTrayIcon.cpp" line="290"/>
         <source>Pause</source>
         <translation>Пауза</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkTrayIcon.cpp" line="320"/>
+        <location filename="../src/hatchet/HatchetTrayIcon.cpp" line="320"/>
         <source>&amp;Love</source>
         <translation>&amp;Любимая</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkTrayIcon.cpp" line="328"/>
+        <location filename="../src/hatchet/HatchetTrayIcon.cpp" line="328"/>
         <source>Un-&amp;Love</source>
         <translation>&amp;Нелюбимая</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkTrayIcon.cpp" line="179"/>
+        <location filename="../src/hatchet/HatchetTrayIcon.cpp" line="179"/>
         <source>&amp;Continue Playback after current Track</source>
         <translation>&amp;Продолжить воспроизведение после текущего трека</translation>
     </message>
 </context>
 <context>
-    <name>TomahawkWindow</name>
+    <name>HatchetWindow</name>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.ui" line="14"/>
-        <source>Tomahawk</source>
-        <translation>Tomahawk</translation>
+        <location filename="../src/hatchet/HatchetWindow.ui" line="14"/>
+        <source>Hatchet</source>
+        <translation>Hatchet</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="306"/>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="597"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="306"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="597"/>
         <source>Back</source>
         <translation>Назад</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="361"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="361"/>
         <source>Go back one page</source>
         <translation>Перейти на предыдущую страницу</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="310"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="310"/>
         <source>Forward</source>
         <translation>Вперед</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="362"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="362"/>
         <source>Go forward one page</source>
         <translation>Перейдите на следующую страницу</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="237"/>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1531"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="237"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1531"/>
         <source>Hide Menu Bar</source>
         <translation>Скрывать панель меню</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="237"/>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1525"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="237"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1525"/>
         <source>Show Menu Bar</source>
         <translation>Показывать панель меню</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="346"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="346"/>
         <source>&amp;Main Menu</source>
         <translation>&amp;Главное меню</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="604"/>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="956"/>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="968"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="604"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="956"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="968"/>
         <source>Play</source>
         <translation>Воспроизведение</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="610"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="610"/>
         <source>Next</source>
         <translation>Следующий</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="623"/>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1017"/>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1024"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="623"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1017"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1024"/>
         <source>Love</source>
         <translation>Любимая</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1012"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1012"/>
         <source>Unlove</source>
         <translation>Нелюбимая</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1148"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1148"/>
         <source>Exit Full Screen</source>
         <translation>Выход из полноэкранного режима</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1166"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1166"/>
         <source>Enter Full Screen</source>
         <translation>Переход в полноэкранный режим</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1245"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1245"/>
         <source>This is not a valid XSPF playlist.</source>
         <translation>Это не является допустимым XSPF плей-листом.</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1249"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1249"/>
         <source>Some tracks in the playlist do not contain an artist and a title. They will be ignored.</source>
         <translation>Некоторые песни в плей-листе не содержат исполнителя и название. Они будут проигнорированы.</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1261"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1261"/>
         <source>Failed to load JSPF playlist</source>
         <translation>Не удалось загрузить JSPF плейлист</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1268"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1268"/>
         <source>Sorry, there is a problem accessing your audio device or the desired track, current track will be skipped.</source>
         <translation>К сожалению, есть проблемы с доступом к аудио устройству или данной песне, текущая песня будет пропущена.</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1277"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1277"/>
         <source>Station</source>
         <translation>Станция</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1279"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1279"/>
         <source>Create New Station</source>
         <translation>Создать новую станцию</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1279"/>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1314"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1279"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1314"/>
         <source>Name:</source>
         <translation>Название:</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1312"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1312"/>
         <source>Playlist</source>
         <translation>Плей-лист</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1314"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1314"/>
         <source>Create New Playlist</source>
         <translation>Создать новый список воспроизведения</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="947"/>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1345"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="947"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1345"/>
         <source>Pause</source>
         <translation>Пауза</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="324"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="324"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1367"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1367"/>
         <source>&amp;Play</source>
         <translation>&amp;Играть</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1399"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1399"/>
         <source>%1 by %2</source>
         <comment>track, artist name</comment>
         <translation>%1 из %2</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1400"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1400"/>
         <source>%1 - %2</source>
         <comment>current track, some window title</comment>
         <translation>%1 - %2</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1411"/>
-        <source>&lt;h2&gt;&lt;b&gt;Tomahawk %1&lt;br/&gt;(%2)&lt;/h2&gt;</source>
-        <translation>&lt;h2&gt;&lt;b&gt;Tomahawk %1&lt;br/&gt;(%2)&lt;/h2&gt;</translation>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1411"/>
+        <source>&lt;h2&gt;&lt;b&gt;Hatchet %1&lt;br/&gt;(%2)&lt;/h2&gt;</source>
+        <translation>&lt;h2&gt;&lt;b&gt;Hatchet %1&lt;br/&gt;(%2)&lt;/h2&gt;</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1415"/>
-        <source>&lt;h2&gt;&lt;b&gt;Tomahawk %1&lt;/h2&gt;</source>
-        <translation>&lt;h2&gt;&lt;b&gt;Tomahawk %1&lt;/h2&gt;</translation>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1415"/>
+        <source>&lt;h2&gt;&lt;b&gt;Hatchet %1&lt;/h2&gt;</source>
+        <translation>&lt;h2&gt;&lt;b&gt;Hatchet %1&lt;/h2&gt;</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1419"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1419"/>
         <source>Copyright 2010 - 2015</source>
         <translation>Авторские права 2010 - 2015</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1420"/>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1420"/>
         <source>Thanks to:</source>
         <translation>Благодарность:</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/TomahawkWindow.cpp" line="1427"/>
-        <source>About Tomahawk</source>
-        <translation>О программе Tomahawk</translation>
+        <location filename="../src/hatchet/HatchetWindow.cpp" line="1427"/>
+        <source>About Hatchet</source>
+        <translation>О программе Hatchet</translation>
     </message>
 </context>
 <context>
     <name>TrackDetailView</name>
     <message>
-        <location filename="../src/libtomahawk/playlist/TrackDetailView.cpp" line="79"/>
+        <location filename="../src/libhatchet/playlist/TrackDetailView.cpp" line="79"/>
         <source>Marked as Favorite</source>
         <translation>Отметить как избранное</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/TrackDetailView.cpp" line="97"/>
+        <location filename="../src/libhatchet/playlist/TrackDetailView.cpp" line="97"/>
         <source>Alternate Sources:</source>
         <translation>Черодование источников:</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/TrackDetailView.cpp" line="175"/>
+        <location filename="../src/libhatchet/playlist/TrackDetailView.cpp" line="175"/>
         <source>Unknown Release-Date</source>
         <translation>Неизвестная дата создания</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/TrackDetailView.cpp" line="266"/>
+        <location filename="../src/libhatchet/playlist/TrackDetailView.cpp" line="266"/>
         <source>on %1</source>
         <translation>в %1</translation>
     </message>
@@ -4272,17 +4272,17 @@ Try tweaking the filters for a new set of songs to play.</source>
 <context>
     <name>TrackInfoWidget</name>
     <message>
-        <location filename="../src/libtomahawk/viewpages/TrackViewPage.cpp" line="52"/>
+        <location filename="../src/libhatchet/viewpages/TrackViewPage.cpp" line="52"/>
         <source>Similar Tracks</source>
         <translation>Похожие песни</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/TrackViewPage.cpp" line="53"/>
+        <location filename="../src/libhatchet/viewpages/TrackViewPage.cpp" line="53"/>
         <source>Sorry, but we could not find similar tracks for this song!</source>
         <translation>Извините, но мы не смогли найти похожие на эту песни !</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/viewpages/TrackViewPage.ui" line="60"/>
+        <location filename="../src/libhatchet/viewpages/TrackViewPage.ui" line="60"/>
         <source>Top Hits</source>
         <translation>Популярные хиты</translation>
     </message>
@@ -4290,7 +4290,7 @@ Try tweaking the filters for a new set of songs to play.</source>
 <context>
     <name>TrackView</name>
     <message>
-        <location filename="../src/libtomahawk/playlist/TrackView.cpp" line="692"/>
+        <location filename="../src/libhatchet/playlist/TrackView.cpp" line="692"/>
         <source>Sorry, your filter &apos;%1&apos; did not match any results.</source>
         <translation>Ваш поиск &apos;%1&apos; не дал результатов.</translation>
     </message>
@@ -4298,13 +4298,13 @@ Try tweaking the filters for a new set of songs to play.</source>
 <context>
     <name>TransferStatusItem</name>
     <message>
-        <location filename="../src/libtomahawk/jobview/TransferStatusItem.cpp" line="68"/>
+        <location filename="../src/libhatchet/jobview/TransferStatusItem.cpp" line="68"/>
         <source>from</source>
         <comment>streaming artist - track from friend</comment>
         <translation>из</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/jobview/TransferStatusItem.cpp" line="68"/>
+        <location filename="../src/libhatchet/jobview/TransferStatusItem.cpp" line="68"/>
         <source>to</source>
         <comment>streaming artist - track to friend</comment>
         <translation>к</translation>
@@ -4313,127 +4313,127 @@ Try tweaking the filters for a new set of songs to play.</source>
 <context>
     <name>Type selector</name>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="77"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="77"/>
         <source>Artist</source>
         <translation>Исполнитель</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="77"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="77"/>
         <source>Artist Description</source>
         <translation>Описание исполнителя</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="78"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="78"/>
         <source>User Radio</source>
         <translation>Радио пользователя</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="78"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="78"/>
         <source>Song</source>
         <translation>Песня</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="79"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="79"/>
         <source>Genre</source>
         <translation>Жанр</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="79"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="79"/>
         <source>Mood</source>
         <translation>Настроение</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="80"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="80"/>
         <source>Style</source>
         <translation>Стиль</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="80"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="80"/>
         <source>Adventurousness</source>
         <translation>Раскованность</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="81"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="81"/>
         <source>Variety</source>
         <translation>Разнообразие</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="81"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="81"/>
         <source>Tempo</source>
         <translation>Ритм</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="82"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="82"/>
         <source>Duration</source>
         <translation>Продолжительность</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="82"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="82"/>
         <source>Loudness</source>
         <translation>Громкость</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="83"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="83"/>
         <source>Danceability</source>
         <translation>Танцевальная</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="83"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="83"/>
         <source>Energy</source>
         <translation>Энергичная</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="84"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="84"/>
         <source>Artist Familiarity</source>
         <translation>Схожие исполнители</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="84"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="84"/>
         <source>Artist Hotttnesss</source>
         <translation>Горячий исполнитель</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="85"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="85"/>
         <source>Song Hotttnesss</source>
         <translation>Горячая песня</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="85"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="85"/>
         <source>Longitude</source>
         <translation>Долгота</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="86"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="86"/>
         <source>Latitude</source>
         <translation>Широта</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="86"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="86"/>
         <source>Mode</source>
         <translation>Режим</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="87"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="87"/>
         <source>Key</source>
         <translation>Ключ</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="87"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="87"/>
         <source>Sorting</source>
         <translation>Сортировка</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="88"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="88"/>
         <source>Song Type</source>
         <translation>Тип песни</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="88"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="88"/>
         <source>Distribution</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libtomahawk/playlist/dynamic/echonest/EchonestGenerator.cpp" line="89"/>
+        <location filename="../src/libhatchet/playlist/dynamic/echonest/EchonestGenerator.cpp" line="89"/>
         <source>Genre Preset</source>
         <translation type="unfinished"/>
     </message>
@@ -4441,12 +4441,12 @@ Try tweaking the filters for a new set of songs to play.</source>
 <context>
     <name>ViewManager</name>
     <message>
-        <location filename="../src/libtomahawk/ViewManager.cpp" line="83"/>
+        <location filename="../src/libhatchet/ViewManager.cpp" line="83"/>
         <source>Inbox</source>
         <translation>Входящие</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/ViewManager.cpp" line="84"/>
+        <location filename="../src/libhatchet/ViewManager.cpp" line="84"/>
         <source>Listening suggestions from your friends</source>
         <translation>Музыкальные рекомендации от ваших друзей</translation>
     </message>
@@ -4470,8 +4470,8 @@ Try tweaking the filters for a new set of songs to play.</source>
     </message>
     <message>
         <location filename="../src/viewpages/whatsnew_0_8/WhatsNewWidget_0_8.ui" line="213"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Send tracks to your friends just by dragging it onto their avatar in the Tomahawk sidebar. Check out what your friends think you should listen to in your inbox.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Делитесь треками со своими друзьями, просто перетаскивая на их аватар в боковой панели Tomahawk. Проверить рекомендации ваших друзей можно во входящих.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Send tracks to your friends just by dragging it onto their avatar in the Hatchet sidebar. Check out what your friends think you should listen to in your inbox.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Делитесь треками со своими друзьями, просто перетаскивая на их аватар в боковой панели Hatchet. Проверить рекомендации ваших друзей можно во входящих.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/viewpages/whatsnew_0_8/WhatsNewWidget_0_8.ui" line="230"/>
@@ -4480,8 +4480,8 @@ Try tweaking the filters for a new set of songs to play.</source>
     </message>
     <message>
         <location filename="../src/viewpages/whatsnew_0_8/WhatsNewWidget_0_8.ui" line="253"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Love that your friends and influencers are posting music links  but hate that they are links for music services you don&apos;t use? Just drag Rdio, Deezer, Beats or other music service URLs into your Tomahawk queue or playlists and have them automatically play from your preferred source.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Любите, когда ваши друзья и активисты публикуют ссылки на музыкальные композиции, но ненавидите, когда ссылки оказываются на сервисах, которыми вы не пользуетесь? Перенесите Rdio, Deezer, Beats или другие ccылки на музыкальные сервисы в очередь или список воспроизведения Tomahawk, чтобы начать автоматическое воспроизведение с предпочтительного источника.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Love that your friends and influencers are posting music links  but hate that they are links for music services you don&apos;t use? Just drag Rdio, Deezer, Beats or other music service URLs into your Hatchet queue or playlists and have them automatically play from your preferred source.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Любите, когда ваши друзья и активисты публикуют ссылки на музыкальные композиции, но ненавидите, когда ссылки оказываются на сервисах, которыми вы не пользуетесь? Перенесите Rdio, Deezer, Beats или другие ccылки на музыкальные сервисы в очередь или список воспроизведения Hatchet, чтобы начать автоматическое воспроизведение с предпочтительного источника.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/viewpages/whatsnew_0_8/WhatsNewWidget_0_8.ui" line="270"/>
@@ -4505,8 +4505,8 @@ Try tweaking the filters for a new set of songs to play.</source>
     </message>
     <message>
         <location filename="../src/viewpages/whatsnew_0_8/WhatsNewWidget_0_8.ui" line="376"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tomahawk for Android is now in beta! The majority of the same resolvers are supported in the Android app - plus a couple of additional ones in Rdio &amp;amp; Deezer. &lt;a href=&quot;http://hatchet.is/register&quot;&gt;Create a Hatchet account&lt;/a&gt; to sync all of your playlists from your desktop to your mobile. Find current and future music influencers and follow them to discover and hear what they love. Just like on the desktop, Tomahawk on Android can open other music service links and play them from yours. Even when you are listening to other music apps, Tomahawk can capture all of that playback data and add it to your Hatchet profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tomahawk для Android теперь бета-версии! Большинство музыкальных сервисов уже поддерживаются в Android приложении - плюс добавлены Rdio &amp;amp; Deezer. &lt;a href=&quot;http://hatchet.is/register&quot;&gt;Создайте аккаунт Hatchet &lt;/a&gt;, чтобы синхронизировать все ваши плей-листы с компьютера на мобильное устройство. Находить текущих и будущих музыкальных авторитетов, фолловить их и узнавать музыкальные предпочтения фолловеров. Так же как и на компьютере, Tomahawk для Android может открывать различные музыкальные ссылки и воспроизводить их. Даже когда вы слушаете музыку в других приложениях, Tomahawk может захватить список воспроизведения и сохранить его в ваш профиль Hatchet.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hatchet for Android is now in beta! The majority of the same resolvers are supported in the Android app - plus a couple of additional ones in Rdio &amp;amp; Deezer. &lt;a href=&quot;http://hatchet.is/register&quot;&gt;Create a Hatchet account&lt;/a&gt; to sync all of your playlists from your desktop to your mobile. Find current and future music influencers and follow them to discover and hear what they love. Just like on the desktop, Hatchet on Android can open other music service links and play them from yours. Even when you are listening to other music apps, Hatchet can capture all of that playback data and add it to your Hatchet profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hatchet для Android теперь бета-версии! Большинство музыкальных сервисов уже поддерживаются в Android приложении - плюс добавлены Rdio &amp;amp; Deezer. &lt;a href=&quot;http://hatchet.is/register&quot;&gt;Создайте аккаунт Hatchet &lt;/a&gt;, чтобы синхронизировать все ваши плей-листы с компьютера на мобильное устройство. Находить текущих и будущих музыкальных авторитетов, фолловить их и узнавать музыкальные предпочтения фолловеров. Так же как и на компьютере, Hatchet для Android может открывать различные музыкальные ссылки и воспроизводить их. Даже когда вы слушаете музыку в других приложениях, Hatchet может захватить список воспроизведения и сохранить его в ваш профиль Hatchet.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/viewpages/whatsnew_0_8/WhatsNewWidget_0_8.ui" line="396"/>
@@ -4515,8 +4515,8 @@ Try tweaking the filters for a new set of songs to play.</source>
     </message>
     <message>
         <location filename="../src/viewpages/whatsnew_0_8/WhatsNewWidget_0_8.ui" line="419"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tomahawk now supports IPv6 and multiple local IP addresses. This improves the discoverability and connection between Tomahawk users - particularly large local networks often found in work and university settings. The more friends, the more music, the more playlists and the more curation from those people whose musical tastes you value. Sit back and just Listen Along!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tomahawk теперь поддерживает IPv6 и множественные локальные IP адреса. Это улучшает обнаружение и связь между пользователями Tomahawk - крупные локальные сети часто встречаются в рабочих и педагогических организациях. Больше друзей, больше музыки, больше плей-листов и больше интересной информации от тех людей, чьи музыкальные вкусы вы цените. Расслабьтесь и вперед!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hatchet now supports IPv6 and multiple local IP addresses. This improves the discoverability and connection between Hatchet users - particularly large local networks often found in work and university settings. The more friends, the more music, the more playlists and the more curation from those people whose musical tastes you value. Sit back and just Listen Along!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hatchet теперь поддерживает IPv6 и множественные локальные IP адреса. Это улучшает обнаружение и связь между пользователями Hatchet - крупные локальные сети часто встречаются в рабочих и педагогических организациях. Больше друзей, больше музыки, больше плей-листов и больше интересной информации от тех людей, чьи музыкальные вкусы вы цените. Расслабьтесь и вперед!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/viewpages/whatsnew_0_8/WhatsNewWidget_0_8.ui" line="353"/>
@@ -4527,7 +4527,7 @@ Try tweaking the filters for a new set of songs to play.</source>
 <context>
     <name>XMPPBot</name>
     <message>
-        <location filename="../src/tomahawk/xmppbot/XmppBot.cpp" line="315"/>
+        <location filename="../src/hatchet/xmppbot/XmppBot.cpp" line="315"/>
         <source>
 Terms for %1:
 </source>
@@ -4536,12 +4536,12 @@ Terms for %1:
 </translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/xmppbot/XmppBot.cpp" line="317"/>
+        <location filename="../src/hatchet/xmppbot/XmppBot.cpp" line="317"/>
         <source>No terms found, sorry.</source>
         <translation>Извините, не найдено терминов.</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/xmppbot/XmppBot.cpp" line="350"/>
+        <location filename="../src/hatchet/xmppbot/XmppBot.cpp" line="350"/>
         <source>
 Hotttness for %1: %2
 </source>
@@ -4549,7 +4549,7 @@ Hotttness for %1: %2
 Горячая для %1: %</translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/xmppbot/XmppBot.cpp" line="366"/>
+        <location filename="../src/hatchet/xmppbot/XmppBot.cpp" line="366"/>
         <source>
 Familiarity for %1: %2
 </source>
@@ -4558,7 +4558,7 @@ Familiarity for %1: %2
 </translation>
     </message>
     <message>
-        <location filename="../src/tomahawk/xmppbot/XmppBot.cpp" line="384"/>
+        <location filename="../src/hatchet/xmppbot/XmppBot.cpp" line="384"/>
         <source>
 Lyrics for &quot;%1&quot; by %2:
 
@@ -4574,22 +4574,22 @@ Lyrics for &quot;%1&quot; by %2:
 <context>
     <name>XSPFLoader</name>
     <message>
-        <location filename="../src/libtomahawk/utils/XspfLoader.cpp" line="48"/>
+        <location filename="../src/libhatchet/utils/XspfLoader.cpp" line="48"/>
         <source>Failed to parse contents of XSPF playlist</source>
         <translation>Невозможно разобрать содержимое XSPF плей-листа</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/utils/XspfLoader.cpp" line="50"/>
+        <location filename="../src/libhatchet/utils/XspfLoader.cpp" line="50"/>
         <source>Some playlist entries were found without artist and track name, they will be omitted</source>
         <translation>Некоторые песни в плей-листе были найдены без названия песни и исполнителя, они будут пропущены</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/utils/XspfLoader.cpp" line="52"/>
+        <location filename="../src/libhatchet/utils/XspfLoader.cpp" line="52"/>
         <source>Failed to fetch the desired playlist from the network, or the desired file does not exist</source>
         <translation>Не удалось получить желаемый плей-лист из сети, или нужный файл не существует</translation>
     </message>
     <message>
-        <location filename="../src/libtomahawk/utils/XspfLoader.cpp" line="239"/>
+        <location filename="../src/libhatchet/utils/XspfLoader.cpp" line="239"/>
         <source>New Playlist</source>
         <translation>Новый список</translation>
     </message>
@@ -4855,8 +4855,8 @@ Lyrics for &quot;%1&quot; by %2:
     </message>
     <message>
         <location filename="../src/accounts/xmpp/sip/XmppSip.cpp" line="691"/>
-        <source>I&apos;m sorry -- I&apos;m just an automatic presence used by Tomahawk Player (http://gettomahawk.com). If you are getting this message, the person you are trying to reach is probably not signed on, so please try again later!</source>
-        <translation>Простите - это просто автоматическое присутствие проигрывателя Tomahawk (http://gettomahawk.com). Если вы получили это сообщение, человек, которого вы пытаетесь достичь, вероятно, не подписан, поэтому повторите попытку позже!</translation>
+        <source>I&apos;m sorry -- I&apos;m just an automatic presence used by Hatchet Player (http://gethatchet.com). If you are getting this message, the person you are trying to reach is probably not signed on, so please try again later!</source>
+        <translation>Простите - это просто автоматическое присутствие проигрывателя Hatchet (http://gethatchet.com). Если вы получили это сообщение, человек, которого вы пытаетесь достичь, вероятно, не подписан, поэтому повторите попытку позже!</translation>
     </message>
     <message>
         <location filename="../src/accounts/xmpp/sip/XmppSip.cpp" line="799"/>

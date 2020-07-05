@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef DYNAMIC_WIDGET_H
@@ -33,7 +33,7 @@ class QHideEvent;
 class QVBoxLayout;
 class QLabel;
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 class DynamicModel;
@@ -46,7 +46,7 @@ class CollapsibleControls;
 /**
  * This class contains the dynamic playlist config and the playlist view itself
  */
-class DynamicWidget : public QWidget, public Tomahawk::ViewPage
+class DynamicWidget : public QWidget, public Hatchet::ViewPage
 {
 Q_OBJECT
 public:
@@ -56,7 +56,7 @@ public:
     void loadDynamicPlaylist( const dynplaylist_ptr& playlist );
     dynplaylist_ptr playlist();
 
-    virtual Tomahawk::playlistinterface_ptr playlistInterface() const;
+    virtual Hatchet::playlistinterface_ptr playlistInterface() const;
 
     virtual QSize sizeHint() const;
     virtual void resizeEvent( QResizeEvent* );
@@ -73,7 +73,7 @@ public:
     virtual bool jumpToCurrentTrack();
 
 public slots:
-    void onRevisionLoaded( const Tomahawk::DynamicPlaylistRevision& rev );
+    void onRevisionLoaded( const Hatchet::DynamicPlaylistRevision& rev );
     void playlistTypeChanged( QString );
 
     void startStation();
@@ -82,7 +82,7 @@ public slots:
     void trackStarted();
     void stationFailed( const QString& );
 
-    void playlistChanged( Tomahawk::playlistinterface_ptr );
+    void playlistChanged( Hatchet::playlistinterface_ptr );
     void tracksAdded();
 
 signals:
@@ -92,11 +92,11 @@ signals:
 
 private slots:
     void generate( int = -1 );
-    void tracksGenerated( const QList< Tomahawk::query_ptr>& queries );
+    void tracksGenerated( const QList< Hatchet::query_ptr>& queries );
     void generatorError( const QString& title, const QString& content );
 
     void controlsChanged( bool added );
-    void controlChanged( const Tomahawk::dyncontrol_ptr& control );
+    void controlChanged( const Hatchet::dyncontrol_ptr& control );
     void steeringChanged();
     void showPreview();
 

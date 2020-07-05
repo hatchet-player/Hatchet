@@ -1,23 +1,23 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013, Dominik Schmidt <domme@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOMAHAWK_TESTDATABASE_H
-#define TOMAHAWK_TESTDATABASE_H
+#ifndef HATCHET_TESTDATABASE_H
+#define HATCHET_TESTDATABASE_H
 
 #include <QtTest>
 
@@ -25,7 +25,7 @@
 #include "database/DatabaseCommand_LogPlayback.h"
 
 
-class TestDatabaseCommand : public Tomahawk::DatabaseCommand
+class TestDatabaseCommand : public Hatchet::DatabaseCommand
 {
 Q_OBJECT
     virtual QString commandname() const { return "TestCommand"; }
@@ -35,12 +35,12 @@ class TestDatabase : public QObject
 {
     Q_OBJECT
 private:
-    Tomahawk::Database* db;
+    Hatchet::Database* db;
 
 private slots:
     void initTestCase()
     {
-        db = new Tomahawk::Database("test");
+        db = new Hatchet::Database("test");
     }
 
     void cleanupTestCase()
@@ -50,14 +50,14 @@ private slots:
 
     void testFactories()
     {
-        Tomahawk::dbcmd_ptr command;
+        Hatchet::dbcmd_ptr command;
 
         // can we check that his ASSERTs?, it's a build in type, one must not register it again
         // db->registerCommand<DatabaseCommand_LogPlayback>();
 
         // check that if we request a factory for LogPlayback it really creates a LogPlayback object
-        command = db->commandFactory<Tomahawk::DatabaseCommand_LogPlayback>()->newInstance();
-        Tomahawk::DatabaseCommand_LogPlayback* lpCmd =  qobject_cast< Tomahawk::DatabaseCommand_LogPlayback* >( command.data() );
+        command = db->commandFactory<Hatchet::DatabaseCommand_LogPlayback>()->newInstance();
+        Hatchet::DatabaseCommand_LogPlayback* lpCmd =  qobject_cast< Hatchet::DatabaseCommand_LogPlayback* >( command.data() );
         QVERIFY( lpCmd );
 
         // try to handle a third party database command
@@ -75,4 +75,4 @@ private slots:
     }
 };
 
-#endif // TOMAHAWK_TESTDATABASE_H
+#endif // HATCHET_TESTDATABASE_H

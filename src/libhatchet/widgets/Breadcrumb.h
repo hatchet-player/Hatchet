@@ -1,23 +1,23 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOMAHAWK_BREADCRUMB_H
-#define TOMAHAWK_BREADCRUMB_H
+#ifndef HATCHET_BREADCRUMB_H
+#define HATCHET_BREADCRUMB_H
 
 #include <QWidget>
 #include <QModelIndex>
@@ -25,12 +25,12 @@
 class QHBoxLayout;
 class QAbstractItemModel;
 
-namespace Tomahawk {
+namespace Hatchet {
 
 class BreadcrumbButton;
 
 /**
- * A breadcrumb widget for Tomahawk's needs.
+ * A breadcrumb widget for Hatchet's needs.
  *
  * This breadcrumb operates on a QAIM. It uses a KBreadcrumbSelectionModel to manage the visible
  *  breadcrumb selection.
@@ -40,7 +40,7 @@ class BreadcrumbButton;
  *  made a previous selection, which is saved in the UserSelection role
  */
 
-//HACK: I'm exporting this, so I can move view pages to libtomahawk-widgets one by one
+//HACK: I'm exporting this, so I can move view pages to libhatchet-widgets one by one
 //TODO: In the end this class should go there too (and be made private again?)
 #include "../DllMacro.h"
 class DLLEXPORT Breadcrumb : public QWidget
@@ -84,5 +84,5 @@ private:
 
 }
 
-#endif // TOMAHAWK_BREADCRUMB_H
+#endif // HATCHET_BREADCRUMB_H
 

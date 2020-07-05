@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2012, Dominik Schmidt <dev@dominik-schmidt.de>
  *   Copyright 2013, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "PeerInfo_p.h"
@@ -23,8 +23,8 @@
 #include "network/ControlConnection.h"
 #include "network/Servent.h"
 #include "utils/Logger.h"
-#include "utils/TomahawkCache.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetCache.h"
+#include "utils/HatchetUtilsGui.h"
 
 #include "SipInfo.h"
 #include "SipPlugin.h"
@@ -32,10 +32,10 @@
 #include <QCryptographicHash>
 #include <QBuffer>
 
-namespace Tomahawk
+namespace Hatchet
 {
 
-Tomahawk::Utils::WeakObjectHash< PeerInfo > PeerInfoPrivate::s_peersByCacheKey = Tomahawk::Utils::WeakObjectHash< PeerInfo >();
+Hatchet::Utils::WeakObjectHash< PeerInfo > PeerInfoPrivate::s_peersByCacheKey = Hatchet::Utils::WeakObjectHash< PeerInfo >();
 QHash< SipPlugin*, peerinfo_ptr > PeerInfo::s_selfPeersBySipPlugin = QHash< SipPlugin*, peerinfo_ptr >();
 
 
@@ -46,7 +46,7 @@ peerCacheKey( SipPlugin* plugin, const QString& peerId )
 }
 
 
-Tomahawk::peerinfo_ptr
+Hatchet::peerinfo_ptr
 PeerInfo::getSelf( SipPlugin* parent, PeerInfo::GetOptions options )
 {
     if ( s_selfPeersBySipPlugin.keys().contains( parent ) )
@@ -71,14 +71,14 @@ PeerInfo::getSelf( SipPlugin* parent, PeerInfo::GetOptions options )
 }
 
 
-QList< Tomahawk::peerinfo_ptr >
+QList< Hatchet::peerinfo_ptr >
 PeerInfo::getAllSelf()
 {
     return s_selfPeersBySipPlugin.values();
 }
 
 
-Tomahawk::peerinfo_ptr
+Hatchet::peerinfo_ptr
 PeerInfo::get( SipPlugin* parent, const QString& id, GetOptions options )
 {
     const QString key = peerCacheKey( parent, id );
@@ -101,11 +101,11 @@ PeerInfo::get( SipPlugin* parent, const QString& id, GetOptions options )
 }
 
 
-QList< Tomahawk::peerinfo_ptr >
+QList< Hatchet::peerinfo_ptr >
 PeerInfo::getAll()
 {
-    QList< Tomahawk::peerinfo_ptr > strongRefs;
-    foreach ( Tomahawk::peerinfo_wptr wptr, PeerInfoPrivate::s_peersByCacheKey.hash().values() )
+    QList< Hatchet::peerinfo_ptr > strongRefs;
+    foreach ( Hatchet::peerinfo_wptr wptr, PeerInfoPrivate::s_peersByCacheKey.hash().values() )
     {
         if ( !wptr.isNull() )
             strongRefs << wptr.toStrongRef();
@@ -116,7 +116,7 @@ PeerInfo::getAll()
 
 PeerInfo::PeerInfo( SipPlugin* parent, const QString& id )
     : QObject()
-    , d_ptr( new Tomahawk::PeerInfoPrivate ( this, parent, id ) )
+    , d_ptr( new Hatchet::PeerInfoPrivate ( this, parent, id ) )
 {
 }
 
@@ -171,7 +171,7 @@ bool PeerInfo::hasControlConnection()
 
 
 void
-PeerInfo::setType( Tomahawk::PeerInfo::Type type )
+PeerInfo::setType( Hatchet::PeerInfo::Type type )
 {
     d_func()->type = type;
 }
@@ -333,12 +333,12 @@ PeerInfo::setAvatar( const QPixmap& avatar )
     d->fancyAvatar.reset();
 
     Q_ASSERT( !contactId().isEmpty() );
-    TomahawkUtils::Cache::instance()->putData( "Sources", 7776000000 /* 90 days */, contactId(), ba );
+    HatchetUtils::Cache::instance()->putData( "Sources", 7776000000 /* 90 days */, contactId(), ba );
 }
 
 
 const QPixmap
-PeerInfo::avatar( TomahawkUtils::ImageMode style, const QSize& size ) const
+PeerInfo::avatar( HatchetUtils::ImageMode style, const QSize& size ) const
 {
     Q_D( const PeerInfo );
 
@@ -347,7 +347,7 @@ PeerInfo::avatar( TomahawkUtils::ImageMode style, const QSize& size ) const
         // tDebug() << "Avatar for:" << id();
         Q_ASSERT( !contactId().isEmpty() );
         if ( d->avatarBuffer.isEmpty() && !contactId().isEmpty() )
-            d->avatarBuffer = TomahawkUtils::Cache::instance()->getData( "Sources", contactId() ).toByteArray();
+            d->avatarBuffer = HatchetUtils::Cache::instance()->getData( "Sources", contactId() ).toByteArray();
 
         d->avatar.reset( new QPixmap() );
         if ( !d->avatarBuffer.isEmpty() )
@@ -356,11 +356,11 @@ PeerInfo::avatar( TomahawkUtils::ImageMode style, const QSize& size ) const
         d->avatarBuffer.clear();
     }
 
-    if ( style == TomahawkUtils::RoundedCorners && d->avatar && !d->avatar->isNull() && d->fancyAvatar.isNull() )
-        d->fancyAvatar.reset( new QPixmap( TomahawkUtils::createRoundedImage( QPixmap( *d->avatar ), QSize( 0, 0 ) ) ) );
+    if ( style == HatchetUtils::RoundedCorners && d->avatar && !d->avatar->isNull() && d->fancyAvatar.isNull() )
+        d->fancyAvatar.reset( new QPixmap( HatchetUtils::createRoundedImage( QPixmap( *d->avatar ), QSize( 0, 0 ) ) ) );
 
     QPixmap pixmap;
-    if ( style == TomahawkUtils::RoundedCorners && d->fancyAvatar )
+    if ( style == HatchetUtils::RoundedCorners && d->fancyAvatar )
     {
         pixmap = *d->fancyAvatar;
     }

@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2011 - 2012, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "PlayableCover.h"
@@ -24,8 +24,8 @@
 #include "ViewManager.h"
 #include "audio/AudioEngine.h"
 #include "widgets/ImageButton.h"
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 
 #include <QApplication>
@@ -33,7 +33,7 @@
 #include <QMimeData>
 #include <QPainter>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 PlayableCover::PlayableCover( QWidget* parent )
     : QLabel( parent )
@@ -44,8 +44,8 @@ PlayableCover::PlayableCover( QWidget* parent )
     setMouseTracking( true );
 
     m_button = new ImageButton( this );
-    m_button->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::PlayButton, TomahawkUtils::Original, QSize( 48, 48 ) ) );
-    m_button->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::PlayButtonPressed, TomahawkUtils::Original, QSize( 48, 48 ) ), QIcon::Off, QIcon::Active );
+    m_button->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::PlayButton, HatchetUtils::Original, QSize( 48, 48 ) ) );
+    m_button->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::PlayButtonPressed, HatchetUtils::Original, QSize( 48, 48 ) ), QIcon::Off, QIcon::Active );
     m_button->setFixedSize( 48, 48 );
     m_button->setContentsMargins( 0, 0, 0, 0 );
     m_button->setFocusPolicy( Qt::NoFocus );
@@ -134,7 +134,7 @@ PlayableCover::mouseMoveEvent( QMouseEvent* event )
     QDataStream resultStream( &resultData, QIODevice::WriteOnly );
     QMimeData* mimeData = new QMimeData();
     QPixmap pixmap;
-    const int pixHeight = TomahawkUtils::defaultFontHeight() * 3;
+    const int pixHeight = HatchetUtils::defaultFontHeight() * 3;
     const QSize pixSize = QSize( pixHeight, pixHeight );
 
     switch ( m_type )
@@ -144,7 +144,7 @@ PlayableCover::mouseMoveEvent( QMouseEvent* event )
             {
                 pixmap = m_artist->cover( pixSize, false );
                 resultStream << m_artist->name();
-                mimeData->setData( "application/tomahawk.metadata.artist", resultData );
+                mimeData->setData( "application/hatchet.metadata.artist", resultData );
             }
             else
             {
@@ -159,7 +159,7 @@ PlayableCover::mouseMoveEvent( QMouseEvent* event )
                 pixmap = m_album->cover( pixSize, false );
                 resultStream << m_album->artist()->name();
                 resultStream << m_album->name();
-                mimeData->setData( "application/tomahawk.metadata.album", resultData );
+                mimeData->setData( "application/hatchet.metadata.album", resultData );
             }
             else
             {
@@ -167,7 +167,7 @@ PlayableCover::mouseMoveEvent( QMouseEvent* event )
                 {
                     pixmap = m_artist->cover( pixSize, false );
                     resultStream << m_artist->name();
-                    mimeData->setData( "application/tomahawk.metadata.artist", resultData );
+                    mimeData->setData( "application/hatchet.metadata.artist", resultData );
                 }
                 else
                 {
@@ -181,8 +181,8 @@ PlayableCover::mouseMoveEvent( QMouseEvent* event )
             if ( m_query )
             {
                 pixmap = m_query->track()->cover( pixSize, false );
-                resultStream << QString( "application/tomahawk.query.list" ) << qlonglong( &m_query );
-                mimeData->setData( "application/tomahawk.mixed", resultData );
+                resultStream << QString( "application/hatchet.query.list" ) << qlonglong( &m_query );
+                mimeData->setData( "application/hatchet.mixed", resultData );
             }
             else
             {
@@ -275,7 +275,7 @@ PlayableCover::contextMenuEvent( QContextMenuEvent* event )
 void
 PlayableCover::setPixmap( const QPixmap& pixmap )
 {
-    m_pixmap = pixmap; // TomahawkUtils::createRoundedImage( pixmap, size() );
+    m_pixmap = pixmap; // HatchetUtils::createRoundedImage( pixmap, size() );
     repaint();
 }
 
@@ -310,10 +310,10 @@ PlayableCover::paintEvent( QPaintEvent* event )
 
     QString text;
     QFont font = QLabel::font();
-    font.setPointSize( TomahawkUtils::defaultFontSize() );
+    font.setPointSize( HatchetUtils::defaultFontSize() );
     QFont boldFont = font;
     boldFont.setBold( true );
-    boldFont.setPointSize( TomahawkUtils::defaultFontSize() + 5 );
+    boldFont.setPointSize( HatchetUtils::defaultFontSize() + 5 );
 
     QString top, bottom;
     if ( m_artist )
@@ -394,8 +394,8 @@ PlayableCover::paintEvent( QPaintEvent* event )
 
         if ( m_hoveredRect == r )
         {
-            TomahawkUtils::drawQueryBackground( &bufpainter, r );
-            bufpainter.setPen( TomahawkStyle::SELECTION_FOREGROUND );
+            HatchetUtils::drawQueryBackground( &bufpainter, r );
+            bufpainter.setPen( HatchetStyle::SELECTION_FOREGROUND );
         }
 
         to.setAlignment( Qt::AlignHCenter | Qt::AlignBottom );
@@ -435,14 +435,14 @@ PlayableCover::onClicked()
 
         case Track:
             if ( m_query )
-                AudioEngine::instance()->playItem( Tomahawk::playlistinterface_ptr(), m_query );
+                AudioEngine::instance()->playItem( Hatchet::playlistinterface_ptr(), m_query );
             break;
     }
 }
 
 
 void
-PlayableCover::setArtist( const Tomahawk::artist_ptr& artist )
+PlayableCover::setArtist( const Hatchet::artist_ptr& artist )
 {
     m_type = Artist;
     m_artist = artist;
@@ -451,7 +451,7 @@ PlayableCover::setArtist( const Tomahawk::artist_ptr& artist )
 
 
 void
-PlayableCover::setAlbum( const Tomahawk::album_ptr& album )
+PlayableCover::setAlbum( const Hatchet::album_ptr& album )
 {
     m_type = Album;
     m_album = album;
@@ -460,7 +460,7 @@ PlayableCover::setAlbum( const Tomahawk::album_ptr& album )
 
 
 void
-PlayableCover::setQuery( const Tomahawk::query_ptr& query )
+PlayableCover::setQuery( const Hatchet::query_ptr& query )
 {
     m_query = query;
 

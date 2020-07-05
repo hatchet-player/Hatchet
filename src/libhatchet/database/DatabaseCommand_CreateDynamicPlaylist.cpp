@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DatabaseCommand_CreateDynamicPlaylist.h"
@@ -28,12 +28,12 @@
 #include "DatabaseImpl.h"
 #include "PlaylistEntry.h"
 #include "SourceList.h"
-#include "TomahawkSqlQuery.h"
+#include "HatchetSqlQuery.h"
 
 #include <QSqlQuery>
 #include <QSqlDriver>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 DatabaseCommand_CreateDynamicPlaylist::DatabaseCommand_CreateDynamicPlaylist( QObject* parent )
@@ -60,7 +60,7 @@ QVariant
 DatabaseCommand_CreateDynamicPlaylist::playlistV() const
 {
         if( m_v.isNull() )
-            return TomahawkUtils::qobject2qvariant( (QObject*)m_playlist.data() );
+            return HatchetUtils::qobject2qvariant( (QObject*)m_playlist.data() );
         else
             return m_v;
 }
@@ -75,7 +75,7 @@ DatabaseCommand_CreateDynamicPlaylist::exec( DatabaseImpl* lib )
     tLog( LOGVERBOSE ) << Q_FUNC_INFO << "Created normal playlist, now creating additional dynamic info!";
 
     tLog( LOGVERBOSE ) << Q_FUNC_INFO <<  "Create dynamic execing!" << m_playlist << m_v;
-    TomahawkSqlQuery cre = lib->newquery();
+    HatchetSqlQuery cre = lib->newquery();
 
     cre.prepare( "INSERT INTO dynamic_playlist( guid, pltype, plmode, autoload ) "
                  "VALUES( ?, ?, ?, ? )" );
@@ -112,7 +112,7 @@ DatabaseCommand_CreateDynamicPlaylist::postCommitHook()
         QMetaObject::invokeMethod( SourceList::instance(),
                                    "createDynamicPlaylist",
                                    Qt::BlockingQueuedConnection,
-                                   QGenericArgument( "Tomahawk::source_ptr", (const void*)&source() ),
+                                   QGenericArgument( "Hatchet::source_ptr", (const void*)&source() ),
                                    Q_ARG( QVariant, m_v ) );
     }
     else

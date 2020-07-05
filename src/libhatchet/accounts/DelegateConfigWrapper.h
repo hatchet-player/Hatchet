@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 #ifndef RESOLVER_CONFIG_WRAPPER
 #define RESOLVER_CONFIG_WRAPPER
@@ -35,7 +35,7 @@ class DelegateConfigWrapper : public QDialog
 {
     Q_OBJECT
 public:
-    DelegateConfigWrapper( Tomahawk::Accounts::Account* account, QWidget* parent, Qt::WindowFlags flags = 0 );
+    DelegateConfigWrapper( Hatchet::Accounts::Account* account, QWidget* parent, Qt::WindowFlags flags = 0 );
 
     ~DelegateConfigWrapper() {}
 
@@ -66,7 +66,7 @@ private:
     void closeDialog( QDialog::DialogCode code );
     QString getTestConfigMessage( int code );
 
-    Tomahawk::Accounts::Account* m_account;
+    Hatchet::Accounts::Account* m_account;
     AccountConfigWidget* m_widget;
     QWidget* m_aboutW;
     QDialogButtonBox* m_buttons;

@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "RecentlyPlayedModel.h"
@@ -26,12 +26,12 @@
 #include "database/Database.h"
 #include "database/DatabaseCommand_PlaybackHistory.h"
 #include "PlayableItem.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
 
 #define HISTORY_TRACK_ITEMS 25
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 RecentlyPlayedModel::RecentlyPlayedModel( QObject* parent, unsigned int maxItems )
@@ -60,10 +60,10 @@ RecentlyPlayedModel::loadHistory()
     cmd->setDateTo( m_dateTo );
     cmd->setLimit( m_limit );
 
-    connect( cmd, SIGNAL( tracks( QList<Tomahawk::track_ptr>, QList<Tomahawk::PlaybackLog> ) ),
-                    SLOT( onTracksLoaded( QList<Tomahawk::track_ptr>, QList<Tomahawk::PlaybackLog> ) ), Qt::QueuedConnection );
+    connect( cmd, SIGNAL( tracks( QList<Hatchet::track_ptr>, QList<Hatchet::PlaybackLog> ) ),
+                    SLOT( onTracksLoaded( QList<Hatchet::track_ptr>, QList<Hatchet::PlaybackLog> ) ), Qt::QueuedConnection );
 
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 }
 
 
@@ -80,7 +80,7 @@ RecentlyPlayedModel::onSourcesReady()
 
 
 void
-RecentlyPlayedModel::setSource( const Tomahawk::source_ptr& source )
+RecentlyPlayedModel::setSource( const Hatchet::source_ptr& source )
 {
     m_source = source;
     if ( source.isNull() )
@@ -90,7 +90,7 @@ RecentlyPlayedModel::setSource( const Tomahawk::source_ptr& source )
         else
             connect( SourceList::instance(), SIGNAL( ready() ), SLOT( onSourcesReady() ) );
 
-        connect( SourceList::instance(), SIGNAL( sourceAdded( Tomahawk::source_ptr ) ), SLOT( onSourceAdded( Tomahawk::source_ptr ) ) );
+        connect( SourceList::instance(), SIGNAL( sourceAdded( Hatchet::source_ptr ) ), SLOT( onSourceAdded( Hatchet::source_ptr ) ) );
     }
     else
     {
@@ -101,10 +101,10 @@ RecentlyPlayedModel::setSource( const Tomahawk::source_ptr& source )
 
 
 void
-RecentlyPlayedModel::onSourceAdded( const Tomahawk::source_ptr& source )
+RecentlyPlayedModel::onSourceAdded( const Hatchet::source_ptr& source )
 {
-    connect( source.data(), SIGNAL( playbackFinished( Tomahawk::track_ptr, Tomahawk::PlaybackLog ) ),
-                              SLOT( onPlaybackFinished( Tomahawk::track_ptr, Tomahawk::PlaybackLog ) ), Qt::UniqueConnection );
+    connect( source.data(), SIGNAL( playbackFinished( Hatchet::track_ptr, Hatchet::PlaybackLog ) ),
+                              SLOT( onPlaybackFinished( Hatchet::track_ptr, Hatchet::PlaybackLog ) ), Qt::UniqueConnection );
 
     int c = rowCount( QModelIndex() );
     emit beginInsertRows( QModelIndex(), c, c );
@@ -118,7 +118,7 @@ RecentlyPlayedModel::onSourceAdded( const Tomahawk::source_ptr& source )
 
 
 void
-RecentlyPlayedModel::onPlaybackFinished( const Tomahawk::track_ptr& track, const Tomahawk::PlaybackLog& log )
+RecentlyPlayedModel::onPlaybackFinished( const Hatchet::track_ptr& track, const Hatchet::PlaybackLog& log )
 {
     const QModelIndex parent = indexFromSource( log.source );
     const int count = rowCount( parent );
@@ -166,7 +166,7 @@ RecentlyPlayedModel::onPlaybackFinished( const Tomahawk::track_ptr& track, const
 
 
 void
-RecentlyPlayedModel::onTracksLoaded( QList<Tomahawk::track_ptr> tracks, QList<Tomahawk::PlaybackLog> logs )
+RecentlyPlayedModel::onTracksLoaded( QList<Hatchet::track_ptr> tracks, QList<Hatchet::PlaybackLog> logs )
 {
     finishLoading();
     for ( int i = 0; i < tracks.count(); i++ )

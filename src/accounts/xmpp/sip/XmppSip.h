@@ -1,4 +1,4 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Dominik Schmidt <dev@dominik-schmidt.de>
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
@@ -6,18 +6,18 @@
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef XMPPSIP_H
@@ -54,28 +54,28 @@ class ACCOUNTDLLEXPORT XmppSipPlugin : public SipPlugin
 {
     Q_OBJECT
 
-friend class Tomahawk::InfoSystem::XmppInfoPlugin;
+friend class Hatchet::InfoSystem::XmppInfoPlugin;
 
 public:
-    XmppSipPlugin( Tomahawk::Accounts::Account* account );
+    XmppSipPlugin( Hatchet::Accounts::Account* account );
     virtual ~XmppSipPlugin();
 
     //FIXME: Make this more correct
     virtual bool isValid() const { return true; }
     virtual QString inviteString() const;
 
-    Tomahawk::InfoSystem::InfoPluginPtr infoPlugin();
+    Hatchet::InfoSystem::InfoPluginPtr infoPlugin();
 
     virtual QMenu* menu();
 
     // used by XmppAccount to expose connection state and controls
-    Tomahawk::Accounts::Account::ConnectionState connectionState() const;
+    Hatchet::Accounts::Account::ConnectionState connectionState() const;
 
 signals:
     void jidChanged( const QString& );
 
     // Used by XmppAccount
-    void stateChanged( Tomahawk::Accounts::Account::ConnectionState state );
+    void stateChanged( Hatchet::Accounts::Account::ConnectionState state );
     void error( int errorId, const QString& errorStr );
 
 public slots:
@@ -85,10 +85,10 @@ public slots:
     virtual void configurationChanged();
     virtual bool addContact( const QString& peerId, AddContactOptions options = NoOptions, const QString& msg = QString() );
 
-    virtual void sendSipInfos( const Tomahawk::peerinfo_ptr& receiver, const QList<SipInfo>& info );
+    virtual void sendSipInfos( const Hatchet::peerinfo_ptr& receiver, const QList<SipInfo>& info );
 
     void showAddFriendDialog();
-    void publishTune( const QUrl& url, const Tomahawk::InfoSystem::InfoStringHash& trackInfo );
+    void publishTune( const QUrl& url, const Hatchet::InfoSystem::InfoStringHash& trackInfo );
 
 protected:
     virtual QString defaultSuffix() const;
@@ -128,8 +128,8 @@ private:
     int m_currentPort;
     QString m_currentResource;
 
-    QSharedPointer< Tomahawk::InfoSystem::XmppInfoPlugin > m_infoPlugin;
-    Tomahawk::Accounts::Account::ConnectionState m_state;
+    QSharedPointer< Hatchet::InfoSystem::XmppInfoPlugin > m_infoPlugin;
+    Hatchet::Accounts::Account::ConnectionState m_state;
 
     // sort out
     Jreen::Client* m_client;
@@ -146,8 +146,8 @@ private:
     enum IqContext { NoContext, RequestDisco, RequestedDisco, SipMessageSent, RequestedVCard, RequestVersion, RequestedVersion };
     AvatarManager* m_avatarManager;
     Jreen::PubSub::Manager* m_pubSubManager;
-    QMap< QString, Tomahawk::peerinfo_ptr > peersWaitingForSip;
-    QMap< QString, Tomahawk::peerinfo_ptr > peersWaitingForVersionString;
+    QMap< QString, Hatchet::peerinfo_ptr > peersWaitingForSip;
+    QMap< QString, Hatchet::peerinfo_ptr > peersWaitingForVersionString;
     QMap< QString, QList< SipInfo > > sipinfosQueue;
     QMutex peerQueueMutex;
 };

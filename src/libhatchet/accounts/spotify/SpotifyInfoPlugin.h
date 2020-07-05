@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2012 Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef SPOTIFYINFOPLUGIN_H
@@ -26,7 +26,7 @@
 
 class QNetworkReply;
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 namespace Accounts
@@ -52,20 +52,20 @@ public slots:
 
 protected slots:
     virtual void init() {}
-    virtual void getInfo( Tomahawk::InfoSystem::InfoRequestData requestData );
-    virtual void notInCacheSlot( Tomahawk::InfoSystem::InfoStringHash criteria, Tomahawk::InfoSystem::InfoRequestData requestData );
-    virtual void pushInfo( Tomahawk::InfoSystem::InfoPushData  );
+    virtual void getInfo( Hatchet::InfoSystem::InfoRequestData requestData );
+    virtual void notInCacheSlot( Hatchet::InfoSystem::InfoStringHash criteria, Hatchet::InfoSystem::InfoRequestData requestData );
+    virtual void pushInfo( Hatchet::InfoSystem::InfoPushData  );
 
 private slots:
-    void albumIdLookupFinished( QNetworkReply* reply, const Tomahawk::InfoSystem::InfoRequestData& requestData );
-    void albumContentsLookupFinished( QNetworkReply* reply, const Tomahawk::InfoSystem::InfoRequestData& requestData );
+    void albumIdLookupFinished( QNetworkReply* reply, const Hatchet::InfoSystem::InfoRequestData& requestData );
+    void albumContentsLookupFinished( QNetworkReply* reply, const Hatchet::InfoSystem::InfoRequestData& requestData );
 
 private:
     void dataError( InfoRequestData );
-    void trackListResult( const QStringList& trackNameList, const Tomahawk::InfoSystem::InfoRequestData& requestData );
+    void trackListResult( const QStringList& trackNameList, const Hatchet::InfoSystem::InfoRequestData& requestData );
     void sendLoveSong( const InfoType type, QVariant input );
 
-    QPointer< Tomahawk::Accounts::SpotifyAccount > m_account;
+    QPointer< Hatchet::Accounts::SpotifyAccount > m_account;
 };
 
 }

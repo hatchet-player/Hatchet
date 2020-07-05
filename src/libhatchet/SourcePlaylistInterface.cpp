@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "SourcePlaylistInterface.h"
@@ -26,10 +26,10 @@
 #include "Result.h"
 #include "Source.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
-SourcePlaylistInterface::SourcePlaylistInterface( Tomahawk::Source* source, Tomahawk::PlaylistModes::LatchMode latchMode )
+SourcePlaylistInterface::SourcePlaylistInterface( Hatchet::Source* source, Hatchet::PlaylistModes::LatchMode latchMode )
     : PlaylistInterface()
     , m_source( source )
     , m_currentItem( 0 )
@@ -38,7 +38,7 @@ SourcePlaylistInterface::SourcePlaylistInterface( Tomahawk::Source* source, Toma
     setLatchMode( latchMode );
 
     if ( !m_source.isNull() )
-        connect( m_source.data(), SIGNAL( playbackStarted( const Tomahawk::track_ptr& ) ), SLOT( onSourcePlaybackStarted( const Tomahawk::track_ptr& ) ) );
+        connect( m_source.data(), SIGNAL( playbackStarted( const Hatchet::track_ptr& ) ), SLOT( onSourcePlaybackStarted( const Hatchet::track_ptr& ) ) );
 }
 
 
@@ -57,7 +57,7 @@ SourcePlaylistInterface::setCurrentIndex( qint64 index )
 
 
 qint64
-SourcePlaylistInterface::indexOfResult( const Tomahawk::result_ptr& result ) const
+SourcePlaylistInterface::indexOfResult( const Hatchet::result_ptr& result ) const
 {
     if ( nextResult() == result )
         return 1;
@@ -79,19 +79,19 @@ SourcePlaylistInterface::siblingIndex( int itemsAway, qint64 rootIndex ) const
 }
 
 
-Tomahawk::result_ptr
+Hatchet::result_ptr
 SourcePlaylistInterface::nextResult() const
 {
     if ( !sourceValid() )
     {
         tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "Source no longer valid";
-        m_currentItem = Tomahawk::result_ptr();
+        m_currentItem = Hatchet::result_ptr();
         return m_currentItem;
     }
     else if ( !hasNextResult() )
     {
         tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "This song was already fetched or the source isn't playing anything";
-        return Tomahawk::result_ptr();
+        return Hatchet::result_ptr();
     }
 
     if ( m_source.data()->currentTrack()->numResults() )
@@ -133,10 +133,10 @@ SourcePlaylistInterface::hasNextResult() const
 }
 
 
-QList<Tomahawk::query_ptr>
+QList<Hatchet::query_ptr>
 SourcePlaylistInterface::tracks() const
 {
-    QList<Tomahawk::query_ptr> tracks;
+    QList<Hatchet::query_ptr> tracks;
     if ( nextResult() )
         tracks << nextResult()->toQuery();
 
@@ -144,7 +144,7 @@ SourcePlaylistInterface::tracks() const
 }
 
 
-QPointer< Tomahawk::Source >
+QPointer< Hatchet::Source >
 SourcePlaylistInterface::source() const
 {
     return m_source;
@@ -162,7 +162,7 @@ SourcePlaylistInterface::reset()
 
 
 void
-SourcePlaylistInterface::onSourcePlaybackStarted( const Tomahawk::track_ptr& track )
+SourcePlaylistInterface::onSourcePlaybackStarted( const Hatchet::track_ptr& track )
 {
     tDebug( LOGVERBOSE ) << Q_FUNC_INFO;
 
@@ -186,24 +186,24 @@ SourcePlaylistInterface::resolvingFinished( bool hasResults )
 }
 
 
-Tomahawk::query_ptr
+Hatchet::query_ptr
 SourcePlaylistInterface::queryAt( qint64 index ) const
 {
     if ( index == 1 )
     {
-        Tomahawk::result_ptr res = nextResult();
+        Hatchet::result_ptr res = nextResult();
         return res->toQuery();
     }
     else
-        return Tomahawk::query_ptr();
+        return Hatchet::query_ptr();
 }
 
 
-Tomahawk::result_ptr
+Hatchet::result_ptr
 SourcePlaylistInterface::resultAt( qint64 index ) const
 {
     if ( index == 1 )
         return nextResult();
     else
-        return Tomahawk::result_ptr();
+        return Hatchet::result_ptr();
 }

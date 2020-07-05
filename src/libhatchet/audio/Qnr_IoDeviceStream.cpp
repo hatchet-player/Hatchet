@@ -27,7 +27,7 @@
 #include <QNetworkReply>
 #include <QTimer>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 // Feed VLC in 1MiB blocks
 #define BLOCK_SIZE 1048576

@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef DASHBOARD_H
@@ -27,7 +27,7 @@
 #include "ViewPagePlugin.h"
 #include "ViewPageLazyLoader.h"
 
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 
 #include <QWidget>
 #include <QListWidgetItem>
@@ -45,7 +45,7 @@ namespace Ui
     class DashboardWidget;
 }
 
-namespace Tomahawk
+namespace Hatchet
 {
 namespace Widgets
 {
@@ -77,16 +77,16 @@ private:
 
     RecentlyPlayedModel* m_tracksModel;
     AlbumModel* m_recentAlbumsModel;
-    Tomahawk::playlistinterface_ptr m_playlistInterface;
+    Hatchet::playlistinterface_ptr m_playlistInterface;
 };
 
 const QString DASHBOARD_VIEWPAGE_NAME = "dashboard";
 
-class TOMAHAWK_VIEWPAGE_EXPORT Dashboard : public Tomahawk::ViewPageLazyLoader< DashboardWidget >
+class HATCHET_VIEWPAGE_EXPORT Dashboard : public Hatchet::ViewPageLazyLoader< DashboardWidget >
 {
 Q_OBJECT
-Q_INTERFACES( Tomahawk::ViewPagePlugin )
-Q_PLUGIN_METADATA( IID "org.tomahawk-player.Player.ViewPagePlugin" )
+Q_INTERFACES( Hatchet::ViewPagePlugin )
+Q_PLUGIN_METADATA( IID "org.hatchet-player.Player.ViewPagePlugin" )
 
 public:
     Dashboard( QWidget* parent = nullptr );
@@ -102,5 +102,5 @@ public:
 
 
 } // Widgets
-} // Tomahawk
+} // Hatchet
 #endif // DASHBOARD_H

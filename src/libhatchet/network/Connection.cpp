@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "Connection_p.h"
@@ -26,7 +26,7 @@
 #include "network/Msg.h"
 #include "utils/Logger.h"
 #include "utils/Json.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 
 #include "QTcpSocketExtra.h"
 #include "Source.h"
@@ -92,7 +92,7 @@ Connection::handleIncomingQueueEmpty()
 void
 Connection::setFirstMessage( const QVariant& m )
 {
-    const QByteArray ba = TomahawkUtils::toJson( m );
+    const QByteArray ba = HatchetUtils::toJson( m );
     //qDebug() << "first msg json len:" << ba.length();
     setFirstMessage( Msg::factory( ba, Msg::JSON ) );
 }
@@ -342,10 +342,10 @@ Connection::checkACL()
     }
 
     tLog( LOGVERBOSE ) << Q_FUNC_INFO << "Checking ACL for" << name();
-    d->aclRequest = Tomahawk::Network::ACL::aclrequest_ptr(
-                new Tomahawk::Network::ACL::AclRequest( d->nodeid, bareName(), Tomahawk::ACLStatus::NotFound ),
+    d->aclRequest = Hatchet::Network::ACL::aclrequest_ptr(
+                new Hatchet::Network::ACL::AclRequest( d->nodeid, bareName(), Hatchet::ACLStatus::NotFound ),
                 &QObject::deleteLater );
-    connect( d->aclRequest.data(), SIGNAL( decision( Tomahawk::ACLStatus::Type ) ), SLOT( aclDecision( Tomahawk::ACLStatus::Type ) ), Qt::QueuedConnection );
+    connect( d->aclRequest.data(), SIGNAL( decision( Hatchet::ACLStatus::Type ) ), SLOT( aclDecision( Hatchet::ACLStatus::Type ) ), Qt::QueuedConnection );
     ACLRegistry::instance()->isAuthorizedRequest( d->aclRequest );
 }
 
@@ -357,7 +357,7 @@ Connection::bareName() const
 }
 
 void
-Connection::aclDecision( Tomahawk::ACLStatus::Type status )
+Connection::aclDecision( Hatchet::ACLStatus::Type status )
 {
     Q_D( Connection );
     tLog( LOGVERBOSE ) << Q_FUNC_INFO << "ACL decision for" << name() << ":" << status;
@@ -365,7 +365,7 @@ Connection::aclDecision( Tomahawk::ACLStatus::Type status )
     // We have a decision, free memory.
     d->aclRequest.clear();
 
-    if ( status == Tomahawk::ACLStatus::Stream )
+    if ( status == Hatchet::ACLStatus::Stream )
     {
         QTimer::singleShot( 0, this, SLOT( doSetup() ) );
         emit authSuccessful();
@@ -631,7 +631,7 @@ Connection::sendMsg( QVariant j )
     if ( d->do_shutdown )
         return;
 
-    const QByteArray payload = TomahawkUtils::toJson( j );
+    const QByteArray payload = HatchetUtils::toJson( j );
     tLog( LOGVERBOSE ) << Q_FUNC_INFO << "Sending to" << id() << ":" << payload;
     sendMsg( Msg::factory( payload, Msg::JSON ) );
 }

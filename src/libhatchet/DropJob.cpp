@@ -1,22 +1,22 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2011, Michael Zanetti <mzanetti@kde.org>
  *   Copyright 2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2011-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2011-2012, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DropJob.h"
@@ -33,7 +33,7 @@
 #include "utils/M3uLoader.h"
 #include "utils/ShortenedLinkParser.h"
 #include "utils/Logger.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/XspfLoader.h"
 
 #include "Artist.h"
@@ -50,7 +50,7 @@
 #endif //HAVE_QCA2
 
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 bool DropJob::s_canParseSpotifyPlaylists = false;
 static QString s_dropJobInfoId = "dropjob";
@@ -79,13 +79,13 @@ QStringList
 DropJob::mimeTypes()
 {
     QStringList mimeTypes;
-    mimeTypes << "application/tomahawk.query.list"
-              << "application/tomahawk.plentry.list"
-              << "application/tomahawk.result.list"
-              << "application/tomahawk.result"
-              << "application/tomahawk.metadata.artist"
-              << "application/tomahawk.metadata.album"
-              << "application/tomahawk.mixed"
+    mimeTypes << "application/hatchet.query.list"
+              << "application/hatchet.plentry.list"
+              << "application/hatchet.result.list"
+              << "application/hatchet.result"
+              << "application/hatchet.metadata.artist"
+              << "application/hatchet.metadata.album"
+              << "application/hatchet.mixed"
               << "text/plain"
               << "text/uri-list";
 
@@ -126,13 +126,13 @@ DropJob::acceptsMimeData( const QMimeData* data, DropJob::DropTypes acceptedType
 {
     Q_UNUSED( acceptedAction );
 
-    if ( data->hasFormat( "application/tomahawk.query.list" )
-        || data->hasFormat( "application/tomahawk.plentry.list" )
-        || data->hasFormat( "application/tomahawk.result.list" )
-        || data->hasFormat( "application/tomahawk.result" )
-        || data->hasFormat( "application/tomahawk.mixed" )
-        || data->hasFormat( "application/tomahawk.metadata.album" )
-        || data->hasFormat( "application/tomahawk.metadata.artist" ) )
+    if ( data->hasFormat( "application/hatchet.query.list" )
+        || data->hasFormat( "application/hatchet.plentry.list" )
+        || data->hasFormat( "application/hatchet.result.list" )
+        || data->hasFormat( "application/hatchet.result" )
+        || data->hasFormat( "application/hatchet.mixed" )
+        || data->hasFormat( "application/hatchet.metadata.album" )
+        || data->hasFormat( "application/hatchet.metadata.artist" ) )
     {
         return true;
     }
@@ -366,15 +366,15 @@ DropJob::parseMimeData( const QMimeData* data )
 {
     QList< query_ptr > results;
 
-    if ( data->hasFormat( "application/tomahawk.query.list" ) )
+    if ( data->hasFormat( "application/hatchet.query.list" ) )
         results = tracksFromQueryList( data );
-    else if ( data->hasFormat( "application/tomahawk.result.list" ) )
+    else if ( data->hasFormat( "application/hatchet.result.list" ) )
         results = tracksFromResultList( data );
-    else if ( data->hasFormat( "application/tomahawk.metadata.album" ) )
+    else if ( data->hasFormat( "application/hatchet.metadata.album" ) )
         results = tracksFromAlbumMetaData( data );
-    else if ( data->hasFormat( "application/tomahawk.metadata.artist" ) )
+    else if ( data->hasFormat( "application/hatchet.metadata.artist" ) )
         results = tracksFromArtistMetaData( data );
-    else if ( data->hasFormat( "application/tomahawk.mixed" ) )
+    else if ( data->hasFormat( "application/hatchet.mixed" ) )
         tracksFromMixedData( data );
     else if ( data->hasFormat( "text/plain" ) && !data->data( "text/plain" ).isEmpty() )
     {
@@ -396,7 +396,7 @@ QList< query_ptr >
 DropJob::tracksFromQueryList( const QMimeData* data )
 {
     QList< query_ptr > queries;
-    QByteArray itemData = data->data( "application/tomahawk.query.list" );
+    QByteArray itemData = data->data( "application/hatchet.query.list" );
     QDataStream stream( &itemData, QIODevice::ReadOnly );
 
     while ( !stream.atEnd() )
@@ -436,7 +436,7 @@ QList< query_ptr >
 DropJob::tracksFromResultList( const QMimeData* data )
 {
     QList< query_ptr > queries;
-    QByteArray itemData = data->data( "application/tomahawk.result.list" );
+    QByteArray itemData = data->data( "application/hatchet.result.list" );
     QDataStream stream( &itemData, QIODevice::ReadOnly );
 
     while ( !stream.atEnd() )
@@ -476,7 +476,7 @@ QList< query_ptr >
 DropJob::tracksFromAlbumMetaData( const QMimeData *data )
 {
     QList<query_ptr> queries;
-    QByteArray itemData = data->data( "application/tomahawk.metadata.album" );
+    QByteArray itemData = data->data( "application/hatchet.metadata.album" );
     QDataStream stream( &itemData, QIODevice::ReadOnly );
 
     while ( !stream.atEnd() )
@@ -502,7 +502,7 @@ QList< query_ptr >
 DropJob::tracksFromArtistMetaData( const QMimeData *data )
 {
     QList<query_ptr> queries;
-    QByteArray itemData = data->data( "application/tomahawk.metadata.artist" );
+    QByteArray itemData = data->data( "application/hatchet.metadata.artist" );
     QDataStream stream( &itemData, QIODevice::ReadOnly );
 
     while ( !stream.atEnd() )
@@ -526,7 +526,7 @@ DropJob::tracksFromArtistMetaData( const QMimeData *data )
 void
 DropJob::tracksFromMixedData( const QMimeData *data )
 {
-    QByteArray itemData = data->data( "application/tomahawk.mixed" );
+    QByteArray itemData = data->data( "application/hatchet.mixed" );
     QDataStream stream( &itemData, QIODevice::ReadOnly );
     QString mimeType;
 
@@ -538,19 +538,19 @@ DropJob::tracksFromMixedData( const QMimeData *data )
         QDataStream singleStream( &singleData, QIODevice::WriteOnly );
 
         QMimeData singleMimeData;
-        if ( mimeType == "application/tomahawk.query.list" )
+        if ( mimeType == "application/hatchet.query.list" )
         {
             qlonglong query;
             stream >> query;
             singleStream << query;
         }
-        else if ( mimeType == "application/tomahawk.result.list" )
+        else if ( mimeType == "application/hatchet.result.list" )
         {
             qlonglong result;
             stream >> result;
             singleStream << result;
         }
-        else if ( mimeType == "application/tomahawk.metadata.album" )
+        else if ( mimeType == "application/hatchet.metadata.album" )
         {
             QString artist;
             stream >> artist;
@@ -559,7 +559,7 @@ DropJob::tracksFromMixedData( const QMimeData *data )
             stream >> album;
             singleStream << album;
         }
-        else if ( mimeType == "application/tomahawk.metadata.artist" )
+        else if ( mimeType == "application/hatchet.metadata.artist" )
         {
             QString artist;
             stream >> artist;
@@ -587,7 +587,7 @@ DropJob::handleM3u( const QString& fileUrls )
     if ( dropAction() == Append )
     {
         tDebug() << Q_FUNC_INFO << "Trying to append contents from" << urls;
-        connect( m, SIGNAL( tracks( QList<Tomahawk::query_ptr> ) ), this, SLOT( onTracksAdded( QList< Tomahawk::query_ptr > ) ) );
+        connect( m, SIGNAL( tracks( QList<Hatchet::query_ptr> ) ), this, SLOT( onTracksAdded( QList< Hatchet::query_ptr > ) ) );
         m_queryCount++;
     }
     m->parse();
@@ -630,7 +630,7 @@ DropJob::handleXspfs( const QString& fileUrls )
         if ( dropAction() == Append && !error && l )
         {
             qDebug() << Q_FUNC_INFO << "Trying to append XSPF";
-            connect( l, SIGNAL( tracks( QList<Tomahawk::query_ptr> ) ), this, SLOT( onTracksAdded( QList< Tomahawk::query_ptr > ) ) );
+            connect( l, SIGNAL( tracks( QList<Hatchet::query_ptr> ) ), this, SLOT( onTracksAdded( QList< Hatchet::query_ptr > ) ) );
             m_queryCount++;
         }
     }
@@ -658,7 +658,7 @@ DropJob::handleSpotifyUrls( const QString& urlsRaw )
     if ( dropAction() == Append )
     {
         tDebug() << Q_FUNC_INFO << "Asking for spotify browse contents from" << urls;
-        connect( spot, SIGNAL( tracks( QList<Tomahawk::query_ptr> ) ), this, SLOT( onTracksAdded( QList< Tomahawk::query_ptr > ) ) );
+        connect( spot, SIGNAL( tracks( QList<Hatchet::query_ptr> ) ), this, SLOT( onTracksAdded( QList< Hatchet::query_ptr > ) ) );
         m_queryCount++;
     }
 }
@@ -675,16 +675,16 @@ DropJob::handleGroovesharkUrls ( const QString& urlsRaw )
         setDropAction( Create );
 
     GroovesharkParser* groove = new GroovesharkParser( urls, dropAction() == Create, this );
-    connect( groove, SIGNAL( tracks( QList<Tomahawk::query_ptr> ) ), this, SLOT( onTracksAdded( QList< Tomahawk::query_ptr > ) ) );
+    connect( groove, SIGNAL( tracks( QList<Hatchet::query_ptr> ) ), this, SLOT( onTracksAdded( QList< Hatchet::query_ptr > ) ) );
 
     if ( dropAction() == Append )
     {
         tDebug() << Q_FUNC_INFO << "Asking for grooveshark contents from" << urls;
-        connect( groove, SIGNAL( tracks( QList<Tomahawk::query_ptr> ) ), this, SLOT( onTracksAdded( QList< Tomahawk::query_ptr > ) ) );
+        connect( groove, SIGNAL( tracks( QList<Hatchet::query_ptr> ) ), this, SLOT( onTracksAdded( QList< Hatchet::query_ptr > ) ) );
         m_queryCount++;
     }
 #else
-    tLog() << "Tomahawk compiled without QCA support, cannot use groovesharkparser";
+    tLog() << "Hatchet compiled without QCA support, cannot use groovesharkparser";
 #endif
 }
 
@@ -738,7 +738,7 @@ DropJob::handleTrackUrls( const QString& urls )
 
         tDebug() << "Got a list of itunes urls!" << tracks;
         ItunesParser* itunes = new ItunesParser( tracks, this );
-        connect( itunes, SIGNAL( tracks( QList<Tomahawk::query_ptr> ) ), this, SLOT( onTracksAdded( QList< Tomahawk::query_ptr > ) ) );
+        connect( itunes, SIGNAL( tracks( QList<Hatchet::query_ptr> ) ), this, SLOT( onTracksAdded( QList< Hatchet::query_ptr > ) ) );
         m_queryCount++;
     }
     else if ( urls.contains( "open.spotify.com/track") || urls.contains( "spotify:track" ) )
@@ -747,7 +747,7 @@ DropJob::handleTrackUrls( const QString& urls )
 
         tDebug() << "Got a list of spotify urls!" << tracks;
         SpotifyParser* spot = new SpotifyParser( tracks, false, this );
-        connect( spot, SIGNAL( tracks( QList<Tomahawk::query_ptr> ) ), this, SLOT( onTracksAdded( QList< Tomahawk::query_ptr > ) ) );
+        connect( spot, SIGNAL( tracks( QList<Hatchet::query_ptr> ) ), this, SLOT( onTracksAdded( QList< Hatchet::query_ptr > ) ) );
         m_queryCount++;
     }
     else if ( ShortenedLinkParser::handlesUrl( urls ) )
@@ -804,7 +804,7 @@ DropJob::informationForUrl( const QString&, const QSharedPointer<QObject>& infor
 
 
     // Try to interpret as Album
-    Tomahawk::album_ptr album = information.objectCast<Tomahawk::Album>();
+    Hatchet::album_ptr album = information.objectCast<Hatchet::Album>();
     if ( !album.isNull() )
     {
         tLog( LOGVERBOSE ) << Q_FUNC_INFO << "Dropped an Album";
@@ -823,7 +823,7 @@ DropJob::informationForUrl( const QString&, const QSharedPointer<QObject>& infor
         return;
     }
 
-    Tomahawk::artist_ptr artist = information.objectCast<Tomahawk::Artist>();
+    Hatchet::artist_ptr artist = information.objectCast<Hatchet::Artist>();
     if ( !artist.isNull() )
     {
         tLog( LOGVERBOSE ) << Q_FUNC_INFO << "Dropped an artist";
@@ -832,7 +832,7 @@ DropJob::informationForUrl( const QString&, const QSharedPointer<QObject>& infor
         deleteLater();
     }
 
-    Tomahawk::playlisttemplate_ptr pltemplate = information.objectCast<Tomahawk::PlaylistTemplate>();
+    Hatchet::playlisttemplate_ptr pltemplate = information.objectCast<Hatchet::PlaylistTemplate>();
     if ( !pltemplate.isNull() )
     {
         tLog( LOGVERBOSE ) << Q_FUNC_INFO << "Dropped a playlist (template)";
@@ -850,14 +850,14 @@ DropJob::informationForUrl( const QString&, const QSharedPointer<QObject>& infor
     }
 
     // Try to interpret as Playlist
-    Tomahawk::playlist_ptr playlist = information.objectCast<Tomahawk::Playlist>();
+    Hatchet::playlist_ptr playlist = information.objectCast<Hatchet::Playlist>();
     if ( !playlist.isNull() )
     {
         tLog( LOGVERBOSE ) << Q_FUNC_INFO << "Dropped a playlist";
         if ( m_dropAction == Create )
         {
-            QList<Tomahawk::query_ptr> tracks;
-            foreach( Tomahawk::plentry_ptr entry, playlist->entries() )
+            QList<Hatchet::query_ptr> tracks;
+            foreach( Hatchet::plentry_ptr entry, playlist->entries() )
             {
                 tracks.append( entry->query() );
             }
@@ -875,11 +875,11 @@ DropJob::informationForUrl( const QString&, const QSharedPointer<QObject>& infor
     }
 
     // Try to interpret as Track/Query
-    Tomahawk::query_ptr query = information.objectCast<Tomahawk::Query>();
+    Hatchet::query_ptr query = information.objectCast<Hatchet::Query>();
     if ( !query.isNull() )
     {
         tLog( LOGVERBOSE ) << Q_FUNC_INFO << "Dropped a track";
-        QList<Tomahawk::query_ptr> tracks;
+        QList<Hatchet::query_ptr> tracks;
         // The Url describes a track
         tracks.append( query );
         onTracksAdded( tracks );
@@ -887,12 +887,12 @@ DropJob::informationForUrl( const QString&, const QSharedPointer<QObject>& infor
     }
 
     // Nothing relevant for this url, but still finalize this query.
-    onTracksAdded( QList<Tomahawk::query_ptr>() );
+    onTracksAdded( QList<Hatchet::query_ptr>() );
 }
 
 
 void
-DropJob::onTracksAdded( const QList<Tomahawk::query_ptr>& tracksList )
+DropJob::onTracksAdded( const QList<Hatchet::query_ptr>& tracksList )
 {
     tDebug() << Q_FUNC_INFO << tracksList.count();
 
@@ -927,8 +927,8 @@ DropJob::onTracksAdded( const QList<Tomahawk::query_ptr>& tracksList )
 void
 DropJob::removeDuplicates()
 {
-    QList< Tomahawk::query_ptr > list;
-    foreach ( const Tomahawk::query_ptr& item, m_resultList )
+    QList< Hatchet::query_ptr > list;
+    foreach ( const Hatchet::query_ptr& item, m_resultList )
     {
         bool contains = false;
         Q_ASSERT( !item.isNull() );
@@ -938,7 +938,7 @@ DropJob::removeDuplicates()
             continue;
         }
 
-        foreach( const Tomahawk::query_ptr &tmpItem, list )
+        foreach( const Hatchet::query_ptr &tmpItem, list )
         {
             if ( tmpItem.isNull() )
             {
@@ -968,8 +968,8 @@ DropJob::removeDuplicates()
 void
 DropJob::removeRemoteSources()
 {
-    QList< Tomahawk::query_ptr > list;
-    foreach ( const Tomahawk::query_ptr& item, m_resultList )
+    QList< Hatchet::query_ptr > list;
+    foreach ( const Hatchet::query_ptr& item, m_resultList )
     {
         Q_ASSERT( !item.isNull() );
         if ( item.isNull() )
@@ -978,7 +978,7 @@ DropJob::removeRemoteSources()
             continue;
         }
 
-        foreach ( const Tomahawk::result_ptr& result, item->results() )
+        foreach ( const Hatchet::result_ptr& result, item->results() )
         {
             if ( !result->isLocal() )
             {
@@ -992,7 +992,7 @@ DropJob::removeRemoteSources()
 
 
 QList< query_ptr >
-DropJob::getArtist( const QString &artist, Tomahawk::ModelMode mode )
+DropJob::getArtist( const QString &artist, Hatchet::ModelMode mode )
 {
     Q_UNUSED( mode );
     artist_ptr artistPtr = Artist::get( artist );
@@ -1000,8 +1000,8 @@ DropJob::getArtist( const QString &artist, Tomahawk::ModelMode mode )
     {
         m_artistsToKeep.insert( artistPtr );
 
-        connect( artistPtr.data(), SIGNAL( tracksAdded( QList<Tomahawk::query_ptr>, Tomahawk::ModelMode, Tomahawk::collection_ptr ) ),
-                                     SLOT( onTracksAdded( QList<Tomahawk::query_ptr> ) ) );
+        connect( artistPtr.data(), SIGNAL( tracksAdded( QList<Hatchet::query_ptr>, Hatchet::ModelMode, Hatchet::collection_ptr ) ),
+                                     SLOT( onTracksAdded( QList<Hatchet::query_ptr> ) ) );
 
         m_dropJob << new DropJobNotifier( QPixmap( RESPATH "images/album-icon.png" ), Album );
         JobStatusView::instance()->model()->addJob( m_dropJob.last() );
@@ -1030,8 +1030,8 @@ DropJob::getAlbum( const QString& artist, const QString& album )
         // the artist_ptr which means we never get the signal delivered. so we hold on to the album pointer till we're done
         m_albumsToKeep.insert( albumPtr );
 
-        connect( albumPtr.data(), SIGNAL( tracksAdded( QList<Tomahawk::query_ptr>, Tomahawk::ModelMode, Tomahawk::collection_ptr ) ),
-                                    SLOT( onTracksAdded( QList<Tomahawk::query_ptr> ) ) );
+        connect( albumPtr.data(), SIGNAL( tracksAdded( QList<Hatchet::query_ptr>, Hatchet::ModelMode, Hatchet::collection_ptr ) ),
+                                    SLOT( onTracksAdded( QList<Hatchet::query_ptr> ) ) );
 
         m_dropJob << new DropJobNotifier( QPixmap( RESPATH "images/album-icon.png" ), Album );
         JobStatusView::instance()->model()->addJob( m_dropJob.last() );
@@ -1046,5 +1046,5 @@ DropJob::getAlbum( const QString& artist, const QString& album )
 QList< query_ptr >
 DropJob::getTopTen( const QString& artist )
 {
-    return getArtist( artist, Tomahawk::InfoSystemMode );
+    return getArtist( artist, Hatchet::InfoSystemMode );
 }

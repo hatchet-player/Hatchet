@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013,    Dominik Schmidt <domme@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef VIEWPAGEPLUGIN_H
@@ -23,7 +23,7 @@
 
 #include "DllMacro.h"
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 
@@ -45,8 +45,8 @@ public:
 signals:
     void nameChanged( const QString& );
     void descriptionChanged( const QString& );
-    void descriptionChanged( const Tomahawk::artist_ptr& artist );
-    void descriptionChanged( const Tomahawk::album_ptr& album );
+    void descriptionChanged( const Hatchet::artist_ptr& artist );
+    void descriptionChanged( const Hatchet::album_ptr& album );
     void longDescriptionChanged( const QString& );
     void pixmapChanged( const QPixmap& );
     void destroyed( QWidget* widget );
@@ -55,6 +55,6 @@ signals:
 
 } // ns
 
-Q_DECLARE_INTERFACE( Tomahawk::ViewPagePlugin, "tomahawk.ViewPage/1.0" )
+Q_DECLARE_INTERFACE( Hatchet::ViewPagePlugin, "hatchet.ViewPage/1.0" )
 
 #endif //VIEWPAGEPLUGIN_H

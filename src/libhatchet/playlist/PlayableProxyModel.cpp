@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "PlayableProxyModel.h"
@@ -40,7 +40,7 @@ PlayableProxyModel::PlayableProxyModel( QObject* parent )
     , m_maxVisibleItems( -1 )
     , m_style( Detailed )
 {
-    m_playlistInterface = Tomahawk::playlistinterface_ptr( new Tomahawk::PlayableProxyModelPlaylistInterface( this ) );
+    m_playlistInterface = Hatchet::playlistinterface_ptr( new Hatchet::PlayableProxyModelPlaylistInterface( this ) );
 
     setFilterCaseSensitivity( Qt::CaseInsensitive );
     setSortCaseSensitivity( Qt::CaseInsensitive );
@@ -55,7 +55,7 @@ PlayableProxyModel::PlayableProxyModel( QObject* parent )
 }
 
 
-Tomahawk::playlistinterface_ptr
+Hatchet::playlistinterface_ptr
 PlayableProxyModel::playlistInterface() const
 {
     return m_playlistInterface;
@@ -63,7 +63,7 @@ PlayableProxyModel::playlistInterface() const
 
 
 void
-PlayableProxyModel::setPlaylistInterface( const Tomahawk::playlistinterface_ptr& playlistInterface )
+PlayableProxyModel::setPlaylistInterface( const Hatchet::playlistinterface_ptr& playlistInterface )
 {
     m_playlistInterface = playlistInterface;
 }
@@ -233,10 +233,10 @@ PlayableProxyModel::nameFilterAcceptsRow( int sourceRow, PlayableItem* pi, const
         }
     }
 
-    const Tomahawk::query_ptr& query = pi->query();
+    const Hatchet::query_ptr& query = pi->query();
     if ( query )
     {
-        Tomahawk::result_ptr r;
+        Hatchet::result_ptr r;
         if ( query->numResults() )
             r = query->results().first();
 
@@ -250,7 +250,7 @@ PlayableProxyModel::nameFilterAcceptsRow( int sourceRow, PlayableItem* pi, const
         QStringList sl = regexp.pattern().split( " ", QString::SkipEmptyParts );
         foreach( const QString& s, sl )
         {
-            const Tomahawk::track_ptr& track = query->track();
+            const Hatchet::track_ptr& track = query->track();
             if ( !track->artist().contains( s, Qt::CaseInsensitive ) &&
                  !track->album().contains( s, Qt::CaseInsensitive ) &&
                  !track->track().contains( s, Qt::CaseInsensitive ) )
@@ -260,7 +260,7 @@ PlayableProxyModel::nameFilterAcceptsRow( int sourceRow, PlayableItem* pi, const
         }
     }
 
-    const Tomahawk::album_ptr& al = pi->album();
+    const Hatchet::album_ptr& al = pi->album();
     if ( al )
     {
         QStringList sl = filterRegExp().pattern().split( " ", QString::SkipEmptyParts );
@@ -277,7 +277,7 @@ PlayableProxyModel::nameFilterAcceptsRow( int sourceRow, PlayableItem* pi, const
         return true;
     }
 
-    const Tomahawk::artist_ptr& ar = pi->artist();
+    const Hatchet::artist_ptr& ar = pi->artist();
     if ( ar )
     {
         QStringList sl = filterRegExp().pattern().split( " ", QString::SkipEmptyParts );
@@ -371,12 +371,12 @@ PlayableProxyModel::setMaxVisibleItems( int items )
 
 
 bool
-PlayableProxyModel::lessThan( int column, const Tomahawk::query_ptr& q1, const Tomahawk::query_ptr& q2 ) const
+PlayableProxyModel::lessThan( int column, const Hatchet::query_ptr& q1, const Hatchet::query_ptr& q2 ) const
 {
     // Attention: This function may be called very often!
     // So be aware of its performance.
-    const Tomahawk::track_ptr& t1 = q1->track();
-    const Tomahawk::track_ptr& t2 = q2->track();
+    const Hatchet::track_ptr& t1 = q1->track();
+    const Hatchet::track_ptr& t2 = q2->track();
     const QString& artist1 = t1->artistSortname();
     const QString& artist2 = t2->artistSortname();
     const QString& album1 = t1->albumSortname();
@@ -466,7 +466,7 @@ PlayableProxyModel::lessThan( int column, const Tomahawk::query_ptr& q1, const T
     QString origin2;
     if ( !q1->results().isEmpty() )
     {
-        Tomahawk::result_ptr r = q1->results().first();
+        Hatchet::result_ptr r = q1->results().first();
         bitrate1 = r->bitrate();
         mtime1 = r->modificationTime();
         size1 = r->size();
@@ -476,7 +476,7 @@ PlayableProxyModel::lessThan( int column, const Tomahawk::query_ptr& q1, const T
     }
     if ( !q2->results().isEmpty() )
     {
-        Tomahawk::result_ptr r = q2->results().first();
+        Hatchet::result_ptr r = q2->results().first();
         bitrate2 = r->bitrate();
         mtime2 = r->modificationTime();
         size2 = r->size();
@@ -561,7 +561,7 @@ PlayableProxyModel::lessThan( int column, const Tomahawk::query_ptr& q1, const T
 
 
 bool
-PlayableProxyModel::lessThan( const Tomahawk::album_ptr& album1, const Tomahawk::album_ptr& album2 ) const
+PlayableProxyModel::lessThan( const Hatchet::album_ptr& album1, const Hatchet::album_ptr& album2 ) const
 {
     if ( album1->artist() == album2->artist() )
     {

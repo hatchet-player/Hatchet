@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef DATABASECOMMAND_SETPLAYLISTREVISION_H
@@ -26,7 +26,7 @@
 
 #include <QStringList>
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 class DLLEXPORT DatabaseCommand_SetPlaylistRevision : public DatabaseCommandLoggable
@@ -54,8 +54,8 @@ public:
                                                   const QString& newrev,
                                                   const QString& oldrev,
                                                   const QStringList& orderedguids,
-                                                  const QList<Tomahawk::plentry_ptr>& addedentries,
-                                                  const QList<Tomahawk::plentry_ptr>& entries );
+                                                  const QList<Hatchet::plentry_ptr>& addedentries,
+                                                  const QList<Hatchet::plentry_ptr>& entries );
 
     // constructor for updating metadata only
     DatabaseCommand_SetPlaylistRevision( const source_ptr& s,
@@ -63,7 +63,7 @@ public:
                                                   const QString& newrev,
                                                   const QString& oldrev,
                                                   const QStringList& orderedguids,
-                                                  const QList<Tomahawk::plentry_ptr>& entriesToUpdate );
+                                                  const QList<Hatchet::plentry_ptr>& entriesToUpdate );
 
 
     QString commandname() const { return "setplaylistrevision"; }
@@ -98,11 +98,11 @@ protected:
     QStringList m_previous_rev_orderedguids;
     QString m_playlistguid;
     QString m_newrev, m_oldrev;
-    QMap<QString, Tomahawk::plentry_ptr> m_addedmap;
+    QMap<QString, Hatchet::plentry_ptr> m_addedmap;
 
 private:
     QVariantList m_orderedguids;
-    QList<Tomahawk::plentry_ptr> m_addedentries, m_entries;
+    QList<Hatchet::plentry_ptr> m_addedentries, m_entries;
 
     bool m_localOnly, m_metadataUpdate;
 };

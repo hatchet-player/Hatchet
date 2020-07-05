@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DatabaseCommand_LoadDynamicPlaylistEntries.h"
@@ -27,12 +27,12 @@
 #include "DatabaseImpl.h"
 #include "PlaylistEntry.h"
 #include "Source.h"
-#include "TomahawkSqlQuery.h"
+#include "HatchetSqlQuery.h"
 
 #include <QSqlQuery>
 #include <QString>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 void
@@ -44,7 +44,7 @@ DatabaseCommand_LoadDynamicPlaylistEntries::exec( DatabaseImpl* dbi )
 
     // now load the controls etc
 
-    TomahawkSqlQuery controlsQuery = dbi->newquery();
+    HatchetSqlQuery controlsQuery = dbi->newquery();
     controlsQuery.prepare( "SELECT playlist_revision.playlist, controls, plmode, pltype "
                            "FROM dynamic_playlist_revision, playlist_revision "
                            "WHERE dynamic_playlist_revision.guid = ? AND playlist_revision.guid = dynamic_playlist_revision.guid" );
@@ -65,7 +65,7 @@ DatabaseCommand_LoadDynamicPlaylistEntries::exec( DatabaseImpl* dbi )
     {
         playlist_guid = controlsQuery.value( 0 ).toString();
         bool ok;
-        QVariant v = TomahawkUtils::parseJson( controlsQuery.value(1).toByteArray(), &ok );
+        QVariant v = HatchetUtils::parseJson( controlsQuery.value(1).toByteArray(), &ok );
         Q_ASSERT( ok && v.type() == QVariant::List ); //TODO
 
         type = controlsQuery.value( 3 ).toString();
@@ -75,7 +75,7 @@ DatabaseCommand_LoadDynamicPlaylistEntries::exec( DatabaseImpl* dbi )
 //        qDebug() << "Got controls in dynamic playlist, loading:" << controlIds << controlsQuery.value(1);
         foreach ( const QString& controlId, controlIds )
         {
-            TomahawkSqlQuery controlQuery = dbi->newquery();
+            HatchetSqlQuery controlQuery = dbi->newquery();
             controlQuery.prepare( "SELECT selectedType, match, input "
                                   "FROM dynamic_playlist_controls "
                                   "WHERE id = :id" );

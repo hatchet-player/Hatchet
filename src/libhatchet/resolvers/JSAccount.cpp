@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2014, Dominik Schmidt <domme@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "JSAccount.h"
@@ -29,7 +29,7 @@
 #include <QFile>
 #include <QThread>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 JSAccount::JSAccount( const QString& name )
     : ScriptAccount( name )
@@ -62,7 +62,7 @@ JSAccount::scriptPluginFactory( const QString& type, const scriptobject_ptr& obj
     }
     else
     {
-        Tomahawk::ScriptAccount::scriptPluginFactory(type, object);
+        Hatchet::ScriptAccount::scriptPluginFactory(type, object);
     }
 }
 
@@ -91,7 +91,7 @@ JSAccount::serializeQVariantMap( const QVariantMap& map )
         }
     }
 
-    QByteArray serialized = TomahawkUtils::toJson( localMap );
+    QByteArray serialized = HatchetUtils::toJson( localMap );
 
     return QString( "JSON.parse('%1')" ).arg( JSAccount::escape( QString::fromUtf8( serialized ) ) );
 }
@@ -140,7 +140,7 @@ void
 JSAccount::startJob( ScriptJob* scriptJob )
 {
     QString eval = QString(
-        "Tomahawk.PluginManager.invoke("
+        "Hatchet.PluginManager.invoke("
         "'%1'," // requestId
         "'%2'," // objectId
         "'%3'," // methodName
@@ -162,7 +162,7 @@ QVariant
 JSAccount::syncInvoke( const scriptobject_ptr& scriptObject, const QString& methodName, const QVariantMap& arguments )
 {
     QString eval = QString(
-        "Tomahawk.PluginManager.invokeSync("
+        "Hatchet.PluginManager.invokeSync("
         "0, " // requestId
         "'%1'," // objectId
         "'%2'," // methodName
@@ -182,7 +182,7 @@ void
 JSAccount::reportNativeScriptJobResult( int resultId, const QVariantMap& result )
 {
     QString eval = QString(
-        "Tomahawk.NativeScriptJobManager.reportNativeScriptJobResult("
+        "Hatchet.NativeScriptJobManager.reportNativeScriptJobResult("
         "%1," // requestId
         "%2"    // results
         ");"
@@ -200,7 +200,7 @@ void
 JSAccount::reportNativeScriptJobError( int resultId, const QVariantMap& error )
 {
     QString eval = QString(
-        "Tomahawk.NativeScriptJobManager.reportNativeScriptJobError("
+        "Hatchet.NativeScriptJobManager.reportNativeScriptJobError("
         "%1," // requestId
         "%2"    // results
         ");"

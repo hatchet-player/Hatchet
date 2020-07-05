@@ -1,22 +1,22 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2010-2012, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "SourceTreeView.h"
@@ -30,7 +30,7 @@
 #include "sourcetree/items/PlaylistItems.h"
 #include "sourcetree/items/SourceItem.h"
 #include "SourcePlaylistInterface.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "DropJob.h"
 #include "items/GenericPageItems.h"
 #include "items/TemporaryPageItem.h"
@@ -42,8 +42,8 @@
 #include "utils/Closure.h"
 #include "utils/Logger.h"
 #include "utils/ShortLinkHelper.h"
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 #include "widgets/SourceTreePopupDialog.h"
 #include "PlaylistEntry.h"
 #include "resolvers/ScriptJob.h"
@@ -63,7 +63,7 @@
 #include <QMessageBox>
 #include <QSize>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 SourceTreeView::SourceTreeView( QWidget* parent )
@@ -79,10 +79,10 @@ SourceTreeView::SourceTreeView( QWidget* parent )
                    "SourceTreeView        { background: #F2F2F2; } " );
     setContentsMargins( 0, 0, 0, 0 );
 
-    m_playlistMenu.setFont( TomahawkUtils::systemFont() );
-    m_roPlaylistMenu.setFont( TomahawkUtils::systemFont() );
-    m_latchMenu.setFont( TomahawkUtils::systemFont() );
-    m_privacyMenu.setFont( TomahawkUtils::systemFont() );
+    m_playlistMenu.setFont( HatchetUtils::systemFont() );
+    m_roPlaylistMenu.setFont( HatchetUtils::systemFont() );
+    m_latchMenu.setFont( HatchetUtils::systemFont() );
+    m_privacyMenu.setFont( HatchetUtils::systemFont() );
 
     QFont fnt = font();
     QFontMetrics fm( fnt );
@@ -110,7 +110,7 @@ SourceTreeView::SourceTreeView( QWidget* parent )
 
 #ifndef Q_OS_MAC
     // FIXME: scrollbar width
-    // TomahawkStyle::styleScrollBar( verticalScrollBar() );
+    // HatchetStyle::styleScrollBar( verticalScrollBar() );
 #endif
 
     // TODO animation conflicts with the expanding-playlists-when-collection-is-null
@@ -118,9 +118,9 @@ SourceTreeView::SourceTreeView( QWidget* parent )
     setAnimated( false );
 
     m_delegate = new SourceDelegate( this );
-    connect( m_delegate, SIGNAL( latchOn( Tomahawk::source_ptr ) ), SLOT( latchOnOrCatchUp( Tomahawk::source_ptr ) ) );
-    connect( m_delegate, SIGNAL( latchOff( Tomahawk::source_ptr ) ), SLOT( latchOff( Tomahawk::source_ptr ) ) );
-    connect( m_delegate, SIGNAL( toggleRealtimeLatch( Tomahawk::source_ptr, bool ) ), m_latchManager, SLOT( latchModeChangeRequest( Tomahawk::source_ptr,bool ) ) );
+    connect( m_delegate, SIGNAL( latchOn( Hatchet::source_ptr ) ), SLOT( latchOnOrCatchUp( Hatchet::source_ptr ) ) );
+    connect( m_delegate, SIGNAL( latchOff( Hatchet::source_ptr ) ), SLOT( latchOff( Hatchet::source_ptr ) ) );
+    connect( m_delegate, SIGNAL( toggleRealtimeLatch( Hatchet::source_ptr, bool ) ), m_latchManager, SLOT( latchModeChangeRequest( Hatchet::source_ptr,bool ) ) );
     connect( m_delegate, SIGNAL( clicked( QModelIndex ) ), SLOT( onItemActivated( QModelIndex ) ) );
     connect( m_delegate, SIGNAL( doubleClicked( QModelIndex ) ), SLOT( onItemDoubleClicked( QModelIndex ) ) );
 
@@ -143,12 +143,12 @@ SourceTreeView::SourceTreeView( QWidget* parent )
     connect( this, SIGNAL( expanded( QModelIndex ) ), SLOT( onItemExpanded( QModelIndex ) ) );
     connect( selectionModel(), SIGNAL( selectionChanged( QItemSelection, QItemSelection ) ), SLOT( onSelectionChanged() ) );
 
-    showOfflineSources( TomahawkSettings::instance()->showOfflineSources() );
+    showOfflineSources( HatchetSettings::instance()->showOfflineSources() );
 
-    connect( this, SIGNAL( latchRequest( Tomahawk::source_ptr ) ), m_latchManager, SLOT( latchRequest( Tomahawk::source_ptr ) ) );
-    connect( this, SIGNAL( unlatchRequest( Tomahawk::source_ptr ) ), m_latchManager, SLOT( unlatchRequest( Tomahawk::source_ptr ) ) );
+    connect( this, SIGNAL( latchRequest( Hatchet::source_ptr ) ), m_latchManager, SLOT( latchRequest( Hatchet::source_ptr ) ) );
+    connect( this, SIGNAL( unlatchRequest( Hatchet::source_ptr ) ), m_latchManager, SLOT( unlatchRequest( Hatchet::source_ptr ) ) );
     connect( this, SIGNAL( catchUpRequest() ), m_latchManager, SLOT( catchUpRequest() ) );
-    connect( this, SIGNAL( latchModeChangeRequest( Tomahawk::source_ptr, bool ) ), m_latchManager, SLOT( latchModeChangeRequest( Tomahawk::source_ptr, bool ) ) );
+    connect( this, SIGNAL( latchModeChangeRequest( Hatchet::source_ptr, bool ) ), m_latchManager, SLOT( latchModeChangeRequest( Hatchet::source_ptr, bool ) ) );
 
     connect( ActionCollection::instance(), SIGNAL( privacyModeChanged() ), SLOT( repaint() ) );
 
@@ -158,13 +158,13 @@ SourceTreeView::SourceTreeView( QWidget* parent )
     addAction( renamePlaylistAction );
     connect( renamePlaylistAction, SIGNAL( triggered() ), SLOT( renamePlaylist() ) );
 
-    ViewManager::instance()->showDynamicPage( Tomahawk::Widgets::DASHBOARD_VIEWPAGE_NAME );
+    ViewManager::instance()->showDynamicPage( Hatchet::Widgets::DASHBOARD_VIEWPAGE_NAME );
 
     // On the first run with 0.8 show the What's New page.
-    if ( !TomahawkSettings::instance()->value( "whatsnew/shownfor08", false ).toBool() )
+    if ( !HatchetSettings::instance()->value( "whatsnew/shownfor08", false ).toBool() )
     {
-        ViewManager::instance()->showDynamicPage( Tomahawk::Widgets::WHATSNEW_0_8_VIEWPAGE_NAME );
-        TomahawkSettings::instance()->setValue( "whatsnew/shownfor08", true );
+        ViewManager::instance()->showDynamicPage( Hatchet::Widgets::WHATSNEW_0_8_VIEWPAGE_NAME );
+        HatchetSettings::instance()->setValue( "whatsnew/shownfor08", true );
     }
 }
 
@@ -213,7 +213,7 @@ SourceTreeView::setupMenus()
                 connect( latchOffAction, SIGNAL( triggered() ), SLOT( latchOff() ) );
                 m_latchMenu.addSeparator();
                 QAction* latchRealtimeAction = ActionCollection::instance()->getAction( "realtimeFollowingAlong" );
-                latchRealtimeAction->setChecked( source->playlistInterface()->latchMode() == Tomahawk::PlaylistModes::RealTime );
+                latchRealtimeAction->setChecked( source->playlistInterface()->latchMode() == Hatchet::PlaylistModes::RealTime );
                 m_latchMenu.addAction( latchRealtimeAction );
                 connect( latchRealtimeAction, SIGNAL( toggled( bool ) ), SLOT( latchModeToggled( bool ) ) );
             }
@@ -275,7 +275,7 @@ SourceTreeView::setupMenus()
         {
             if ( QObject* notifier = ActionCollection::instance()->actionNotifier( action ) )
             {
-                QMetaObject::invokeMethod( notifier, "aboutToShow", Qt::DirectConnection, Q_ARG( QAction*, action ), Q_ARG( Tomahawk::playlist_ptr, playlist ) );
+                QMetaObject::invokeMethod( notifier, "aboutToShow", Qt::DirectConnection, Q_ARG( QAction*, action ), Q_ARG( Hatchet::playlist_ptr, playlist ) );
             }
 
             action->setProperty( "payload", QVariant::fromValue< playlist_ptr >( playlist ) );
@@ -415,10 +415,10 @@ SourceTreeView::deletePlaylist( const QModelIndex& idxIn )
     playlist_ptr playlist = item->playlist();
     QPoint rightCenter = viewport()->mapToGlobal( visualRect( idx ).topRight() + QPoint( 0, visualRect( idx ).height() / 2 ) );
 
-    Tomahawk::PlaylistDeleteQuestions questions;
+    Hatchet::PlaylistDeleteQuestions questions;
     if ( playlist->hasCustomDeleter() )
     {
-        foreach ( Tomahawk::PlaylistUpdaterInterface* updater, playlist->updaters() )
+        foreach ( Hatchet::PlaylistUpdaterInterface* updater, playlist->updaters() )
         {
             if ( updater->deleteQuestions().isEmpty() )
                 continue;
@@ -464,7 +464,7 @@ SourceTreeView::onDeletePlaylistResult( bool result )
     {
         PlaylistItem* item = itemFromIndex< PlaylistItem >( idx );
         playlist_ptr playlist = item->playlist();
-        foreach ( Tomahawk::PlaylistUpdaterInterface* updater, playlist->updaters() )
+        foreach ( Hatchet::PlaylistUpdaterInterface* updater, playlist->updaters() )
         {
             updater->setQuestionResults( questionResults );
         }
@@ -475,7 +475,7 @@ SourceTreeView::onDeletePlaylistResult( bool result )
     {
         DynamicPlaylistItem* item = itemFromIndex< DynamicPlaylistItem >( idx );
         dynplaylist_ptr playlist = item->dynPlaylist();
-        foreach ( Tomahawk::PlaylistUpdaterInterface* updater, playlist->updaters() )
+        foreach ( Hatchet::PlaylistUpdaterInterface* updater, playlist->updaters() )
         {
             updater->setQuestionResults( questionResults );
         }
@@ -488,7 +488,7 @@ SourceTreeView::onDeletePlaylistResult( bool result )
 void
 SourceTreeView::shortLinkReady( const playlist_ptr&, const QUrl& shortUrl )
 {
-    QByteArray data = TomahawkUtils::percentEncode( shortUrl );
+    QByteArray data = HatchetUtils::percentEncode( shortUrl );
     QApplication::clipboard()->setText( data );
 }
 
@@ -512,9 +512,9 @@ SourceTreeView::copyPlaylistLink()
        const PlaylistItem* item = itemFromIndex< PlaylistItem >( m_contextMenuIndex );
        const playlist_ptr playlist = item->playlist();
 
-       Tomahawk::Utils::ShortLinkHelper* slh = new Tomahawk::Utils::ShortLinkHelper();
-       connect( slh, SIGNAL( shortLinkReady( Tomahawk::playlist_ptr, QUrl ) ),
-                SLOT( shortLinkReady( Tomahawk::playlist_ptr, QUrl ) ) );
+       Hatchet::Utils::ShortLinkHelper* slh = new Hatchet::Utils::ShortLinkHelper();
+       connect( slh, SIGNAL( shortLinkReady( Hatchet::playlist_ptr, QUrl ) ),
+                SLOT( shortLinkReady( Hatchet::playlist_ptr, QUrl ) ) );
        connect( slh, SIGNAL( done() ),
                 slh, SLOT( deleteLater() ),
                 Qt::QueuedConnection );
@@ -538,13 +538,13 @@ SourceTreeView::exportPlaylist()
     const PlaylistItem* item = itemFromIndex< PlaylistItem >( m_contextMenuIndex );
     const playlist_ptr playlist = item->playlist();
 
-    const QString suggestedFilename = TomahawkSettings::instance()->playlistDefaultPath() + "/" + playlist->title();
-    const QString filename = QFileDialog::getSaveFileName( TomahawkUtils::tomahawkWindow(), tr( "Save XSPF" ),
+    const QString suggestedFilename = HatchetSettings::instance()->playlistDefaultPath() + "/" + playlist->title();
+    const QString filename = QFileDialog::getSaveFileName( HatchetUtils::hatchetWindow(), tr( "Save XSPF" ),
                                                      suggestedFilename, tr( "Playlists (*.xspf)" ) );
     if ( !filename.isEmpty() )
     {
         const  QFileInfo playlistAbsoluteFilePath( filename );
-        TomahawkSettings::instance()->setPlaylistDefaultPath( playlistAbsoluteFilePath.absolutePath() );
+        HatchetSettings::instance()->setPlaylistDefaultPath( playlistAbsoluteFilePath.absolutePath() );
         GlobalActionManager::instance()->savePlaylistToFile( playlist, filename );
     }
 }
@@ -592,7 +592,7 @@ SourceTreeView::addToLocal()
 void
 SourceTreeView::onPlaylistLinkReady(const QVariantMap& data)
 {
-    GlobalActionManager::instance()->parseTomahawkLink( data[ "url" ].toString() );
+    GlobalActionManager::instance()->parseHatchetLink( data[ "url" ].toString() );
 
     sender()->deleteLater();
 }
@@ -635,7 +635,7 @@ SourceTreeView::latchOff()
 
 
 void
-SourceTreeView::latchOnOrCatchUp( const Tomahawk::source_ptr& source )
+SourceTreeView::latchOnOrCatchUp( const Hatchet::source_ptr& source )
 {
     if ( m_latchManager->isLatched( source ) )
         emit catchUpRequest();
@@ -645,7 +645,7 @@ SourceTreeView::latchOnOrCatchUp( const Tomahawk::source_ptr& source )
 
 
 void
-SourceTreeView::latchOff( const Tomahawk::source_ptr& source )
+SourceTreeView::latchOff( const Hatchet::source_ptr& source )
 {
     emit unlatchRequest( source );
 }
@@ -669,7 +669,7 @@ SourceTreeView::latchModeToggled( bool checked )
 
 
 void
-SourceTreeView::renamePlaylist( const Tomahawk::playlist_ptr& playlist )
+SourceTreeView::renamePlaylist( const Hatchet::playlist_ptr& playlist )
 {
     //FIXME: this is unbelievably ugly
     QModelIndex editIndex;
@@ -746,7 +746,7 @@ SourceTreeView::onCustomContextMenu( const QPoint& pos )
     else if ( !customActions.isEmpty() )
     {
         QMenu customMenu;
-        customMenu.setFont( TomahawkUtils::systemFont() );
+        customMenu.setFont( HatchetUtils::systemFont() );
         customMenu.addActions( customActions );
         customMenu.exec( mapToGlobal( pos ) );
     }

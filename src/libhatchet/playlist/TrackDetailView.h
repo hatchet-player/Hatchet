@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef TRACKDETAILVIEW_H
@@ -33,7 +33,7 @@ class QueryLabel;
 class QScrollArea;
 class QPushButton;
 
-class DLLEXPORT TrackDetailView : public QWidget, private TomahawkUtils::DpiScaler
+class DLLEXPORT TrackDetailView : public QWidget, private HatchetUtils::DpiScaler
 {
 Q_OBJECT
 
@@ -44,8 +44,8 @@ public:
     void setBuyButtonVisible( bool visible );
 
 public slots:
-    virtual void setQuery( const Tomahawk::query_ptr& query );
-    void setPlaylistInterface( const Tomahawk::playlistinterface_ptr& playlistInterface );
+    virtual void setQuery( const Hatchet::query_ptr& query );
+    void setPlaylistInterface( const Hatchet::playlistinterface_ptr& playlistInterface );
 
 signals:
     void downloadAll();
@@ -64,12 +64,12 @@ private slots:
     void onBuyButtonClicked();
     void onDownloadManagerStateChanged( DownloadManager::DownloadManagerState newState, DownloadManager::DownloadManagerState oldState );
 
-    void onResultClicked( const Tomahawk::playlistinterface_ptr& playlist, const Tomahawk::result_ptr& result, const Tomahawk::query_ptr& fromQuery );
+    void onResultClicked( const Hatchet::playlistinterface_ptr& playlist, const Hatchet::result_ptr& result, const Hatchet::query_ptr& fromQuery );
 
 private:
     void setSocialActions();
 
-    Tomahawk::playlistinterface_ptr m_playlistInterface;
+    Hatchet::playlistinterface_ptr m_playlistInterface;
 
     PlayableCover* m_playableCover;
     QueryLabel* m_nameLabel;
@@ -85,7 +85,7 @@ private:
     QWidget* m_resultsBox;
     QScrollArea* m_resultsScrollArea;
 
-    Tomahawk::query_ptr m_query;
+    Hatchet::query_ptr m_query;
     QPixmap m_pixmap;
 };
 

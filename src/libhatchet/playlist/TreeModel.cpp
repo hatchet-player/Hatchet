@@ -1,22 +1,22 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2012,      Leo Franchi <lfranchi@kde.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "TreeModel.h"
@@ -32,24 +32,24 @@
 #include "database/Database.h"
 #include "AlbumPlaylistInterface.h"
 #include "PlayableItem.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Closure.h"
 #include "utils/Logger.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 TreeModel::TreeModel( QObject* parent )
     : PlayableModel( parent )
     , m_mode( DatabaseMode )
 {
-    PlayableModel::setIcon( TomahawkUtils::tinted( TomahawkUtils::defaultPixmap(
-                                                       TomahawkUtils::DefaultCollection,
-                                                       TomahawkUtils::Original,
+    PlayableModel::setIcon( HatchetUtils::tinted( HatchetUtils::defaultPixmap(
+                                                       HatchetUtils::DefaultCollection,
+                                                       HatchetUtils::Original,
                                                        // big enough for the ViewPage header on retina
                                                        QSize( 256, 256 ) ), Qt::white ) );
 
-    connect( AudioEngine::instance(), SIGNAL( started( Tomahawk::result_ptr ) ), SLOT( onPlaybackStarted( Tomahawk::result_ptr ) ), Qt::DirectConnection );
+    connect( AudioEngine::instance(), SIGNAL( started( Hatchet::result_ptr ) ), SLOT( onPlaybackStarted( Hatchet::result_ptr ) ), Qt::DirectConnection );
     connect( AudioEngine::instance(), SIGNAL( stopped() ), SLOT( onPlaybackStopped() ), Qt::DirectConnection );
 }
 
@@ -69,7 +69,7 @@ TreeModel::setMode( ModelMode mode )
 }
 
 
-Tomahawk::collection_ptr
+Hatchet::collection_ptr
 TreeModel::collection() const
 {
     return m_collection;
@@ -140,7 +140,7 @@ TreeModel::addArtists( const artist_ptr& artist )
 
     startLoading();
 
-    QList<Tomahawk::artist_ptr> artists;
+    QList<Hatchet::artist_ptr> artists;
     artists << artist;
     onArtistsAdded( artists );
 }
@@ -151,8 +151,8 @@ TreeModel::fetchAlbums( const artist_ptr& artist )
 {
     startLoading();
 
-    connect( artist.data(), SIGNAL( albumsAdded( QList<Tomahawk::album_ptr>, Tomahawk::ModelMode ) ),
-                              SLOT( onAlbumsFound( QList<Tomahawk::album_ptr>, Tomahawk::ModelMode ) ), Qt::UniqueConnection );
+    connect( artist.data(), SIGNAL( albumsAdded( QList<Hatchet::album_ptr>, Hatchet::ModelMode ) ),
+                              SLOT( onAlbumsFound( QList<Hatchet::album_ptr>, Hatchet::ModelMode ) ), Qt::UniqueConnection );
 
     const QModelIndex parent = indexFromArtist( artist );
     addAlbums( parent, artist->albums( m_mode, m_collection ) );
@@ -160,18 +160,18 @@ TreeModel::fetchAlbums( const artist_ptr& artist )
 
 
 void
-TreeModel::onAlbumsFound( const QList<Tomahawk::album_ptr>& albums, ModelMode mode )
+TreeModel::onAlbumsFound( const QList<Hatchet::album_ptr>& albums, ModelMode mode )
 {
     if ( m_mode != mode )
         return;
 
-    Tomahawk::Artist* artist = qobject_cast< Tomahawk::Artist* >( sender() );
+    Hatchet::Artist* artist = qobject_cast< Hatchet::Artist* >( sender() );
     if ( !artist )
         return;
 
     const artist_ptr artistp = artist->weakRef().toStrongRef();
-    disconnect( artist, SIGNAL( albumsAdded( QList<Tomahawk::album_ptr>, Tomahawk::ModelMode ) ),
-                this,     SLOT( onAlbumsFound( QList<Tomahawk::album_ptr>, Tomahawk::ModelMode ) ) );
+    disconnect( artist, SIGNAL( albumsAdded( QList<Hatchet::album_ptr>, Hatchet::ModelMode ) ),
+                this,     SLOT( onAlbumsFound( QList<Hatchet::album_ptr>, Hatchet::ModelMode ) ) );
 
     const QModelIndex parent = indexFromArtist( artistp );
     addAlbums( parent, albums );
@@ -179,7 +179,7 @@ TreeModel::onAlbumsFound( const QList<Tomahawk::album_ptr>& albums, ModelMode mo
 
 
 void
-TreeModel::addAlbums( const QModelIndex& parent, const QList<Tomahawk::album_ptr>& albums )
+TreeModel::addAlbums( const QModelIndex& parent, const QList<Hatchet::album_ptr>& albums )
 {
     finishLoading();
     if ( albums.isEmpty() )
@@ -218,8 +218,8 @@ TreeModel::addTracks( const album_ptr& album, const QModelIndex& parent )
     if ( tracks.isEmpty() )
         startLoading();
 
-    NewClosure( album.data(), SIGNAL( tracksAdded( QList<Tomahawk::query_ptr>, Tomahawk::ModelMode, Tomahawk::collection_ptr ) ),
-                const_cast<TreeModel*>(this), SLOT( addTracks( Tomahawk::album_ptr, QModelIndex ) ), album, parent );
+    NewClosure( album.data(), SIGNAL( tracksAdded( QList<Hatchet::query_ptr>, Hatchet::ModelMode, Hatchet::collection_ptr ) ),
+                const_cast<TreeModel*>(this), SLOT( addTracks( Hatchet::album_ptr, QModelIndex ) ), album, parent );
 }
 
 
@@ -230,9 +230,9 @@ TreeModel::addCollection( const collection_ptr& collection )
 
     m_collection = collection;
 
-    Tomahawk::ArtistsRequest* req = m_collection->requestArtists();
-    connect( dynamic_cast< QObject* >( req ), SIGNAL( artists( QList< Tomahawk::artist_ptr > ) ),
-             this, SLOT( onArtistsAdded( QList< Tomahawk::artist_ptr > ) ), Qt::UniqueConnection );
+    Hatchet::ArtistsRequest* req = m_collection->requestArtists();
+    connect( dynamic_cast< QObject* >( req ), SIGNAL( artists( QList< Hatchet::artist_ptr > ) ),
+             this, SLOT( onArtistsAdded( QList< Hatchet::artist_ptr > ) ), Qt::UniqueConnection );
     req->enqueue();
 
     setIcon( collection->bigIcon() );
@@ -253,10 +253,10 @@ TreeModel::addCollection( const collection_ptr& collection )
 //    cmd->setSortOrder( order );
 //    cmd->setSortDescending( true );
 
-//    connect( cmd, SIGNAL( artists( QList<Tomahawk::artist_ptr>, Tomahawk::collection_ptr ) ),
-//                    SLOT( onArtistsAdded( QList<Tomahawk::artist_ptr>, Tomahawk::collection_ptr ) ) );
+//    connect( cmd, SIGNAL( artists( QList<Hatchet::artist_ptr>, Hatchet::collection_ptr ) ),
+//                    SLOT( onArtistsAdded( QList<Hatchet::artist_ptr>, Hatchet::collection_ptr ) ) );
 
-//    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+//    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 
 //    if ( collection->source()->isLocal() )
 //        setTitle( tr( "My Collection" ) );
@@ -266,7 +266,7 @@ TreeModel::addCollection( const collection_ptr& collection )
 
 
 void
-TreeModel::onArtistsAdded( const QList<Tomahawk::artist_ptr>& artists )
+TreeModel::onArtistsAdded( const QList<Hatchet::artist_ptr>& artists )
 {
     finishLoading();
 
@@ -292,7 +292,7 @@ TreeModel::onArtistsAdded( const QList<Tomahawk::artist_ptr>& artists )
 
 
 void
-TreeModel::onTracksAdded( const QList<Tomahawk::query_ptr>& tracks, const QModelIndex& parent )
+TreeModel::onTracksAdded( const QList<Hatchet::query_ptr>& tracks, const QModelIndex& parent )
 {
     finishLoading();
 
@@ -324,7 +324,7 @@ TreeModel::onTracksAdded( const QList<Tomahawk::query_ptr>& tracks, const QModel
 
 
 QModelIndex
-TreeModel::indexFromArtist( const Tomahawk::artist_ptr& artist ) const
+TreeModel::indexFromArtist( const Hatchet::artist_ptr& artist ) const
 {
     for ( int i = 0; i < rowCount( QModelIndex() ); i++ )
     {
@@ -342,7 +342,7 @@ TreeModel::indexFromArtist( const Tomahawk::artist_ptr& artist ) const
 
 
 QModelIndex
-TreeModel::indexFromAlbum( const Tomahawk::album_ptr& album ) const
+TreeModel::indexFromAlbum( const Hatchet::album_ptr& album ) const
 {
     QModelIndex artistIdx = indexFromArtist( album->artist() );
     for ( int i = 0; i < rowCount( artistIdx ); i++ )
@@ -361,7 +361,7 @@ TreeModel::indexFromAlbum( const Tomahawk::album_ptr& album ) const
 
 
 QModelIndex
-TreeModel::indexFromResult( const Tomahawk::result_ptr& result ) const
+TreeModel::indexFromResult( const Hatchet::result_ptr& result ) const
 {
     QModelIndex albumIdx = indexFromAlbum( result->track()->albumPtr() );
     for ( int i = 0; i < rowCount( albumIdx ); i++ )
@@ -381,7 +381,7 @@ TreeModel::indexFromResult( const Tomahawk::result_ptr& result ) const
 
 
 QModelIndex
-TreeModel::indexFromQuery( const Tomahawk::query_ptr& query ) const
+TreeModel::indexFromQuery( const Hatchet::query_ptr& query ) const
 {
     QModelIndex albumIdx = indexFromAlbum( query->queryTrack()->albumPtr() );
     for ( int i = 0; i < rowCount( albumIdx ); i++ )
@@ -400,7 +400,7 @@ TreeModel::indexFromQuery( const Tomahawk::query_ptr& query ) const
 
 
 PlayableItem*
-TreeModel::itemFromResult( const Tomahawk::result_ptr& result ) const
+TreeModel::itemFromResult( const Hatchet::result_ptr& result ) const
 {
     QModelIndex albumIdx = indexFromAlbum( result->track()->albumPtr() );
     for ( int i = 0; i < rowCount( albumIdx ); i++ )

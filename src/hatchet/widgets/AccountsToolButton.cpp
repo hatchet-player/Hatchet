@@ -1,27 +1,27 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2012,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "AccountsToolButton.h"
 
 #include "AccountListWidget.h"
 #include "accounts/AccountManager.h"
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 
 #include <QLabel>
 #include <QListView>
@@ -34,7 +34,7 @@
 
 AccountsToolButton::AccountsToolButton( QWidget* parent )
     : QToolButton( parent )
-    , TomahawkUtils::DpiScaler( this )
+    , HatchetUtils::DpiScaler( this )
 {
     m_popup = new AccountsPopupWidget( this );
     m_popup->hide();
@@ -51,7 +51,7 @@ AccountsToolButton::AccountsToolButton( QWidget* parent )
     QVBoxLayout *wMainLayout = new QVBoxLayout( w );
     w->setLayout( wMainLayout  );
 
-    TomahawkUtils::unmarginLayout( w->layout() );
+    HatchetUtils::unmarginLayout( w->layout() );
 
     w->setContentsMargins( scaled( 6, 6, 6, 6 ) );
 #ifdef Q_OS_MAC
@@ -62,10 +62,10 @@ AccountsToolButton::AccountsToolButton( QWidget* parent )
     m_popup->setWidget( w );
     connect( m_popup, SIGNAL( hidden() ), SLOT( popupHidden() ) );
 
-    m_model = new Tomahawk::Accounts::AccountModel( this );
+    m_model = new Hatchet::Accounts::AccountModel( this );
     m_proxy = new AccountModelFactoryProxy( m_model );
     m_proxy->setSourceModel( m_model );
-    m_proxy->setFilterRowType( Tomahawk::Accounts::AccountModel::TopLevelFactory );
+    m_proxy->setFilterRowType( Hatchet::Accounts::AccountModel::TopLevelFactory );
     m_proxy->setFilterEnabled( true );
 
     AccountListWidget *view = new AccountListWidget( m_proxy, m_popup );
@@ -80,18 +80,18 @@ AccountsToolButton::AccountsToolButton( QWidget* parent )
     separatorLine->setFixedHeight( 1 );
     separatorLine->setContentsMargins( 0, 0, 0, 0 );
     separatorLine->setStyleSheet( "QWidget { border-top: 1px solid " +
-                                  TomahawkStyle::BORDER_LINE.name() + "; }" ); //from ProxyStyle
+                                  HatchetStyle::BORDER_LINE.name() + "; }" ); //from ProxyStyle
     wMainLayout->addWidget( separatorLine );
 
     wMainLayout->addSpacing( scaledY( 6 ) );
 
     QPushButton *settingsButton = new QPushButton( w );
-    settingsButton->setIcon( TomahawkUtils::defaultPixmap( TomahawkUtils::AccountSettings ) );
+    settingsButton->setIcon( HatchetUtils::defaultPixmap( HatchetUtils::AccountSettings ) );
     settingsButton->setText( AccountsToolButton::tr( "Configure Accounts" ) );
     connect( settingsButton, SIGNAL( clicked() ), window(), SLOT( showSettingsDialog() ) );
 
     QHBoxLayout *bottomLayout = new QHBoxLayout();
-    TomahawkUtils::unmarginLayout( bottomLayout );
+    HatchetUtils::unmarginLayout( bottomLayout );
     bottomLayout->addStretch();
     bottomLayout->addWidget( settingsButton );
     wMainLayout->addLayout( bottomLayout );
@@ -151,7 +151,7 @@ AccountsToolButton::paintEvent( QPaintEvent* event )
                                   height() / 2 - iconSize().height() / 2 ),
                           iconSize() );
 
-        painter.drawPixmap( pixmapRect, TomahawkUtils::defaultPixmap( TomahawkUtils::AccountNone, TomahawkUtils::Original, iconSize() ) );
+        painter.drawPixmap( pixmapRect, HatchetUtils::defaultPixmap( HatchetUtils::AccountNone, HatchetUtils::Original, iconSize() ) );
     }
     else
     {
@@ -199,9 +199,9 @@ AccountsToolButton::updateIcons()
     for ( int i = 0; i < m_proxy->rowCount(); ++i )
     {
         QModelIndex idx = m_proxy->index( i, 0 );
-        const QList< Tomahawk::Accounts::Account* >& children =
-                idx.data( Tomahawk::Accounts::AccountModel::ChildrenOfFactoryRole )
-                   .value< QList< Tomahawk::Accounts::Account* > >();
+        const QList< Hatchet::Accounts::Account* >& children =
+                idx.data( Hatchet::Accounts::AccountModel::ChildrenOfFactoryRole )
+                   .value< QList< Hatchet::Accounts::Account* > >();
         int count = children.count();
 
         if ( count == 0 )
@@ -220,7 +220,7 @@ AccountsToolButton::updateIcons()
             for ( int j = 0; j < count; ++j )
             {
                 if ( children.at( j )->connectionState() ==
-                     Tomahawk::Accounts::Account::Connected )
+                     Hatchet::Accounts::Account::Connected )
                 {
                     connectedAccountIndex = j;
                     break;

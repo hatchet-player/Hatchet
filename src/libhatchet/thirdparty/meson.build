@@ -1,7 +1,7 @@
-# libtomahawk build file
+# libhatchet build file
 #============================================================================
 
-libtomahawk_inc += include_directories('.')
+libhatchet_inc += include_directories('.')
 
 
 thirdparty_dirs = []

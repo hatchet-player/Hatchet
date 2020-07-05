@@ -1,6 +1,6 @@
-## BUILD TOMAHAWK
+## BUILD Hatchet
 
-you can compile tomahawk yourself
+you can compile Hatchet yourself
 
 NT like :
     $ .\bootstrap.cmd
@@ -107,6 +107,6 @@ the following optional dependencies can be built in-project:
 
 ## Cross Compilation
 
-~~ the tomahawk project can be cross compiled from a Unix-Like
+~~ the Hatchet project can be cross compiled from a Unix-Like
 environment for NT-Like environments ~~ THIS FEAUTURE IS CURRENTLY
 NOT WORKING

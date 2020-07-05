@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DatabaseCommand_GenericSelect.h"
@@ -27,7 +27,7 @@
 #include "PlaylistEntry.h"
 #include "SourceList.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 DatabaseCommand_GenericSelect::DatabaseCommand_GenericSelect( const QString& sqlSelect, QueryType type, int limit, QObject* parent )
@@ -51,7 +51,7 @@ DatabaseCommand_GenericSelect::DatabaseCommand_GenericSelect( const QString& sql
 void
 DatabaseCommand_GenericSelect::exec( DatabaseImpl* dbi )
 {
-    TomahawkSqlQuery query = dbi->newquery();
+    HatchetSqlQuery query = dbi->newquery();
 
     query.prepare( QString( "%1 %2;" ).arg( m_sqlSelect ).arg( m_limit > -1 ? QString( " LIMIT %1" ).arg( m_limit ) : QString() ) );
     query.exec();
@@ -92,7 +92,7 @@ DatabaseCommand_GenericSelect::exec( DatabaseImpl* dbi )
             track = query.value( 0 ).toString();
             artist = query.value( 1 ).toString();
 
-            qry = Tomahawk::Query::get( artist, track, QString() );
+            qry = Hatchet::Query::get( artist, track, QString() );
             if ( qry.isNull() )
                 continue;
         }
@@ -101,7 +101,7 @@ DatabaseCommand_GenericSelect::exec( DatabaseImpl* dbi )
             int artistId = query.value( 0 ).toInt();
             QString artistName = query.value( 1 ).toString();
 
-            artist = Tomahawk::Artist::get( artistId, artistName );
+            artist = Hatchet::Artist::get( artistId, artistName );
         }
         else if ( m_queryType == Album )
         {
@@ -110,8 +110,8 @@ DatabaseCommand_GenericSelect::exec( DatabaseImpl* dbi )
             int artistId = query.value( 2 ).toInt();
             QString artistName = query.value( 3 ).toString();
 
-            artist = Tomahawk::Artist::get( artistId, artistName );
-            album = Tomahawk::Album::get( albumId, albumName, artist );
+            artist = Hatchet::Artist::get( artistId, artistName );
+            album = Hatchet::Album::get( albumId, albumName, artist );
         }
 
         QVariantList extraData;

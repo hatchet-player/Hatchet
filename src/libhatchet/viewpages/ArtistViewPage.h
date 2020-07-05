@@ -1,27 +1,27 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
  * \class ArtistInfoWidget
  * \brief ViewPage, which displays top-hits, related artists and albums for an artist.
  *
- * This Tomahawk ViewPage displays top-hits, related artists and known albums
+ * This Hatchet ViewPage displays top-hits, related artists and known albums
  * for any given artist. It is our default ViewPage when showing an artist
  * via ViewManager.
  *
@@ -52,12 +52,12 @@ namespace Ui
 
 class MetaArtistInfoInterface;
 
-class DLLEXPORT ArtistInfoWidget : public QWidget, public Tomahawk::ViewPage, private TomahawkUtils::DpiScaler
+class DLLEXPORT ArtistInfoWidget : public QWidget, public Hatchet::ViewPage, private HatchetUtils::DpiScaler
 {
 Q_OBJECT
 
 public:
-    ArtistInfoWidget( const Tomahawk::artist_ptr& artist, QWidget* parent = 0 );
+    ArtistInfoWidget( const Hatchet::artist_ptr& artist, QWidget* parent = 0 );
     ~ArtistInfoWidget();
 
     /** \brief Loads information for a given artist.
@@ -68,12 +68,12 @@ public:
      *  automatically called by the constructor, but you can use it to load
      *  another artist's information at any point.
      */
-    void load( const Tomahawk::artist_ptr& artist );
+    void load( const Hatchet::artist_ptr& artist );
 
-    Tomahawk::artist_ptr artist() const { return m_artist; }
+    Hatchet::artist_ptr artist() const { return m_artist; }
 
     virtual QWidget* widget() { return this; }
-    virtual Tomahawk::playlistinterface_ptr playlistInterface() const;
+    virtual Hatchet::playlistinterface_ptr playlistInterface() const;
 
     virtual QString title() const { return m_title; }
     virtual QString description() const { return m_description; }
@@ -99,8 +99,8 @@ private slots:
     void onArtistImageUpdated();
     void onBiographyLoaded();
 
-    void onAlbumsFound( const QList<Tomahawk::album_ptr>& albums, Tomahawk::ModelMode mode );
-    void onTracksFound( const QList<Tomahawk::query_ptr>& queries, Tomahawk::ModelMode mode );
+    void onAlbumsFound( const QList<Hatchet::album_ptr>& albums, Hatchet::ModelMode mode );
+    void onTracksFound( const QList<Hatchet::query_ptr>& queries, Hatchet::ModelMode mode );
     void onSimilarArtistsLoaded();
 
     void onBiographyLinkClicked( const QUrl& url );
@@ -121,11 +121,11 @@ private:
     BasicHeader* m_headerWidget;
     QScrollArea* m_area;
 
-    Tomahawk::artist_ptr m_artist;
+    Hatchet::artist_ptr m_artist;
     PlayableModel* m_relatedModel;
     PlayableModel* m_albumsModel;
     PlayableModel* m_topHitsModel;
-    Tomahawk::playlistinterface_ptr m_plInterface;
+    Hatchet::playlistinterface_ptr m_plInterface;
 
     QStackedWidget* m_stackedWidget;
 

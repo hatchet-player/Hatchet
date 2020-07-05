@@ -1,27 +1,27 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2012, Christopher Reichert <creichert07@gmail.com>
  *   Copyright 2012-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "MetadataEditor.h"
 #include "ui_MetadataEditor.h"
 
 #include "filemetadata/taghandlers/tag.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/Closure.h"
 #include "utils/Logger.h"
 #include "taglib/fileref.h"
@@ -45,7 +45,7 @@
 #include <QMessageBox>
 
 
-MetadataEditor::MetadataEditor( const Tomahawk::query_ptr& query, const Tomahawk::playlistinterface_ptr& plInterface, QWidget* parent )
+MetadataEditor::MetadataEditor( const Hatchet::query_ptr& query, const Hatchet::playlistinterface_ptr& plInterface, QWidget* parent )
     : QDialog( parent )
 {
     init( plInterface );
@@ -54,7 +54,7 @@ MetadataEditor::MetadataEditor( const Tomahawk::query_ptr& query, const Tomahawk
 }
 
 
-MetadataEditor::MetadataEditor( const Tomahawk::result_ptr& result, const Tomahawk::playlistinterface_ptr& plInterface, QWidget* parent )
+MetadataEditor::MetadataEditor( const Hatchet::result_ptr& result, const Hatchet::playlistinterface_ptr& plInterface, QWidget* parent )
     : QDialog( parent )
 {
     init( plInterface );
@@ -64,7 +64,7 @@ MetadataEditor::MetadataEditor( const Tomahawk::result_ptr& result, const Tomaha
 
 
 void
-MetadataEditor::init( const Tomahawk::playlistinterface_ptr& plInterface )
+MetadataEditor::init( const Hatchet::playlistinterface_ptr& plInterface )
 {
     ui = new Ui::MetadataEditor();
     ui->setupUi( this );
@@ -102,7 +102,7 @@ MetadataEditor::writeMetadata( bool closeDlg )
 #endif
 
         TagLib::FileRef f( encodedName );
-        QSharedPointer<Tomahawk::Tag> tag( Tomahawk::Tag::fromFile( f ) );
+        QSharedPointer<Hatchet::Tag> tag( Hatchet::Tag::fromFile( f ) );
         if ( !tag )
         {
             failed = true;
@@ -117,7 +117,7 @@ MetadataEditor::writeMetadata( bool closeDlg )
                 changed = true;
             }
 
-            Tomahawk::artist_ptr newArtist = Tomahawk::Artist::get( artist(), true );
+            Hatchet::artist_ptr newArtist = Hatchet::Artist::get( artist(), true );
             if ( newArtist != m_result->track()->artistPtr() )
             {
                 tDebug() << Q_FUNC_INFO << "Artist changed" << artist() << m_result->track()->artist();
@@ -126,7 +126,7 @@ MetadataEditor::writeMetadata( bool closeDlg )
                 changed = true;
             }
 
-            Tomahawk::album_ptr newAlbum = Tomahawk::Album::get( newArtist, album(), true );
+            Hatchet::album_ptr newAlbum = Hatchet::Album::get( newArtist, album(), true );
             if ( newAlbum != m_result->track()->albumPtr() )
             {
                 tDebug() << Q_FUNC_INFO << "Album changed" << album() << newAlbum->id() << m_result->track()->album() << m_result->track()->albumPtr()->id() << newAlbum.data() << m_result->track()->albumPtr().data();
@@ -195,7 +195,7 @@ MetadataEditor::writeMetadata( bool closeDlg )
 
 
 void
-MetadataEditor::loadQuery( const Tomahawk::query_ptr& query )
+MetadataEditor::loadQuery( const Hatchet::query_ptr& query )
 {
     if ( query.isNull() )
         return;
@@ -206,7 +206,7 @@ MetadataEditor::loadQuery( const Tomahawk::query_ptr& query )
         return;
     }
 
-    m_result = Tomahawk::result_ptr();
+    m_result = Hatchet::result_ptr();
     m_query = query;
     setEditable( false );
 
@@ -234,7 +234,7 @@ MetadataEditor::loadQuery( const Tomahawk::query_ptr& query )
 
 
 void
-MetadataEditor::loadResult( const Tomahawk::result_ptr& result )
+MetadataEditor::loadResult( const Hatchet::result_ptr& result )
 {
     if ( result.isNull() )
         return;
@@ -258,7 +258,7 @@ MetadataEditor::loadResult( const Tomahawk::result_ptr& result )
 
         QFileInfo fi( furl );
         setFileName( fi.absoluteFilePath() );
-        setFileSize( TomahawkUtils::filesizeToString( fi.size() ) );
+        setFileSize( HatchetUtils::filesizeToString( fi.size() ) );
     }
 
     setWindowTitle( result->track()->track() );
@@ -345,7 +345,7 @@ MetadataEditor::setAlbumPos( unsigned int num )
 void
 MetadataEditor::setDuration( unsigned int duration )
 {
-    ui->durationLineEdit->setText( TomahawkUtils::timeToString( duration ) );
+    ui->durationLineEdit->setText( HatchetUtils::timeToString( duration ) );
 }
 
 

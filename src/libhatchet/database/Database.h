@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #pragma once
@@ -28,7 +28,7 @@
 #include <QVariant>
 
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 class DatabaseImpl;
@@ -47,10 +47,10 @@ public:
     dbcmd_ptr newInstance();
 
 signals:
-    void created( const Tomahawk::dbcmd_ptr& command );
+    void created( const Hatchet::dbcmd_ptr& command );
 
 protected:
-    void notifyCreated( const Tomahawk::dbcmd_ptr& command );
+    void notifyCreated( const Hatchet::dbcmd_ptr& command );
 
     virtual DatabaseCommand* create() const = 0;
 };
@@ -87,7 +87,7 @@ public:
 
     DatabaseImpl* impl();
 
-    dbcmd_ptr createCommandInstance( const QVariant& op, const Tomahawk::source_ptr& source );
+    dbcmd_ptr createCommandInstance( const QVariant& op, const Hatchet::source_ptr& source );
 
     // Template implementations need to stay in header!
     template<typename T> void registerCommand()
@@ -105,15 +105,15 @@ signals:
     void indexReady();
     void ready();
 
-    void newJobRO( Tomahawk::dbcmd_ptr );
-    void newJobRW( Tomahawk::dbcmd_ptr );
+    void newJobRO( Hatchet::dbcmd_ptr );
+    void newJobRW( Hatchet::dbcmd_ptr );
 
     void waitingForWorkers();
     void workersFinished();
 
 public slots:
-    void enqueue( const Tomahawk::dbcmd_ptr& lc );
-    void enqueue( const QList< Tomahawk::dbcmd_ptr >& lc );
+    void enqueue( const Hatchet::dbcmd_ptr& lc );
+    void enqueue( const QList< Hatchet::dbcmd_ptr >& lc );
 
 private slots:
     void markAsReady();
@@ -140,8 +140,8 @@ private:
 
     static Database* s_instance;
 
-    friend class Tomahawk::Artist;
-    friend class Tomahawk::Album;
+    friend class Hatchet::Artist;
+    friend class Hatchet::Album;
 };
 
 }

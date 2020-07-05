@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2012 Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "SpotifyInfoPlugin.h"
@@ -24,8 +24,8 @@
 #include "utils/Logger.h"
 #include "utils/NetworkAccessManager.h"
 
-using namespace Tomahawk;
-using namespace Tomahawk::InfoSystem;
+using namespace Hatchet;
+using namespace Hatchet::InfoSystem;
 
 
 SpotifyInfoPlugin::SpotifyInfoPlugin( Accounts::SpotifyAccount* account )
@@ -46,7 +46,7 @@ SpotifyInfoPlugin::~SpotifyInfoPlugin()
 }
 
 void
-SpotifyInfoPlugin::pushInfo( Tomahawk::InfoSystem::InfoPushData pushData )
+SpotifyInfoPlugin::pushInfo( Hatchet::InfoSystem::InfoPushData pushData )
 {
     if ( m_account.isNull() || !m_account.data()->loggedIn() )
         return;
@@ -73,21 +73,21 @@ SpotifyInfoPlugin::sendLoveSong( const InfoType type, QVariant input )
     if( !m_account.data()->loveSync() )
         return;
 
-    if ( !input.toMap().contains( "trackinfo" ) || !input.toMap()[ "trackinfo" ].canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !input.toMap().contains( "trackinfo" ) || !input.toMap()[ "trackinfo" ].canConvert< Hatchet::InfoSystem::InfoStringHash >() )
     {
         tLog( LOGVERBOSE ) << "SpotifyInfoPlugin::sendLoveSong cannot convert input!";
         return;
     }
 
-    InfoStringHash hash = input.toMap()[ "trackinfo" ].value< Tomahawk::InfoSystem::InfoStringHash >();
+    InfoStringHash hash = input.toMap()[ "trackinfo" ].value< Hatchet::InfoSystem::InfoStringHash >();
     if ( !hash.contains( "title" ) || !hash.contains( "artist" ) || !hash.contains( "album" ) )
         return;
 
-    if ( type == Tomahawk::InfoSystem::InfoLove )
+    if ( type == Hatchet::InfoSystem::InfoLove )
     {
         m_account.data()->starTrack( hash["artist"], hash["title"], true );
     }
-    else if ( type == Tomahawk::InfoSystem::InfoUnLove )
+    else if ( type == Hatchet::InfoSystem::InfoUnLove )
     {
         m_account.data()->starTrack( hash["artist"], hash["title"], false );
     }
@@ -100,20 +100,20 @@ SpotifyInfoPlugin::getInfo( InfoRequestData requestData )
     {
     case InfoAlbumSongs:
     {
-        if ( !requestData.input.canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+        if ( !requestData.input.canConvert< Hatchet::InfoSystem::InfoStringHash >() )
         {
             dataError( requestData );
             return;
         }
 
-        InfoStringHash hash = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+        InfoStringHash hash = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
         if ( !hash.contains( "album" ) )
         {
             dataError( requestData );
             return;
         }
 
-        Tomahawk::InfoSystem::InfoStringHash criteria;
+        Hatchet::InfoSystem::InfoStringHash criteria;
         criteria[ "album" ] = hash[ "album" ];
         if ( hash.contains( "artist" ) )
             criteria["artist"] = hash["artist"];
@@ -140,10 +140,10 @@ SpotifyInfoPlugin::notInCacheSlot( InfoStringHash criteria, InfoRequestData requ
 
         // Use always Spotify webservice, faster and more stable
         QUrl lookupUrl( "http://ws.spotify.com/search/1/album.json" );
-        TomahawkUtils::urlAddQueryItem( lookupUrl, "q", QString( "%1 %2" ).arg( artist ).arg( album ) );
+        HatchetUtils::urlAddQueryItem( lookupUrl, "q", QString( "%1 %2" ).arg( artist ).arg( album ) );
 
-        QNetworkReply * reply = Tomahawk::Utils::nam()->get( QNetworkRequest( lookupUrl ) );
-        NewClosure( reply, SIGNAL( finished() ), this, SLOT( albumIdLookupFinished( QNetworkReply*, Tomahawk::InfoSystem::InfoRequestData ) ), reply, requestData );
+        QNetworkReply * reply = Hatchet::Utils::nam()->get( QNetworkRequest( lookupUrl ) );
+        NewClosure( reply, SIGNAL( finished() ), this, SLOT( albumIdLookupFinished( QNetworkReply*, Hatchet::InfoSystem::InfoRequestData ) ), reply, requestData );
         break;
     }
     default:
@@ -188,7 +188,7 @@ SpotifyInfoPlugin::albumIdLookupFinished( QNetworkReply* reply, const InfoReques
 
     if ( reply->error() == QNetworkReply::NoError )
     {
-        const QVariantMap response = TomahawkUtils::parseJson( reply->readAll() ).toMap();
+        const QVariantMap response = HatchetUtils::parseJson( reply->readAll() ).toMap();
         if ( !response.contains( "albums" ) )
         {
             dataError( requestData );
@@ -213,11 +213,11 @@ SpotifyInfoPlugin::albumIdLookupFinished( QNetworkReply* reply, const InfoReques
 
         tLog( LOGVERBOSE ) << "Doing spotify album lookup via webservice with ID:" << id;
 
-        QUrl lookupUrl( QString( "http://spotikea.tomahawk-player.org/browse/%1" ).arg( id ) );
+        QUrl lookupUrl( QString( "http://spotikea.hatchet-player.org/browse/%1" ).arg( id ) );
 
 
-        QNetworkReply * reply = Tomahawk::Utils::nam()->get( QNetworkRequest( lookupUrl ) );
-        NewClosure( reply, SIGNAL( finished() ), this, SLOT( albumContentsLookupFinished( QNetworkReply*, Tomahawk::InfoSystem::InfoRequestData ) ), reply, requestData );
+        QNetworkReply * reply = Hatchet::Utils::nam()->get( QNetworkRequest( lookupUrl ) );
+        NewClosure( reply, SIGNAL( finished() ), this, SLOT( albumContentsLookupFinished( QNetworkReply*, Hatchet::InfoSystem::InfoRequestData ) ), reply, requestData );
     }
     else
     {
@@ -235,7 +235,7 @@ SpotifyInfoPlugin::albumContentsLookupFinished( QNetworkReply* reply, const Info
 
     if ( reply->error() == QNetworkReply::NoError )
     {
-        const QVariantMap response = TomahawkUtils::parseJson( reply->readAll() ).toMap();
+        const QVariantMap response = HatchetUtils::parseJson( reply->readAll() ).toMap();
 
         if ( !response.contains( "album" ) )
         {
@@ -288,7 +288,7 @@ SpotifyInfoPlugin::trackListResult( const QStringList& trackNameList, const Info
 
     emit info( requestData, returnedData );
 
-    Tomahawk::InfoSystem::InfoStringHash criteria;
+    Hatchet::InfoSystem::InfoStringHash criteria;
     criteria["artist"] = requestData.input.value< InfoStringHash>()["artist"];
     criteria["album"] = requestData.input.value< InfoStringHash>()["album"];
 

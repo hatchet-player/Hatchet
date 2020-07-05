@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "accounts/AccountManager.h"
@@ -24,13 +24,13 @@
 
 #define UPOWER_RESUME_DELAY 2000
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 const char* UPowerHandler::UPowerService = "org.freedesktop.UPower";
 const char* UPowerHandler::UPowerPath = "/org/freedesktop/UPower";
 const char* UPowerHandler::UPowerInterface = "org.freedesktop.UPower";
 
-Tomahawk::UPowerHandler::UPowerHandler( QObject *parent )
+Hatchet::UPowerHandler::UPowerHandler( QObject *parent )
     : QObject( parent )
 {
 }
@@ -59,7 +59,7 @@ UPowerHandler::handleSleep()
 {
     QMutexLocker locker( &m_mutex );
     tLog( LOGVERBOSE ) << Q_FUNC_INFO << "About to sleep so disconnecting all accounts";
-    Tomahawk::Accounts::AccountManager::instance()->disconnectAll();
+    Hatchet::Accounts::AccountManager::instance()->disconnectAll();
 }
 
 void
@@ -74,6 +74,6 @@ void
 UPowerHandler::actualResume()
 {
     tLog( LOGVERBOSE ) << Q_FUNC_INFO << "Awake from sleep so connecting all accounts";
-    Tomahawk::Accounts::AccountManager::instance()->connectAll();
+    Hatchet::Accounts::AccountManager::instance()->connectAll();
     m_mutex.unlock();
 }

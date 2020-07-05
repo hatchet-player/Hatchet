@@ -1,27 +1,27 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <QtDebug>
 #include <QDesktopServices>
 
 #include "InfoSystemCache.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "utils/Logger.h"
 #include "Source.h"
 
@@ -29,7 +29,7 @@
 #include <QSettings>
 #include <QCryptographicHash>
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 namespace InfoSystem
@@ -39,14 +39,14 @@ const int InfoSystemCache::s_infosystemCacheVersion = 4;
 
 InfoSystemCache::InfoSystemCache( QObject* parent )
     : QObject( parent )
-    , m_cacheBaseDir( TomahawkSettings::instance()->storageCacheLocation() + "/InfoSystemCache/" )
+    , m_cacheBaseDir( HatchetSettings::instance()->storageCacheLocation() + "/InfoSystemCache/" )
 {
     tDebug() << Q_FUNC_INFO;
 
-    if ( TomahawkSettings::instance()->infoSystemCacheVersion() < s_infosystemCacheVersion )
+    if ( HatchetSettings::instance()->infoSystemCacheVersion() < s_infosystemCacheVersion )
     {
-        TomahawkUtils::removeDirectory( m_cacheBaseDir );
-        TomahawkSettings::instance()->setInfoSystemCacheVersion( s_infosystemCacheVersion );
+        HatchetUtils::removeDirectory( m_cacheBaseDir );
+        HatchetSettings::instance()->setInfoSystemCacheVersion( s_infosystemCacheVersion );
     }
 
     m_pruneTimer.setInterval( 300000 );
@@ -93,7 +93,7 @@ InfoSystemCache::pruneTimerFired()
 
 
 void
-InfoSystemCache::getCachedInfoSlot( Tomahawk::InfoSystem::InfoStringHash criteria, qint64 newMaxAge, Tomahawk::InfoSystem::InfoRequestData requestData )
+InfoSystemCache::getCachedInfoSlot( Hatchet::InfoSystem::InfoStringHash criteria, qint64 newMaxAge, Hatchet::InfoSystem::InfoRequestData requestData )
 {
     QObject* sendingObj = sender();
     const QString criteriaHashVal = criteriaMd5( criteria );
@@ -186,14 +186,14 @@ InfoSystemCache::getCachedInfoSlot( Tomahawk::InfoSystem::InfoStringHash criteri
 
 
 void
-InfoSystemCache::notInCache( QObject *receiver, Tomahawk::InfoSystem::InfoStringHash criteria, Tomahawk::InfoSystem::InfoRequestData requestData )
+InfoSystemCache::notInCache( QObject *receiver, Hatchet::InfoSystem::InfoStringHash criteria, Hatchet::InfoSystem::InfoRequestData requestData )
 {
-    QMetaObject::invokeMethod( receiver, "notInCacheSlot", Q_ARG( Tomahawk::InfoSystem::InfoStringHash, criteria ), Q_ARG( Tomahawk::InfoSystem::InfoRequestData, requestData ) );
+    QMetaObject::invokeMethod( receiver, "notInCacheSlot", Q_ARG( Hatchet::InfoSystem::InfoStringHash, criteria ), Q_ARG( Hatchet::InfoSystem::InfoRequestData, requestData ) );
 }
 
 
 void
-InfoSystemCache::updateCacheSlot( Tomahawk::InfoSystem::InfoStringHash criteria, qint64 maxAge, Tomahawk::InfoSystem::InfoType type, QVariant output )
+InfoSystemCache::updateCacheSlot( Hatchet::InfoSystem::InfoStringHash criteria, qint64 maxAge, Hatchet::InfoSystem::InfoType type, QVariant output )
 {
     const QString criteriaHashVal = criteriaMd5( criteria );
     const QString criteriaHashValWithType = criteriaMd5( criteria, type );
@@ -245,7 +245,7 @@ InfoSystemCache::updateCacheSlot( Tomahawk::InfoSystem::InfoStringHash criteria,
 
 
 const QString
-InfoSystemCache::criteriaMd5( const Tomahawk::InfoSystem::InfoStringHash &criteria, Tomahawk::InfoSystem::InfoType type ) const
+InfoSystemCache::criteriaMd5( const Hatchet::InfoSystem::InfoStringHash &criteria, Hatchet::InfoSystem::InfoType type ) const
 {
     QCryptographicHash md5( QCryptographicHash::Md5 );
     QStringList keys = criteria.keys();
@@ -255,7 +255,7 @@ InfoSystemCache::criteriaMd5( const Tomahawk::InfoSystem::InfoStringHash &criter
         md5.addData( key.toUtf8() );
         md5.addData( criteria[key].toUtf8() );
     }
-    if ( type != Tomahawk::InfoSystem::InfoNoInfo && type != Tomahawk::InfoSystem::InfoLastInfo )
+    if ( type != Hatchet::InfoSystem::InfoNoInfo && type != Hatchet::InfoSystem::InfoLastInfo )
         md5.addData( QString::number( (int)type ).toUtf8() );
     return md5.result().toHex();
 }
@@ -263,4 +263,4 @@ InfoSystemCache::criteriaMd5( const Tomahawk::InfoSystem::InfoStringHash &criter
 
 } //namespace InfoSystem
 
-} //namespace Tomahawk
+} //namespace Hatchet

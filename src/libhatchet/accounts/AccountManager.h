@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef ACCOUNTMANAGER_H
@@ -29,7 +29,7 @@
 #include "infosystem/InfoSystem.h"
 #include "Account.h"
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 namespace Accounts
@@ -67,9 +67,9 @@ public:
     void removeAccount( Account* account );
 
     QList< Account* > accounts() const { return m_accounts; }
-    QList< Account* > accounts( Tomahawk::Accounts::AccountType type ) const { return m_accountsByAccountType[ type ]; }
+    QList< Account* > accounts( Hatchet::Accounts::AccountType type ) const { return m_accountsByAccountType[ type ]; }
 
-    QList< Account* > accountsFromFactory( Tomahawk::Accounts::AccountFactory* factory ) const;
+    QList< Account* > accountsFromFactory( Hatchet::Accounts::AccountFactory* factory ) const;
 
     /**
      * Returns a new Account for a certain path on disk. This will go through all on-disk resolver account providers
@@ -90,8 +90,8 @@ public:
 
     Account* zeroconfAccount() const;
 
-    bool isConnected() const { return m_connected; }        //for use by TomahawkApp during startup
-    bool isReadyForSip() const { return m_readyForSip; }    //for use by TomahawkApp during startup
+    bool isConnected() const { return m_connected; }        //for use by HatchetApp during startup
+    bool isReadyForSip() const { return m_readyForSip; }    //for use by HatchetApp during startup
     bool isReady() const { return m_completelyReady; }
 
     CredentialsManager* credentialsManager() const { return m_creds; }
@@ -108,21 +108,21 @@ public slots:
 
 signals:
     void readyForFactories(); //this happens first, right before loading accounts from config
-    void readyForSip();       //then this, so TomahawkApp can call initSIP if Servent is ready
+    void readyForSip();       //then this, so HatchetApp can call initSIP if Servent is ready
     void ready();             //finally, when everything is done
 
-    void added( Tomahawk::Accounts::Account* );
-    void removed( Tomahawk::Accounts::Account* );
+    void added( Hatchet::Accounts::Account* );
+    void removed( Hatchet::Accounts::Account* );
 
-    void connected( Tomahawk::Accounts::Account* );
-    void disconnected( Tomahawk::Accounts::Account*, Tomahawk::Accounts::AccountManager::DisconnectReason );
-    void authError( Tomahawk::Accounts::Account* );
+    void connected( Hatchet::Accounts::Account* );
+    void disconnected( Hatchet::Accounts::Account*, Hatchet::Accounts::AccountManager::DisconnectReason );
+    void authError( Hatchet::Accounts::Account* );
 
     void stateChanged( Account* p, Accounts::Account::ConnectionState state );
 
 private slots:
     void init();
-    void onStateChanged( Tomahawk::Accounts::Account::ConnectionState state );
+    void onStateChanged( Hatchet::Accounts::Account::ConnectionState state );
     void onError( int code, const QString& msg );
     void finishLoadingFromConfig( const QString& cs );
 

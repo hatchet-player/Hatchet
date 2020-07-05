@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013, Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef CREDENTIALSMANAGER_H
@@ -32,7 +32,7 @@ class Job;
 class ReadPasswordJob;
 }
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 namespace Accounts
@@ -54,7 +54,7 @@ private:
 /**
  * @brief The CredentialsManager class holds an in-memory cache of whatever credentials are stored
  * in the system's QtKeychain-accessible credentials storage.
- * This ensures an illusion of synchronous operations for Tomahawk's Account classes, even though all
+ * This ensures an illusion of synchronous operations for Hatchet's Account classes, even though all
  * QtKeychain jobs are async.
  */
 class DLLEXPORT CredentialsManager : public QObject
@@ -91,10 +91,10 @@ private:
     QMutex m_mutex;
 };
 
-uint qHash( const Tomahawk::Accounts::CredentialsStorageKey& key );
+uint qHash( const Hatchet::Accounts::CredentialsStorageKey& key );
 
 } //namespace Accounts
 
-} //namespace Tomahawk
+} //namespace Hatchet
 
 #endif // CREDENTIALSMANAGER_H

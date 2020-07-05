@@ -1,23 +1,23 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOMAHAWK_ACCOUNTS_ACCOUNTMODEL_H
-#define TOMAHAWK_ACCOUNTS_ACCOUNTMODEL_H
+#ifndef HATCHET_ACCOUNTS_ACCOUNTMODEL_H
+#define HATCHET_ACCOUNTS_ACCOUNTMODEL_H
 
 #include "DllMacro.h"
 
@@ -27,7 +27,7 @@
 #include <QSet>
 
 
-namespace Tomahawk {
+namespace Hatchet {
 
 namespace Accounts {
 
@@ -82,7 +82,7 @@ public:
         NeedsUpgrade,
         Upgrading,
         Failed,
-        ShippedWithTomahawk, // Built-in account/factory state: Can't uninstall or uninstall, just create
+        ShippedWithHatchet, // Built-in account/factory state: Can't uninstall or uninstall, just create
     };
 
     explicit AccountModel( QObject* parent = 0 );
@@ -93,7 +93,7 @@ public:
     virtual bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
 
 signals:
-    void createAccount( Tomahawk::Accounts::AccountFactory* factory );
+    void createAccount( Hatchet::Accounts::AccountFactory* factory );
     void scrollTo( const QModelIndex& idx );
 
     void startInstalling( const QPersistentModelIndex& idx );
@@ -106,8 +106,8 @@ private slots:
     void atticaLoaded();
     void loadData();
 
-    void accountAdded( Tomahawk::Accounts::Account* );
-    void accountRemoved( Tomahawk::Accounts::Account* );
+    void accountAdded( Hatchet::Accounts::Account* );
+    void accountRemoved( Hatchet::Accounts::Account* );
     void accountStateChanged( Account*, Accounts::Account::ConnectionState );
 
     void onStartedInstalling( const QString& resolverId );
@@ -125,4 +125,4 @@ private:
 
 }
 
-#endif // TOMAHAWK_ACCOUNTS_ACCOUNTMODEL_H
+#endif // HATCHET_ACCOUNTS_ACCOUNTMODEL_H

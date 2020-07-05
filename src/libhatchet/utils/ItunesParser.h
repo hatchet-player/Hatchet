@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Written by Hugo Lindström <hugolm84@gmail.com>
  *   But based on Leo Franchi's work from spotifyParser
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef ITUNES_PARSER_H
@@ -33,7 +33,7 @@
 class NetworkReply;
 class TrackModel;
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 /**
@@ -50,8 +50,8 @@ public:
     virtual ~ItunesParser();
 
 signals:
-    void track( const Tomahawk::query_ptr& track );
-    void tracks( const QList< Tomahawk::query_ptr > tracks );
+    void track( const Hatchet::query_ptr& track );
+    void tracks( const QList< Hatchet::query_ptr > tracks );
 
 private slots:
     void itunesResponseLookupFinished();
@@ -65,7 +65,7 @@ private:
     QList< query_ptr > m_tracks;
     QSet< NetworkReply* > m_queries;
     QString m_title, m_info, m_creator;
-    Tomahawk::playlist_ptr m_playlist;
+    Hatchet::playlist_ptr m_playlist;
 
     DropJobNotifier* m_browseJob;
     static QPixmap* s_pixmap;

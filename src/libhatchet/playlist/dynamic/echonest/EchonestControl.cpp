@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "playlist/dynamic/echonest/EchonestControl.h"
@@ -32,12 +32,12 @@
 #include <QStringListModel>
 
 
-QHash< QString, QStringList > Tomahawk::EchonestControl::s_suggestCache = QHash< QString, QStringList >();
-bool Tomahawk::EchonestControl::s_fetchingMoodsStylesAndGenres = false;
-int Tomahawk::EchonestControl::s_stylePollCount = 0;
+QHash< QString, QStringList > Hatchet::EchonestControl::s_suggestCache = QHash< QString, QStringList >();
+bool Hatchet::EchonestControl::s_fetchingMoodsStylesAndGenres = false;
+int Hatchet::EchonestControl::s_stylePollCount = 0;
 
 
-Tomahawk::EchonestControl::EchonestControl( const QString& selectedType, const QStringList& typeSelectors, QObject* parent )
+Hatchet::EchonestControl::EchonestControl( const QString& selectedType, const QStringList& typeSelectors, QObject* parent )
     : DynamicControl ( selectedType.isEmpty() ? "Artist" : selectedType, typeSelectors, parent )
 {
     setType( "echonest" );
@@ -54,21 +54,21 @@ Tomahawk::EchonestControl::EchonestControl( const QString& selectedType, const Q
 
 
 QWidget*
-Tomahawk::EchonestControl::inputField()
+Hatchet::EchonestControl::inputField()
 {
     return m_input.data();
 }
 
 
 QWidget*
-Tomahawk::EchonestControl::matchSelector()
+Hatchet::EchonestControl::matchSelector()
 {
     return m_match.data();
 }
 
 
 void
-Tomahawk::EchonestControl::setSelectedType ( const QString& type )
+Hatchet::EchonestControl::setSelectedType ( const QString& type )
 {
     if( type != selectedType() )
     {
@@ -77,7 +77,7 @@ Tomahawk::EchonestControl::setSelectedType ( const QString& type )
         if( !m_match.isNull() )
             delete m_match.data();
 
-        Tomahawk::DynamicControl::setSelectedType ( type );
+        Hatchet::DynamicControl::setSelectedType ( type );
         updateWidgets();
         updateData();
         //qDebug() << "Setting new type, set data to:" << m_data.first << m_data.second;
@@ -86,7 +86,7 @@ Tomahawk::EchonestControl::setSelectedType ( const QString& type )
 
 
 Echonest::DynamicPlaylist::PlaylistParamData
-Tomahawk::EchonestControl::toENParam() const
+Hatchet::EchonestControl::toENParam() const
 {
     if( m_overrideType != -1 )
     {
@@ -99,28 +99,28 @@ Tomahawk::EchonestControl::toENParam() const
 
 
 QString
-Tomahawk::EchonestControl::input() const
+Hatchet::EchonestControl::input() const
 {
     return m_data.second.toString();
 }
 
 
 QString
-Tomahawk::EchonestControl::match() const
+Hatchet::EchonestControl::match() const
 {
     return m_matchData;
 }
 
 
 QString
-Tomahawk::EchonestControl::matchString() const
+Hatchet::EchonestControl::matchString() const
 {
     return m_matchString;
 }
 
 
 QString
-Tomahawk::EchonestControl::summary() const
+Hatchet::EchonestControl::summary() const
 {
     if( m_summary.isEmpty() )
         const_cast< EchonestControl* >( this )->calculateSummary();
@@ -130,7 +130,7 @@ Tomahawk::EchonestControl::summary() const
 
 
 void
-Tomahawk::EchonestControl::setInput( const QString& input )
+Hatchet::EchonestControl::setInput( const QString& input )
 {
     m_data.second = input;
     updateWidgetsFromData();
@@ -138,7 +138,7 @@ Tomahawk::EchonestControl::setInput( const QString& input )
 
 
 void
-Tomahawk::EchonestControl::setMatch( const QString& match )
+Hatchet::EchonestControl::setMatch( const QString& match )
 {
     m_matchData = match;
     updateWidgetsFromData();
@@ -146,7 +146,7 @@ Tomahawk::EchonestControl::setMatch( const QString& match )
 
 
 void
-Tomahawk::EchonestControl::updateWidgets()
+Hatchet::EchonestControl::updateWidgets()
 {
     if( !m_input.isNull() )
         delete m_input.data();
@@ -563,7 +563,7 @@ Tomahawk::EchonestControl::updateWidgets()
 
 
 void
-Tomahawk::EchonestControl::setupMinMaxWidgets( Echonest::DynamicPlaylist::PlaylistParam min, Echonest::DynamicPlaylist::PlaylistParam max, const QString& leftL, const QString& rightL, int maxRange )
+Hatchet::EchonestControl::setupMinMaxWidgets( Echonest::DynamicPlaylist::PlaylistParam min, Echonest::DynamicPlaylist::PlaylistParam max, const QString& leftL, const QString& rightL, int maxRange )
 {
     QComboBox* match = new QComboBox;
     match->addItem( tr( "At Least" ), min );
@@ -590,7 +590,7 @@ Tomahawk::EchonestControl::setupMinMaxWidgets( Echonest::DynamicPlaylist::Playli
 
 
 void
-Tomahawk::EchonestControl::updateData()
+Hatchet::EchonestControl::updateData()
 {
     if( selectedType() == "Artist" )
     {
@@ -700,7 +700,7 @@ Tomahawk::EchonestControl::updateData()
 
 
 void
-Tomahawk::EchonestControl::updateFromComboAndSlider( bool smooth )
+Hatchet::EchonestControl::updateFromComboAndSlider( bool smooth )
 {
     QComboBox* combo = qobject_cast<QComboBox*>( m_match.data() );
     if( combo )
@@ -719,7 +719,7 @@ Tomahawk::EchonestControl::updateFromComboAndSlider( bool smooth )
 
 
 void
-Tomahawk::EchonestControl::updateFromLabelAndCombo()
+Hatchet::EchonestControl::updateFromLabelAndCombo()
 {
     QComboBox* s = qobject_cast<QComboBox*>( m_input.data() );
     if( s )
@@ -732,7 +732,7 @@ Tomahawk::EchonestControl::updateFromLabelAndCombo()
 
 // fills in the current widget with the data from json or dbcmd (m_data.second and m_matchData)
 void
-Tomahawk::EchonestControl::updateWidgetsFromData()
+Hatchet::EchonestControl::updateWidgetsFromData()
 {
     if( selectedType() == "Artist" )
     {
@@ -824,7 +824,7 @@ Tomahawk::EchonestControl::updateWidgetsFromData()
 
 
 void
-Tomahawk::EchonestControl::updateToComboAndSlider( bool smooth )
+Hatchet::EchonestControl::updateToComboAndSlider( bool smooth )
 {
     QComboBox* combo = qobject_cast<QComboBox*>( m_match.data() );
     if( combo )
@@ -836,7 +836,7 @@ Tomahawk::EchonestControl::updateToComboAndSlider( bool smooth )
 
 
 void
-Tomahawk::EchonestControl::updateToLabelAndCombo()
+Hatchet::EchonestControl::updateToLabelAndCombo()
 {
     QComboBox* s = qobject_cast< QComboBox* >( m_input.data() );
     if( s )
@@ -845,7 +845,7 @@ Tomahawk::EchonestControl::updateToLabelAndCombo()
 
 
 void
-Tomahawk::EchonestControl::editingFinished()
+Hatchet::EchonestControl::editingFinished()
 {
 //    qDebug() << Q_FUNC_INFO;
     m_editingTimer.start();
@@ -853,7 +853,7 @@ Tomahawk::EchonestControl::editingFinished()
 
 
 void
-Tomahawk::EchonestControl::editTimerFired()
+Hatchet::EchonestControl::editTimerFired()
 {
     // make sure it's really changed
     if( m_cacheData != m_data.second ) { // new, so emit changed
@@ -865,7 +865,7 @@ Tomahawk::EchonestControl::editTimerFired()
 
 
 void
-Tomahawk::EchonestControl::artistTextEdited( const QString& text )
+Hatchet::EchonestControl::artistTextEdited( const QString& text )
 {
     // if the user is editing an artist field, try to help him out and suggest from echonest
     QLineEdit* l = qobject_cast<QLineEdit*>( m_input.data() );
@@ -895,7 +895,7 @@ Tomahawk::EchonestControl::artistTextEdited( const QString& text )
 
 
 void
-Tomahawk::EchonestControl::suggestFinished()
+Hatchet::EchonestControl::suggestFinished()
 {
     qDebug() << Q_FUNC_INFO;
     QNetworkReply* r = qobject_cast< QNetworkReply* >( sender() );
@@ -930,7 +930,7 @@ Tomahawk::EchonestControl::suggestFinished()
 
 
 void
-Tomahawk::EchonestControl::addArtistSuggestions( const QStringList& suggestions )
+Hatchet::EchonestControl::addArtistSuggestions( const QStringList& suggestions )
 {
     // if the user is editing an artist field, try to help him out and suggest from echonest
     QLineEdit* l = qobject_cast<QLineEdit*>( m_input.data() );
@@ -942,7 +942,7 @@ Tomahawk::EchonestControl::addArtistSuggestions( const QStringList& suggestions 
 
 
 void
-Tomahawk::EchonestControl::calculateSummary()
+Hatchet::EchonestControl::calculateSummary()
 {
     // turns the current control into an english phrase suitable for embedding into a sentence summary
     QString summary;
@@ -1121,7 +1121,7 @@ Tomahawk::EchonestControl::calculateSummary()
 
 
 void
-Tomahawk::EchonestControl::checkForMoodsStylesOrGenresFetched()
+Hatchet::EchonestControl::checkForMoodsStylesOrGenresFetched()
 {
     s_fetchingMoodsStylesAndGenres = false;
     if( selectedType() == "Mood" || selectedType() == "Style" || selectedType() == "Genre" ) {
@@ -1135,7 +1135,7 @@ Tomahawk::EchonestControl::checkForMoodsStylesOrGenresFetched()
 
 
 bool
-Tomahawk::EchonestControl::insertMoodsStylesAndGenres()
+Hatchet::EchonestControl::insertMoodsStylesAndGenres()
 {
     QStringList src;
     if ( selectedType() == "Mood" )

@@ -1,16 +1,16 @@
-# libtomahawk build file
+# libhatchet build file
 #============================================================================
 
 
-libtomahawkwidgets_dir = meson.current_source_dir()
-libtomahawkwidgets_inc = [include_directories('.')]
-libtomahawkwidgets_inc += tomahawk_inc
+libhatchetwidgets_dir = meson.current_source_dir()
+libhatchetwidgets_inc = [include_directories('.')]
+libhatchetwidgets_inc += hatchet_inc
 
 
 # dependancies
 #============================================================================
 
-libtomahawkwidgets_dep_list = [
+libhatchetwidgets_dep_list = [
     boost_dep,
     qca2_dep,
     qt5_dep,
@@ -23,88 +23,88 @@ libtomahawkwidgets_dep_list = [
     telepathy_dep,
     echonest_dep,
 
-    libtomahawk_dep]
+    libhatchet_dep]
 
 
 
 if (get_option('with_taglib'))
-    libtomahawkwidgets_dep_list += taglib_dep
+    libhatchetwidgets_dep_list += taglib_dep
 endif
 
 if (get_option('with_liblastfm'))
-    libtomahawkwidgets_dep_list += liblastfm_dep
+    libhatchetwidgets_dep_list += liblastfm_dep
 endif
 
 # Source files
 #============================================================================
 
 
-libtomahawkwidgets_src = files(
-    join_paths(libtomahawkwidgets_dir, 'PlaylistDelegate.cpp'),
-    join_paths(libtomahawkwidgets_dir, 'PlaylistWidget.cpp'))
+libhatchetwidgets_src = files(
+    join_paths(libhatchetwidgets_dir, 'PlaylistDelegate.cpp'),
+    join_paths(libhatchetwidgets_dir, 'PlaylistWidget.cpp'))
 
 
-libtomahawkwidgets_h = files(
-        join_paths(libtomahawkwidgets_dir, 'WidgetsDllMacro.h'))
+libhatchetwidgets_h = files(
+        join_paths(libhatchetwidgets_dir, 'WidgetsDllMacro.h'))
 
 
-libtomahawkwidgets_moc_h = files(
-    join_paths(libtomahawkwidgets_dir, 'PlaylistDelegate.h'),
-    join_paths(libtomahawkwidgets_dir, 'PlaylistWidget.h'))
+libhatchetwidgets_moc_h = files(
+    join_paths(libhatchetwidgets_dir, 'PlaylistDelegate.h'),
+    join_paths(libhatchetwidgets_dir, 'PlaylistWidget.h'))
 
 
 # Link args
 #============================================================================
 
 
-libtomahawkwidgets_link_list = []
+libhatchetwidgets_link_list = []
 
 
-libtomahawkwidgets_link_args = []
+libhatchetwidgets_link_args = []
 
 
 # build
 #============================================================================
 
 
-libtomahawkwidgets_moc = []
+libhatchetwidgets_moc = []
 
-libtomahawkwidgets_moc += qt5.preprocess(
-    moc_headers : libtomahawkwidgets_moc_h,
-    include_directories : libtomahawkwidgets_inc,
-    dependencies : libtomahawkwidgets_dep_list)
+libhatchetwidgets_moc += qt5.preprocess(
+    moc_headers : libhatchetwidgets_moc_h,
+    include_directories : libhatchetwidgets_inc,
+    dependencies : libhatchetwidgets_dep_list)
 
 
-libtomahawkwidgets_lib = library(
-    'tomahawk-widgets',
+libhatchetwidgets_lib = library(
+    'hatchet-widgets',
     sources : [
-        libtomahawkwidgets_src,
-        libtomahawkwidgets_moc],
+        libhatchetwidgets_src,
+        libhatchetwidgets_moc],
     install : true,
     install_mode : 'rwxr-xr-x',
     install_dir : libdir,
-    include_directories : libtomahawkwidgets_inc,
-    link_with : libtomahawkwidgets_link_list,
-    link_args : libtomahawkwidgets_link_args,
-    dependencies : libtomahawkwidgets_dep_list)
+    include_directories : libhatchetwidgets_inc,
+    link_with : libhatchetwidgets_link_list,
+    link_args : libhatchetwidgets_link_args,
+    dependencies : libhatchetwidgets_dep_list)
 
 
 install_headers(
-    libtomahawkwidgets_h,
+    libhatchetwidgets_h,
     install_dir : join_paths(includedir, ''))
 
 
-libtomahawk_config = pkg.generate(
-    libtomahawkwidgets_lib,
+libhatchet_config = pkg.generate(
+    libhatchetwidgets_lib,
     libraries : [
-        libtomahawkwidgets_lib],
+        libhatchetwidgets_lib],
     version : meson.project_version(),
-    name : 'tomahawk-widgets',
-    subdirs : ['tomahawk-widgets/'],
-    filebase : 'tomahawk-widgets',
+    name : 'hatchet-widgets',
+    subdirs : ['hatchet-widgets/'],
+    filebase : 'hatchet-widgets',
     extra_cflags : '-std=c++11',
-    description : 'Tomahawk Widgets Library.')
+    description : 'Hatchet Widgets Library.')
 
-    libtomahawkwidgets_dep = declare_dependency(
-        link_with : libtomahawkwidgets_lib,
-        include_directories : libtomahawkwidgets_inc)
+    libhatchetwidgets_dep = declare_dependency(
+        link_with : libhatchetwidgets_lib,
+        include_directories : libhatchetwidgets_inc)

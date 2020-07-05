@@ -1,28 +1,28 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2012, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2012, Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "SocialWidget.h"
 #include "ui_SocialWidget.h"
 
 #include "utils/ImageRegistry.h"
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 
 #include "utils/LinkGenerator.h"
@@ -50,7 +50,7 @@ SocialWidget::SocialWidget( QWidget* parent )
     setAttribute( Qt::WA_TranslucentBackground, true );
     setAttribute( Qt::WA_NoSystemBackground, true );
 
-    TomahawkUtils::unmarginLayout( layout() );
+    HatchetUtils::unmarginLayout( layout() );
 
 #ifndef Q_OS_MAC
     ui->verticalLayout->setContentsMargins( 12, 4, 12, 12 );
@@ -73,7 +73,7 @@ SocialWidget::SocialWidget( QWidget* parent )
     ui->buttonBox->button( QDialogButtonBox::Ok )->setIcon( ImageRegistry::instance()->icon( RESPATH "images/tweet.svg" ) );
     ui->buttonBox->button( QDialogButtonBox::Cancel )->setIcon( ImageRegistry::instance()->icon( RESPATH "images/cancel.svg" ) );
 
-    ui->textEdit->setStyleSheet( "border: 1px solid " + TomahawkStyle::BORDER_LINE.name() );
+    ui->textEdit->setStyleSheet( "border: 1px solid " + HatchetStyle::BORDER_LINE.name() );
 
     m_parent->installEventFilter( this );
 
@@ -147,16 +147,16 @@ SocialWidget::paintEvent( QPaintEvent* event )
     QPainterPath outline;
 
     QRect r = contentsRect();
-    outline.addRoundedRect( r, TomahawkStyle::POPUP_ROUNDING_RADIUS, TomahawkStyle::POPUP_ROUNDING_RADIUS );
+    outline.addRoundedRect( r, HatchetStyle::POPUP_ROUNDING_RADIUS, HatchetStyle::POPUP_ROUNDING_RADIUS );
     outline.moveTo( r.right() - ARROW_HEIGHT * 2, r.bottom() + 1 );
     outline.lineTo( r.right() - ARROW_HEIGHT * 3, r.bottom() + 1 + ARROW_HEIGHT );
     outline.lineTo( r.right() - ARROW_HEIGHT * 4, r.bottom() + 1 );
 
-    TomahawkUtils::drawCompositedPopup( this,
+    HatchetUtils::drawCompositedPopup( this,
                                         outline,
-                                        TomahawkStyle::BORDER_LINE,
-                                        TomahawkStyle::POPUP_BACKGROUND,
-                                        TomahawkStyle::POPUP_OPACITY );
+                                        HatchetStyle::BORDER_LINE,
+                                        HatchetStyle::POPUP_BACKGROUND,
+                                        HatchetStyle::POPUP_OPACITY );
 }
 
 
@@ -174,14 +174,14 @@ SocialWidget::onShortLinkReady( const QUrl& longUrl, const QUrl& shortUrl, const
 
 
 void
-SocialWidget::setQuery( const Tomahawk::query_ptr& query )
+SocialWidget::setQuery( const Hatchet::query_ptr& query )
 {
     m_query = query;
-    ui->coverImage->setPixmap( TomahawkUtils::addDropShadow( query->track()->cover( ui->coverImage->size() ), ui->coverImage->size() ) );
+    ui->coverImage->setPixmap( HatchetUtils::addDropShadow( query->track()->cover( ui->coverImage->size() ), ui->coverImage->size() ) );
     onShortLinkReady( QString(), QString(), QVariant() );
     onChanged();
 
-    Tomahawk::ScriptJob* job = Tomahawk::Utils::LinkGenerator::instance()->openLink( query );
+    Hatchet::ScriptJob* job = Hatchet::Utils::LinkGenerator::instance()->openLink( query );
     connect( job, SIGNAL( done( QVariantMap ) ), SLOT( onQueryLinkReady( QVariantMap ) ) );
     job->start();
 }
@@ -211,18 +211,18 @@ SocialWidget::accept()
     tDebug() << "Sharing social link!";
 
     QVariantMap shareInfo;
-    Tomahawk::InfoSystem::InfoStringHash trackInfo;
+    Hatchet::InfoSystem::InfoStringHash trackInfo;
 
     trackInfo["title"] = m_query->track()->track();
     trackInfo["artist"] = m_query->track()->artist();
     trackInfo["album"] = m_query->track()->album();
 
-    shareInfo["trackinfo"] = QVariant::fromValue< Tomahawk::InfoSystem::InfoStringHash >( trackInfo );
+    shareInfo["trackinfo"] = QVariant::fromValue< Hatchet::InfoSystem::InfoStringHash >( trackInfo );
     shareInfo["message"] = ui->textEdit->toPlainText();
     shareInfo["accountlist"] = QStringList( "all" );
 
-    Tomahawk::InfoSystem::InfoPushData pushData( uuid(), Tomahawk::InfoSystem::InfoShareTrack, shareInfo, Tomahawk::InfoSystem::PushNoFlag );
-    Tomahawk::InfoSystem::InfoSystem::instance()->pushInfo( pushData );
+    Hatchet::InfoSystem::InfoPushData pushData( uuid(), Hatchet::InfoSystem::InfoShareTrack, shareInfo, Hatchet::InfoSystem::PushNoFlag );
+    Hatchet::InfoSystem::InfoSystem::instance()->pushInfo( pushData );
 
     deleteLater();
 }
@@ -275,7 +275,7 @@ SocialWidget::eventFilter( QObject* object, QEvent* event )
 }
 
 
-Tomahawk::query_ptr
+Hatchet::query_ptr
 SocialWidget::query() const
 {
     return m_query;

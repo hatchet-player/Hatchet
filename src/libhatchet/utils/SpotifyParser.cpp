@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2011, Hugo Lindström <hugolm84@gmail.com>
  *   Copyright 2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "SpotifyParser.h"
@@ -25,7 +25,7 @@
 #include "jobview/ErrorStatusMessage.h"
 #include "utils/Json.h"
 #include "utils/NetworkReply.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
 #include "utils/NetworkAccessManager.h"
 
@@ -37,7 +37,7 @@
 
 #include <QNetworkAccessManager>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 QPixmap* SpotifyParser::s_pixmap = 0;
 
@@ -141,8 +141,8 @@ SpotifyParser::lookupSpotifyBrowse( const QString& link )
     m_browseUri = link;
 
     if ( m_browseUri.contains( "playlist" ) &&
-         Tomahawk::Accounts::SpotifyAccount::instance() != 0 &&
-         Tomahawk::Accounts::SpotifyAccount::instance()->loggedIn() )
+         Hatchet::Accounts::SpotifyAccount::instance() != 0 &&
+         Hatchet::Accounts::SpotifyAccount::instance()->loggedIn() )
     {
         // Do a playlist lookup locally
         // Running resolver, so do the lookup through that
@@ -151,7 +151,7 @@ SpotifyParser::lookupSpotifyBrowse( const QString& link )
         message[ "_msgtype" ] = "playlistListing";
         message[ "id" ] = m_browseUri;
 
-        QMetaObject::invokeMethod( Tomahawk::Accounts::SpotifyAccount::instance(), "sendMessage", Qt::QueuedConnection, Q_ARG( QVariantMap, message ),
+        QMetaObject::invokeMethod( Hatchet::Accounts::SpotifyAccount::instance(), "sendMessage", Qt::QueuedConnection, Q_ARG( QVariantMap, message ),
                                                                                                                         Q_ARG( QObject*, this ),
                                                                                                                         Q_ARG( QString, "playlistListingResult" ) );
 
@@ -179,7 +179,7 @@ SpotifyParser::lookupSpotifyBrowse( const QString& link )
          url = QUrl( QString( SPOTIFY_PLAYLIST_API_URL "/browse/%1/%2" ).arg( m_browseUri )
                                                                         .arg ( m_limit ) );
 
-    NetworkReply* reply = new NetworkReply( Tomahawk::Utils::nam()->get( QNetworkRequest( url ) ) );
+    NetworkReply* reply = new NetworkReply( Hatchet::Utils::nam()->get( QNetworkRequest( url ) ) );
     connect( reply, SIGNAL( finished() ), SLOT( spotifyBrowseFinished() ) );
 
     m_browseJob = new DropJobNotifier( pixmap(), "Spotify", type, reply );
@@ -206,7 +206,7 @@ SpotifyParser::lookupTrack( const QString& link )
 
     QUrl url = QUrl( QString( "http://ws.spotify.com/lookup/1/.json?uri=%1" ).arg( uri ) );
 
-    NetworkReply* reply = new NetworkReply( Tomahawk::Utils::nam()->get( QNetworkRequest( url ) ) );
+    NetworkReply* reply = new NetworkReply( Hatchet::Utils::nam()->get( QNetworkRequest( url ) ) );
     connect( reply, SIGNAL( finished() ), SLOT( spotifyTrackLookupFinished() ) );
 
     DropJobNotifier* j = new DropJobNotifier( pixmap(), QString( "Spotify" ), DropJob::Track, reply );
@@ -228,7 +228,7 @@ SpotifyParser::spotifyBrowseFinished()
     {
         bool ok;
         QByteArray jsonData = r->reply()->readAll();
-        QVariantMap res = TomahawkUtils::parseJson( jsonData, &ok ).toMap();
+        QVariantMap res = HatchetUtils::parseJson( jsonData, &ok ).toMap();
 
         if ( !ok )
         {
@@ -263,7 +263,7 @@ SpotifyParser::spotifyBrowseFinished()
                     return;
                 }
 
-                Tomahawk::query_ptr q = Tomahawk::Query::get( artist, title, album, uuid(), m_trackMode );
+                Hatchet::query_ptr q = Hatchet::Query::get( artist, title, album, uuid(), m_trackMode );
                 if ( q.isNull() )
                     continue;
 
@@ -300,7 +300,7 @@ SpotifyParser::spotifyTrackLookupFinished()
     {
         bool ok;
         QByteArray jsonData = r->reply()->readAll();
-        QVariantMap res = TomahawkUtils::parseJson( jsonData, &ok ).toMap();
+        QVariantMap res = HatchetUtils::parseJson( jsonData, &ok ).toMap();
 
         if ( !ok )
         {
@@ -332,7 +332,7 @@ SpotifyParser::spotifyTrackLookupFinished()
             return;
         }
 
-        Tomahawk::query_ptr q = Tomahawk::Query::get( artist, title, album, uuid(), m_trackMode );
+        Hatchet::query_ptr q = Hatchet::Query::get( artist, title, album, uuid(), m_trackMode );
         if ( !q.isNull() )
         {
             q->setResultHint( t.value( "trackuri" ).toString() );
@@ -410,7 +410,7 @@ SpotifyParser::checkBrowseFinished()
 
 /*            if ( spotifyAccountLoggedIn &&  Accounts::SpotifyAccount::instance()->hasPlaylist( m_browseUri ) )
             {
-                // The playlist is already registered with Tomahawk, so just open it instead of adding another instance.
+                // The playlist is already registered with Hatchet, so just open it instead of adding another instance.
                 m_playlist = Accounts::SpotifyAccount::instance()->playlistForURI( m_browseUri );
                 playlistCreated();
             }
@@ -424,7 +424,7 @@ SpotifyParser::checkBrowseFinished()
                                        false,
                                        m_tracks );
 
-                connect( m_playlist.data(), SIGNAL( revisionLoaded( Tomahawk::PlaylistRevision ) ), this, SLOT( playlistCreated() ) );
+                connect( m_playlist.data(), SIGNAL( revisionLoaded( Hatchet::PlaylistRevision ) ), this, SLOT( playlistCreated() ) );
 
 /*                if ( spotifyAccountLoggedIn )
                 {

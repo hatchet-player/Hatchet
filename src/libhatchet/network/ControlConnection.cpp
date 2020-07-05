@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ControlConnection_p.h"
@@ -35,7 +35,7 @@
 
 #define TCP_TIMEOUT 600
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 ControlConnection::ControlConnection( Servent* parent )
@@ -89,7 +89,7 @@ ControlConnection::unbindFromSource()
 {
     Q_D( ControlConnection );
     QWriteLocker locker( &d->sourceLock );
-    d->source = Tomahawk::source_ptr();
+    d->source = Hatchet::source_ptr();
 }
 
 
@@ -148,7 +148,7 @@ ControlConnection::setup()
     {
         tLog() << Q_FUNC_INFO << "We are a duplicate secondary connection, so dropping.";
         // We are not responsible for this source anymore, so do not keep a reference.
-        d->source = Tomahawk::source_ptr();
+        d->source = Hatchet::source_ptr();
         // Unlock before we delete ourselves
         d->sourceLock.unlock();
         // There is already another ControlConnection in use, we are useless.

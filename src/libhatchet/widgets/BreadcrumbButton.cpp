@@ -1,35 +1,35 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2011, Casey Link <unnamedrambler@gmail.com>
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "BreadcrumbButton.h"
 
 #include "Breadcrumb.h"
 #include "ComboBox.h"
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 
 #include <QPaintEvent>
 #include <QPainter>
 #include <QHBoxLayout>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 class BreadcrumbArrow : public QWidget
 {
@@ -75,7 +75,7 @@ protected:
 
     virtual QSize sizeHint() const
     {
-        return QSize( 20, TomahawkUtils::defaultFontHeight() + 8 );
+        return QSize( 20, HatchetUtils::defaultFontHeight() + 8 );
     }
 
 };
@@ -89,11 +89,11 @@ BreadcrumbButton::BreadcrumbButton( Breadcrumb* parent, QAbstractItemModel* mode
 {
     setLayout( new QHBoxLayout );
 
-    TomahawkUtils::unmarginLayout( layout() );
+    HatchetUtils::unmarginLayout( layout() );
     layout()->addWidget( m_combo );
     layout()->addWidget( m_arrow );
 
-    setFixedHeight( TomahawkUtils::defaultFontHeight() + 8 );
+    setFixedHeight( HatchetUtils::defaultFontHeight() + 8 );
     m_combo->setSizeAdjustPolicy( QComboBox::AdjustToContents );
 
     setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Expanding );
@@ -107,7 +107,7 @@ BreadcrumbButton::paintEvent( QPaintEvent* )
 {
     QPainter p( this );
 
-    TomahawkStyle::horizontalHeader( &p, rect() ); // draw the background
+    HatchetStyle::horizontalHeader( &p, rect() ); // draw the background
     m_arrow->setVisible( hasChildren() );
 }
 

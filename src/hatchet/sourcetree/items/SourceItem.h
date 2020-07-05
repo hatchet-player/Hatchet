@@ -1,22 +1,22 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef SOURCE_ITEM_H
@@ -28,7 +28,7 @@ class TemporaryPageItem;
 class GenericPageItem;
 class CategoryItem;
 
-namespace Tomahawk
+namespace Hatchet
 {
     class ViewPage;
 }
@@ -37,7 +37,7 @@ class SourceItem : public SourceTreeItem
 {
     Q_OBJECT
 public:
-    SourceItem( SourcesModel* model, SourceTreeItem* parent, const Tomahawk::source_ptr& source );
+    SourceItem( SourcesModel* model, SourceTreeItem* parent, const Hatchet::source_ptr& source );
 
     virtual QString text() const;
     virtual QString tooltip() const;
@@ -47,9 +47,9 @@ public:
     virtual int IDValue() const;
 
     virtual bool localLatchedOn() const;
-    virtual Tomahawk::PlaylistModes::LatchMode localLatchMode() const;
+    virtual Hatchet::PlaylistModes::LatchMode localLatchMode() const;
 
-    Tomahawk::source_ptr source() const;
+    Hatchet::source_ptr source() const;
 
     CategoryItem* stationsCategory() const;
     CategoryItem* playlistsCategory() const;
@@ -65,59 +65,59 @@ public slots:
     virtual void activate();
 
 private slots:
-    void onPlaylistsAdded( const QList<Tomahawk::playlist_ptr>& playlists );
-    void onPlaylistDeleted( const Tomahawk::playlist_ptr& playlists );
-    void onAutoPlaylistsAdded( const QList<Tomahawk::dynplaylist_ptr>& playlists );
-    void onAutoPlaylistDeleted( const Tomahawk::dynplaylist_ptr& playlists );
-    void onStationsAdded( const QList<Tomahawk::dynplaylist_ptr>& stations );
-    void onStationDeleted( const Tomahawk::dynplaylist_ptr& stations );
+    void onPlaylistsAdded( const QList<Hatchet::playlist_ptr>& playlists );
+    void onPlaylistDeleted( const Hatchet::playlist_ptr& playlists );
+    void onAutoPlaylistsAdded( const QList<Hatchet::dynplaylist_ptr>& playlists );
+    void onAutoPlaylistDeleted( const Hatchet::dynplaylist_ptr& playlists );
+    void onStationsAdded( const QList<Hatchet::dynplaylist_ptr>& stations );
+    void onStationDeleted( const Hatchet::dynplaylist_ptr& stations );
 
-    void latchedOn( const Tomahawk::source_ptr&, const Tomahawk::source_ptr& );
-    void latchedOff( const Tomahawk::source_ptr&, const Tomahawk::source_ptr& );
-    void latchModeChanged( Tomahawk::PlaylistModes::LatchMode mode );
+    void latchedOn( const Hatchet::source_ptr&, const Hatchet::source_ptr& );
+    void latchedOff( const Hatchet::source_ptr&, const Hatchet::source_ptr& );
+    void latchModeChanged( Hatchet::PlaylistModes::LatchMode mode );
 
-    void onCollectionAdded( const Tomahawk::collection_ptr& ); //never call from ctor because of begin/endRowsAdded!
-    void onCollectionRemoved( const Tomahawk::collection_ptr& );
+    void onCollectionAdded( const Hatchet::collection_ptr& ); //never call from ctor because of begin/endRowsAdded!
+    void onCollectionRemoved( const Hatchet::collection_ptr& );
 
     void requestExpanding();
 
-    Tomahawk::ViewPage* sourceInfoClicked();
-    Tomahawk::ViewPage* getSourceInfoPage() const;
+    Hatchet::ViewPage* sourceInfoClicked();
+    Hatchet::ViewPage* getSourceInfoPage() const;
 
-    Tomahawk::ViewPage* collectionClicked( const Tomahawk::collection_ptr& collection );
-    Tomahawk::ViewPage* getCollectionPage( const Tomahawk::collection_ptr& collection ) const;
+    Hatchet::ViewPage* collectionClicked( const Hatchet::collection_ptr& collection );
+    Hatchet::ViewPage* getCollectionPage( const Hatchet::collection_ptr& collection ) const;
 
-    Tomahawk::ViewPage* latestAdditionsClicked();
-    Tomahawk::ViewPage* getLatestAdditionsPage() const;
+    Hatchet::ViewPage* latestAdditionsClicked();
+    Hatchet::ViewPage* getLatestAdditionsPage() const;
 
-    Tomahawk::ViewPage* recentPlaysClicked();
-    Tomahawk::ViewPage* getRecentPlaysPage() const;
+    Hatchet::ViewPage* recentPlaysClicked();
+    Hatchet::ViewPage* getRecentPlaysPage() const;
 
-    void onTracksDropped( const QList< Tomahawk::query_ptr >& queries );
+    void onTracksDropped( const QList< Hatchet::query_ptr >& queries );
 
 private:
-    void playlistsAddedInternal( SourceTreeItem* parent, const QList< Tomahawk::dynplaylist_ptr >& playlists );
+    void playlistsAddedInternal( SourceTreeItem* parent, const QList< Hatchet::dynplaylist_ptr >& playlists );
     template< typename T >
     void playlistDeletedInternal( SourceTreeItem* parent, const T& playlists );
-    void performAddCollectionItem( const Tomahawk::collection_ptr& collection );
+    void performAddCollectionItem( const Hatchet::collection_ptr& collection );
 
-    Tomahawk::source_ptr m_source;
+    Hatchet::source_ptr m_source;
     CategoryItem* m_playlists;
     CategoryItem* m_stations;
 
     bool m_latchedOn;
-    Tomahawk::source_ptr m_latchedOnTo;
+    Hatchet::source_ptr m_latchedOnTo;
 
-    QMap< Tomahawk::collection_ptr, SourceTreeItem* > m_collectionItems;
-    QMap< Tomahawk::collection_ptr, Tomahawk::ViewPage* > m_collectionPages;
+    QMap< Hatchet::collection_ptr, SourceTreeItem* > m_collectionItems;
+    QMap< Hatchet::collection_ptr, Hatchet::ViewPage* > m_collectionPages;
 
     GenericPageItem* m_sourceInfoItem;
     GenericPageItem* m_latestAdditionsItem;
     GenericPageItem* m_recentPlaysItem;
 
-    Tomahawk::ViewPage* m_sourceInfoPage;
-    Tomahawk::ViewPage* m_latestAdditionsPage;
-    Tomahawk::ViewPage* m_recentPlaysPage;
+    Hatchet::ViewPage* m_sourceInfoPage;
+    Hatchet::ViewPage* m_latestAdditionsPage;
+    Hatchet::ViewPage* m_recentPlaysPage;
 };
 
 

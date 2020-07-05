@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ViewHeader.h"
@@ -21,8 +21,8 @@
 #include <QContextMenuEvent>
 #include <QMenu>
 
-#include "TomahawkSettings.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "HatchetSettings.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 
 
@@ -33,7 +33,7 @@ ViewHeader::ViewHeader( QAbstractItemView* parent )
     , m_sigmap( new QSignalMapper( this ) )
     , m_init( false )
 {
-    m_menu->setFont( TomahawkUtils::systemFont() );
+    m_menu->setFont( HatchetUtils::systemFont() );
 
     setSectionResizeMode( QHeaderView::Interactive );
     setSectionsMovable( true );
@@ -65,7 +65,7 @@ ViewHeader::onSectionsChanged()
 {
     tDebug( LOGVERBOSE ) << "Saving columns state for view guid:" << m_guid;
     if ( !m_guid.isEmpty() )
-        TomahawkSettings::instance()->setPlaylistColumnSizes( m_guid, saveState() );
+        HatchetSettings::instance()->setPlaylistColumnSizes( m_guid, saveState() );
 }
 
 
@@ -80,7 +80,7 @@ ViewHeader::checkState()
 
     QByteArray state;
     if ( !m_guid.isEmpty() )
-        state = TomahawkSettings::instance()->playlistColumnSizes( m_guid );
+        state = HatchetSettings::instance()->playlistColumnSizes( m_guid );
 
     if ( !state.isEmpty() )
     {

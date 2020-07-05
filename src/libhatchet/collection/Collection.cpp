@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "collection/Collection.h"
@@ -31,7 +31,7 @@
 #include <QMetaObject>
 #include <QGenericArgument>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 Collection::Collection( const source_ptr& source, const QString& name, QObject* parent )
@@ -113,9 +113,9 @@ QPixmap
 Collection::bigIcon() const
 {
     if ( !source()->avatar().isNull() )
-        return source()->avatar( TomahawkUtils::RoundedCorners );
+        return source()->avatar( HatchetUtils::RoundedCorners );
 
-    return TomahawkUtils::tinted( TomahawkUtils::defaultPixmap( TomahawkUtils::DefaultCollection ), Qt::white );
+    return HatchetUtils::tinted( HatchetUtils::defaultPixmap( HatchetUtils::DefaultCollection ), Qt::white );
 }
 
 
@@ -141,7 +141,7 @@ Collection::trackCount() const
 
 
 void
-Collection::addPlaylist( const Tomahawk::playlist_ptr& p )
+Collection::addPlaylist( const Hatchet::playlist_ptr& p )
 {
     if ( m_playlists.contains( p->guid() ) )
         return;
@@ -158,7 +158,7 @@ Collection::addPlaylist( const Tomahawk::playlist_ptr& p )
 
 
 void
-Collection::addAutoPlaylist( const Tomahawk::dynplaylist_ptr& p )
+Collection::addAutoPlaylist( const Hatchet::dynplaylist_ptr& p )
 {
     QList<dynplaylist_ptr> toadd;
     toadd << p;
@@ -186,7 +186,7 @@ Collection::addStation( const dynplaylist_ptr& s )
 
 
 void
-Collection::deletePlaylist( const Tomahawk::playlist_ptr& p )
+Collection::deletePlaylist( const Hatchet::playlist_ptr& p )
 {
     QList<playlist_ptr> todelete;
     todelete << p;
@@ -200,7 +200,7 @@ Collection::deletePlaylist( const Tomahawk::playlist_ptr& p )
 
 
 void
-Collection::deleteAutoPlaylist( const Tomahawk::dynplaylist_ptr& p )
+Collection::deleteAutoPlaylist( const Hatchet::dynplaylist_ptr& p )
 {
     QList<dynplaylist_ptr> todelete;
     todelete << p;
@@ -227,29 +227,29 @@ Collection::deleteStation( const dynplaylist_ptr& s )
 }
 
 
-Tomahawk::playlist_ptr
+Hatchet::playlist_ptr
 Collection::playlist( const QString& guid )
 {
-    return m_playlists.value( guid, Tomahawk::playlist_ptr() );
+    return m_playlists.value( guid, Hatchet::playlist_ptr() );
 }
 
 
-Tomahawk::dynplaylist_ptr
+Hatchet::dynplaylist_ptr
 Collection::autoPlaylist( const QString& guid )
 {
-    return m_autoplaylists.value( guid, Tomahawk::dynplaylist_ptr() );
+    return m_autoplaylists.value( guid, Hatchet::dynplaylist_ptr() );
 }
 
 
-Tomahawk::dynplaylist_ptr
+Hatchet::dynplaylist_ptr
 Collection::station( const QString& guid )
 {
-    return m_stations.value( guid, Tomahawk::dynplaylist_ptr() );
+    return m_stations.value( guid, Hatchet::dynplaylist_ptr() );
 }
 
 
 void
-Collection::setPlaylists( const QList<Tomahawk::playlist_ptr>& plists )
+Collection::setPlaylists( const QList<Hatchet::playlist_ptr>& plists )
 {
     foreach ( const playlist_ptr& p, plists )
     {
@@ -257,10 +257,10 @@ Collection::setPlaylists( const QList<Tomahawk::playlist_ptr>& plists )
         m_playlists.insert( p->guid(), p );
         if ( !m_source.isNull() && m_source->isLocal() )
         {
-            if ( Tomahawk::Accounts::AccountManager::instance()->isReady() )
+            if ( Hatchet::Accounts::AccountManager::instance()->isReady() )
                 doLoadPlaylistUpdater( p );
             else
-                NewClosure( Tomahawk::Accounts::AccountManager::instance(), SIGNAL( ready() ),
+                NewClosure( Hatchet::Accounts::AccountManager::instance(), SIGNAL( ready() ),
                             this, SLOT( doLoadPlaylistUpdater( playlist_ptr ) ), p );
         }
     }
@@ -276,7 +276,7 @@ Collection::doLoadPlaylistUpdater( const playlist_ptr& p )
 
 
 void
-Collection::setAutoPlaylists( const QList< Tomahawk::dynplaylist_ptr >& plists )
+Collection::setAutoPlaylists( const QList< Hatchet::dynplaylist_ptr >& plists )
 {
     foreach ( const dynplaylist_ptr& p, plists )
     {

@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2014-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 
@@ -86,7 +86,7 @@ QueueItem::unlistenedCount() const
 void
 QueueItem::activate()
 {
-    Tomahawk::ViewPage* page = ViewManager::instance()->showQueuePage();
+    Hatchet::ViewPage* page = ViewManager::instance()->showQueuePage();
     model()->linkSourceItemToPage( this, page );
 }
 
@@ -101,12 +101,12 @@ QueueItem::willAcceptDrag( const QMimeData* data ) const
 SourceTreeItem::DropTypes
 QueueItem::supportedDropTypes( const QMimeData* data ) const
 {
-    if ( data->hasFormat( "application/tomahawk.mixed" ) )
+    if ( data->hasFormat( "application/hatchet.mixed" ) )
     {
         // If this is mixed but only queries/results, we can still handle them
         bool mixedQueries = true;
 
-        QByteArray itemData = data->data( "application/tomahawk.mixed" );
+        QByteArray itemData = data->data( "application/hatchet.mixed" );
         QDataStream stream( &itemData, QIODevice::ReadOnly );
         QString mimeType;
         qlonglong val;
@@ -114,8 +114,8 @@ QueueItem::supportedDropTypes( const QMimeData* data ) const
         while ( !stream.atEnd() )
         {
             stream >> mimeType;
-            if ( mimeType != "application/tomahawk.query.list" &&
-                 mimeType != "application/tomahawk.result.list" )
+            if ( mimeType != "application/hatchet.query.list" &&
+                 mimeType != "application/hatchet.result.list" )
             {
                 mixedQueries = false;
                 break;
@@ -129,13 +129,13 @@ QueueItem::supportedDropTypes( const QMimeData* data ) const
             return DropTypesNone;
     }
 
-    if ( data->hasFormat( "application/tomahawk.query.list" ) )
+    if ( data->hasFormat( "application/hatchet.query.list" ) )
         return (DropTypes)(DropTypeThisTrack | DropTypeThisAlbum | DropTypeAllFromArtist | DropTypeLocalItems | DropTypeTop50);
-    else if ( data->hasFormat( "application/tomahawk.result.list" ) )
+    else if ( data->hasFormat( "application/hatchet.result.list" ) )
         return (DropTypes)(DropTypeThisTrack | DropTypeThisAlbum | DropTypeAllFromArtist | DropTypeLocalItems | DropTypeTop50);
-    else if ( data->hasFormat( "application/tomahawk.metadata.album" ) )
+    else if ( data->hasFormat( "application/hatchet.metadata.album" ) )
         return (DropTypes)(DropTypeThisAlbum | DropTypeAllFromArtist | DropTypeLocalItems | DropTypeTop50);
-    else if ( data->hasFormat( "application/tomahawk.metadata.artist" ) )
+    else if ( data->hasFormat( "application/hatchet.metadata.artist" ) )
         return (DropTypes)(DropTypeAllFromArtist | DropTypeLocalItems | DropTypeTop50);
     else if ( data->hasFormat( "text/plain" ) )
     {
@@ -155,7 +155,7 @@ QueueItem::dropMimeData( const QMimeData* data, Qt::DropAction action )
         return false;
 
     DropJob *dj = new DropJob();
-    connect( dj, SIGNAL( tracks( QList< Tomahawk::query_ptr > ) ), SLOT( parsedDroppedTracks( QList< Tomahawk::query_ptr > ) ) );
+    connect( dj, SIGNAL( tracks( QList< Hatchet::query_ptr > ) ), SLOT( parsedDroppedTracks( QList< Hatchet::query_ptr > ) ) );
 
     dj->setDropTypes( DropJob::Track );
     dj->setDropAction( DropJob::Append );
@@ -167,7 +167,7 @@ QueueItem::dropMimeData( const QMimeData* data, Qt::DropAction action )
 
 
 void
-QueueItem::parsedDroppedTracks( const QList< Tomahawk::query_ptr >& tracks )
+QueueItem::parsedDroppedTracks( const QList< Hatchet::query_ptr >& tracks )
 {
     if ( !tracks.isEmpty() )
     {

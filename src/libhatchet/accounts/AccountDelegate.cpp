@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2011-2012  Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "AccountDelegate.h"
@@ -27,7 +27,7 @@
 #include "accounts/AccountManager.h"
 
 #include "utils/ImageRegistry.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 #include "utils/AnimatedSpinner.h"
 #include "utils/Closure.h"
@@ -46,7 +46,7 @@
 #define CHECK_LEFT_EDGE 8
 #define REMOVE_ICON_SIZE 12
 
-using namespace Tomahawk;
+using namespace Hatchet;
 using namespace Accounts;
 
 AccountDelegate::AccountDelegate( QObject* parent )
@@ -81,7 +81,7 @@ AccountDelegate::sizeHint( const QStyleOptionViewItem& option, const QModelIndex
         if ( fac->isUnique() )
             return QSize( 200, m_accountRowHeight );
 
-        const QList< Account* > accts = index.data( AccountModel::ChildrenOfFactoryRole ).value< QList< Tomahawk::Accounts::Account* > >();
+        const QList< Account* > accts = index.data( AccountModel::ChildrenOfFactoryRole ).value< QList< Hatchet::Accounts::Account* > >();
         const QSize s = QSize( 200, m_accountRowHeight + 12 * accts.size()-1 );
 
         if ( s != m_sizeHints[ index ] )
@@ -163,7 +163,7 @@ AccountDelegate::paint ( QPainter* painter, const QStyleOptionViewItem& option, 
     QPixmap p = index.data( Qt::DecorationRole ).value< QPixmap >();
     QRect pixmapRect( leftEdge + PADDING, center - ICONSIZE/2, ICONSIZE, ICONSIZE );
     if ( p.isNull() ) // default image... TODO
-        p = TomahawkUtils::defaultPixmap( TomahawkUtils::DefaultResolver, TomahawkUtils::Original, pixmapRect.size() );
+        p = HatchetUtils::defaultPixmap( HatchetUtils::DefaultResolver, HatchetUtils::Original, pixmapRect.size() );
     else
         p = p.scaled( pixmapRect.size(), Qt::KeepAspectRatio, Qt::SmoothTransformation );
 
@@ -191,9 +191,9 @@ AccountDelegate::paint ( QPainter* painter, const QStyleOptionViewItem& option, 
     m_cachedButtonRects[ index ] = QRect();
 
     bool canDelete = index.data( AccountModel::CanDeleteRole ) .toBool();
-    if ( rowType == Tomahawk::Accounts::AccountModel::TopLevelFactory )
+    if ( rowType == Hatchet::Accounts::AccountModel::TopLevelFactory )
     {
-        const QList< Account* > accts = index.data( AccountModel::ChildrenOfFactoryRole ).value< QList< Tomahawk::Accounts::Account* > >();
+        const QList< Account* > accts = index.data( AccountModel::ChildrenOfFactoryRole ).value< QList< Hatchet::Accounts::Account* > >();
 
         QRect btnRect;
         const QString btnText = tr( "Add Account" );
@@ -235,7 +235,7 @@ AccountDelegate::paint ( QPainter* painter, const QStyleOptionViewItem& option, 
     else if ( rowType == AccountModel::UniqueFactory )
     {
         // Display as usual, except if it has an account, show the status.
-        const QList< Account* > accts = index.data( AccountModel::ChildrenOfFactoryRole ).value< QList< Tomahawk::Accounts::Account* > >();
+        const QList< Account* > accts = index.data( AccountModel::ChildrenOfFactoryRole ).value< QList< Hatchet::Accounts::Account* > >();
         if ( !accts.isEmpty() )
         {
             Q_ASSERT( accts.size() == 1 );
@@ -340,21 +340,21 @@ AccountDelegate::paint ( QPainter* painter, const QStyleOptionViewItem& option, 
                  m_hoveringItem == index )
             {
                 if ( i <= m_hoveringOver ) // positive star
-                    painter->drawPixmap( r, TomahawkUtils::defaultPixmap( TomahawkUtils::StarHovered, TomahawkUtils::Original, r.size() ) );
+                    painter->drawPixmap( r, HatchetUtils::defaultPixmap( HatchetUtils::StarHovered, HatchetUtils::Original, r.size() ) );
                 else
-                    painter->drawPixmap( r, TomahawkUtils::defaultPixmap( TomahawkUtils::Unstarred, TomahawkUtils::Original, r.size() ) );
+                    painter->drawPixmap( r, HatchetUtils::defaultPixmap( HatchetUtils::Unstarred, HatchetUtils::Original, r.size() ) );
             }
             else
             {
                 if ( i <= rating ) // positive or rated star
                 {
                     if ( userHasRated )
-                        painter->drawPixmap( r, TomahawkUtils::defaultPixmap( TomahawkUtils::StarHovered, TomahawkUtils::Original, r.size() ) );
+                        painter->drawPixmap( r, HatchetUtils::defaultPixmap( HatchetUtils::StarHovered, HatchetUtils::Original, r.size() ) );
                     else
-                        painter->drawPixmap( r, TomahawkUtils::defaultPixmap( TomahawkUtils::Starred, TomahawkUtils::Original, r.size() ) );
+                        painter->drawPixmap( r, HatchetUtils::defaultPixmap( HatchetUtils::Starred, HatchetUtils::Original, r.size() ) );
                 }
                 else
-                    painter->drawPixmap( r, TomahawkUtils::defaultPixmap( TomahawkUtils::Unstarred, TomahawkUtils::Original, r.size() ) );
+                    painter->drawPixmap( r, HatchetUtils::defaultPixmap( HatchetUtils::Unstarred, HatchetUtils::Original, r.size() ) );
             }
             runningEdge += STAR_SIZE + PADDING_BETWEEN_STARS;
         }
@@ -379,7 +379,7 @@ AccountDelegate::paint ( QPainter* painter, const QStyleOptionViewItem& option, 
             int h = painter->fontMetrics().height();
 
             QRect pkgRect( runningEdge, pkgTop, h, h );
-            painter->drawPixmap( pkgRect, TomahawkUtils::defaultPixmap( TomahawkUtils::ResolverBundle, TomahawkUtils::Original, pkgRect.size() ) );
+            painter->drawPixmap( pkgRect, HatchetUtils::defaultPixmap( HatchetUtils::ResolverBundle, HatchetUtils::Original, pkgRect.size() ) );
 
             QRect textRect( runningEdge + PADDING + h, pkgTop, painter->fontMetrics().width( versionString ), h );
             painter->drawText( textRect, Qt::AlignLeft, versionString );
@@ -465,7 +465,7 @@ AccountDelegate::editorEvent( QEvent* event, QAbstractItemModel* model, const QS
             }
             else if ( rowType == AccountModel::UniqueFactory )
             {
-                const QList< Account* > accts = index.data( AccountModel::ChildrenOfFactoryRole ).value< QList< Tomahawk::Accounts::Account* > >();
+                const QList< Account* > accts = index.data( AccountModel::ChildrenOfFactoryRole ).value< QList< Hatchet::Accounts::Account* > >();
 
                 Q_ASSERT( !accts.isEmpty() ); // If there's no account, why is there a config widget for this factory?
                 Q_ASSERT( accts.size() == 1 );
@@ -545,9 +545,9 @@ AccountDelegate::drawRoundedButton( QPainter* painter, const QRect& btnRect, boo
 {
     //FIXME const colors
     if ( !red )
-        TomahawkUtils::drawRoundedButton( painter, btnRect, QColor(54, 127, 211), QColor(43, 104, 182), QColor(34, 85, 159), QColor(35, 79, 147) );
+        HatchetUtils::drawRoundedButton( painter, btnRect, QColor(54, 127, 211), QColor(43, 104, 182), QColor(34, 85, 159), QColor(35, 79, 147) );
     else
-        TomahawkUtils::drawRoundedButton( painter, btnRect, QColor(206, 63, 63), QColor(170, 52, 52), QColor(150, 50, 50), QColor(130, 40, 40) );
+        HatchetUtils::drawRoundedButton( painter, btnRect, QColor(206, 63, 63), QColor(170, 52, 52), QColor(150, 50, 50), QColor(130, 40, 40) );
 }
 
 
@@ -563,17 +563,17 @@ AccountDelegate::drawStatus( QPainter* painter, const QPointF& rightTopEdge, Acc
 
     if ( state == Account::Connected )
     {
-        p = TomahawkUtils::defaultPixmap( TomahawkUtils::SipPluginOnline, TomahawkUtils::Original, connectIconRect.size() );
+        p = HatchetUtils::defaultPixmap( HatchetUtils::SipPluginOnline, HatchetUtils::Original, connectIconRect.size() );
         statusText = tr( "Online" );
     }
     else if ( state == Account::Connecting )
     {
-        p = TomahawkUtils::defaultPixmap( TomahawkUtils::SipPluginOffline, TomahawkUtils::Original, connectIconRect.size() );
+        p = HatchetUtils::defaultPixmap( HatchetUtils::SipPluginOffline, HatchetUtils::Original, connectIconRect.size() );
         statusText = tr( "Connecting..." );
     }
     else
     {
-        p = TomahawkUtils::defaultPixmap( TomahawkUtils::SipPluginOffline, TomahawkUtils::Original, connectIconRect.size() );
+        p = HatchetUtils::defaultPixmap( HatchetUtils::SipPluginOffline, HatchetUtils::Original, connectIconRect.size() );
         statusText = tr( "Offline" );
     }
 
@@ -582,7 +582,7 @@ AccountDelegate::drawStatus( QPainter* painter, const QPointF& rightTopEdge, Acc
         if ( !m_connectingSpinners.contains( acct ) )
         {
             AnimatedSpinner* anim = new AnimatedSpinner( connectIconRect.size(), true );
-            _detail::Closure* closure = new _detail::Closure( anim, SIGNAL( requestUpdate() ), const_cast<AccountDelegate*>(this), SLOT( doUpdateIndexWithAccount( Tomahawk::Accounts::Account* ) ), C_ARG( Tomahawk::Accounts::Account*, acct ) );
+            _detail::Closure* closure = new _detail::Closure( anim, SIGNAL( requestUpdate() ), const_cast<AccountDelegate*>(this), SLOT( doUpdateIndexWithAccount( Hatchet::Accounts::Account* ) ), C_ARG( Hatchet::Accounts::Account*, acct ) );
             closure->setAutoDelete( false );
 
             m_connectingSpinners[ acct ] = anim;
@@ -737,7 +737,7 @@ AccountDelegate::doUpdateIndexWithAccount( Account* account )
         }
         else if ( rowType == AccountModel::TopLevelFactory || rowType == AccountModel::UniqueFactory )
         {
-            const QList< Account* > accts = index.data( AccountModel::ChildrenOfFactoryRole ).value< QList< Tomahawk::Accounts::Account* > >();
+            const QList< Account* > accts = index.data( AccountModel::ChildrenOfFactoryRole ).value< QList< Hatchet::Accounts::Account* > >();
             if ( accts.contains( account ) )
             {
                 emit update( index );

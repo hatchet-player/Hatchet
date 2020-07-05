@@ -1,27 +1,27 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2011       Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "PlayableModel_p.h"
 
 #include "audio/AudioEngine.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
 
 #include "Artist.h"
@@ -37,14 +37,14 @@
 #include <QMimeData>
 #include <QTreeView>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 void
 PlayableModel::init()
 {
     Q_D( PlayableModel );
-    connect( AudioEngine::instance(), SIGNAL( started( Tomahawk::result_ptr ) ), SLOT( onPlaybackStarted( Tomahawk::result_ptr ) ), Qt::DirectConnection );
+    connect( AudioEngine::instance(), SIGNAL( started( Hatchet::result_ptr ) ), SLOT( onPlaybackStarted( Hatchet::result_ptr ) ), Qt::DirectConnection );
     connect( AudioEngine::instance(), SIGNAL( stopped() ), SLOT( onPlaybackStopped() ), Qt::DirectConnection );
 
     d->header << tr( "Artist" ) << tr( "Title" ) << tr( "Composer" ) << tr( "Album" ) << tr( "Download" ) << tr( "Track" ) << tr( "Duration" )
@@ -238,7 +238,7 @@ PlayableModel::queryData( const query_ptr& query, int column, int role ) const
             break;
 
         case Duration:
-            return TomahawkUtils::timeToString( query->track()->duration() );
+            return HatchetUtils::timeToString( query->track()->duration() );
             break;
 
         case AlbumPos:
@@ -269,7 +269,7 @@ PlayableModel::queryData( const query_ptr& query, int column, int role ) const
                 break;
 
             case Age:
-                return TomahawkUtils::ageToString( QDateTime::fromTime_t( query->results().first()->modificationTime() ) );
+                return HatchetUtils::ageToString( QDateTime::fromTime_t( query->results().first()->modificationTime() ) );
                 break;
 
             case Year:
@@ -278,7 +278,7 @@ PlayableModel::queryData( const query_ptr& query, int column, int role ) const
                 break;
 
             case Filesize:
-                return TomahawkUtils::filesizeToString( query->results().first()->size() );
+                return HatchetUtils::filesizeToString( query->results().first()->size() );
                 break;
 
             case Origin:
@@ -325,19 +325,19 @@ PlayableModel::data( const QModelIndex& index, int role ) const
     {
         if ( entry->result() )
         {
-            return Tomahawk::TypeResult;
+            return Hatchet::TypeResult;
         }
         else if ( entry->query() )
         {
-            return Tomahawk::TypeQuery;
+            return Hatchet::TypeQuery;
         }
         else if ( entry->artist() )
         {
-            return Tomahawk::TypeArtist;
+            return Hatchet::TypeArtist;
         }
         else if ( entry->album() )
         {
-            return Tomahawk::TypeAlbum;
+            return Hatchet::TypeAlbum;
         }
     }
 
@@ -485,7 +485,7 @@ PlayableModel::currentItemUuid()
 PlaylistModes::RepeatMode
 PlayableModel::repeatMode() const
 {
-    return Tomahawk::PlaylistModes::NoRepeat;
+    return Hatchet::PlaylistModes::NoRepeat;
 }
 
 
@@ -493,7 +493,7 @@ QStringList
 PlayableModel::mimeTypes() const
 {
     QStringList types;
-    types << "application/tomahawk.mixed";
+    types << "application/hatchet.mixed";
     return types;
 }
 
@@ -529,7 +529,7 @@ PlayableModel::mimeData( const QModelIndexList &indexes ) const
     if ( !fail )
     {
         QMimeData* mimeData = new QMimeData();
-        mimeData->setData( "application/tomahawk.metadata.artist", resultData );
+        mimeData->setData( "application/hatchet.metadata.artist", resultData );
         return mimeData;
     }
 
@@ -560,7 +560,7 @@ PlayableModel::mimeData( const QModelIndexList &indexes ) const
     if ( !fail )
     {
         QMimeData* mimeData = new QMimeData();
-        mimeData->setData( "application/tomahawk.metadata.album", resultData );
+        mimeData->setData( "application/hatchet.metadata.album", resultData );
         return mimeData;
     }
 
@@ -590,7 +590,7 @@ PlayableModel::mimeData( const QModelIndexList &indexes ) const
     if ( !fail )
     {
         QMimeData* mimeData = new QMimeData();
-        mimeData->setData( "application/tomahawk.result.list", resultData );
+        mimeData->setData( "application/hatchet.result.list", resultData );
         return mimeData;
     }
 
@@ -609,27 +609,27 @@ PlayableModel::mimeData( const QModelIndexList &indexes ) const
         if ( !item->artist().isNull() )
         {
             const artist_ptr& artist = item->artist();
-            mixedStream << QString( "application/tomahawk.metadata.artist" ) << artist->name();
+            mixedStream << QString( "application/hatchet.metadata.artist" ) << artist->name();
         }
         else if ( !item->album().isNull() )
         {
             const album_ptr& album = item->album();
-            mixedStream << QString( "application/tomahawk.metadata.album" ) << album->artist()->name() << album->name();
+            mixedStream << QString( "application/hatchet.metadata.album" ) << album->artist()->name() << album->name();
         }
         else if ( !item->result().isNull() )
         {
             const result_ptr& result = item->result();
-            mixedStream << QString( "application/tomahawk.result.list" ) << qlonglong( &result );
+            mixedStream << QString( "application/hatchet.result.list" ) << qlonglong( &result );
         }
         else if ( !item->query().isNull() )
         {
             const query_ptr& query = item->query();
-            mixedStream << QString( "application/tomahawk.query.list" ) << qlonglong( &query );
+            mixedStream << QString( "application/hatchet.query.list" ) << qlonglong( &query );
         }
     }
 
     QMimeData* mimeData = new QMimeData();
-    mimeData->setData( "application/tomahawk.mixed", resultData );
+    mimeData->setData( "application/hatchet.mixed", resultData );
     return mimeData;
 }
 
@@ -671,7 +671,7 @@ PlayableModel::queries() const
 
 template <typename T>
 void
-PlayableModel::insertInternal( const QList< T >& items, int row, const QList< Tomahawk::PlaybackLog >& logs, const QModelIndex& parent )
+PlayableModel::insertInternal( const QList< T >& items, int row, const QList< Hatchet::PlaybackLog >& logs, const QModelIndex& parent )
 {
     Q_D( PlayableModel );
     if ( items.isEmpty() )
@@ -828,7 +828,7 @@ PlayableModel::rootItem() const
 
 
 void
-PlayableModel::onPlaybackStarted( const Tomahawk::result_ptr result )
+PlayableModel::onPlaybackStarted( const Hatchet::result_ptr result )
 {
     Q_D( PlayableModel );
     PlayableItem* oldEntry = itemFromIndex( d->currentIndex );
@@ -981,7 +981,7 @@ PlayableModel::itemFromIndex( const QModelIndex& index ) const
 
 
 void
-PlayableModel::appendArtist( const Tomahawk::artist_ptr& artist )
+PlayableModel::appendArtist( const Hatchet::artist_ptr& artist )
 {
     QList< artist_ptr > artists;
     artists << artist;
@@ -991,7 +991,7 @@ PlayableModel::appendArtist( const Tomahawk::artist_ptr& artist )
 
 
 void
-PlayableModel::appendAlbum( const Tomahawk::album_ptr& album )
+PlayableModel::appendAlbum( const Hatchet::album_ptr& album )
 {
     QList< album_ptr > albums;
     albums << album;
@@ -1001,7 +1001,7 @@ PlayableModel::appendAlbum( const Tomahawk::album_ptr& album )
 
 
 void
-PlayableModel::appendQuery( const Tomahawk::query_ptr& query )
+PlayableModel::appendQuery( const Hatchet::query_ptr& query )
 {
     QList< query_ptr > queries;
     queries << query;
@@ -1011,21 +1011,21 @@ PlayableModel::appendQuery( const Tomahawk::query_ptr& query )
 
 
 void
-PlayableModel::appendArtists( const QList< Tomahawk::artist_ptr >& artists )
+PlayableModel::appendArtists( const QList< Hatchet::artist_ptr >& artists )
 {
     insertArtists( artists, rowCount( QModelIndex() ) );
 }
 
 
 void
-PlayableModel::appendAlbums( const QList< Tomahawk::album_ptr >& albums )
+PlayableModel::appendAlbums( const QList< Hatchet::album_ptr >& albums )
 {
     insertAlbums( albums, rowCount( QModelIndex() ) );
 }
 
 
 void
-PlayableModel::appendAlbums( const Tomahawk::collection_ptr& collection )
+PlayableModel::appendAlbums( const Hatchet::collection_ptr& collection )
 {
     startLoading();
     insertAlbums( collection, rowCount( QModelIndex() ) );
@@ -1033,17 +1033,17 @@ PlayableModel::appendAlbums( const Tomahawk::collection_ptr& collection )
 
 
 void
-PlayableModel::appendQueries( const QList< Tomahawk::query_ptr >& queries )
+PlayableModel::appendQueries( const QList< Hatchet::query_ptr >& queries )
 {
     insertQueries( queries, rowCount( QModelIndex() ) );
 }
 
 
 void
-PlayableModel::appendTracks( const QList< Tomahawk::track_ptr >& tracks, const QList< Tomahawk::PlaybackLog >& logs )
+PlayableModel::appendTracks( const QList< Hatchet::track_ptr >& tracks, const QList< Hatchet::PlaybackLog >& logs )
 {
     startLoading();
-    QList< Tomahawk::query_ptr > queries;
+    QList< Hatchet::query_ptr > queries;
     foreach ( const track_ptr& track, tracks )
     {
         queries << track->toQuery();
@@ -1054,7 +1054,7 @@ PlayableModel::appendTracks( const QList< Tomahawk::track_ptr >& tracks, const Q
 
 
 void
-PlayableModel::appendTracks( const Tomahawk::collection_ptr& collection )
+PlayableModel::appendTracks( const Hatchet::collection_ptr& collection )
 {
     startLoading();
     insertTracks( collection, rowCount( QModelIndex() ) );
@@ -1062,7 +1062,7 @@ PlayableModel::appendTracks( const Tomahawk::collection_ptr& collection )
 
 
 void
-PlayableModel::insertArtist( const Tomahawk::artist_ptr& artist, int row )
+PlayableModel::insertArtist( const Hatchet::artist_ptr& artist, int row )
 {
     QList< artist_ptr > artists;
     artists << artist;
@@ -1072,7 +1072,7 @@ PlayableModel::insertArtist( const Tomahawk::artist_ptr& artist, int row )
 
 
 void
-PlayableModel::insertAlbum( const Tomahawk::album_ptr& album, int row )
+PlayableModel::insertAlbum( const Hatchet::album_ptr& album, int row )
 {
     QList< album_ptr > albums;
     albums << album;
@@ -1082,11 +1082,11 @@ PlayableModel::insertAlbum( const Tomahawk::album_ptr& album, int row )
 
 
 void
-PlayableModel::insertQuery( const Tomahawk::query_ptr& query, int row, const Tomahawk::PlaybackLog& log, const QModelIndex& parent )
+PlayableModel::insertQuery( const Hatchet::query_ptr& query, int row, const Hatchet::PlaybackLog& log, const QModelIndex& parent )
 {
     QList< query_ptr > queries;
     queries << query;
-    QList< Tomahawk::PlaybackLog > logs;
+    QList< Hatchet::PlaybackLog > logs;
     logs << log;
 
     insertQueries( queries, row, logs, parent );
@@ -1094,42 +1094,42 @@ PlayableModel::insertQuery( const Tomahawk::query_ptr& query, int row, const Tom
 
 
 void
-PlayableModel::insertArtists( const QList< Tomahawk::artist_ptr >& artists, int row )
+PlayableModel::insertArtists( const QList< Hatchet::artist_ptr >& artists, int row )
 {
     insertInternal( artists, row );
 }
 
 
 void
-PlayableModel::insertAlbums( const QList< Tomahawk::album_ptr >& albums, int row )
+PlayableModel::insertAlbums( const QList< Hatchet::album_ptr >& albums, int row )
 {
     insertInternal( albums, row );
 }
 
 
 void
-PlayableModel::insertAlbums( const Tomahawk::collection_ptr& collection, int /* row */ )
+PlayableModel::insertAlbums( const Hatchet::collection_ptr& collection, int /* row */ )
 {
-    Tomahawk::AlbumsRequest* req = collection->requestAlbums( Tomahawk::artist_ptr() );
-    connect( dynamic_cast< QObject* >( req ), SIGNAL( albums( QList< Tomahawk::album_ptr > ) ),
-             this, SLOT( appendAlbums( QList< Tomahawk::album_ptr > ) ), Qt::UniqueConnection );
+    Hatchet::AlbumsRequest* req = collection->requestAlbums( Hatchet::artist_ptr() );
+    connect( dynamic_cast< QObject* >( req ), SIGNAL( albums( QList< Hatchet::album_ptr > ) ),
+             this, SLOT( appendAlbums( QList< Hatchet::album_ptr > ) ), Qt::UniqueConnection );
     req->enqueue();
 }
 
 
 void
-PlayableModel::insertQueries( const QList< Tomahawk::query_ptr >& queries, int row, const QList< Tomahawk::PlaybackLog >& logs, const QModelIndex& parent )
+PlayableModel::insertQueries( const QList< Hatchet::query_ptr >& queries, int row, const QList< Hatchet::PlaybackLog >& logs, const QModelIndex& parent )
 {
     insertInternal( queries, row, logs, parent );
 }
 
 
 void
-PlayableModel::insertTracks( const Tomahawk::collection_ptr& collection, int /* row */ )
+PlayableModel::insertTracks( const Hatchet::collection_ptr& collection, int /* row */ )
 {
-    Tomahawk::TracksRequest* req = collection->requestTracks( Tomahawk::album_ptr() );
-    connect( dynamic_cast< QObject* >( req ), SIGNAL( tracks( QList< Tomahawk::query_ptr > ) ),
-             this, SLOT( appendQueries( QList< Tomahawk::query_ptr > ) ), Qt::UniqueConnection );
+    Hatchet::TracksRequest* req = collection->requestTracks( Hatchet::album_ptr() );
+    connect( dynamic_cast< QObject* >( req ), SIGNAL( tracks( QList< Hatchet::query_ptr > ) ),
+             this, SLOT( appendQueries( QList< Hatchet::query_ptr > ) ), Qt::UniqueConnection );
     req->enqueue();
 
 //    connect( collection.data(), SIGNAL( changed() ), SLOT( onCollectionChanged() ), Qt::UniqueConnection );
@@ -1214,14 +1214,14 @@ PlayableModel::onQueryBecamePlayable( bool playable )
 {
     Q_UNUSED( playable );
 
-    Tomahawk::Query* q = qobject_cast< Query* >( sender() );
+    Hatchet::Query* q = qobject_cast< Query* >( sender() );
     if ( !q )
     {
         // Track has been removed from the playlist by now
         return;
     }
 
-    Tomahawk::query_ptr query = q->weakRef().toStrongRef();
+    Hatchet::query_ptr query = q->weakRef().toStrongRef();
     PlayableItem* item = itemFromQuery( query );
     if ( item )
     {
@@ -1235,14 +1235,14 @@ PlayableModel::onQueryResolved( bool hasResults )
 {
     Q_UNUSED( hasResults );
 
-    Tomahawk::Query* q = qobject_cast< Query* >( sender() );
+    Hatchet::Query* q = qobject_cast< Query* >( sender() );
     if ( !q )
     {
         // Track has been removed from the playlist by now
         return;
     }
 
-    Tomahawk::query_ptr query = q->weakRef().toStrongRef();
+    Hatchet::query_ptr query = q->weakRef().toStrongRef();
     PlayableItem* item = itemFromQuery( query );
     if ( item )
     {
@@ -1252,7 +1252,7 @@ PlayableModel::onQueryResolved( bool hasResults )
 
 
 PlayableItem*
-PlayableModel::itemFromQuery( const Tomahawk::query_ptr& query, const QModelIndex& parent ) const
+PlayableModel::itemFromQuery( const Hatchet::query_ptr& query, const QModelIndex& parent ) const
 {
     if ( !query )
         return 0;
@@ -1282,7 +1282,7 @@ PlayableModel::itemFromQuery( const Tomahawk::query_ptr& query, const QModelInde
 
 
 PlayableItem*
-PlayableModel::itemFromResult( const Tomahawk::result_ptr& result, const QModelIndex& parent ) const
+PlayableModel::itemFromResult( const Hatchet::result_ptr& result, const QModelIndex& parent ) const
 {
     if ( !result )
         return 0;
@@ -1312,7 +1312,7 @@ PlayableModel::itemFromResult( const Tomahawk::result_ptr& result, const QModelI
 
 
 QModelIndex
-PlayableModel::indexFromSource( const Tomahawk::source_ptr& source ) const
+PlayableModel::indexFromSource( const Hatchet::source_ptr& source ) const
 {
     for ( int i = 0; i < rowCount( QModelIndex() ); i++ )
     {

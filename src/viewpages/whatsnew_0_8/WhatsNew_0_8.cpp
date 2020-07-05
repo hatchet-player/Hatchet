@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2014, Uwe L. Korn <uwelk@xhochy.com>
  *   Copyright 2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "WhatsNew_0_8.h"
@@ -22,16 +22,16 @@
 
 #include "utils/Logger.h"
 #include "utils/ImageRegistry.h"
-#include "utils/TomahawkStyle.h"
-#include "TomahawkSettings.h"
+#include "utils/HatchetStyle.h"
+#include "HatchetSettings.h"
 
 #include <QLayout>
 #include <QScrollArea>
 #include <QScrollBar>
 #include <QStackedWidget>
 
-using namespace Tomahawk;
-using namespace Tomahawk::Widgets;
+using namespace Hatchet;
+using namespace Hatchet::Widgets;
 
 
 WhatsNew_0_8::WhatsNew_0_8( QWidget* parent )
@@ -49,14 +49,14 @@ WhatsNew_0_8::~WhatsNew_0_8()
 bool
 WhatsNew_0_8::addPageItem() const
 {
-    return !TomahawkSettings::instance()->value( "whatsnew/deleted-for-0.8", false ).toBool();
+    return !HatchetSettings::instance()->value( "whatsnew/deleted-for-0.8", false ).toBool();
 }
 
 
 void
 WhatsNew_0_8::onItemDeleted()
 {
-    TomahawkSettings::instance()->setValue( "whatsnew/deleted-for-0.8", true );
+    HatchetSettings::instance()->setValue( "whatsnew/deleted-for-0.8", true );
 }
 
 
@@ -73,7 +73,7 @@ WhatsNewWidget_0_8::WhatsNewWidget_0_8( QWidget* parent )
         m_area->setWidget( m_widget );
 
         QPalette pal = palette();
-        pal.setBrush( backgroundRole(), TomahawkStyle::PAGE_BACKGROUND );
+        pal.setBrush( backgroundRole(), HatchetStyle::PAGE_BACKGROUND );
         m_area->setPalette( pal );
         m_area->setAutoFillBackground( true );
         m_area->setFrameShape( QFrame::NoFrame );
@@ -82,7 +82,7 @@ WhatsNewWidget_0_8::WhatsNewWidget_0_8( QWidget* parent )
         QVBoxLayout* layout = new QVBoxLayout();
         layout->addWidget( m_area );
         setLayout( layout );
-        TomahawkUtils::unmarginLayout( layout );
+        HatchetUtils::unmarginLayout( layout );
     }
 
     int width = ui->widget->minimumSize().width() - ( ui->widget->layout()->contentsMargins().left() + ui->widget->layout()->contentsMargins().right() );
@@ -149,16 +149,16 @@ WhatsNewWidget_0_8::WhatsNewWidget_0_8( QWidget* parent )
     {
         QFont font = ui->label->font();
         font.setWeight( QFont::Light );
-        font.setPointSize( TomahawkUtils::defaultFontSize() + 38 );
+        font.setPointSize( HatchetUtils::defaultFontSize() + 38 );
         ui->label->setFont( font );
         ui->label->setStyleSheet( "QLabel { color: rgba( 0, 0, 0, 60% ) }" );
 
         font.setWeight( QFont::Normal );
-        font.setPointSize( TomahawkUtils::defaultFontSize() + 1 );
+        font.setPointSize( HatchetUtils::defaultFontSize() + 1 );
         ui->label_2->setFont( font );
         ui->label_2->setStyleSheet( "QLabel { color: rgba( 0, 0, 0, 30% ) }" );
 
-        font.setPointSize( TomahawkUtils::defaultFontSize() + 2 );
+        font.setPointSize( HatchetUtils::defaultFontSize() + 2 );
         ui->label_3->setFont( font );
         ui->label_3->setStyleSheet( "QLabel { color: rgba( 0, 0, 0, 65% ) }" );
         ui->label_5->setFont( font );

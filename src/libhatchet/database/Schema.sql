@@ -293,7 +293,7 @@ CREATE TABLE IF NOT EXISTS http_client_auth (
 
 
 
--- Schema version, and misc tomahawk settings relating to the collection db
+-- Schema version, and misc hatchet settings relating to the collection db
 
 CREATE TABLE IF NOT EXISTS settings (
     k TEXT NOT NULL PRIMARY KEY,

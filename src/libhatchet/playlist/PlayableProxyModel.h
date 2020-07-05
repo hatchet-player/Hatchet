@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef TRACKPROXYMODEL_H
@@ -83,11 +83,11 @@ public:
     void setMaxVisibleItems( int items );
 
     PlayableItem* itemFromIndex( const QModelIndex& index ) const { return sourceModel()->itemFromIndex( index ); }
-    PlayableItem* itemFromQuery( const Tomahawk::query_ptr& query ) const { return sourceModel()->itemFromQuery( query ); }
-    PlayableItem* itemFromResult( const Tomahawk::result_ptr& result ) const { return sourceModel()->itemFromResult( result ); }
+    PlayableItem* itemFromQuery( const Hatchet::query_ptr& query ) const { return sourceModel()->itemFromQuery( query ); }
+    PlayableItem* itemFromResult( const Hatchet::result_ptr& result ) const { return sourceModel()->itemFromResult( result ); }
 
-    virtual Tomahawk::playlistinterface_ptr playlistInterface() const;
-    void setPlaylistInterface( const Tomahawk::playlistinterface_ptr& playlistInterface );
+    virtual Hatchet::playlistinterface_ptr playlistInterface() const;
+    void setPlaylistInterface( const Hatchet::playlistinterface_ptr& playlistInterface );
 
     QList< double > columnWeights() const;
 
@@ -122,7 +122,7 @@ protected:
     bool filterAcceptsRow( int sourceRow, const QModelIndex& sourceParent ) const Q_DECL_OVERRIDE;
     virtual bool lessThan( const QModelIndex& left, const QModelIndex& right ) const override;
 
-    Tomahawk::playlistinterface_ptr m_playlistInterface;
+    Hatchet::playlistinterface_ptr m_playlistInterface;
 
 private slots:
     void onIndexPlayable( const QModelIndex& index );
@@ -138,8 +138,8 @@ private:
     bool dupeFilterAcceptsRow( int sourceRow, PlayableItem* pi, const QModelIndex& sourceParent, PlayableProxyModelFilterMemo& memo ) const;
     bool visibilityFilterAcceptsRow( int sourceRow, const QModelIndex& sourceParent, PlayableProxyModelFilterMemo& memo ) const;
 
-    bool lessThan( int column, const Tomahawk::query_ptr& left, const Tomahawk::query_ptr& right ) const;
-    bool lessThan( const Tomahawk::album_ptr& album1, const Tomahawk::album_ptr& album2 ) const;
+    bool lessThan( int column, const Hatchet::query_ptr& left, const Hatchet::query_ptr& right ) const;
+    bool lessThan( const Hatchet::album_ptr& album1, const Hatchet::album_ptr& album2 ) const;
 
     QPointer<PlayableModel> m_model;
 

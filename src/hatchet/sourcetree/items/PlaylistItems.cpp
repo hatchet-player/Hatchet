@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2012, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "PlaylistItems.h"
@@ -29,13 +29,13 @@
 #include "playlist/dynamic/GeneratorInterface.h"
 #include "playlist/ContextView.h"
 #include "playlist/TrackView.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 
 #include <QMimeData>
 #include <QPainter>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 PlaylistItem::PlaylistItem( SourcesModel* mdl, SourceTreeItem* parent, const playlist_ptr& pl, int index )
@@ -44,8 +44,8 @@ PlaylistItem::PlaylistItem( SourcesModel* mdl, SourceTreeItem* parent, const pla
     , m_showSubscribed( false )
     , m_playlist( pl )
 {
-    connect( pl.data(), SIGNAL( revisionLoaded( Tomahawk::PlaylistRevision ) ),
-                          SLOT( onPlaylistLoaded( Tomahawk::PlaylistRevision ) ), Qt::QueuedConnection );
+    connect( pl.data(), SIGNAL( revisionLoaded( Hatchet::PlaylistRevision ) ),
+                          SLOT( onPlaylistLoaded( Hatchet::PlaylistRevision ) ), Qt::QueuedConnection );
     connect( pl.data(), SIGNAL( changed() ),
                           SLOT( onUpdated() ), Qt::QueuedConnection );
 
@@ -64,7 +64,7 @@ PlaylistItem::text() const
 }
 
 
-Tomahawk::playlist_ptr
+Hatchet::playlist_ptr
 PlaylistItem::playlist() const
 {
     return m_playlist;
@@ -72,7 +72,7 @@ PlaylistItem::playlist() const
 
 
 void
-PlaylistItem::onPlaylistLoaded( Tomahawk::PlaylistRevision revision )
+PlaylistItem::onPlaylistLoaded( Hatchet::PlaylistRevision revision )
 {
     Q_UNUSED( revision );
 
@@ -170,12 +170,12 @@ PlaylistItem::willAcceptDrag( const QMimeData* data ) const
 PlaylistItem::DropTypes
 PlaylistItem::supportedDropTypes( const QMimeData* data ) const
 {
-    if ( data->hasFormat( "application/tomahawk.mixed" ) )
+    if ( data->hasFormat( "application/hatchet.mixed" ) )
     {
         // If this is mixed but only queries/results, we can still handle them
         bool mixedQueries = true;
 
-        QByteArray itemData = data->data( "application/tomahawk.mixed" );
+        QByteArray itemData = data->data( "application/hatchet.mixed" );
         QDataStream stream( &itemData, QIODevice::ReadOnly );
         QString mimeType;
         qlonglong val;
@@ -183,8 +183,8 @@ PlaylistItem::supportedDropTypes( const QMimeData* data ) const
         while ( !stream.atEnd() )
         {
             stream >> mimeType;
-            if ( mimeType != "application/tomahawk.query.list" &&
-                 mimeType != "application/tomahawk.result.list" )
+            if ( mimeType != "application/hatchet.query.list" &&
+                 mimeType != "application/hatchet.result.list" )
             {
                 mixedQueries = false;
                 break;
@@ -198,13 +198,13 @@ PlaylistItem::supportedDropTypes( const QMimeData* data ) const
             return DropTypesNone;
     }
 
-    if ( data->hasFormat( "application/tomahawk.query.list" ) )
+    if ( data->hasFormat( "application/hatchet.query.list" ) )
         return DropTypeThisTrack | DropTypeThisAlbum | DropTypeAllFromArtist | DropTypeLocalItems | DropTypeTop50;
-    else if ( data->hasFormat( "application/tomahawk.result.list" ) )
+    else if ( data->hasFormat( "application/hatchet.result.list" ) )
         return DropTypeThisTrack | DropTypeThisAlbum | DropTypeAllFromArtist | DropTypeLocalItems | DropTypeTop50;
-    else if ( data->hasFormat( "application/tomahawk.metadata.album" ) )
+    else if ( data->hasFormat( "application/hatchet.metadata.album" ) )
         return DropTypeThisAlbum | DropTypeAllFromArtist | DropTypeLocalItems | DropTypeTop50;
-    else if ( data->hasFormat( "application/tomahawk.metadata.artist" ) )
+    else if ( data->hasFormat( "application/hatchet.metadata.artist" ) )
         return DropTypeAllFromArtist | DropTypeLocalItems | DropTypeTop50;
     else if ( data->hasFormat( "text/plain" ) )
     {
@@ -222,8 +222,8 @@ PlaylistItem::dropMimeData( const QMimeData* data, Qt::DropAction action )
     if ( m_playlist->busy() )
         return false;
 
-    if ( data->hasFormat( "application/tomahawk.playlist.id" ) &&
-         data->data( "application/tomahawk.playlist.id" ) == m_playlist->guid() )
+    if ( data->hasFormat( "application/hatchet.playlist.id" ) &&
+         data->data( "application/hatchet.playlist.id" ) == m_playlist->guid() )
     {
         // don't allow dropping on ourselves
         return false;
@@ -236,8 +236,8 @@ PlaylistItem::dropMimeData( const QMimeData* data, Qt::DropAction action )
     dj->setDropTypes( DropJob::Track );
     dj->setDropAction( DropJob::Append );
 
-    connect( dj, SIGNAL( tracks( QList< Tomahawk::query_ptr > ) ),
-                   SLOT( parsedDroppedTracks( QList< Tomahawk::query_ptr > ) ) );
+    connect( dj, SIGNAL( tracks( QList< Hatchet::query_ptr > ) ),
+                   SLOT( parsedDroppedTracks( QList< Hatchet::query_ptr > ) ) );
 
     if ( dropType() == DropTypeAllFromArtist )
         dj->setGetWholeArtists( true );
@@ -333,9 +333,9 @@ PlaylistItem::createOverlay()
     }
 
     if ( m_canSubscribe && m_showSubscribed && m_subscribedOnIcon.isNull() )
-        m_subscribedOnIcon = TomahawkUtils::defaultPixmap( TomahawkUtils::SubscribeOn, TomahawkUtils::Original, QSize( 20, 20 ) );
+        m_subscribedOnIcon = HatchetUtils::defaultPixmap( HatchetUtils::SubscribeOn, HatchetUtils::Original, QSize( 20, 20 ) );
     else if ( m_canSubscribe && !m_showSubscribed && m_subscribedOffIcon.isNull() )
-        m_subscribedOffIcon = TomahawkUtils::defaultPixmap( TomahawkUtils::SubscribeOff, TomahawkUtils::Original, QSize( 20, 20 ) );
+        m_subscribedOffIcon = HatchetUtils::defaultPixmap( HatchetUtils::SubscribeOff, HatchetUtils::Original, QSize( 20, 20 ) );
 
     QList< QPixmap > icons;
     foreach ( PlaylistUpdaterInterface* updater, m_playlist->updaters() )
@@ -355,7 +355,7 @@ PlaylistItem::createOverlay()
     if ( icons.size() > 2 )
         icons = icons.mid( 0, 2 );
 
-    QPixmap base = TomahawkUtils::defaultPixmap( TomahawkUtils::Playlist, TomahawkUtils::Original, QSize( 48, 48 ) );
+    QPixmap base = HatchetUtils::defaultPixmap( HatchetUtils::Playlist, HatchetUtils::Original, QSize( 48, 48 ) );
     QPainter p( &base );
     const int w = base.width() / 2;
     QRect overlayRect( base.rect().right() - w, base.rect().height() - w, w, w );
@@ -382,7 +382,7 @@ PlaylistItem::icon() const
     if ( !m_overlaidIcon.isNull() )
         return m_overlaidIcon;
     else
-        return TomahawkUtils::defaultPixmap( TomahawkUtils::Playlist, TomahawkUtils::Original, QSize( 48, 48 ) );
+        return HatchetUtils::defaultPixmap( HatchetUtils::Playlist, HatchetUtils::Original, QSize( 48, 48 ) );
 }
 
 
@@ -443,8 +443,8 @@ DynamicPlaylistItem::DynamicPlaylistItem( SourcesModel* mdl, SourceTreeItem* par
 {
     setRowType( m_dynplaylist->mode() == Static ? SourcesModel::AutomaticPlaylist : SourcesModel::Station );
 
-    connect( pl.data(), SIGNAL( dynamicRevisionLoaded( Tomahawk::DynamicPlaylistRevision ) ),
-             SLOT( onDynamicPlaylistLoaded( Tomahawk::DynamicPlaylistRevision ) ), Qt::QueuedConnection );
+    connect( pl.data(), SIGNAL( dynamicRevisionLoaded( Hatchet::DynamicPlaylistRevision ) ),
+             SLOT( onDynamicPlaylistLoaded( Hatchet::DynamicPlaylistRevision ) ), Qt::QueuedConnection );
 
     if ( ViewManager::instance()->pageForDynPlaylist( pl ) )
         model()->linkSourceItemToPage( this, ViewManager::instance()->pageForDynPlaylist( pl ) );
@@ -491,7 +491,7 @@ DynamicPlaylistItem::IDValue() const
 void
 DynamicPlaylistItem::checkReparentHackNeeded( const DynamicPlaylistRevision& revision )
 {
-    // HACK HACK HACK  workaround for an ugly hack where we have to be compatible with older tomahawks (pre-0.1.0) that created dynplaylists as OnDemand then changed them to Static if they were static.
+    // HACK HACK HACK  workaround for an ugly hack where we have to be compatible with older hatchets (pre-0.1.0) that created dynplaylists as OnDemand then changed them to Static if they were static.
     //  we need to reparent this playlist to the correct category :-/.
     CategoryItem* cat = qobject_cast< CategoryItem* >( parent() );
 
@@ -583,11 +583,11 @@ DynamicPlaylistItem::icon() const
 {
     if ( m_dynplaylist->mode() == OnDemand )
     {
-        return TomahawkUtils::defaultPixmap( TomahawkUtils::Station );
+        return HatchetUtils::defaultPixmap( HatchetUtils::Station );
     }
     else
     {
-        return TomahawkUtils::defaultPixmap( TomahawkUtils::AutomaticPlaylist );
+        return HatchetUtils::defaultPixmap( HatchetUtils::AutomaticPlaylist );
     }
 }
 

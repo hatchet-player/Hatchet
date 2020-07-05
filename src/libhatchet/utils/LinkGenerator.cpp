@@ -1,4 +1,4 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2011,      Leo Franchi <lfranchi@kde.org>
  *   Copyright 2011,      Jeff Mitchell <jeff@tomahawk-player.org>
@@ -7,27 +7,27 @@
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *   Copyright 2014,      Dominik Schmidt <domme@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "LinkGenerator.h"
 
-#include "TomahawkUtils.h"
+#include "HatchetUtils.h"
 #include "Logger.h"
 #include "ShortLinkHelper.h"
 
-#include "TomaHkLinkGeneratorPlugin.h"
+#include "HatchetLinkGeneratorPlugin.h"
 
 #include "../resolvers/SyncScriptJob.h"
 
@@ -37,8 +37,8 @@
 #include <memory>
 
 
-using namespace Tomahawk;
-using namespace Tomahawk::Utils;
+using namespace Hatchet;
+using namespace Hatchet::Utils;
 
 LinkGenerator* LinkGenerator::s_instance = 0;
 
@@ -56,7 +56,7 @@ LinkGenerator::instance()
 LinkGenerator::LinkGenerator( QObject* parent )
     : QObject( parent )
 {
-    m_defaultPlugin.reset( new TomaHkLinkGeneratorPlugin );
+    m_defaultPlugin.reset( new HatchetLinkGeneratorPlugin );
     m_plugins.append( m_defaultPlugin.get() );
 }
 
@@ -86,7 +86,7 @@ LinkGenerator::copyScriptJobResultToClipboard( const QVariantMap& data )
 
     if ( data[ "shortenLink" ].toBool() )
     {
-        Tomahawk::Utils::ShortLinkHelper* slh = new Tomahawk::Utils::ShortLinkHelper();
+        Hatchet::Utils::ShortLinkHelper* slh = new Hatchet::Utils::ShortLinkHelper();
         connect( slh, SIGNAL( shortLinkReady( QUrl, QUrl, QVariant ) ),
                 SLOT( copyToClipboardReady( QUrl, QUrl, QVariant ) ) );
         connect( slh, SIGNAL( done() ),
@@ -111,7 +111,7 @@ LinkGenerator::copyToClipboardReady( const QUrl& longUrl, const QUrl& shortUrl, 
     {
         QClipboard* cb = QApplication::clipboard();
 
-        QByteArray data = TomahawkUtils::percentEncode( shortUrl.isEmpty() ? longUrl : shortUrl );
+        QByteArray data = HatchetUtils::percentEncode( shortUrl.isEmpty() ? longUrl : shortUrl );
         cb->setText( data );
 
         m_clipboardLongUrl.clear();

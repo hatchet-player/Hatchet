@@ -1,23 +1,23 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2014,      Dominik Schmidt <domme@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOMAHAWK_SCRIPTINFOPLUGIN_H
-#define TOMAHAWK_SCRIPTINFOPLUGIN_H
+#ifndef HATCHET_SCRIPTINFOPLUGIN_H
+#define HATCHET_SCRIPTINFOPLUGIN_H
 
 #include "../infosystem/InfoSystem.h"
 #include "ScriptPlugin.h"
@@ -25,7 +25,7 @@
 #include "DllMacro.h"
 
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 class JSAccount;
@@ -33,7 +33,7 @@ class ScriptInfoPluginPrivate;
 class ScriptObject;
 
 
-class DLLEXPORT ScriptInfoPlugin : public Tomahawk::InfoSystem::InfoPlugin, Tomahawk::ScriptPlugin
+class DLLEXPORT ScriptInfoPlugin : public Hatchet::InfoSystem::InfoPlugin, Hatchet::ScriptPlugin
 {
 Q_OBJECT
 
@@ -47,9 +47,9 @@ public:
 protected slots:
     void init() override;
 
-    void getInfo( Tomahawk::InfoSystem::InfoRequestData requestData ) override;
-    void pushInfo( Tomahawk::InfoSystem::InfoPushData pushData ) override;
-    void notInCacheSlot( Tomahawk::InfoSystem::InfoStringHash criteria, Tomahawk::InfoSystem::InfoRequestData requestData ) override;
+    void getInfo( Hatchet::InfoSystem::InfoRequestData requestData ) override;
+    void pushInfo( Hatchet::InfoSystem::InfoPushData pushData ) override;
+    void notInCacheSlot( Hatchet::InfoSystem::InfoStringHash criteria, Hatchet::InfoSystem::InfoRequestData requestData ) override;
 
     void onGetInfoRequestDone( const QVariantMap& result );
     void onNotInCacheRequestDone( const QVariantMap& result );
@@ -59,15 +59,15 @@ protected slots:
     void onScriptObjectDeleted();
 
 private:
-    static QSet< Tomahawk::InfoSystem::InfoType > parseSupportedTypes(const QVariant& variant);
+    static QSet< Hatchet::InfoSystem::InfoType > parseSupportedTypes(const QVariant& variant);
     static QString serializeQVariantMap(const QVariantMap& map);
-    static QVariantMap convertInfoStringHashToQVariantMap(const Tomahawk::InfoSystem::InfoStringHash& hash);
-    static Tomahawk::InfoSystem::InfoStringHash convertQVariantMapToInfoStringHash( const QVariantMap& map );
+    static QVariantMap convertInfoStringHashToQVariantMap(const Hatchet::InfoSystem::InfoStringHash& hash);
+    static Hatchet::InfoSystem::InfoStringHash convertQVariantMapToInfoStringHash( const QVariantMap& map );
 
     Q_DECLARE_PRIVATE( ScriptInfoPlugin )
     QScopedPointer<ScriptInfoPluginPrivate> d_ptr;
 };
 
-}; // ns: Tomahawk
+}; // ns: Hatchet
 
-#endif // TOMAHAWK_SCRIPTINFOPLUGIN_H
+#endif // HATCHET_SCRIPTINFOPLUGIN_H

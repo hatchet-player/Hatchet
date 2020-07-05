@@ -1,27 +1,27 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ToggleButton.h"
 
 #include "widgets/HeaderLabel.h"
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 
 #include <QStylePainter>
 #include <QStyleOptionButton>
@@ -33,7 +33,7 @@ ToggleButton::ToggleButton( QWidget* parent )
 {
     QFont f( font() );
     f.setBold( true );
-    f.setPointSize( TomahawkUtils::defaultFontSize() + 1 );
+    f.setPointSize( HatchetUtils::defaultFontSize() + 1 );
 
     setFont( f );
     setFixedHeight( QLabel::sizeHint().height() + 8 );
@@ -76,7 +76,7 @@ ToggleButton::paintEvent( QPaintEvent* event )
 
     p.save();
     QRect r = contentsRect();
-    TomahawkStyle::horizontalHeader( &p, r );
+    HatchetStyle::horizontalHeader( &p, r );
     p.restore();
 
     p.save();
@@ -89,11 +89,11 @@ ToggleButton::paintEvent( QPaintEvent* event )
 
         if ( isChecked() )
         {
-            p.setBrush( TomahawkStyle::TOGGLEBUTTON_HIGHLIGHT );
+            p.setBrush( HatchetStyle::TOGGLEBUTTON_HIGHLIGHT );
         }
         else
         {
-            p.setBrush( TomahawkStyle::TOGGLEBUTTON_BACKGROUND );
+            p.setBrush( HatchetStyle::TOGGLEBUTTON_BACKGROUND );
         }
 
         p.drawRoundedRect( highlightRect, 4.0, 4.0 );
@@ -101,7 +101,7 @@ ToggleButton::paintEvent( QPaintEvent* event )
 
     QTextOption to( Qt::AlignCenter );
     r.adjust( 8, 0, -8, 0 );
-    p.setBrush( TomahawkStyle::TOGGLEBUTTON_TEXT );
+    p.setBrush( HatchetStyle::TOGGLEBUTTON_TEXT );
     p.drawText( r, text(), to );
 
     p.restore();

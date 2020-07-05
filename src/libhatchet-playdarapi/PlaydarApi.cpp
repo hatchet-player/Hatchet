@@ -1,25 +1,25 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "PlaydarApi_p.h"
 
 #include "qxtsslserver.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "Typedefs.h"
 
 #include "certificate/certificatebuilder.h"
@@ -93,13 +93,13 @@ PlaydarApi::start()
     d->tlsInstance.reset( new Api_v1( d->tlsSession.data() ) );
     d->tlsSession->setStaticContentService( d->tlsInstance.data() );
 
-    QByteArray settingsKey = TomahawkSettings::instance()->playdarKey();
+    QByteArray settingsKey = HatchetSettings::instance()->playdarKey();
     QSslKey key;
     if ( settingsKey.isNull() || settingsKey.isEmpty() )
     {
         // Generate a SSL key
         key = KeyBuilder::generate( QSsl::Rsa, KeyBuilder::StrengthNormal );
-        TomahawkSettings::instance()->setPlaydarKey( key.toPem() );
+        HatchetSettings::instance()->setPlaydarKey( key.toPem() );
     }
     else
     {
@@ -107,7 +107,7 @@ PlaydarApi::start()
         key = QSslKey( settingsKey, QSsl::Rsa );
     }
 
-    QByteArray settingsCert = TomahawkSettings::instance()->playdarCertificate();
+    QByteArray settingsCert = HatchetSettings::instance()->playdarCertificate();
     QSslCertificate cert;
     if ( settingsCert.isNull() || settingsCert.isEmpty() )
     {
@@ -116,7 +116,7 @@ PlaydarApi::start()
         reqbuilder.setVersion( 1 );
         reqbuilder.setKey( key );
         reqbuilder.addNameEntry( Certificate::EntryCountryName, "GB" );
-        reqbuilder.addNameEntry( Certificate::EntryOrganizationName, "Tomahawk Player (Desktop)" );
+        reqbuilder.addNameEntry( Certificate::EntryOrganizationName, "Hatchet Player (Desktop)" );
         reqbuilder.addNameEntry( Certificate::EntryCommonName, "localhost" );
 
         // Sign the request
@@ -136,7 +136,7 @@ PlaydarApi::start()
         builder.addSubjectKeyIdentifier();
 
         cert = builder.signedCertificate( key );
-        TomahawkSettings::instance()->setPlaydarCertificate( cert.toPem() );
+        HatchetSettings::instance()->setPlaydarCertificate( cert.toPem() );
     }
     else
     {

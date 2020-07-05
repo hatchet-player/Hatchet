@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2016, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "AudioEngine.h"
@@ -40,13 +40,13 @@
 #include "Pipeline.h"
 #include "PlaylistEntry.h"
 #include "SourceList.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "UrlHandler.h"
 #include "resolvers/ScriptJob.h"
 
 #include <QDir>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 #define AUDIO_VOLUME_STEP 5
 
@@ -131,7 +131,7 @@ AudioEnginePrivate::onStateChanged( AudioOutput::AudioState newState, AudioOutpu
             }
             else
             {
-                if ( !playlist.isNull() && playlist.data()->retryMode() == Tomahawk::PlaylistModes::Retry )
+                if ( !playlist.isNull() && playlist.data()->retryMode() == Hatchet::PlaylistModes::Retry )
                     waitingOnNewTrack = true;
 
                 q_ptr->stop();
@@ -174,11 +174,11 @@ AudioEngine::AudioEngine()
     connect( d->audioOutput, SIGNAL( volumeChanged( qreal ) ), SLOT( onVolumeChanged( qreal ) ) );
     connect( d->audioOutput, SIGNAL( mutedChanged( bool ) ), SIGNAL( mutedChanged( bool ) ) );
 
-    if ( TomahawkSettings::instance()->muted() )
+    if ( HatchetSettings::instance()->muted() )
     {
         mute();
     }
-    setVolume( TomahawkSettings::instance()->volume() );
+    setVolume( HatchetSettings::instance()->volume() );
 
     qRegisterMetaType< AudioErrorCode >("AudioErrorCode");
     qRegisterMetaType< AudioState >("AudioState");
@@ -189,8 +189,8 @@ AudioEngine::~AudioEngine()
 {
     tDebug() << Q_FUNC_INFO;
 
-    TomahawkSettings::instance()->setVolume( volume() );
-    TomahawkSettings::instance()->setMuted( isMuted() );
+    HatchetSettings::instance()->setVolume( volume() );
+    HatchetSettings::instance()->setMuted( isMuted() );
 
     delete d_ptr;
 }
@@ -230,7 +230,7 @@ AudioEngine::play()
         d->audioOutput->play();
         emit resumed();
 
-        sendNowPlayingNotification( Tomahawk::InfoSystem::InfoNowResumed );
+        sendNowPlayingNotification( Hatchet::InfoSystem::InfoNowResumed );
     }
     else
     {
@@ -260,7 +260,7 @@ AudioEngine::pause()
     d->audioOutput->pause();
     emit paused();
 
-    Tomahawk::InfoSystem::InfoSystem::instance()->pushInfo( Tomahawk::InfoSystem::InfoPushData( s_aeInfoIdentifier, Tomahawk::InfoSystem::InfoNowPaused, QVariant(), Tomahawk::InfoSystem::PushNoFlag ) );
+    Hatchet::InfoSystem::InfoSystem::instance()->pushInfo( Hatchet::InfoSystem::InfoPushData( s_aeInfoIdentifier, Hatchet::InfoSystem::InfoNowPaused, QVariant(), Hatchet::InfoSystem::PushNoFlag ) );
 }
 
 
@@ -292,15 +292,15 @@ AudioEngine::stop( AudioErrorCode errorCode )
     if ( !d->currentTrack.isNull() )
         emit timerPercentage( ( (double)d->timeElapsed / (double)d->currentTrack->track()->duration() ) * 100.0 );
 
-    setCurrentTrack( Tomahawk::result_ptr() );
+    setCurrentTrack( Hatchet::result_ptr() );
 
     if ( d->waitingOnNewTrack )
         sendWaitingNotification();
 
     if ( d->audioOutput->isInitialized() )
     {
-        Tomahawk::InfoSystem::InfoPushData pushData( s_aeInfoIdentifier, Tomahawk::InfoSystem::InfoNowStopped, QVariant(), Tomahawk::InfoSystem::PushNoFlag );
-        Tomahawk::InfoSystem::InfoSystem::instance()->pushInfo( pushData );
+        Hatchet::InfoSystem::InfoPushData pushData( s_aeInfoIdentifier, Hatchet::InfoSystem::InfoNowStopped, QVariant(), Hatchet::InfoSystem::PushNoFlag );
+        Hatchet::InfoSystem::InfoSystem::instance()->pushInfo( pushData );
     }
 }
 
@@ -489,17 +489,17 @@ AudioEngine::sendWaitingNotification() const
     if ( d_func()->playlist && d_func()->playlist->nextResult() && d_func()->playlist->nextResult()->isOnline() )
         return;
 
-    Tomahawk::InfoSystem::InfoPushData pushData (
-        s_aeInfoIdentifier, Tomahawk::InfoSystem::InfoTrackUnresolved,
+    Hatchet::InfoSystem::InfoPushData pushData (
+        s_aeInfoIdentifier, Hatchet::InfoSystem::InfoTrackUnresolved,
         QVariant(),
-        Tomahawk::InfoSystem::PushNoFlag );
+        Hatchet::InfoSystem::PushNoFlag );
 
-    Tomahawk::InfoSystem::InfoSystem::instance()->pushInfo( pushData );
+    Hatchet::InfoSystem::InfoSystem::instance()->pushInfo( pushData );
 }
 
 
 void
-AudioEngine::sendNowPlayingNotification( const Tomahawk::InfoSystem::InfoType type )
+AudioEngine::sendNowPlayingNotification( const Hatchet::InfoSystem::InfoType type )
 {
     Q_D( AudioEngine );
 
@@ -512,14 +512,14 @@ AudioEngine::sendNowPlayingNotification( const Tomahawk::InfoSystem::InfoType ty
     }
     else
     {
-        NewClosure( d->currentTrack->track().data(), SIGNAL( coverChanged() ), const_cast< AudioEngine* >( this ), SLOT( sendNowPlayingNotification( const Tomahawk::InfoSystem::InfoType ) ), type );
+        NewClosure( d->currentTrack->track().data(), SIGNAL( coverChanged() ), const_cast< AudioEngine* >( this ), SLOT( sendNowPlayingNotification( const Hatchet::InfoSystem::InfoType ) ), type );
         d->currentTrack->track()->cover( QSize( 0, 0 ), true );
     }
 }
 
 
 void
-AudioEngine::onNowPlayingInfoReady( const Tomahawk::InfoSystem::InfoType type )
+AudioEngine::onNowPlayingInfoReady( const Hatchet::InfoSystem::InfoType type )
 {
     Q_D( AudioEngine );
 
@@ -536,7 +536,7 @@ AudioEngine::onNowPlayingInfoReady( const Tomahawk::InfoSystem::InfoType type )
         playInfo["cover"] = cover;
 
         delete d->coverTempFile;
-        d->coverTempFile = new QTemporaryFile( QDir::toNativeSeparators( QDir::tempPath() + "/" + d->currentTrack->track()->artist() + "_" + d->currentTrack->track()->album() + "_tomahawk_cover.png" ) );
+        d->coverTempFile = new QTemporaryFile( QDir::toNativeSeparators( QDir::tempPath() + "/" + d->currentTrack->track()->artist() + "_" + d->currentTrack->track()->album() + "_hatchet_cover.png" ) );
         if ( !d->coverTempFile->open() )
         {
             tDebug() << Q_FUNC_INFO << "WARNING: could not write temporary file for cover art!";
@@ -556,23 +556,23 @@ AudioEngine::onNowPlayingInfoReady( const Tomahawk::InfoSystem::InfoType type )
     else
         tDebug() << Q_FUNC_INFO << "Cover from query is null!";
 
-    Tomahawk::InfoSystem::InfoStringHash trackInfo;
+    Hatchet::InfoSystem::InfoStringHash trackInfo;
     trackInfo["title"] = d->currentTrack->track()->track();
     trackInfo["artist"] = d->currentTrack->track()->artist();
     trackInfo["album"] = d->currentTrack->track()->album();
     trackInfo["duration"] = QString::number( d->currentTrack->track()->duration() );
     trackInfo["albumpos"] = QString::number( d->currentTrack->track()->albumpos() );
 
-    playInfo["trackinfo"] = QVariant::fromValue< Tomahawk::InfoSystem::InfoStringHash >( trackInfo );
-    playInfo["private"] = TomahawkSettings::instance()->privateListeningMode();
+    playInfo["trackinfo"] = QVariant::fromValue< Hatchet::InfoSystem::InfoStringHash >( trackInfo );
+    playInfo["private"] = HatchetSettings::instance()->privateListeningMode();
 
-    Tomahawk::InfoSystem::InfoPushData pushData( s_aeInfoIdentifier, type, playInfo, Tomahawk::InfoSystem::PushShortUrlFlag );
-    Tomahawk::InfoSystem::InfoSystem::instance()->pushInfo( pushData );
+    Hatchet::InfoSystem::InfoPushData pushData( s_aeInfoIdentifier, type, playInfo, Hatchet::InfoSystem::PushShortUrlFlag );
+    Hatchet::InfoSystem::InfoSystem::instance()->pushInfo( pushData );
 }
 
 
 void
-AudioEngine::loadTrack( const Tomahawk::result_ptr& result )
+AudioEngine::loadTrack( const Hatchet::result_ptr& result )
 {
     Q_D( AudioEngine );
     tDebug( LOGEXTRA ) << Q_FUNC_INFO << ( result.isNull() ? QString() : result->url() );
@@ -610,10 +610,10 @@ AudioEngine::gotStreamUrl( const QVariantMap& data )
 {
     QString streamUrl = data[ "url" ].toString();
     QVariantMap headers = data[ "headers" ].toMap();
-    Tomahawk::result_ptr result = sender()->property( "result" ).value<result_ptr>();
+    Hatchet::result_ptr result = sender()->property( "result" ).value<result_ptr>();
 
     if ( streamUrl.isEmpty() || headers.isEmpty() ||
-         !( TomahawkUtils::isHttpResult( streamUrl ) || TomahawkUtils::isHttpsResult( streamUrl ) ) )
+         !( HatchetUtils::isHttpResult( streamUrl ) || HatchetUtils::isHttpsResult( streamUrl ) ) )
     {
         // We can't supply custom headers to VLC - but prefer using its HTTP streaming due to improved seeking ability
         // Not an RTMP or HTTP-with-headers URL, get IO device
@@ -643,8 +643,8 @@ AudioEngine::gotStreamUrl( const QVariantMap& data )
         }
 
         tDebug() << "Creating a QNetworkReply with url:" << req.url().toString();
-        NetworkReply* reply = new NetworkReply( Tomahawk::Utils::nam()->get( req ) );
-        NewClosure( reply, SIGNAL( finalUrlReached() ), this, SLOT( gotRedirectedStreamUrl( Tomahawk::result_ptr, NetworkReply* ) ), result, reply );
+        NetworkReply* reply = new NetworkReply( Hatchet::Utils::nam()->get( req ) );
+        NewClosure( reply, SIGNAL( finalUrlReached() ), this, SLOT( gotRedirectedStreamUrl( Hatchet::result_ptr, NetworkReply* ) ), result, reply );
     }
 
     sender()->deleteLater();
@@ -652,7 +652,7 @@ AudioEngine::gotStreamUrl( const QVariantMap& data )
 
 
 void
-AudioEngine::gotRedirectedStreamUrl( const Tomahawk::result_ptr& result, NetworkReply* reply )
+AudioEngine::gotRedirectedStreamUrl( const Hatchet::result_ptr& result, NetworkReply* reply )
 {
     // std::functions cannot accept temporaries as parameters
     QSharedPointer< QIODevice > sp ( reply->reply(), &QObject::deleteLater );
@@ -677,14 +677,14 @@ AudioEngine::performLoadIODevice( const result_ptr& result, const QString& url )
 {
     tDebug( LOGEXTRA ) << Q_FUNC_INFO << ( result.isNull() ? QString() : url );
 
-    if ( !TomahawkUtils::isLocalResult( url ) && !TomahawkUtils::isHttpResult( url )
-         && !TomahawkUtils::isRtmpResult( url ) )
+    if ( !HatchetUtils::isLocalResult( url ) && !HatchetUtils::isHttpResult( url )
+         && !HatchetUtils::isRtmpResult( url ) )
     {
         std::function< void ( const QString, QSharedPointer< QIODevice > ) > callback =
                 std::bind( &AudioEngine::performLoadTrack, this, result,
                            std::placeholders::_1,
                            std::placeholders::_2 );
-        Tomahawk::UrlHandler::getIODeviceForUrl( result, url, callback );
+        Hatchet::UrlHandler::getIODeviceForUrl( result, url, callback );
     }
     else
     {
@@ -695,12 +695,12 @@ AudioEngine::performLoadIODevice( const result_ptr& result, const QString& url )
 
 
 void
-AudioEngine::performLoadTrack( const Tomahawk::result_ptr result, const QString& url, QSharedPointer< QIODevice > io )
+AudioEngine::performLoadTrack( const Hatchet::result_ptr result, const QString& url, QSharedPointer< QIODevice > io )
 {
     if ( QThread::currentThread() != thread() )
     {
         QMetaObject::invokeMethod( this, "performLoadTrack", Qt::QueuedConnection,
-                                   Q_ARG( const Tomahawk::result_ptr, result ),
+                                   Q_ARG( const Hatchet::result_ptr, result ),
                                    Q_ARG( const QString, url ),
                                    Q_ARG( QSharedPointer< QIODevice >, io )
                                    );
@@ -718,7 +718,7 @@ AudioEngine::performLoadTrack( const Tomahawk::result_ptr result, const QString&
 
     bool err = false;
     {
-        if ( !( TomahawkUtils::isLocalResult( url ) || TomahawkUtils::isHttpResult( url ) || TomahawkUtils::isRtmpResult( url )  )
+        if ( !( HatchetUtils::isLocalResult( url ) || HatchetUtils::isHttpResult( url ) || HatchetUtils::isRtmpResult( url )  )
              && ( !io || io.isNull() ) )
         {
             tLog() << Q_FUNC_INFO << "Error getting iodevice for" << result->url();
@@ -731,9 +731,9 @@ AudioEngine::performLoadTrack( const Tomahawk::result_ptr result, const QString&
             d->state = Loading;
             emit loading( d->currentTrack );
 
-            if ( !TomahawkUtils::isLocalResult( url )
-                 && !( TomahawkUtils::isHttpResult( url ) && io.isNull() )
-                 && !TomahawkUtils::isRtmpResult( url ) )
+            if ( !HatchetUtils::isLocalResult( url )
+                 && !( HatchetUtils::isHttpResult( url ) && io.isNull() )
+                 && !HatchetUtils::isRtmpResult( url ) )
             {
                 QSharedPointer<QNetworkReply> qnr = io.objectCast<QNetworkReply>();
                 if ( !qnr.isNull() )
@@ -758,13 +758,13 @@ AudioEngine::performLoadTrack( const Tomahawk::result_ptr result, const QString&
                  * TODO: Do we need this anymore as we now do HTTP streaming ourselves?
                  * Maybe this can be useful for letting VLC do other protocols?
                  */
-                if ( !TomahawkUtils::isLocalResult( url ) )
+                if ( !HatchetUtils::isLocalResult( url ) )
                 {
                     QUrl furl = url;
                     if ( url.contains( "?" ) )
                     {
                         furl = QUrl( url.left( url.indexOf( '?' ) ) );
-                        TomahawkUtils::urlSetQuery( furl, QString( url.mid( url.indexOf( '?' ) + 1 ) ) );
+                        HatchetUtils::urlSetQuery( furl, QString( url.mid( url.indexOf( '?' ) + 1 ) ) );
                     }
 
                     tLog( LOGVERBOSE ) << Q_FUNC_INFO << "Passing to VLC:" << furl;
@@ -791,12 +791,12 @@ AudioEngine::performLoadTrack( const Tomahawk::result_ptr result, const QString&
             d->input = ioToKeep;
             d->audioOutput->play();
 
-            if ( TomahawkSettings::instance()->privateListeningMode() != TomahawkSettings::FullyPrivate )
+            if ( HatchetSettings::instance()->privateListeningMode() != HatchetSettings::FullyPrivate )
             {
                 d->currentTrack->track()->startPlaying();
             }
 
-            sendNowPlayingNotification( Tomahawk::InfoSystem::InfoNowPlaying );
+            sendNowPlayingNotification( Hatchet::InfoSystem::InfoNowPlaying );
         }
     }
 
@@ -830,7 +830,7 @@ AudioEngine::loadPreviousTrack()
         return;
     }
 
-    Tomahawk::result_ptr result;
+    Hatchet::result_ptr result;
     if ( d->playlist.data()->previousResult() )
     {
         result = d->playlist.data()->setSiblingResult( -1 );
@@ -857,7 +857,7 @@ AudioEngine::loadNextTrack()
 
     tDebug( LOGEXTRA ) << Q_FUNC_INFO;
 
-    Tomahawk::result_ptr result;
+    Hatchet::result_ptr result;
 
     if ( d->stopAfterTrack && d->currentTrack )
     {
@@ -894,7 +894,7 @@ AudioEngine::loadNextTrack()
     }
     else
     {
-        if ( !d->playlist.isNull() && d->playlist.data()->retryMode() == Tomahawk::PlaylistModes::Retry )
+        if ( !d->playlist.isNull() && d->playlist.data()->retryMode() == Hatchet::PlaylistModes::Retry )
             d->waitingOnNewTrack = true;
 
         stop();
@@ -918,7 +918,7 @@ AudioEngine::play( const QUrl& url )
     }
     else
     {
-        t = Tomahawk::Track::get( "Unknown Artist", "Unknown Track" );
+        t = Hatchet::Track::get( "Unknown Artist", "Unknown Track" );
     }
 
     result_ptr result = Result::get( url.toString(), t );
@@ -933,13 +933,13 @@ AudioEngine::play( const QUrl& url )
 
     result->setResolvedByCollection( SourceList::instance()->getLocal()->collections().first(), false );
 
-    //    Tomahawk::query_ptr qry = Tomahawk::Query::get( t );
+    //    Hatchet::query_ptr qry = Hatchet::Query::get( t );
     playItem( playlistinterface_ptr(), result, query_ptr() );
 }
 
 
 void
-AudioEngine::playItem( Tomahawk::playlistinterface_ptr playlist, const Tomahawk::result_ptr& result, const Tomahawk::query_ptr& fromQuery )
+AudioEngine::playItem( Hatchet::playlistinterface_ptr playlist, const Hatchet::result_ptr& result, const Hatchet::query_ptr& fromQuery )
 {
     Q_D( AudioEngine );
 
@@ -975,7 +975,7 @@ AudioEngine::playItem( Tomahawk::playlistinterface_ptr playlist, const Tomahawk:
 
 
 void
-AudioEngine::playItem( Tomahawk::playlistinterface_ptr playlist, const Tomahawk::query_ptr& query )
+AudioEngine::playItem( Hatchet::playlistinterface_ptr playlist, const Hatchet::query_ptr& query )
 {
     if ( query->resolvingFinished() || query->numResults( true ) )
     {
@@ -996,13 +996,13 @@ AudioEngine::playItem( Tomahawk::playlistinterface_ptr playlist, const Tomahawk:
         Pipeline::instance()->resolve( query );
 
         NewClosure( query.data(), SIGNAL( resultsChanged() ),
-                    const_cast<AudioEngine*>(this), SLOT( playItem( Tomahawk::playlistinterface_ptr, Tomahawk::query_ptr ) ), playlist, query );
+                    const_cast<AudioEngine*>(this), SLOT( playItem( Hatchet::playlistinterface_ptr, Hatchet::query_ptr ) ), playlist, query );
     }
 }
 
 
 void
-AudioEngine::playItem( const Tomahawk::artist_ptr& artist )
+AudioEngine::playItem( const Hatchet::artist_ptr& artist )
 {
     playlistinterface_ptr pli = artist->playlistInterface( Mixed );
     if ( pli->isFinished() )
@@ -1020,15 +1020,15 @@ AudioEngine::playItem( const Tomahawk::artist_ptr& artist )
     }
     else
     {
-        NewClosure( artist.data(), SIGNAL( tracksAdded( QList<Tomahawk::query_ptr>, Tomahawk::ModelMode, Tomahawk::collection_ptr ) ),
-                    const_cast<AudioEngine*>(this), SLOT( playItem( Tomahawk::artist_ptr ) ), artist );
+        NewClosure( artist.data(), SIGNAL( tracksAdded( QList<Hatchet::query_ptr>, Hatchet::ModelMode, Hatchet::collection_ptr ) ),
+                    const_cast<AudioEngine*>(this), SLOT( playItem( Hatchet::artist_ptr ) ), artist );
         pli->tracks();
     }
 }
 
 
 void
-AudioEngine::playItem( const Tomahawk::album_ptr& album )
+AudioEngine::playItem( const Hatchet::album_ptr& album )
 {
     playlistinterface_ptr pli = album->playlistInterface( Mixed );
     if ( pli->isFinished() )
@@ -1046,24 +1046,24 @@ AudioEngine::playItem( const Tomahawk::album_ptr& album )
     }
     else
     {
-        NewClosure( album.data(), SIGNAL( tracksAdded( QList<Tomahawk::query_ptr>, Tomahawk::ModelMode, Tomahawk::collection_ptr ) ),
-                    const_cast<AudioEngine*>(this), SLOT( playItem( Tomahawk::album_ptr ) ), album );
+        NewClosure( album.data(), SIGNAL( tracksAdded( QList<Hatchet::query_ptr>, Hatchet::ModelMode, Hatchet::collection_ptr ) ),
+                    const_cast<AudioEngine*>(this), SLOT( playItem( Hatchet::album_ptr ) ), album );
         pli->tracks();
     }
 }
 
 
 void
-AudioEngine::playPlaylistInterface( const Tomahawk::playlistinterface_ptr& playlist )
+AudioEngine::playPlaylistInterface( const Hatchet::playlistinterface_ptr& playlist )
 {
     if ( !playlist->hasFirstPlayableTrack() )
     {
         NewClosure( playlist.data(), SIGNAL( foundFirstPlayableTrack() ),
-                    const_cast<AudioEngine*>(this), SLOT( playPlaylistInterface( Tomahawk::playlistinterface_ptr ) ), playlist );
+                    const_cast<AudioEngine*>(this), SLOT( playPlaylistInterface( Hatchet::playlistinterface_ptr ) ), playlist );
         return;
     }
 
-    foreach ( const Tomahawk::query_ptr& query, playlist->tracks() )
+    foreach ( const Hatchet::query_ptr& query, playlist->tracks() )
     {
         if ( query->playable() )
         {
@@ -1151,7 +1151,7 @@ AudioEngine::setQueue( const playlistinterface_ptr& queue )
 
 
 void
-AudioEngine::setPlaylist( Tomahawk::playlistinterface_ptr playlist )
+AudioEngine::setPlaylist( Hatchet::playlistinterface_ptr playlist )
 {
     Q_D( AudioEngine );
 
@@ -1165,7 +1165,7 @@ AudioEngine::setPlaylist( Tomahawk::playlistinterface_ptr playlist )
             disconnect( d->playlist.data(), SIGNAL( previousTrackAvailable( bool ) ) );
             disconnect( d->playlist.data(), SIGNAL( nextTrackAvailable( bool ) ) );
             disconnect( d->playlist.data(), SIGNAL( shuffleModeChanged( bool ) ) );
-            disconnect( d->playlist.data(), SIGNAL( repeatModeChanged( Tomahawk::PlaylistModes::RepeatMode ) ) );
+            disconnect( d->playlist.data(), SIGNAL( repeatModeChanged( Hatchet::PlaylistModes::RepeatMode ) ) );
         }
 
         d->playlist.data()->reset();
@@ -1189,7 +1189,7 @@ AudioEngine::setPlaylist( Tomahawk::playlistinterface_ptr playlist )
         connect( d->playlist.data(), SIGNAL( nextTrackAvailable( bool ) ), SIGNAL( controlStateChanged() ) );
 
         connect( d->playlist.data(), SIGNAL( shuffleModeChanged( bool ) ), SIGNAL( shuffleModeChanged( bool ) ) );
-        connect( d->playlist.data(), SIGNAL( repeatModeChanged( Tomahawk::PlaylistModes::RepeatMode ) ), SIGNAL( repeatModeChanged( Tomahawk::PlaylistModes::RepeatMode ) ) );
+        connect( d->playlist.data(), SIGNAL( repeatModeChanged( Hatchet::PlaylistModes::RepeatMode ) ), SIGNAL( repeatModeChanged( Hatchet::PlaylistModes::RepeatMode ) ) );
 
         emit shuffleModeChanged( d->playlist.data()->shuffled() );
         emit repeatModeChanged( d->playlist.data()->repeatMode() );
@@ -1200,7 +1200,7 @@ AudioEngine::setPlaylist( Tomahawk::playlistinterface_ptr playlist )
 
 
 void
-AudioEngine::setRepeatMode( Tomahawk::PlaylistModes::RepeatMode mode )
+AudioEngine::setRepeatMode( Hatchet::PlaylistModes::RepeatMode mode )
 {
     Q_D( AudioEngine );
 
@@ -1237,13 +1237,13 @@ AudioEngine::setStopAfterTrack( const query_ptr& query )
 
 
 void
-AudioEngine::setCurrentTrack( const Tomahawk::result_ptr& result )
+AudioEngine::setCurrentTrack( const Hatchet::result_ptr& result )
 {
     Q_D( AudioEngine );
 
     if ( !d->currentTrack.isNull() )
     {
-        if ( d->state != Error && TomahawkSettings::instance()->privateListeningMode() == TomahawkSettings::PublicListening )
+        if ( d->state != Error && HatchetSettings::instance()->privateListeningMode() == HatchetSettings::PublicListening )
         {
             d->currentTrack->track()->finishPlaying( d->timeElapsed );
         }

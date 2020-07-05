@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "Artist.h"
@@ -27,7 +27,7 @@
 #include "database/DatabaseCommand_ArtistStats.h"
 #include "database/DatabaseCommand_TrackStats.h"
 #include "database/IdThreadWorker.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 
 #include "ArtistPlaylistInterface.h"
@@ -38,7 +38,7 @@
 #include <QPixmapCache>
 #include <QCoreApplication>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 QHash< QString, artist_wptr > Artist::s_artistsByName = QHash< QString, artist_wptr >();
 QHash< unsigned int, artist_wptr > Artist::s_artistsById = QHash< unsigned int, artist_wptr >();
@@ -199,14 +199,14 @@ Artist::onArtistStatsLoaded( unsigned int /* plays */, unsigned int chartPos, un
 
 
 void
-Artist::onTracksLoaded( Tomahawk::ModelMode mode, const Tomahawk::collection_ptr& collection )
+Artist::onTracksLoaded( Hatchet::ModelMode mode, const Hatchet::collection_ptr& collection )
 {
     emit tracksAdded( playlistInterface( mode, collection )->tracks(), mode, collection );
 }
 
 
 QList<album_ptr>
-Artist::albums( ModelMode mode, const Tomahawk::collection_ptr& collection ) const
+Artist::albums( ModelMode mode, const Hatchet::collection_ptr& collection ) const
 {
     artist_ptr artist = m_ownRef.toStrongRef();
 
@@ -222,21 +222,21 @@ Artist::albums( ModelMode mode, const Tomahawk::collection_ptr& collection ) con
             DatabaseCommand_AllAlbums* cmd = new DatabaseCommand_AllAlbums( collection, artist );
             cmd->setData( QVariant( collection.isNull() ) );
 
-            connect( cmd, SIGNAL( albums( QList<Tomahawk::album_ptr>, QVariant ) ),
-                          SLOT( onAlbumsFound( QList<Tomahawk::album_ptr>, QVariant ) ) );
+            connect( cmd, SIGNAL( albums( QList<Hatchet::album_ptr>, QVariant ) ),
+                          SLOT( onAlbumsFound( QList<Hatchet::album_ptr>, QVariant ) ) );
 
-            Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+            Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
         }
         else
         {
             //collection is *surely* not null, and might be a ScriptCollection
-            Tomahawk::AlbumsRequest* cmd = collection->requestAlbums( artist );
+            Hatchet::AlbumsRequest* cmd = collection->requestAlbums( artist );
 
             // There is also a signal albums( QList, QVariant ).
             // The QVariant might carry a bool that says whether the dbcmd was executed for a null collection
             // but here we know for a fact that the collection is not null, so we'll happily ignore it
-            connect( dynamic_cast< QObject* >( cmd ), SIGNAL( albums( QList<Tomahawk::album_ptr> ) ),
-                     this, SLOT( onAlbumsFound( QList<Tomahawk::album_ptr> ) ) );
+            connect( dynamic_cast< QObject* >( cmd ), SIGNAL( albums( QList<Hatchet::album_ptr> ) ),
+                     this, SLOT( onAlbumsFound( QList<Hatchet::album_ptr> ) ) );
 
             cmd->enqueue();
         }
@@ -244,25 +244,25 @@ Artist::albums( ModelMode mode, const Tomahawk::collection_ptr& collection ) con
 
     if ( ( mode == InfoSystemMode || mode == Mixed ) && !infoLoaded )
     {
-        Tomahawk::InfoSystem::InfoStringHash artistInfo;
+        Hatchet::InfoSystem::InfoStringHash artistInfo;
         artistInfo["artist"] = name();
 
-        Tomahawk::InfoSystem::InfoRequestData requestData;
+        Hatchet::InfoSystem::InfoRequestData requestData;
         requestData.caller = infoid();
-        requestData.input = QVariant::fromValue< Tomahawk::InfoSystem::InfoStringHash >( artistInfo );
-        requestData.type = Tomahawk::InfoSystem::InfoArtistReleases;
+        requestData.input = QVariant::fromValue< Hatchet::InfoSystem::InfoStringHash >( artistInfo );
+        requestData.type = Hatchet::InfoSystem::InfoArtistReleases;
         requestData.allSources = true;
 
-        connect( Tomahawk::InfoSystem::InfoSystem::instance(),
-                 SIGNAL( info( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ),
-                 SLOT( infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ), Qt::UniqueConnection );
+        connect( Hatchet::InfoSystem::InfoSystem::instance(),
+                 SIGNAL( info( Hatchet::InfoSystem::InfoRequestData, QVariant ) ),
+                 SLOT( infoSystemInfo( Hatchet::InfoSystem::InfoRequestData, QVariant ) ), Qt::UniqueConnection );
 
-        connect( Tomahawk::InfoSystem::InfoSystem::instance(),
+        connect( Hatchet::InfoSystem::InfoSystem::instance(),
                  SIGNAL( finished( QString ) ),
                  SLOT( infoSystemFinished( QString ) ), Qt::UniqueConnection );
 
         m_infoJobs++;
-        Tomahawk::InfoSystem::InfoSystem::instance()->getInfo( requestData );
+        Hatchet::InfoSystem::InfoSystem::instance()->getInfo( requestData );
     }
 
     if ( !collection.isNull() )
@@ -280,32 +280,32 @@ Artist::albums( ModelMode mode, const Tomahawk::collection_ptr& collection ) con
 }
 
 
-QList<Tomahawk::artist_ptr>
+QList<Hatchet::artist_ptr>
 Artist::similarArtists() const
 {
     if ( !m_simArtistsLoaded )
     {
-        Tomahawk::InfoSystem::InfoStringHash artistInfo;
+        Hatchet::InfoSystem::InfoStringHash artistInfo;
         artistInfo["artist"] = name();
 
-        Tomahawk::InfoSystem::InfoRequestData requestData;
+        Hatchet::InfoSystem::InfoRequestData requestData;
         requestData.caller = infoid();
         requestData.customData = QVariantMap();
 
-        requestData.input = QVariant::fromValue< Tomahawk::InfoSystem::InfoStringHash >( artistInfo );
-        requestData.type = Tomahawk::InfoSystem::InfoArtistSimilars;
-        requestData.requestId = TomahawkUtils::infosystemRequestId();
+        requestData.input = QVariant::fromValue< Hatchet::InfoSystem::InfoStringHash >( artistInfo );
+        requestData.type = Hatchet::InfoSystem::InfoArtistSimilars;
+        requestData.requestId = HatchetUtils::infosystemRequestId();
 
-        connect( Tomahawk::InfoSystem::InfoSystem::instance(),
-                SIGNAL( info( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ),
-                SLOT( infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ), Qt::UniqueConnection );
+        connect( Hatchet::InfoSystem::InfoSystem::instance(),
+                SIGNAL( info( Hatchet::InfoSystem::InfoRequestData, QVariant ) ),
+                SLOT( infoSystemInfo( Hatchet::InfoSystem::InfoRequestData, QVariant ) ), Qt::UniqueConnection );
 
-        connect( Tomahawk::InfoSystem::InfoSystem::instance(),
+        connect( Hatchet::InfoSystem::InfoSystem::instance(),
                 SIGNAL( finished( QString ) ),
                 SLOT( infoSystemFinished( QString ) ), Qt::UniqueConnection );
 
         m_infoJobs++;
-        Tomahawk::InfoSystem::InfoSystem::instance()->getInfo( requestData );
+        Hatchet::InfoSystem::InfoSystem::instance()->getInfo( requestData );
     }
 
     return m_similarArtists;
@@ -361,25 +361,25 @@ Artist::biography() const
 {
     if ( !m_biographyLoaded )
     {
-        Tomahawk::InfoSystem::InfoStringHash trackInfo;
+        Hatchet::InfoSystem::InfoStringHash trackInfo;
         trackInfo["artist"] = name();
 
-        Tomahawk::InfoSystem::InfoRequestData requestData;
+        Hatchet::InfoSystem::InfoRequestData requestData;
         requestData.caller = infoid();
-        requestData.type = Tomahawk::InfoSystem::InfoArtistBiography;
-        requestData.input = QVariant::fromValue< Tomahawk::InfoSystem::InfoStringHash >( trackInfo );
+        requestData.type = Hatchet::InfoSystem::InfoArtistBiography;
+        requestData.input = QVariant::fromValue< Hatchet::InfoSystem::InfoStringHash >( trackInfo );
         requestData.customData = QVariantMap();
 
-        connect( Tomahawk::InfoSystem::InfoSystem::instance(),
-                SIGNAL( info( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ),
-                SLOT( infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ), Qt::UniqueConnection );
+        connect( Hatchet::InfoSystem::InfoSystem::instance(),
+                SIGNAL( info( Hatchet::InfoSystem::InfoRequestData, QVariant ) ),
+                SLOT( infoSystemInfo( Hatchet::InfoSystem::InfoRequestData, QVariant ) ), Qt::UniqueConnection );
 
-        connect( Tomahawk::InfoSystem::InfoSystem::instance(),
+        connect( Hatchet::InfoSystem::InfoSystem::instance(),
                 SIGNAL( finished( QString ) ),
                 SLOT( infoSystemFinished( QString ) ), Qt::UniqueConnection );
 
         m_infoJobs++;
-        Tomahawk::InfoSystem::InfoSystem::instance()->getInfo( requestData );
+        Hatchet::InfoSystem::InfoSystem::instance()->getInfo( requestData );
     }
 
     return m_biography;
@@ -393,21 +393,21 @@ Artist::loadStats()
 
     {
         DatabaseCommand_TrackStats* cmd = new DatabaseCommand_TrackStats( a );
-        Database::instance()->enqueue( Tomahawk::dbcmd_ptr(cmd) );
+        Database::instance()->enqueue( Hatchet::dbcmd_ptr(cmd) );
     }
 
     {
         DatabaseCommand_ArtistStats* cmd = new DatabaseCommand_ArtistStats( a );
         connect( cmd, SIGNAL( done( unsigned int, unsigned int, unsigned int ) ), SLOT( onArtistStatsLoaded( unsigned int, unsigned int, unsigned int ) ) );
-        Database::instance()->enqueue( Tomahawk::dbcmd_ptr(cmd) );
+        Database::instance()->enqueue( Hatchet::dbcmd_ptr(cmd) );
     }
 }
 
 
-QList< Tomahawk::PlaybackLog >
-Artist::playbackHistory( const Tomahawk::source_ptr& source ) const
+QList< Hatchet::PlaybackLog >
+Artist::playbackHistory( const Hatchet::source_ptr& source ) const
 {
-    QList< Tomahawk::PlaybackLog > history;
+    QList< Hatchet::PlaybackLog > history;
 
     foreach ( const PlaybackLog& log, m_playbackHistory )
     {
@@ -422,7 +422,7 @@ Artist::playbackHistory( const Tomahawk::source_ptr& source ) const
 
 
 void
-Artist::setPlaybackHistory( const QList< Tomahawk::PlaybackLog >& playbackData )
+Artist::setPlaybackHistory( const QList< Hatchet::PlaybackLog >& playbackData )
 {
     {
         QMutexLocker locker( &s_memberMutex );
@@ -477,7 +477,7 @@ Artist::onAlbumsFound( const QList< album_ptr >& albums, const QVariant& collect
 
 
 void
-Artist::infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData requestData, QVariant output )
+Artist::infoSystemInfo( Hatchet::InfoSystem::InfoRequestData requestData, QVariant output )
 {
     if ( requestData.caller != infoid() )
         return;
@@ -485,16 +485,16 @@ Artist::infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData requestData, QVari
     QVariantMap returnedData = output.value< QVariantMap >();
     switch ( requestData.type )
     {
-        case Tomahawk::InfoSystem::InfoArtistReleases:
+        case Hatchet::InfoSystem::InfoArtistReleases:
         {
             QStringList albumNames = returnedData[ "albums" ].toStringList();
-            Tomahawk::InfoSystem::InfoStringHash inputInfo;
+            Hatchet::InfoSystem::InfoStringHash inputInfo;
             inputInfo = requestData.input.value< InfoSystem::InfoStringHash >();
 
             QList< album_ptr > albums;
             foreach ( const QString& albumName, albumNames )
             {
-                Tomahawk::album_ptr album = Tomahawk::Album::get( m_ownRef.toStrongRef(), albumName, false );
+                Hatchet::album_ptr album = Hatchet::Album::get( m_ownRef.toStrongRef(), albumName, false );
                 m_officialAlbums << album;
                 albums << album;
             }
@@ -506,7 +506,7 @@ Artist::infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData requestData, QVari
             break;
         }
 
-        case Tomahawk::InfoSystem::InfoArtistImages:
+        case Hatchet::InfoSystem::InfoArtistImages:
         {
             if ( output.isNull() )
             {
@@ -572,10 +572,10 @@ Artist::infoSystemFinished( QString target )
 
     if ( --m_infoJobs == 0 )
     {
-        disconnect( Tomahawk::InfoSystem::InfoSystem::instance(), SIGNAL( info( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ),
-                    this, SLOT( infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ) );
+        disconnect( Hatchet::InfoSystem::InfoSystem::instance(), SIGNAL( info( Hatchet::InfoSystem::InfoRequestData, QVariant ) ),
+                    this, SLOT( infoSystemInfo( Hatchet::InfoSystem::InfoRequestData, QVariant ) ) );
 
-        disconnect( Tomahawk::InfoSystem::InfoSystem::instance(), SIGNAL( finished( QString ) ),
+        disconnect( Hatchet::InfoSystem::InfoSystem::instance(), SIGNAL( finished( QString ) ),
                     this, SLOT( infoSystemFinished( QString ) ) );
     }
 
@@ -593,25 +593,25 @@ Artist::cover( const QSize& size, bool forceLoad ) const
         if ( !forceLoad )
             return QPixmap();
 
-        Tomahawk::InfoSystem::InfoStringHash trackInfo;
+        Hatchet::InfoSystem::InfoStringHash trackInfo;
         trackInfo["artist"] = name();
 
-        Tomahawk::InfoSystem::InfoRequestData requestData;
+        Hatchet::InfoSystem::InfoRequestData requestData;
         requestData.caller = infoid();
-        requestData.type = Tomahawk::InfoSystem::InfoArtistImages;
-        requestData.input = QVariant::fromValue< Tomahawk::InfoSystem::InfoStringHash >( trackInfo );
+        requestData.type = Hatchet::InfoSystem::InfoArtistImages;
+        requestData.input = QVariant::fromValue< Hatchet::InfoSystem::InfoStringHash >( trackInfo );
         requestData.customData = QVariantMap();
 
-        connect( Tomahawk::InfoSystem::InfoSystem::instance(),
-                SIGNAL( info( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ),
-                SLOT( infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ), Qt::UniqueConnection );
+        connect( Hatchet::InfoSystem::InfoSystem::instance(),
+                SIGNAL( info( Hatchet::InfoSystem::InfoRequestData, QVariant ) ),
+                SLOT( infoSystemInfo( Hatchet::InfoSystem::InfoRequestData, QVariant ) ), Qt::UniqueConnection );
 
-        connect( Tomahawk::InfoSystem::InfoSystem::instance(),
+        connect( Hatchet::InfoSystem::InfoSystem::instance(),
                 SIGNAL( finished( QString ) ),
                 SLOT( infoSystemFinished( QString ) ), Qt::UniqueConnection );
 
         m_infoJobs++;
-        Tomahawk::InfoSystem::InfoSystem::instance()->getInfo( requestData );
+        Hatchet::InfoSystem::InfoSystem::instance()->getInfo( requestData );
 
         m_coverLoading = true;
     }
@@ -622,7 +622,7 @@ Artist::cover( const QSize& size, bool forceLoad ) const
         cover.loadFromData( m_coverBuffer );
         m_coverBuffer.clear();
 
-        m_cover = new QPixmap( TomahawkUtils::squareCenterPixmap( cover ) );
+        m_cover = new QPixmap( HatchetUtils::squareCenterPixmap( cover ) );
     }
 
     if ( m_cover && !m_cover->isNull() && !size.isEmpty() )
@@ -646,16 +646,16 @@ Artist::cover( const QSize& size, bool forceLoad ) const
 }
 
 
-Tomahawk::playlistinterface_ptr
-Artist::playlistInterface( ModelMode mode, const Tomahawk::collection_ptr& collection )
+Hatchet::playlistinterface_ptr
+Artist::playlistInterface( ModelMode mode, const Hatchet::collection_ptr& collection )
 {
     playlistinterface_ptr pli = m_playlistInterface[ mode ][ collection ];
 
     if ( pli.isNull() )
     {
-        pli = Tomahawk::playlistinterface_ptr( new Tomahawk::ArtistPlaylistInterface( this, mode, collection ) );
-        connect( pli.data(), SIGNAL( tracksLoaded( Tomahawk::ModelMode, Tomahawk::collection_ptr ) ),
-                               SLOT( onTracksLoaded( Tomahawk::ModelMode, Tomahawk::collection_ptr ) ) );
+        pli = Hatchet::playlistinterface_ptr( new Hatchet::ArtistPlaylistInterface( this, mode, collection ) );
+        connect( pli.data(), SIGNAL( tracksLoaded( Hatchet::ModelMode, Hatchet::collection_ptr ) ),
+                               SLOT( onTracksLoaded( Hatchet::ModelMode, Hatchet::collection_ptr ) ) );
 
         m_playlistInterface[ mode ][ collection ] = pli;
     }
@@ -664,8 +664,8 @@ Artist::playlistInterface( ModelMode mode, const Tomahawk::collection_ptr& colle
 }
 
 
-QList<Tomahawk::query_ptr>
-Artist::tracks( ModelMode mode, const Tomahawk::collection_ptr& collection )
+QList<Hatchet::query_ptr>
+Artist::tracks( ModelMode mode, const Hatchet::collection_ptr& collection )
 {
     return playlistInterface( mode, collection )->tracks();
 }

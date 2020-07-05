@@ -1,26 +1,26 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "AtticaManager.h"
 
-#include "utils/TomahawkUtils.h"
-#include "TomahawkSettings.h"
+#include "utils/HatchetUtils.h"
+#include "HatchetSettings.h"
 #include "Pipeline.h"
 #include "Source.h"
 #include "config.h"
@@ -67,10 +67,10 @@ AtticaManager::AtticaManager( QObject* parent )
     connect( &m_manager, SIGNAL( providerAdded( Attica::Provider ) ), this, SLOT( providerAdded( Attica::Provider ) ) );
 
     // resolvers
-//    m_manager.addProviderFile( QUrl( "http://v09.bakery.tomahawk-player.org/resolvers/providers.xml" ) );
+//    m_manager.addProviderFile( QUrl( "http://v09.bakery.hatchet-player.org/resolvers/providers.xml" ) );
 
-    const QString url = QString( "%1/resolvers/providers.xml?version=%2" ).arg( hostname() ).arg( TomahawkUtils::appFriendlyVersion() );
-    QNetworkReply* reply = Tomahawk::Utils::nam()->get( QNetworkRequest( QUrl( url ) ) );
+    const QString url = QString( "%1/resolvers/providers.xml?version=%2" ).arg( hostname() ).arg( HatchetUtils::appFriendlyVersion() );
+    QNetworkReply* reply = Hatchet::Utils::nam()->get( QNetworkRequest( QUrl( url ) ) );
     NewClosure( reply, SIGNAL( finished() ), this, SLOT( providerFetched( QNetworkReply* ) ), reply );
     connect( reply, SIGNAL( error( QNetworkReply::NetworkError ) ), this, SLOT( providerError( QNetworkReply::NetworkError ) ) );
 
@@ -104,7 +104,7 @@ AtticaManager::fetchMissingIcons()
 
         if ( !m_resolverStates.value( resolver.id() ).pixmap && !resolver.icons().isEmpty() && !resolver.icons().first().url().isEmpty() )
         {
-            QNetworkReply* fetch = Tomahawk::Utils::nam()->get( QNetworkRequest( resolver.icons().first().url() ) );
+            QNetworkReply* fetch = Hatchet::Utils::nam()->get( QNetworkRequest( resolver.icons().first().url() ) );
             fetch->setProperty( "resolverId", resolver.id() );
 
             connect( fetch, SIGNAL( finished() ), this, SLOT( resolverIconFetched() ) );
@@ -116,14 +116,14 @@ AtticaManager::fetchMissingIcons()
 QString
 AtticaManager::hostname() const
 {
-    return "http://v09.bakery.tomahawk-player.org";
+    return "http://v09.bakery.hatchet-player.org";
 }
 
 
 void
 AtticaManager::loadPixmapsFromCache()
 {
-    QDir cacheDir = TomahawkUtils::appDataDir();
+    QDir cacheDir = HatchetUtils::appDataDir();
     if ( !cacheDir.cd( "atticacache" ) ) // doesn't exist, no cache
         return;
 
@@ -151,7 +151,7 @@ AtticaManager::loadPixmapsFromCache()
 void
 AtticaManager::savePixmapsToCache()
 {
-    QDir cacheDir = TomahawkUtils::appDataDir();
+    QDir cacheDir = HatchetUtils::appDataDir();
     if ( !cacheDir.cd( "atticacache" ) ) // doesn't exist, create
     {
         cacheDir.mkdir( "atticacache" );
@@ -256,7 +256,7 @@ AtticaManager::uploadRating( const Content& c )
         }
     }
 
-    TomahawkSettings::instance()->setAtticaResolverStates( m_resolverStates );
+    HatchetSettings::instance()->setAtticaResolverStates( m_resolverStates );
 
     PostJob* job = m_resolverProvider.voteForContent( c.id(), (uint)c.rating() );
     connect( job, SIGNAL( finished( Attica::BaseJob* ) ), job, SLOT( deleteLater() ) );
@@ -281,7 +281,7 @@ AtticaManager::hasCustomAccountForAttica( const QString &id ) const
 }
 
 
-Tomahawk::Accounts::Account*
+Hatchet::Accounts::Account*
 AtticaManager::customAccountForAttica( const QString &id ) const
 {
     return m_customAccounts.value( id );
@@ -289,7 +289,7 @@ AtticaManager::customAccountForAttica( const QString &id ) const
 
 
 void
-AtticaManager::registerCustomAccount( const QString &atticaId, Tomahawk::Accounts::Account *account )
+AtticaManager::registerCustomAccount( const QString &atticaId, Hatchet::Accounts::Account *account )
 {
     m_customAccounts.insert( atticaId, account );
 }
@@ -326,12 +326,12 @@ AtticaManager::providerFetched( QNetworkReply* reply )
 void
 AtticaManager::providerAdded( const Provider& provider )
 {
-    if ( provider.name() == "Tomahawk Resolvers" )
+    if ( provider.name() == "Hatchet Resolvers" )
     {
         m_resolverProvider = provider;
         m_resolvers.clear();
 
-        m_resolverStates = TomahawkSettings::instance()->atticaResolverStates();
+        m_resolverStates = HatchetSettings::instance()->atticaResolverStates();
 
         ListJob<Category>* job = m_resolverProvider.requestCategories();
         connect( job, SIGNAL( finished( Attica::BaseJob* ) ), this, SLOT( categoriesReturned( Attica::BaseJob* ) ) );
@@ -377,13 +377,13 @@ AtticaManager::resolversList( BaseJob* j )
                 continue;
 
             // Guess location on disk
-            QDir dir( QString( "%1/atticaresolvers/%2" ).arg( TomahawkUtils::appDataDir().absolutePath() ).arg( rId ) );
+            QDir dir( QString( "%1/atticaresolvers/%2" ).arg( HatchetUtils::appDataDir().absolutePath() ).arg( rId ) );
             if ( !dir.exists() )
             {
                 // Uh oh
                 qWarning() << "Found attica resolver marked as installed that didn't exist on disk! Setting to uninstalled: " << rId << dir.absolutePath();
                 m_resolverStates[ rId ].state = Uninstalled;
-                TomahawkSettings::instance()->setAtticaResolverState( rId, Uninstalled );
+                HatchetSettings::instance()->setAtticaResolverState( rId, Uninstalled );
             }
         }
     }
@@ -510,7 +510,7 @@ AtticaManager::syncServerData()
             if ( ( r.state == Installed || r.state == NeedsUpgrade ) &&
                  !upstream.version().isEmpty() )
             {
-                if ( TomahawkUtils::newerVersion( r.version, upstream.version() ) )
+                if ( HatchetUtils::newerVersion( r.version, upstream.version() ) )
                 {
                     tLog() << "Doing upgrade of: " << id;
                     m_resolverStates[ id ].state = NeedsUpgrade;
@@ -530,13 +530,13 @@ AtticaManager::installResolver( const Content& resolver, bool autoCreate )
 
 
 void
-AtticaManager::installResolverWithHandler( const Content& resolver, Tomahawk::Accounts::AtticaResolverAccount* handler )
+AtticaManager::installResolverWithHandler( const Content& resolver, Hatchet::Accounts::AtticaResolverAccount* handler )
 {
     doInstallResolver( resolver, false, handler );
 }
 
 
-void AtticaManager::doInstallResolver( const Content& resolver, bool autoCreate, Tomahawk::Accounts::AtticaResolverAccount* handler )
+void AtticaManager::doInstallResolver( const Content& resolver, bool autoCreate, Hatchet::Accounts::AtticaResolverAccount* handler )
 {
     Q_ASSERT( !resolver.id().isNull() );
 
@@ -552,8 +552,8 @@ void AtticaManager::doInstallResolver( const Content& resolver, bool autoCreate,
 //    ItemJob< DownloadItem >* job = m_resolverProvider.downloadLink( resolver.id() );
     QUrl url( QString( "%1/resolvers/v1/content/download/%2/1" ).arg( hostname() ).arg( resolver.id() ) );
 
-    TomahawkUtils::urlAddQueryItem( url, "tomahawkversion", TomahawkUtils::appFriendlyVersion() );
-    QNetworkReply* r = Tomahawk::Utils::nam()->get( QNetworkRequest( url ) );
+    HatchetUtils::urlAddQueryItem( url, "hatchetversion", HatchetUtils::appFriendlyVersion() );
+    QNetworkReply* r = Hatchet::Utils::nam()->get( QNetworkRequest( url ) );
     NewClosure( r, SIGNAL( finished() ), this, SLOT( resolverDownloadFinished( QNetworkReply* ) ), r );
     r->setProperty( "resolverId", resolver.id() );
     r->setProperty( "createAccount", autoCreate );
@@ -614,7 +614,7 @@ AtticaManager::resolverDownloadFinished ( QNetworkReply *j )
            tLog() << "Found overridden signature in binary download:" << sig;
            signature = sig;
        }
-       QNetworkReply* reply = Tomahawk::Utils::nam()->get( QNetworkRequest( url ) );
+       QNetworkReply* reply = Hatchet::Utils::nam()->get( QNetworkRequest( url ) );
        connect( reply, SIGNAL( finished() ), this, SLOT( payloadFetched() ) );
        reply->setProperty( "resolverId", j->property( "resolverId" ) );
        reply->setProperty( "createAccount", j->property( "createAccount" ) );
@@ -641,7 +641,7 @@ AtticaManager::payloadFetched()
     // we got a zip file, save it to a temporary file, then unzip it to our destination data dir
     if ( reply->error() == QNetworkReply::NoError )
     {
-        QTemporaryFile* f = new QTemporaryFile( QDir::tempPath() + QDir::separator() + "tomahawkattica_XXXXXX.zip" );
+        QTemporaryFile* f = new QTemporaryFile( QDir::tempPath() + QDir::separator() + "hatchetattica_XXXXXX.zip" );
         if ( !f->open() )
         {
             tLog() << "Failed to write zip file to temp file:" << f->fileName();
@@ -658,20 +658,20 @@ AtticaManager::payloadFetched()
             Q_ASSERT( !signature.isEmpty() );
             if ( signature.isEmpty() )
                 return;
-            if ( !TomahawkUtils::verifyFile( f->fileName(), signature ) )
+            if ( !HatchetUtils::verifyFile( f->fileName(), signature ) )
             {
                 qWarning() << "FILE SIGNATURE FAILED FOR BINARY RESOLVER! WARNING! :" << f->fileName() << signature;
             }
             else
             {
-                TomahawkUtils::extractBinaryResolver( f->fileName(), new BinaryInstallerHelper( f, resolverId, reply->property( "createAccount" ).toBool(), this ) );
+                HatchetUtils::extractBinaryResolver( f->fileName(), new BinaryInstallerHelper( f, resolverId, reply->property( "createAccount" ).toBool(), this ) );
                 // Don't emit success or failed yet, helper will do that.
                 return;
             }
         }
         else
         {
-            QDir dir( TomahawkUtils::extractScriptPayload( f->fileName(), resolverId ) );
+            QDir dir( HatchetUtils::extractScriptPayload( f->fileName(), resolverId ) );
             QString resolverPath = dir.absoluteFilePath( m_resolverStates[ resolverId ].scriptPath );
 
             if ( !resolverPath.isEmpty() )
@@ -679,19 +679,19 @@ AtticaManager::payloadFetched()
                 // update with absolute, not relative, path
                 m_resolverStates[ resolverId ].scriptPath = resolverPath;
 
-                Tomahawk::Accounts::AtticaResolverAccount* handlerAccount = qobject_cast< Tomahawk::Accounts::AtticaResolverAccount* >( reply->property( "handler" ).value< QObject* >() );
+                Hatchet::Accounts::AtticaResolverAccount* handlerAccount = qobject_cast< Hatchet::Accounts::AtticaResolverAccount* >( reply->property( "handler" ).value< QObject* >() );
                 const bool createAccount = reply->property( "createAccount" ).toBool();
                 if ( handlerAccount )
                 {
                     handlerAccount->setPath( resolverPath );
-                    Tomahawk::Accounts::AccountManager::instance()->enableAccount( handlerAccount );
+                    Hatchet::Accounts::AccountManager::instance()->enableAccount( handlerAccount );
                 }
                 else if ( createAccount )
                 {
-                    // Do the install / add to tomahawk
-                    Tomahawk::Accounts::Account* resolver = Tomahawk::Accounts::ResolverAccountFactory::createFromPath( resolverPath, "resolveraccount", true );
-                    Tomahawk::Accounts::AccountManager::instance()->addAccount( resolver );
-                    TomahawkSettings::instance()->addAccount( resolver->accountId() );
+                    // Do the install / add to hatchet
+                    Hatchet::Accounts::Account* resolver = Hatchet::Accounts::ResolverAccountFactory::createFromPath( resolverPath, "resolveraccount", true );
+                    Hatchet::Accounts::AccountManager::instance()->addAccount( resolver );
+                    HatchetSettings::instance()->addAccount( resolver->accountId() );
                 }
 
                 fetchMissingIcons();
@@ -711,7 +711,7 @@ AtticaManager::payloadFetched()
     {
         tDebug( LOGVERBOSE ) << "Setting installed state to resolver:" << resolverId;
         m_resolverStates[ resolverId ].state = Installed;
-        TomahawkSettings::instance()->setAtticaResolverStates( m_resolverStates );
+        HatchetSettings::instance()->setAtticaResolverStates( m_resolverStates );
         emit resolverInstalled( resolverId );
         emit resolverStateChanged( resolverId );
     }
@@ -742,7 +742,7 @@ AtticaManager::uninstallResolver( const QString& pathToResolver )
                 m_resolverStates[ atticaId ].state = Uninstalled;
                 delete m_resolverStates[ resolver.id() ].pixmap;
                 m_resolverStates[ atticaId ].pixmap = 0;
-                TomahawkSettings::instance()->setAtticaResolverState( atticaId, Uninstalled );
+                HatchetSettings::instance()->setAtticaResolverState( atticaId, Uninstalled );
 
                 doResolverRemove( atticaId );
             }
@@ -760,7 +760,7 @@ AtticaManager::uninstallResolver( const Content& resolver )
         emit resolverStateChanged( resolver.id() );
 
         m_resolverStates[ resolver.id() ].state = Uninstalled;
-        TomahawkSettings::instance()->setAtticaResolverState( resolver.id(), Uninstalled );
+        HatchetSettings::instance()->setAtticaResolverState( resolver.id(), Uninstalled );
     }
 
     delete m_resolverStates[ resolver.id() ].pixmap;
@@ -774,7 +774,7 @@ void
 AtticaManager::doResolverRemove( const QString& id ) const
 {
     // uninstalling is easy... just delete it! :)
-    QDir resolverDir = TomahawkUtils::appDataDir();
+    QDir resolverDir = HatchetUtils::appDataDir();
     if ( !resolverDir.cd( QString( "atticaresolvers/%1" ).arg( id ) ) )
         return;
 
@@ -786,9 +786,9 @@ AtticaManager::doResolverRemove( const QString& id ) const
         !resolverDir.absolutePath().contains( id ) )
         return;
 
-    TomahawkUtils::removeDirectory( resolverDir.absolutePath() );
+    HatchetUtils::removeDirectory( resolverDir.absolutePath() );
 
-    QDir cacheDir = TomahawkUtils::appDataDir();
+    QDir cacheDir = HatchetUtils::appDataDir();
     if ( !cacheDir.cd( "atticacache" ) )
         return;
 

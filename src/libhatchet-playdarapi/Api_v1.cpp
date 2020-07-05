@@ -1,22 +1,22 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "Api_v1.h"
@@ -27,7 +27,7 @@
 #include "network/Servent.h"
 #include "utils/Json.h"
 #include "utils/Logger.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 
 #include "Api_v1_5.h"
 #include "Pipeline.h"
@@ -38,8 +38,8 @@
 
 #include <QHash>
 
-using namespace Tomahawk;
-using namespace TomahawkUtils;
+using namespace Hatchet;
+using namespace HatchetUtils;
 
 Api_v1::Api_v1( QxtAbstractWebSessionManager* sm, QObject* parent )
     : QxtWebSlotService(sm, parent)
@@ -159,7 +159,7 @@ Api_v1::auth_2( QxtWebRequestEvent* event, QString arg )
     }
 
     DatabaseCommand_AddClientAuth* dbcmd = new DatabaseCommand_AddClientAuth( authtoken, website, name, event->headers.key( "ua" ) );
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr(dbcmd) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr(dbcmd) );
 }
 
 
@@ -244,12 +244,12 @@ Api_v1::sid( QxtWebRequestEvent* event, QString unused )
             std::bind( &Api_v1::processSid, this, event, rp,
                        std::placeholders::_1,
                        std::placeholders::_2 );
-    Tomahawk::UrlHandler::getIODeviceForUrl( rp, rp->url(), callback );
+    Hatchet::UrlHandler::getIODeviceForUrl( rp, rp->url(), callback );
 }
 
 
 void
-Api_v1::processSid( QxtWebRequestEvent* event, const Tomahawk::result_ptr rp, const QString url, QSharedPointer< QIODevice > iodev )
+Api_v1::processSid( QxtWebRequestEvent* event, const Hatchet::result_ptr rp, const QString url, QSharedPointer< QIODevice > iodev )
 {
     Q_UNUSED( url );
 
@@ -306,7 +306,7 @@ Api_v1::stat( QxtWebRequestEvent* event )
         // check for auth status
         DatabaseCommand_ClientAuthValid* dbcmd = new DatabaseCommand_ClientAuthValid( urlQueryItemValue( event->url, "auth" ) );
         connect( dbcmd, SIGNAL( authValid( QString, QString, bool ) ), handler, SLOT( statResult( QString, QString, bool ) ) );
-        Database::instance()->enqueue( Tomahawk::dbcmd_ptr(dbcmd) );
+        Database::instance()->enqueue( Hatchet::dbcmd_ptr(dbcmd) );
     }
     else
     {
@@ -361,7 +361,7 @@ Api_v1::staticdata( QxtWebRequestEvent* event, const QString& file )
 {
     tDebug( LOGVERBOSE ) << "STATIC request:" << event << file;
 
-    bool whitelisted = ( file == QString( "tomahawk_auth_logo.png" ) ||
+    bool whitelisted = ( file == QString( "hatchet_auth_logo.png" ) ||
                          file.startsWith( "css/" ) ||
                          file.startsWith( "js/" ) );
 
@@ -439,7 +439,7 @@ Api_v1::sendJSON( const QVariantMap& m, QxtWebRequestEvent* event )
 {
     QByteArray ctype;
     bool ok;
-    QByteArray body = TomahawkUtils::toJson( m, &ok );
+    QByteArray body = HatchetUtils::toJson( m, &ok );
     Q_ASSERT( ok );
 
     if ( urlHasQueryItem( event->url, "jsonp" ) && !urlQueryItemValue( event->url, "jsonp" ).isEmpty() )

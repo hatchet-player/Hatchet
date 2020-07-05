@@ -1,22 +1,22 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *   Copyright 2013, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef SERVENT_H
@@ -70,12 +70,12 @@ public:
      * @param mode How the external IP address should be determined.
      * @param defaultPort If we cannot listen on the port the user configured try this port as fallback.
      * @param autoDetectExternalIp If true, try to automatically detect the external port by querying a remote server.
-     * @param externalHost manually supplied external hostname (only with mode == Tomahawk::Network::ExternalAddress::Static)
-     * @param externalPort manually supplied external port (only with mode == Tomahawk::Network::ExternalAddress::Static)
+     * @param externalHost manually supplied external hostname (only with mode == Hatchet::Network::ExternalAddress::Static)
+     * @param externalPort manually supplied external port (only with mode == Hatchet::Network::ExternalAddress::Static)
      * @return True if we could listen on any of the supplied ports.
      */
     bool startListening( QHostAddress ha, bool upnp, int port,
-                         Tomahawk::Network::ExternalAddress::Mode mode,
+                         Hatchet::Network::ExternalAddress::Mode mode,
                          int defaultPort, bool autoDetectExternalIp = false,
                          const QString& externalHost = QString(),
                          int externalPort = -1 );
@@ -84,19 +84,19 @@ public:
     QString createConnectionKey( const QString& name = "", const QString &nodeid = "", const QString &key = "", bool onceOnly = true );
 
     void registerOffer( const QString& key, Connection* conn );
-    void registerLazyOffer( const QString& key, const Tomahawk::peerinfo_ptr& peerInfo, const QString &nodeid , const int timeout );
+    void registerLazyOffer( const QString& key, const Hatchet::peerinfo_ptr& peerInfo, const QString &nodeid , const int timeout );
 
     void registerControlConnection( ControlConnection* conn );
     void unregisterControlConnection( ControlConnection* conn );
     ControlConnection* lookupControlConnection( const SipInfo& sipInfo );
     ControlConnection* lookupControlConnection( const QString& nodeid );
 
-    void remoteIODeviceFactory( const Tomahawk::result_ptr& result, const QString& url,
+    void remoteIODeviceFactory( const Hatchet::result_ptr& result, const QString& url,
                                     std::function< void ( const QString&, QSharedPointer< QIODevice >& ) > callback );
 
     // you may call this method as often as you like for the same peerInfo, dupe checking is done inside
-    void registerPeer( const Tomahawk::peerinfo_ptr& peerInfo );
-    void handleSipInfo( const Tomahawk::peerinfo_ptr& peerInfo );
+    void registerPeer( const Hatchet::peerinfo_ptr& peerInfo );
+    void handleSipInfo( const Hatchet::peerinfo_ptr& peerInfo );
 
     void initiateConnection( const SipInfo& sipInfo, Connection* conn );
     void reverseOfferRequest( ControlConnection* orig_conn, const QString &theirdbid, const QString& key, const QString& theirkey );
@@ -141,7 +141,7 @@ public:
 
     QList<SipInfo> getLocalSipInfos(const QString& nodeid, const QString &key);
 
-    void queueForAclResult( const QString& username, const QSet<Tomahawk::peerinfo_ptr>& peerInfos );
+    void queueForAclResult( const QString& username, const QSet<Hatchet::peerinfo_ptr>& peerInfos );
 signals:
     void dbSyncTriggered();
 
@@ -176,7 +176,7 @@ private slots:
     void deleteLazyOffer( const QString& key );
     void readyRead();
     void socketError( QAbstractSocket::SocketError e );
-    void checkACLResult( const QString &nodeid, const QString &username, Tomahawk::ACLStatus::Type peerStatus );
+    void checkACLResult( const QString &nodeid, const QString &username, Hatchet::ACLStatus::Type peerStatus );
     void ipDetected();
 
     Connection* claimOffer( ControlConnection* cc, const QString &nodeid, const QString &key, const QHostAddress peer = QHostAddress::Any );
@@ -190,7 +190,7 @@ private:
     void printCurrentTransfers();
 
     /**
-     * Remove addresses from the list that we shall not use in Tomahawk (e.g.
+     * Remove addresses from the list that we shall not use in Hatchet (e.g.
      * for sending to other peers).
      *
      * @param addresses The list that shall be cleanded.

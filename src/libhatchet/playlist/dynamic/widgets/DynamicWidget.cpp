@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DynamicWidget.h"
@@ -36,7 +36,7 @@
 #include "DynamicSetupWidget.h"
 #include "widgets/BasicHeader.h"
 #include "utils/AnimatedSpinner.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 #include "utils/DpiScaler.h"
 
@@ -48,10 +48,10 @@
 #include <QEvent>
 #include <QPainter>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
-DynamicWidget::DynamicWidget( const Tomahawk::dynplaylist_ptr& playlist, QWidget* parent )
+DynamicWidget::DynamicWidget( const Hatchet::dynplaylist_ptr& playlist, QWidget* parent )
     : QWidget( parent )
     , m_layout( new QVBoxLayout )
     , m_resolveOnNextLoad( false )
@@ -101,11 +101,11 @@ DynamicWidget::DynamicWidget( const Tomahawk::dynplaylist_ptr& playlist, QWidget
 
     layoutFloatingWidgets();
 
-    connect( m_controls, SIGNAL( controlChanged( Tomahawk::dyncontrol_ptr ) ), this, SLOT( controlChanged( Tomahawk::dyncontrol_ptr ) ), Qt::QueuedConnection );
+    connect( m_controls, SIGNAL( controlChanged( Hatchet::dyncontrol_ptr ) ), this, SLOT( controlChanged( Hatchet::dyncontrol_ptr ) ), Qt::QueuedConnection );
     connect( m_controls, SIGNAL( controlsChanged( bool ) ), this, SLOT( controlsChanged( bool ) ), Qt::QueuedConnection );
 
-    connect( AudioEngine::instance(), SIGNAL( started( Tomahawk::result_ptr ) ), this, SLOT( trackStarted() ) );
-    connect( AudioEngine::instance(), SIGNAL( playlistChanged( Tomahawk::playlistinterface_ptr ) ), this, SLOT( playlistChanged( Tomahawk::playlistinterface_ptr ) ) );
+    connect( AudioEngine::instance(), SIGNAL( started( Hatchet::result_ptr ) ), this, SLOT( trackStarted() ) );
+    connect( AudioEngine::instance(), SIGNAL( playlistChanged( Hatchet::playlistinterface_ptr ) ), this, SLOT( playlistChanged( Hatchet::playlistinterface_ptr ) ) );
 }
 
 
@@ -122,7 +122,7 @@ DynamicWidget::playlist()
 
 
 void
-DynamicWidget::loadDynamicPlaylist( const Tomahawk::dynplaylist_ptr& playlist )
+DynamicWidget::loadDynamicPlaylist( const Hatchet::dynplaylist_ptr& playlist )
 {
     // special case: if we have launched multiple setRevision calls, and the number of controls is different, it means that we're getting an intermediate setRevision
     //  called after the user has already created more revisions. ignore in that case.
@@ -154,10 +154,10 @@ DynamicWidget::loadDynamicPlaylist( const Tomahawk::dynplaylist_ptr& playlist )
 
     if ( !m_playlist.isNull() )
     {
-        disconnect( m_playlist->generator().data(), SIGNAL( generated( QList<Tomahawk::query_ptr> ) ), this, SLOT( tracksGenerated( QList<Tomahawk::query_ptr> ) ) );
-        disconnect( m_playlist.data(), SIGNAL( dynamicRevisionLoaded( Tomahawk::DynamicPlaylistRevision) ), this, SLOT(onRevisionLoaded( Tomahawk::DynamicPlaylistRevision) ) );
+        disconnect( m_playlist->generator().data(), SIGNAL( generated( QList<Hatchet::query_ptr> ) ), this, SLOT( tracksGenerated( QList<Hatchet::query_ptr> ) ) );
+        disconnect( m_playlist.data(), SIGNAL( dynamicRevisionLoaded( Hatchet::DynamicPlaylistRevision) ), this, SLOT(onRevisionLoaded( Hatchet::DynamicPlaylistRevision) ) );
         disconnect( m_playlist->generator().data(), SIGNAL( error( QString, QString ) ), this, SLOT( generatorError( QString, QString ) ) );
-        disconnect( m_playlist.data(), SIGNAL( deleted( Tomahawk::dynplaylist_ptr ) ), this, SLOT( onDeleted() ) );
+        disconnect( m_playlist.data(), SIGNAL( deleted( Hatchet::dynplaylist_ptr ) ), this, SLOT( onDeleted() ) );
         disconnect( m_playlist.data(), SIGNAL( changed() ), this, SLOT( onChanged() ) );
     }
 
@@ -174,10 +174,10 @@ DynamicWidget::loadDynamicPlaylist( const Tomahawk::dynplaylist_ptr& playlist )
     else if ( m_layout->indexOf( m_controls ) == -1 )
         m_layout->insertWidget( 0, m_controls );
 
-    connect( m_playlist->generator().data(), SIGNAL( generated( QList<Tomahawk::query_ptr> ) ), this, SLOT( tracksGenerated( QList<Tomahawk::query_ptr> ) ) );
-    connect( m_playlist.data(), SIGNAL( dynamicRevisionLoaded( Tomahawk::DynamicPlaylistRevision ) ), this, SLOT( onRevisionLoaded( Tomahawk::DynamicPlaylistRevision ) ) );
+    connect( m_playlist->generator().data(), SIGNAL( generated( QList<Hatchet::query_ptr> ) ), this, SLOT( tracksGenerated( QList<Hatchet::query_ptr> ) ) );
+    connect( m_playlist.data(), SIGNAL( dynamicRevisionLoaded( Hatchet::DynamicPlaylistRevision ) ), this, SLOT( onRevisionLoaded( Hatchet::DynamicPlaylistRevision ) ) );
     connect( m_playlist->generator().data(), SIGNAL( error( QString, QString ) ), this, SLOT( generatorError( QString, QString ) ) );
-    connect( m_playlist.data(), SIGNAL( deleted( Tomahawk::dynplaylist_ptr ) ), this, SLOT( onDeleted() ) );
+    connect( m_playlist.data(), SIGNAL( deleted( Hatchet::dynplaylist_ptr ) ), this, SLOT( onDeleted() ) );
     connect( m_playlist.data(), SIGNAL( changed() ), this, SLOT( onChanged() ) );
 
     if ( m_playlist->mode() == OnDemand && !m_playlist->generator()->controls().isEmpty() )
@@ -189,7 +189,7 @@ DynamicWidget::loadDynamicPlaylist( const Tomahawk::dynplaylist_ptr& playlist )
 
 
 void
-DynamicWidget::onRevisionLoaded( const Tomahawk::DynamicPlaylistRevision& rev )
+DynamicWidget::onRevisionLoaded( const Hatchet::DynamicPlaylistRevision& rev )
 {
     Q_UNUSED( rev );
     tDebug( LOGVERBOSE ) << "DynamicWidget::onRevisionLoaded" << rev.revisionguid;
@@ -208,7 +208,7 @@ DynamicWidget::onRevisionLoaded( const Tomahawk::DynamicPlaylistRevision& rev )
 }
 
 
-Tomahawk::playlistinterface_ptr
+Hatchet::playlistinterface_ptr
 DynamicWidget::playlistInterface() const
 {
     return m_view->proxyModel()->playlistInterface();
@@ -252,7 +252,7 @@ DynamicWidget::layoutFloatingWidgets()
 
 
 void
-DynamicWidget::playlistChanged( Tomahawk::playlistinterface_ptr pl )
+DynamicWidget::playlistChanged( Hatchet::playlistinterface_ptr pl )
 {
     if ( pl == m_view->proxyModel()->playlistInterface() ) // same playlist
         m_activePlaylist = true;
@@ -407,7 +407,7 @@ DynamicWidget::controlsChanged( bool added )
 
 
 void
-DynamicWidget::controlChanged( const Tomahawk::dyncontrol_ptr& control )
+DynamicWidget::controlChanged( const Hatchet::dyncontrol_ptr& control )
 {
     Q_UNUSED( control );
     if ( !m_playlist->author()->isLocal() )
@@ -523,13 +523,13 @@ QPixmap
 DynamicWidget::pixmap() const
 {
     if ( m_playlist->mode() == OnDemand )
-        return TomahawkUtils::defaultPixmap( TomahawkUtils::Station,
-                                             TomahawkUtils::Original,
-                                             TomahawkUtils::DpiScaler::scaled( this, 80, 80 ) );
+        return HatchetUtils::defaultPixmap( HatchetUtils::Station,
+                                             HatchetUtils::Original,
+                                             HatchetUtils::DpiScaler::scaled( this, 80, 80 ) );
     else if ( m_playlist->mode() == Static )
-        return TomahawkUtils::defaultPixmap( TomahawkUtils::AutomaticPlaylist,
-                                             TomahawkUtils::Original,
-                                             TomahawkUtils::DpiScaler::scaled( this, 80, 80 ) );
+        return HatchetUtils::defaultPixmap( HatchetUtils::AutomaticPlaylist,
+                                             HatchetUtils::Original,
+                                             HatchetUtils::DpiScaler::scaled( this, 80, 80 ) );
     else
         return QPixmap();
 }

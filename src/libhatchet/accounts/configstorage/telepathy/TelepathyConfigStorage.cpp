@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013, Teo Mrnjavac <teo@kde.org>
  *   Copyright 2013, Dominik Schmidt <domme@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "TelepathyConfigStorage.h"
@@ -27,7 +27,7 @@
 #include "accounts/CredentialsManager.h"
 #include "utils/Logger.h"
 #include "utils/PluginLoader.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 
 #include <TelepathyQt/Account>
 #include <TelepathyQt/PendingReady>
@@ -42,11 +42,11 @@
 
 
 
-//NOTE: Both Tomahawk::Accounts and Tp have class names Account and AccountManager.
+//NOTE: Both Hatchet::Accounts and Tp have class names Account and AccountManager.
 
 
-Tomahawk::Accounts::TelepathyConfigStorage::TelepathyConfigStorage( QObject* parent )
-    : Tomahawk::Accounts::ConfigStorage( parent )
+Hatchet::Accounts::TelepathyConfigStorage::TelepathyConfigStorage( QObject* parent )
+    : Hatchet::Accounts::ConfigStorage( parent )
     , m_credentialsServiceName( "telepathy-kde" )
 {
     tDebug() << Q_FUNC_INFO;
@@ -57,7 +57,7 @@ Tomahawk::Accounts::TelepathyConfigStorage::TelepathyConfigStorage( QObject* par
 
 
 void
-Tomahawk::Accounts::TelepathyConfigStorage::init()
+Hatchet::Accounts::TelepathyConfigStorage::init()
 {
 
     m_tpam = Tp::AccountManager::create();
@@ -67,28 +67,28 @@ Tomahawk::Accounts::TelepathyConfigStorage::init()
 
 
 QString
-Tomahawk::Accounts::TelepathyConfigStorage::id() const
+Hatchet::Accounts::TelepathyConfigStorage::id() const
 {
     return "telepathyconfigstorage";
 }
 
 
 QString
-Tomahawk::Accounts::TelepathyConfigStorage::prettyName() const
+Hatchet::Accounts::TelepathyConfigStorage::prettyName() const
 {
     return tr( "the KDE instant messaging framework" );
 }
 
 
 QPixmap
-Tomahawk::Accounts::TelepathyConfigStorage::icon() const
+Hatchet::Accounts::TelepathyConfigStorage::icon() const
 {
     return QPixmap( ":/telepathy/kde.png" );
 }
 
 
 bool
-Tomahawk::Accounts::TelepathyConfigStorage::execConfigDialog( QWidget* parent )
+Hatchet::Accounts::TelepathyConfigStorage::execConfigDialog( QWidget* parent )
 {
     if ( !m_configWidgetPlugins.isEmpty() )
     {
@@ -109,7 +109,7 @@ Tomahawk::Accounts::TelepathyConfigStorage::execConfigDialog( QWidget* parent )
 
 
 void
-Tomahawk::Accounts::TelepathyConfigStorage::onTpAccountManagerReady( Tp::PendingOperation* op )
+Hatchet::Accounts::TelepathyConfigStorage::onTpAccountManagerReady( Tp::PendingOperation* op )
 {
     if ( op->isError() )
     {
@@ -134,14 +134,14 @@ Tomahawk::Accounts::TelepathyConfigStorage::onTpAccountManagerReady( Tp::Pending
     CredentialsManager* cm = AccountManager::instance()->credentialsManager();
     connect( cm, SIGNAL( serviceReady( QString ) ),
              this, SLOT( onCredentialsManagerReady( QString ) ) );
-    Tomahawk::Accounts::AccountManager::instance()->credentialsManager()->addService( m_credentialsServiceName,
+    Hatchet::Accounts::AccountManager::instance()->credentialsManager()->addService( m_credentialsServiceName,
                                                                                       keychainIds );
     tDebug() << Q_FUNC_INFO << "LOADING ALL CREDENTIALS FOR SERVICE" << m_credentialsServiceName << m_accountIds << keychainIds;
 }
 
 
 void
-Tomahawk::Accounts::TelepathyConfigStorage::onCredentialsManagerReady( const QString& service )
+Hatchet::Accounts::TelepathyConfigStorage::onCredentialsManagerReady( const QString& service )
 {
     if ( service != m_credentialsServiceName )
         return;
@@ -154,10 +154,10 @@ Tomahawk::Accounts::TelepathyConfigStorage::onCredentialsManagerReady( const QSt
 
 
 void
-Tomahawk::Accounts::TelepathyConfigStorage::loadConfigWidgetPlugins()
+Hatchet::Accounts::TelepathyConfigStorage::loadConfigWidgetPlugins()
 {
     tDebug() << Q_FUNC_INFO;
-    foreach( QObject* plugin, Tomahawk::Utils::PluginLoader( "configstorage_telepathy" ).loadPlugins().values() )
+    foreach( QObject* plugin, Hatchet::Utils::PluginLoader( "configstorage_telepathy" ).loadPlugins().values() )
     {
         TelepathyConfigStorageConfigWidgetPlugin* configWidgetPlugin = qobject_cast< TelepathyConfigStorageConfigWidgetPlugin* >( plugin );
         if( !configWidgetPlugin )
@@ -172,7 +172,7 @@ Tomahawk::Accounts::TelepathyConfigStorage::loadConfigWidgetPlugins()
 
 
 QString
-Tomahawk::Accounts::TelepathyConfigStorage::telepathyPathToAccountId( const QString& objectPath, const QString& telepathyServiceName )
+Hatchet::Accounts::TelepathyConfigStorage::telepathyPathToAccountId( const QString& objectPath, const QString& telepathyServiceName )
 {
     if ( telepathyServiceName == "google-talk" )
         return QString( "googleaccount_" ) + objectPath;
@@ -181,7 +181,7 @@ Tomahawk::Accounts::TelepathyConfigStorage::telepathyPathToAccountId( const QStr
 
 
 QString
-Tomahawk::Accounts::TelepathyConfigStorage::accountIdToTelepathyPath( const QString& accountId ) const
+Hatchet::Accounts::TelepathyConfigStorage::accountIdToTelepathyPath( const QString& accountId ) const
 {
     QString r = accountId;
     foreach ( QString prefix, m_allowedPrefixes )
@@ -194,21 +194,21 @@ Tomahawk::Accounts::TelepathyConfigStorage::accountIdToTelepathyPath( const QStr
 
 
 QStringList
-Tomahawk::Accounts::TelepathyConfigStorage::accountIds() const
+Hatchet::Accounts::TelepathyConfigStorage::accountIds() const
 {
     return m_accountIds;
 }
 
 
 unsigned int
-Tomahawk::Accounts::TelepathyConfigStorage::priority() const
+Hatchet::Accounts::TelepathyConfigStorage::priority() const
 {
     return 30;
 }
 
 
 void
-Tomahawk::Accounts::TelepathyConfigStorage::deduplicateFrom( const Tomahawk::Accounts::ConfigStorage* other )
+Hatchet::Accounts::TelepathyConfigStorage::deduplicateFrom( const Hatchet::Accounts::ConfigStorage* other )
 {
     tDebug() << "MY    ACCOUNTS:" << accountIds();
     tDebug() << "OTHER ACCOUNTS:" << other->accountIds();
@@ -266,9 +266,9 @@ Tomahawk::Accounts::TelepathyConfigStorage::deduplicateFrom( const Tomahawk::Acc
 
 
 void
-Tomahawk::Accounts::TelepathyConfigStorage::save( const QString& accountId, const Account::Configuration& cfg )
+Hatchet::Accounts::TelepathyConfigStorage::save( const QString& accountId, const Account::Configuration& cfg )
 {
-    TomahawkSettings* s = TomahawkSettings::instance();
+    HatchetSettings* s = HatchetSettings::instance();
     s->beginGroup( "externalaccounts/" + accountId );
     s->setValue( "enabled", cfg.enabled );
     s->setValue( "acl", cfg.acl );
@@ -281,9 +281,9 @@ Tomahawk::Accounts::TelepathyConfigStorage::save( const QString& accountId, cons
 
 
 void
-Tomahawk::Accounts::TelepathyConfigStorage::load( const QString& accountId, Account::Configuration& cfg ) const
+Hatchet::Accounts::TelepathyConfigStorage::load( const QString& accountId, Account::Configuration& cfg ) const
 {
-    TomahawkSettings* s = TomahawkSettings::instance();
+    HatchetSettings* s = HatchetSettings::instance();
     s->beginGroup( "externalaccounts/" + accountId );
     cfg.enabled = s->value( "enabled", true ).toBool();
     cfg.acl =     s->value( "acl", QVariantMap() ).toMap();
@@ -318,7 +318,7 @@ Tomahawk::Accounts::TelepathyConfigStorage::load( const QString& accountId, Acco
 
     cfg.configuration[ "publishtracks" ] = true;
 
-    Tomahawk::Accounts::CredentialsManager* c = Tomahawk::Accounts::AccountManager::instance()->credentialsManager();
+    Hatchet::Accounts::CredentialsManager* c = Hatchet::Accounts::AccountManager::instance()->credentialsManager();
     cfg.credentials = QVariantMap();
 
     if ( !account->parameters()[ "account" ].isNull() )
@@ -335,9 +335,9 @@ Tomahawk::Accounts::TelepathyConfigStorage::load( const QString& accountId, Acco
 
 
 void
-Tomahawk::Accounts::TelepathyConfigStorage::remove( const QString& accountId )
+Hatchet::Accounts::TelepathyConfigStorage::remove( const QString& accountId )
 {
-    TomahawkSettings* s = TomahawkSettings::instance();
+    HatchetSettings* s = HatchetSettings::instance();
     s->beginGroup( "externalaccounts/" + accountId );
     s->remove( "enabled" );
     s->remove( "acl" );
@@ -345,4 +345,4 @@ Tomahawk::Accounts::TelepathyConfigStorage::remove( const QString& accountId )
     s->remove( "externalaccounts/" + accountId );
 }
 
-Q_EXPORT_PLUGIN2( Tomahawk::Accounts::ConfigStorage, Tomahawk::Accounts::TelepathyConfigStorage )
+Q_EXPORT_PLUGIN2( Hatchet::Accounts::ConfigStorage, Hatchet::Accounts::TelepathyConfigStorage )

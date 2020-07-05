@@ -1,22 +1,22 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2011,      Leo Franchi <lfranchi@kde.org>
  *   Copyright 2011,      Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2011-2016, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2013,      Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ShortLinkHelper_p.h"
@@ -24,12 +24,12 @@
 #include "utils/Closure.h"
 #include "utils/Json.h"
 #include "utils/NetworkAccessManager.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "Playlist.h"
 #include "Source.h"
 #include "Track.h"
 
-namespace Tomahawk {
+namespace Hatchet {
 namespace Utils {
 
 ShortLinkHelper::ShortLinkHelper(QObject *parent)
@@ -44,13 +44,13 @@ ShortLinkHelper::~ShortLinkHelper()
 
 
 void
-ShortLinkHelper::shortLink( const Tomahawk::playlist_ptr& pl )
+ShortLinkHelper::shortLink( const Hatchet::playlist_ptr& pl )
 {
     Q_D( ShortLinkHelper );
     if ( QThread::currentThread() != thread() )
     {
         QMetaObject::invokeMethod( this, "shortLink", Qt::QueuedConnection,
-                                   Q_ARG( const Tomahawk::playlist_ptr&, pl) );
+                                   Q_ARG( const Hatchet::playlist_ptr&, pl) );
         return;
     }
 
@@ -60,8 +60,8 @@ ShortLinkHelper::shortLink( const Tomahawk::playlist_ptr& pl )
     }
     if ( pl->busy() || !pl->loaded() )
     {
-        NewClosure( pl.data(), SIGNAL( revisionLoaded( Tomahawk::PlaylistRevision ) ),
-                    this, SLOT( shortLink( Tomahawk::playlist_ptr ) ), pl );
+        NewClosure( pl.data(), SIGNAL( revisionLoaded( Hatchet::PlaylistRevision ) ),
+                    this, SLOT( shortLink( Hatchet::playlist_ptr ) ), pl );
         return;
     }
 
@@ -86,7 +86,7 @@ ShortLinkHelper::shortLink( const Tomahawk::playlist_ptr& pl )
     QVariantMap jspf;
     jspf["playlist"] = m;
 
-    QByteArray msg = TomahawkUtils::toJson( jspf );
+    QByteArray msg = HatchetUtils::toJson( jspf );
 
     // No built-in Qt facilities for doing a FORM POST. So we build the payload ourselves...
     const QByteArray boundary = "----------------------------2434992cccab";
@@ -100,10 +100,10 @@ ShortLinkHelper::shortLink( const Tomahawk::playlist_ptr& pl )
     const QUrl url( QString( "%1/p/").arg( hostname() ) );
     QNetworkRequest req( url );
     req.setHeader( QNetworkRequest::ContentTypeHeader, QString( "multipart/form-data; boundary=%1" ).arg( QString::fromLatin1( boundary ) ) );
-    d->reply = Tomahawk::Utils::nam()->post( req, data );
+    d->reply = Hatchet::Utils::nam()->post( req, data );
 
     NewClosure( d->reply, SIGNAL( finished() ),
-                this, SLOT( shortLinkRequestFinished( Tomahawk::playlist_ptr ) ), pl );
+                this, SLOT( shortLinkRequestFinished( Hatchet::playlist_ptr ) ), pl );
     connect( d->reply, SIGNAL( error( QNetworkReply::NetworkError ) ), SLOT( shortenLinkRequestError( QNetworkReply::NetworkError ) ) );
 }
 
@@ -123,7 +123,7 @@ ShortLinkHelper::shortenLink( const QUrl& url, const QVariant& callbackObj )
     QNetworkRequest request;
     request.setUrl( url );
 
-    d->reply = Tomahawk::Utils::nam()->get( request );
+    d->reply = Hatchet::Utils::nam()->get( request );
     if ( callbackObj.isValid() )
         d->reply->setProperty( "callbackobj", callbackObj );
     connect( d->reply, SIGNAL( finished() ), SLOT( shortenLinkRequestFinished() ) );
@@ -146,7 +146,7 @@ ShortLinkHelper::shortLinkRequestFinished( const playlist_ptr& playlist )
 
     const QByteArray raw = d->reply->readAll();
     const QUrl url = QUrl::fromUserInput( raw );
-    const QByteArray data = TomahawkUtils::percentEncode( url );
+    const QByteArray data = HatchetUtils::percentEncode( url );
 
     emit shortLinkReady( playlist, QString( data.constData() ) );
     emit done();
@@ -219,4 +219,4 @@ ShortLinkHelper::shortenLinkRequestError( QNetworkReply::NetworkError )
 }
 
 } // namespace Utils
-} // namespace Tomahawk
+} // namespace Hatchet

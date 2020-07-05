@@ -61,20 +61,20 @@ let
   src = ./.;
 
   version = import (stdenv.mkDerivation {
-    name = "tomahawk-version.nix";
+    name = "hatchet-version.nix";
     inherit src;
     phases = [ "unpackPhase" "installPhase" ];
     buildInputs = [ cmake ];
     installPhase = ''
       (cmake -LAH 2> /dev/null || true) \
-        | sed -n -re 's/^TOMAHAWK_VERSION:STRING[^=]*= *([^ ]*).*/"\1"/p' \
+        | sed -n -re 's/^hatchet_VERSION:STRING[^=]*= *([^ ]*).*/"\1"/p' \
         > "$out"
       [ -s "$out" ]
     '';
   });
 
 in stdenv.mkDerivation rec {
-  name = "tomahawk-${version}";
+  name = "hatchet-${version}";
 
   inherit src version;
 
@@ -95,7 +95,7 @@ in stdenv.mkDerivation rec {
 
   meta = with stdenv.lib; {
     description = "A multi-source music player";
-    homepage = "http://tomahawk-player.org/";
+    homepage = "http://hatchet-player.org/";
     license = licenses.gpl3Plus;
     platforms = platforms.all;
   };

@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef SOURCE_H
@@ -28,7 +28,7 @@
 #include "accounts/AccountManager.h"
 #include "collection/Collection.h"
 #include "network/DBSyncConnectionState.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "DllMacro.h"
 #include "Typedefs.h"
 
@@ -36,7 +36,7 @@ class ControlConnection;
 class DBSyncConnection;
 class MusicScanner;
 
-namespace Tomahawk
+namespace Hatchet
 {
 class DatabaseCommand;
 class DatabaseCommand_AddFiles;
@@ -80,28 +80,28 @@ public:
     QString dbFriendlyName() const;
     void setDbFriendlyName( const QString& dbFriendlyName );
 
-    QPixmap avatar( TomahawkUtils::ImageMode style = TomahawkUtils::Original, const QSize& size = QSize(), bool defaultAvatarFallback = false );
+    QPixmap avatar( HatchetUtils::ImageMode style = HatchetUtils::Original, const QSize& size = QSize(), bool defaultAvatarFallback = false );
 
     collection_ptr dbCollection() const;
-    QList< Tomahawk::collection_ptr > collections() const;
-    void addCollection( const Tomahawk::collection_ptr& c );
-    void removeCollection( const Tomahawk::collection_ptr& c );
+    QList< Hatchet::collection_ptr > collections() const;
+    void addCollection( const Hatchet::collection_ptr& c );
+    void removeCollection( const Hatchet::collection_ptr& c );
 
     int id() const;
     ControlConnection* controlConnection() const;
     bool setControlConnection( ControlConnection* cc );
 
-    const QSet< Tomahawk::peerinfo_ptr > peerInfos() const;
+    const QSet< Hatchet::peerinfo_ptr > peerInfos() const;
 
     void scanningFinished( bool updateGUI );
 
     unsigned int trackCount() const;
 
-    Tomahawk::query_ptr currentTrack() const;
+    Hatchet::query_ptr currentTrack() const;
     QString textStatus() const;
-    Tomahawk::DBSyncConnectionState state() const;
+    Hatchet::DBSyncConnectionState state() const;
 
-    Tomahawk::playlistinterface_ptr playlistInterface();
+    Hatchet::playlistinterface_ptr playlistInterface();
 
     QSharedPointer<QMutexLocker> acquireLock();
 
@@ -112,21 +112,21 @@ signals:
     void online();
     void offline();
 
-    void collectionAdded( const Tomahawk::collection_ptr& collection );
-    void collectionRemoved( const Tomahawk::collection_ptr& collection );
+    void collectionAdded( const Hatchet::collection_ptr& collection );
+    void collectionRemoved( const Hatchet::collection_ptr& collection );
 
     void stats( const QVariantMap& );
 
-    void playbackStarted( const Tomahawk::track_ptr& track );
-    void playbackFinished( const Tomahawk::track_ptr& track, const Tomahawk::PlaybackLog& log );
+    void playbackStarted( const Hatchet::track_ptr& track );
+    void playbackFinished( const Hatchet::track_ptr& track, const Hatchet::PlaybackLog& log );
 
     void stateChanged();
     void commandsFinished();
 
     void socialAttributesChanged( const QString& action );
 
-    void latchedOn( const Tomahawk::source_ptr& to );
-    void latchedOff( const Tomahawk::source_ptr& from );
+    void latchedOn( const Hatchet::source_ptr& to );
+    void latchedOff( const Hatchet::source_ptr& from );
 
 public slots:
     void setStats( const QVariantMap& m );
@@ -137,14 +137,14 @@ private slots:
     void dbLoaded( unsigned int id, const QString& fname );
     void updateIndexWhenSynced();
 
-    void handleDisconnect( Tomahawk::Accounts::Account*, Tomahawk::Accounts::AccountManager::DisconnectReason reason );
+    void handleDisconnect( Hatchet::Accounts::Account*, Hatchet::Accounts::AccountManager::DisconnectReason reason );
     void setOffline();
     void setOnline( bool force = false );
 
-    void onStateChanged( Tomahawk::DBSyncConnectionState newstate, Tomahawk::DBSyncConnectionState oldstate, const QString& info );
+    void onStateChanged( Hatchet::DBSyncConnectionState newstate, Hatchet::DBSyncConnectionState oldstate, const QString& info );
 
-    void onPlaybackStarted( const Tomahawk::track_ptr& track, unsigned int duration );
-    void onPlaybackFinished( const Tomahawk::track_ptr& track, const Tomahawk::PlaybackLog& log );
+    void onPlaybackStarted( const Hatchet::track_ptr& track, unsigned int duration );
+    void onPlaybackFinished( const Hatchet::track_ptr& track, const Hatchet::PlaybackLog& log );
     void trackTimerFired();
 
     void executeCommands();

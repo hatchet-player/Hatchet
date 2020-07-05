@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013,      Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef DATABASECOMMAND_H
@@ -27,7 +27,7 @@
 #include "DllMacro.h"
 #include "Typedefs.h"
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 class DatabaseCommandPrivate;
@@ -46,7 +46,7 @@ public:
     };
 
     explicit DatabaseCommand( QObject* parent = nullptr );
-    explicit DatabaseCommand( const Tomahawk::source_ptr& src, QObject* parent = nullptr );
+    explicit DatabaseCommand( const Hatchet::source_ptr& src, QObject* parent = nullptr );
 
     DatabaseCommand( const DatabaseCommand &other ); //needed for QMetaType
 
@@ -67,8 +67,8 @@ public:
     void postCommit() { postCommitHook(); emitCommitted(); }
     virtual void postCommitHook(){}
 
-    void setSource( const Tomahawk::source_ptr& s );
-    const Tomahawk::source_ptr& source() const;
+    void setSource( const Hatchet::source_ptr& s );
+    const Hatchet::source_ptr& source() const;
 
     virtual bool loggable() const { return false; }
     virtual bool groupable() const { return false; }
@@ -85,18 +85,18 @@ public:
     void emitCommitted();
     void emitRunning();
 
-    QWeakPointer< Tomahawk::DatabaseCommand > weakRef() const;
-    void setWeakRef( QWeakPointer< Tomahawk::DatabaseCommand > weakRef );
+    QWeakPointer< Hatchet::DatabaseCommand > weakRef() const;
+    void setWeakRef( QWeakPointer< Hatchet::DatabaseCommand > weakRef );
 
 signals:
     void running();
-    void running( const Tomahawk::dbcmd_ptr& );
+    void running( const Hatchet::dbcmd_ptr& );
 
     void finished();
-    void finished( const Tomahawk::dbcmd_ptr& );
+    void finished( const Hatchet::dbcmd_ptr& );
 
     void committed();
-    void committed( const Tomahawk::dbcmd_ptr& );
+    void committed( const Hatchet::dbcmd_ptr& );
 protected:
     explicit DatabaseCommand( QObject* parent, DatabaseCommandPrivate* d );
 
@@ -108,6 +108,6 @@ private:
 
 }
 
-Q_DECLARE_METATYPE( Tomahawk::DatabaseCommand )
+Q_DECLARE_METATYPE( Hatchet::DatabaseCommand )
 
 #endif // DATABASECOMMAND_H

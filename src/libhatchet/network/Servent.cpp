@@ -1,22 +1,22 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *   Copyright 2013-2014, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "Servent_p.h"
@@ -33,7 +33,7 @@
 #include "sip/SipPlugin.h"
 #include "utils/Closure.h"
 #include "utils/Json.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
 #include "utils/NetworkAccessManager.h"
 #include "utils/NetworkReply.h"
@@ -62,10 +62,10 @@ Q_DECLARE_METATYPE( sipConnectionPair )
 Q_DECLARE_METATYPE( QList< SipInfo > )
 Q_DECLARE_METATYPE( Connection* )
 Q_DECLARE_METATYPE( QTcpSocketExtra* )
-Q_DECLARE_METATYPE( Tomahawk::peerinfo_ptr )
+Q_DECLARE_METATYPE( Hatchet::peerinfo_ptr )
 
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 Servent* Servent::s_instance = 0;
 
@@ -91,7 +91,7 @@ Servent::Servent( QObject* parent )
                                          std::placeholders::_1,
                                          std::placeholders::_2,
                                          std::placeholders::_3 );
-    Tomahawk::UrlHandler::registerIODeviceFactory( "servent", fac );
+    Hatchet::UrlHandler::registerIODeviceFactory( "servent", fac );
 }
 
 
@@ -114,7 +114,7 @@ Servent::~Servent()
 
 
 bool
-Servent::startListening( QHostAddress ha, bool upnp, int port, Tomahawk::Network::ExternalAddress::Mode mode, int defaultPort, bool autoDetectExternalIp, const QString& externalHost, int externalPort )
+Servent::startListening( QHostAddress ha, bool upnp, int port, Hatchet::Network::ExternalAddress::Mode mode, int defaultPort, bool autoDetectExternalIp, const QString& externalHost, int externalPort )
 {
     Q_D( Servent );
 
@@ -163,11 +163,11 @@ Servent::startListening( QHostAddress ha, bool upnp, int port, Tomahawk::Network
 
     switch ( mode )
     {
-        case Tomahawk::Network::ExternalAddress::Static:
+        case Hatchet::Network::ExternalAddress::Static:
             d->externalPort = externalPort;
             if ( autoDetectExternalIp )
             {
-                QNetworkReply* reply = Tomahawk::Utils::nam()->get( QNetworkRequest( QUrl( "http://toma.hk/?stat=1" ) ) );
+                QNetworkReply* reply = Hatchet::Utils::nam()->get( QNetworkRequest( QUrl( "http://toma.hk/?stat=1" ) ) );
                 connect( reply, SIGNAL( finished() ), SLOT( ipDetected() ) );
                 // Not emitting ready here as we are not done.
             }
@@ -180,13 +180,13 @@ Servent::startListening( QHostAddress ha, bool upnp, int port, Tomahawk::Network
             }
             break;
 
-        case Tomahawk::Network::ExternalAddress::Lan:
+        case Hatchet::Network::ExternalAddress::Lan:
             // Nothing has to be done here.
             d->ready = true;
             emit ready();
             break;
 
-        case Tomahawk::Network::ExternalAddress::Upnp:
+        case Hatchet::Network::ExternalAddress::Upnp:
             if ( upnp )
             {
                 // upnp could be turned off on the cli with --noupnp
@@ -205,8 +205,8 @@ Servent::startListening( QHostAddress ha, bool upnp, int port, Tomahawk::Network
             break;
     }
 
-    connect( ACLRegistry::instance(), SIGNAL( aclResult( QString, QString, Tomahawk::ACLStatus::Type ) ),
-             this, SLOT( checkACLResult( QString, QString, Tomahawk::ACLStatus::Type ) ),
+    connect( ACLRegistry::instance(), SIGNAL( aclResult( QString, QString, Hatchet::ACLStatus::Type ) ),
+             this, SLOT( checkACLResult( QString, QString, Hatchet::ACLStatus::Type ) ),
              Qt::QueuedConnection );
 
     return true;
@@ -460,9 +460,9 @@ Servent::queueForAclResult( const QString& username, const QSet<peerinfo_ptr>& p
 
     if ( !d_func()->queuedForACLResult.contains( username ) )
     {
-        d_func()->queuedForACLResult[username] = QMap<QString, QSet<Tomahawk::peerinfo_ptr> >();
+        d_func()->queuedForACLResult[username] = QMap<QString, QSet<Hatchet::peerinfo_ptr> >();
     }
-    d_func()->queuedForACLResult[username][ (*peerInfos.begin())->nodeId() ] = QSet<Tomahawk::peerinfo_ptr>( peerInfos );
+    d_func()->queuedForACLResult[username][ (*peerInfos.begin())->nodeId() ] = QSet<Hatchet::peerinfo_ptr>( peerInfos );
 }
 
 
@@ -486,7 +486,7 @@ Servent::getSipInfoForOldVersions( const QList<SipInfo>& sipInfos )
 
 
 void
-Servent::registerPeer( const Tomahawk::peerinfo_ptr& peerInfo )
+Servent::registerPeer( const Hatchet::peerinfo_ptr& peerInfo )
 {
     if ( peerInfo->hasControlConnection() )
     {
@@ -501,7 +501,7 @@ Servent::registerPeer( const Tomahawk::peerinfo_ptr& peerInfo )
         return;
     }
 
-    if ( peerInfo->type() == Tomahawk::PeerInfo::Local )
+    if ( peerInfo->type() == Hatchet::PeerInfo::Local )
     {
         peerInfoDebug(peerInfo) << "we need to establish the connection now... thinking";
         if ( !connectedToSession( peerInfo->nodeId() ) )
@@ -534,7 +534,7 @@ Servent::registerPeer( const Tomahawk::peerinfo_ptr& peerInfo )
         // The offer should be removed after some time or we will build up a heap of unused PeerInfos
         registerLazyOffer( key, peerInfo, nodeid, sipInfos.length() * 1.5 * CONNECT_TIMEOUT );
         // SipInfos were single-value before 0.7.100
-        if ( !peerInfo->versionString().isEmpty() && TomahawkUtils::compareVersionStrings( peerInfo->versionString().split(' ').last(), "0.7.100" ) < 0)
+        if ( !peerInfo->versionString().isEmpty() && HatchetUtils::compareVersionStrings( peerInfo->versionString().split(' ').last(), "0.7.100" ) < 0)
         {
             SipInfo info = getSipInfoForOldVersions( sipInfos );
             peerInfo->sendLocalSipInfos( QList<SipInfo>() << info );
@@ -553,7 +553,7 @@ Servent::registerPeer( const Tomahawk::peerinfo_ptr& peerInfo )
 void
 Servent::onSipInfoChanged()
 {
-    Tomahawk::PeerInfo* peerInfo = qobject_cast< Tomahawk::PeerInfo* >( sender() );
+    Hatchet::PeerInfo* peerInfo = qobject_cast< Hatchet::PeerInfo* >( sender() );
 
     if ( !peerInfo )
         return;
@@ -563,7 +563,7 @@ Servent::onSipInfoChanged()
 
 
 void
-Servent::handleSipInfo( const Tomahawk::peerinfo_ptr& peerInfo )
+Servent::handleSipInfo( const Hatchet::peerinfo_ptr& peerInfo )
 {
     // We do not have received the initial SipInfo for this client yet, so wait for it.
     // Each client will have at least one non-visible SipInfo
@@ -636,7 +636,7 @@ Servent::readyRead()
     ControlConnection* cc = 0;
     bool ok;
     QString key, conntype, nodeid, controlid;
-    QVariantMap m = TomahawkUtils::parseJson( sock.data()->_msg->payload(), &ok ).toMap();
+    QVariantMap m = HatchetUtils::parseJson( sock.data()->_msg->payload(), &ok ).toMap();
     if ( !ok )
     {
         tDebug() << "Invalid JSON on new connection, aborting";
@@ -799,7 +799,7 @@ Servent::createParallelConnection( Connection* orig_conn, Connection* new_conn, 
         m.insert( "controlid", Database::instance()->impl()->dbid() );
 
         if (orig_conn) {
-            orig_conn->sendMsg( Msg::factory( TomahawkUtils::toJson( m ), Msg::JSON ) );
+            orig_conn->sendMsg( Msg::factory( HatchetUtils::toJson( m ), Msg::JSON ) );
         }
     }
 }
@@ -885,13 +885,13 @@ Servent::initiateConnection( const SipInfo& sipInfo, Connection* conn )
     {
         if ( sipInfo.host() == ha.toString() && sipInfo.port() == d_func()->port )
         {
-            tLog( LOGVERBOSE ) << Q_FUNC_INFO << "Tomahawk won't try to connect to" << sipInfo.host() << ":" << sipInfo.port() << ": same IP as ourselves.";
+            tLog( LOGVERBOSE ) << Q_FUNC_INFO << "Hatchet won't try to connect to" << sipInfo.host() << ":" << sipInfo.port() << ": same IP as ourselves.";
             return;
         }
     }
     if ( sipInfo.host() == d_func()->externalHostname && sipInfo.port() == d_func()->port )
     {
-        tLog( LOGVERBOSE ) << Q_FUNC_INFO << "Tomahawk won't try to connect to" << sipInfo.host() << ":" << sipInfo.port() << ": same IP as ourselves.";
+        tLog( LOGVERBOSE ) << Q_FUNC_INFO << "Hatchet won't try to connect to" << sipInfo.host() << ":" << sipInfo.port() << ": same IP as ourselves.";
         return;
     }
 
@@ -953,7 +953,7 @@ Servent::socketError( QAbstractSocket::SocketError e )
 
 
 void
-Servent::checkACLResult( const QString& nodeid, const QString& username, Tomahawk::ACLStatus::Type peerStatus )
+Servent::checkACLResult( const QString& nodeid, const QString& username, Hatchet::ACLStatus::Type peerStatus )
 {
     Q_D( Servent );
 
@@ -967,10 +967,10 @@ Servent::checkACLResult( const QString& nodeid, const QString& username, Tomahaw
     }
 
     tDebug( LOGVERBOSE ) << Q_FUNC_INFO << QString( "ACL status for user %1 is" ).arg( username ) << peerStatus;
-    QSet<Tomahawk::peerinfo_ptr> peerInfos = d->queuedForACLResult.value( username ).value( nodeid );
-    if ( peerStatus == Tomahawk::ACLStatus::Stream )
+    QSet<Hatchet::peerinfo_ptr> peerInfos = d->queuedForACLResult.value( username ).value( nodeid );
+    if ( peerStatus == Hatchet::ACLStatus::Stream )
     {
-        foreach ( const Tomahawk::peerinfo_ptr& peerInfo, peerInfos )
+        foreach ( const Hatchet::peerinfo_ptr& peerInfo, peerInfos )
         {
             registerPeer( peerInfo );
         }
@@ -991,7 +991,7 @@ Servent::ipDetected()
     {
         bool ok;
         // We are called when the NetworkReply has finished so we should have all data available.
-        const QVariantMap res = TomahawkUtils::parseJson( reply->readAll(), &ok ).toMap();
+        const QVariantMap res = HatchetUtils::parseJson( reply->readAll(), &ok ).toMap();
         if ( !ok )
         {
             tLog() << Q_FUNC_INFO << "Failed parsing ip-autodetection response";
@@ -1163,7 +1163,7 @@ Servent::claimOffer( ControlConnection* cc, const QString &nodeid, const QString
             ControlConnection* conn = new ControlConnection( this );
             conn->setName( peer.toString() );
 
-            Tomahawk::Accounts::Account* account = Tomahawk::Accounts::AccountManager::instance()->zeroconfAccount();
+            Hatchet::Accounts::Account* account = Hatchet::Accounts::AccountManager::instance()->zeroconfAccount();
 
             // if we get this connection the account should exist and be enabled
             Q_ASSERT( account );
@@ -1171,7 +1171,7 @@ Servent::claimOffer( ControlConnection* cc, const QString &nodeid, const QString
 
             // this is terrible, actually there should be a way to let this be created by the zeroconf plugin
             // because this way we rely on the ip being used as id in two totally different parts of the code
-            Tomahawk::peerinfo_ptr peerInfo = Tomahawk::PeerInfo::get( account->sipPlugin(), peer.toString(), Tomahawk::PeerInfo::AutoCreate );
+            Hatchet::peerinfo_ptr peerInfo = Hatchet::PeerInfo::get( account->sipPlugin(), peer.toString(), Hatchet::PeerInfo::AutoCreate );
             peerInfo->setContactId( peer.toString() );
             peerInfoDebug( peerInfo );
             conn->addPeerInfo( peerInfo );
@@ -1246,7 +1246,7 @@ Servent::claimOffer( ControlConnection* cc, const QString &nodeid, const QString
 
 
 void
-Servent::remoteIODeviceFactory( const Tomahawk::result_ptr& result, const QString& url,
+Servent::remoteIODeviceFactory( const Hatchet::result_ptr& result, const QString& url,
                                 std::function< void ( const QString&, QSharedPointer< QIODevice >& ) > callback )
 {
     QSharedPointer<QIODevice> sp;

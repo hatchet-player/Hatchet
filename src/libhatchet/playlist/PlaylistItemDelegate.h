@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef PLAYLISTITEMDELEGATE_H
@@ -34,7 +34,7 @@ class TrackView;
 
 class QComboBox;
 
-namespace Tomahawk {
+namespace Hatchet {
     class PixmapDelegateFader;
 }
 
@@ -80,7 +80,7 @@ protected:
                           const QStyleOptionViewItem& option,
                           const QRect& rect,
                           const QString& text,
-                          const QList< Tomahawk::source_ptr >& sources,
+                          const QList< Hatchet::source_ptr >& sources,
                           const QModelIndex& index ) const;
     void drawRectForBox( QPainter* painter, const QRect& rect ) const;
     void drawAvatarsForBox( QPainter* painter,
@@ -88,7 +88,7 @@ protected:
                             int avatarSize,
                             int avatarMargin,
                             int count,
-                            const QList< Tomahawk::source_ptr >& sources,
+                            const QList< Hatchet::source_ptr >& sources,
                             const QModelIndex& index ) const;
     void drawRichText( QPainter* painter, const QStyleOptionViewItem& option, const QRect& rect, int flags, QTextDocument& text ) const;
 
@@ -111,12 +111,12 @@ protected slots:
     virtual void onPlaybackChange();
 
 private:
-    mutable QHash< QPersistentModelIndex, QSharedPointer< Tomahawk::PixmapDelegateFader > > m_pixmaps;
+    mutable QHash< QPersistentModelIndex, QSharedPointer< Hatchet::PixmapDelegateFader > > m_pixmaps;
     mutable QHash< QPersistentModelIndex, QRect > m_infoButtonRects;
     mutable QHash< QPersistentModelIndex, QRect > m_loveButtonRects;
     mutable QHash< QPersistentModelIndex, QRect > m_downloadDropDownRects;
     mutable QHash< QPersistentModelIndex, QRect > m_artistNameRects;
-    mutable QHash< QPersistentModelIndex, QHash< Tomahawk::source_ptr, QRect > > m_avatarBoxRects;
+    mutable QHash< QPersistentModelIndex, QHash< Hatchet::source_ptr, QRect > > m_avatarBoxRects;
     QPersistentModelIndex m_hoveringOver;
     QPersistentModelIndex m_hoveringOverArtist;
     QPersistentModelIndex m_hoveringOverDownloadButton;

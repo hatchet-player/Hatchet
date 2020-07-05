@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2014, Dominik Schmidt <domme@tomahawk-player.org>
  *   Copyright 2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ScriptInfoPlugin_p.h"
@@ -29,7 +29,7 @@
 #include "../utils/NetworkAccessManager.h"
 #include "../utils/NetworkReply.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 ScriptInfoPlugin::ScriptInfoPlugin( const scriptobject_ptr& scriptObject, const QString& name )
     : d_ptr( new ScriptInfoPluginPrivate( this ) )
@@ -66,13 +66,13 @@ ScriptInfoPlugin::init()
 
 
 void
-ScriptInfoPlugin::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
+ScriptInfoPlugin::getInfo( Hatchet::InfoSystem::InfoRequestData requestData )
 {
     Q_D( ScriptInfoPlugin );
 
     QVariantMap arguments;
     arguments[ "type" ] = requestData.type;
-    arguments[ "data" ] = convertInfoStringHashToQVariantMap( requestData.input.value<Tomahawk::InfoSystem::InfoStringHash>() );
+    arguments[ "data" ] = convertInfoStringHashToQVariantMap( requestData.input.value<Hatchet::InfoSystem::InfoStringHash>() );
 
     ScriptJob* job = m_scriptObject->invoke( "_getInfo", arguments );
     connect( job, SIGNAL( done( QVariantMap ) ), SLOT( onGetInfoRequestDone( QVariantMap ) ) );
@@ -83,7 +83,7 @@ ScriptInfoPlugin::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
 
 
 void
-ScriptInfoPlugin::pushInfo( Tomahawk::InfoSystem::InfoPushData pushData )
+ScriptInfoPlugin::pushInfo( Hatchet::InfoSystem::InfoPushData pushData )
 {
     QVariantMap arguments;
     arguments[ "type" ] = pushData.type;
@@ -96,7 +96,7 @@ ScriptInfoPlugin::pushInfo( Tomahawk::InfoSystem::InfoPushData pushData )
 
 
 void
-ScriptInfoPlugin::notInCacheSlot( Tomahawk::InfoSystem::InfoStringHash criteria, Tomahawk::InfoSystem::InfoRequestData requestData )
+ScriptInfoPlugin::notInCacheSlot( Hatchet::InfoSystem::InfoStringHash criteria, Hatchet::InfoSystem::InfoRequestData requestData )
 {
     Q_D( ScriptInfoPlugin );
 
@@ -145,11 +145,11 @@ ScriptInfoPlugin::onNotInCacheRequestDone( const QVariantMap& result )
     sender()->deleteLater();
 
     // retrieve requestData from cache and delete it
-    Tomahawk::InfoSystem::InfoRequestData requestData = d->requestDataCache[ job->id().toInt() ];
+    Hatchet::InfoSystem::InfoRequestData requestData = d->requestDataCache[ job->id().toInt() ];
     d->requestDataCache.remove( job->id().toInt() );
 
     // retrieve criteria from cache and delete it
-    Tomahawk::InfoSystem::InfoStringHash criteria = d->criteriaCache[ job->id().toInt() ];
+    Hatchet::InfoSystem::InfoStringHash criteria = d->criteriaCache[ job->id().toInt() ];
     d->criteriaCache.remove( job->id().toInt() );
 
     QVariantMap resultData = result[ "data" ].toMap();
@@ -158,8 +158,8 @@ ScriptInfoPlugin::onNotInCacheRequestDone( const QVariantMap& result )
         case InfoSystem::InfoAlbumCoverArt:
         {
             QNetworkRequest req( resultData[ "url" ].toUrl() );
-            NetworkReply* reply = new NetworkReply( Tomahawk::Utils::nam()->get( req ) );
-            reply->setProperty( "requestData", QVariant::fromValue< Tomahawk::InfoSystem::InfoRequestData >( requestData ) );
+            NetworkReply* reply = new NetworkReply( Hatchet::Utils::nam()->get( req ) );
+            reply->setProperty( "requestData", QVariant::fromValue< Hatchet::InfoSystem::InfoRequestData >( requestData ) );
             reply->setProperty( "criteria", convertInfoStringHashToQVariantMap( criteria ) );
             reply->setProperty( "maxAge", result[ "maxAge" ] );
 
@@ -183,8 +183,8 @@ ScriptInfoPlugin::onCoverArtReturned()
     NetworkReply* reply = qobject_cast< NetworkReply* >( sender() );
     reply->deleteLater();
 
-    Tomahawk::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
-    Tomahawk::InfoSystem::InfoStringHash criteria = convertQVariantMapToInfoStringHash( reply->property( "criteria" ).toMap() );
+    Hatchet::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
+    Hatchet::InfoSystem::InfoStringHash criteria = convertQVariantMapToInfoStringHash( reply->property( "criteria" ).toMap() );
 
     QByteArray ba = reply->reply()->readAll();
     if ( ba.isNull() || ba.isEmpty() )
@@ -203,19 +203,19 @@ ScriptInfoPlugin::onCoverArtReturned()
 }
 
 
-QSet< Tomahawk::InfoSystem::InfoType >
+QSet< Hatchet::InfoSystem::InfoType >
 ScriptInfoPlugin::parseSupportedTypes( const QVariant& variant )
 {
     QVariantList list = variant.toList();
 
-    QSet < Tomahawk::InfoSystem::InfoType > results;
+    QSet < Hatchet::InfoSystem::InfoType > results;
     foreach( const QVariant& type, list )
     {
         bool ok;
         int intType = type.toInt( &ok );
         if ( ok )
         {
-            results.insert( static_cast< Tomahawk::InfoSystem::InfoType >( intType ) );
+            results.insert( static_cast< Hatchet::InfoSystem::InfoType >( intType ) );
         }
     }
 
@@ -233,9 +233,9 @@ ScriptInfoPlugin::serializeQVariantMap( const QVariantMap& map )
         QVariant currentVariant = localMap[ key ];
 
         // convert InfoStringHash to QVariantMap
-        if( currentVariant.canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+        if( currentVariant.canConvert< Hatchet::InfoSystem::InfoStringHash >() )
         {
-            Tomahawk::InfoSystem::InfoStringHash currentHash = currentVariant.value< Tomahawk::InfoSystem::InfoStringHash >();
+            Hatchet::InfoSystem::InfoStringHash currentHash = currentVariant.value< Hatchet::InfoSystem::InfoStringHash >();
             localMap[ key ] = convertInfoStringHashToQVariantMap( currentHash );
         }
     }
@@ -245,7 +245,7 @@ ScriptInfoPlugin::serializeQVariantMap( const QVariantMap& map )
 
 
 QVariantMap
-ScriptInfoPlugin::convertInfoStringHashToQVariantMap( const Tomahawk::InfoSystem::InfoStringHash& hash )
+ScriptInfoPlugin::convertInfoStringHashToQVariantMap( const Hatchet::InfoSystem::InfoStringHash& hash )
 {
     QVariantMap map;
 
@@ -258,10 +258,10 @@ ScriptInfoPlugin::convertInfoStringHashToQVariantMap( const Tomahawk::InfoSystem
 }
 
 
-Tomahawk::InfoSystem::InfoStringHash
+Hatchet::InfoSystem::InfoStringHash
 ScriptInfoPlugin::convertQVariantMapToInfoStringHash( const QVariantMap& map )
 {
-    Tomahawk::InfoSystem::InfoStringHash hash;
+    Hatchet::InfoSystem::InfoStringHash hash;
 
     foreach( const QString& key, map.keys() )
     {

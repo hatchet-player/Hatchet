@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2016, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "SeekSlider.h"
@@ -23,14 +23,14 @@
 #include <QtGui/QMouseEvent>
 #include <QtCore/QTimeLine>
 
-#include "utils/TomahawkUtils.h"
-#include "utils/TomahawkStyle.h"
+#include "utils/HatchetUtils.h"
+#include "utils/HatchetStyle.h"
 #include "utils/Logger.h"
 
 
 SeekSlider::SeekSlider( QWidget* parent )
     : QSlider( parent )
-    , TomahawkUtils::DpiScaler( this )
+    , HatchetUtils::DpiScaler( this )
     , m_timeLine( 0 )
     , m_acceptWheelEvents( true )
     , m_isScrubbing( false )
@@ -47,7 +47,7 @@ SeekSlider::SeekSlider( QWidget* parent )
                    "}" )
                    .arg( scaledX( 7 ) /*margin*/ )
                    .arg( 0 /*border*/ )
-                   .arg( /*color*/ TomahawkStyle::SEEKSLIDER_FOREGROUND.name() ) +
+                   .arg( /*color*/ HatchetStyle::SEEKSLIDER_FOREGROUND.name() ) +
                    QString(
                    "QSlider::handle:horizontal {"
                    "margin-bottom: -%1px; margin-top: -%1px;"

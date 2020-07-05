@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#  This file is part of Tomahawk.
+#  This file is part of Hatchet.
 #  It was inspired in large part by the macdeploy script in Clementine.
 #
 #  Clementine is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@ import commands
 import sys
 import glob
 
-TARGET_NAME="tomahawk"
+TARGET_NAME="hatchet"
 
 FRAMEWORK_SEARCH_PATH=[
     '/Library/Frameworks',
@@ -204,7 +204,7 @@ SNORE_PLUGINS = [
     'libsnore_backend_osxnotificationcenter.so',
 ]
 
-TOMAHAWK_PLUGINS = [
+HATCHET_PLUGINS = [
   'lib%s_account_xmpp.dylib' % TARGET_NAME,
   'lib%s_account_google.so' % TARGET_NAME,
   'lib%s_account_zeroconf.so' % TARGET_NAME,
@@ -578,7 +578,7 @@ FixBinary(binary)
 for plugin in VLC_PLUGINS:
   FixVLCPlugin(FindVLCPlugin(plugin))
 
-for plugin in TOMAHAWK_PLUGINS:
+for plugin in HATCHET_PLUGINS:
   FixPlugin(plugin, '../MacOS')
 
 for plugin in SNORE_PLUGINS:

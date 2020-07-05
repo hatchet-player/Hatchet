@@ -1,31 +1,31 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2012,      Leo Franchi   <lfranchi@kde.org>
  *   Copyright 2012,      Teo Mrnjavac   <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ActionCollection.h"
 
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "Source.h"
 #include "audio/AudioEngine.h"
 #include "utils/ImageRegistry.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
 
 #include <QCoreApplication>
@@ -70,7 +70,7 @@ ActionCollection::initActions()
     realtimeFollowingAlong->setCheckable( true );
     m_actionCollection[ "realtimeFollowingAlong" ] = realtimeFollowingAlong;
 
-    bool isPublic = TomahawkSettings::instance()->privateListeningMode() == TomahawkSettings::PublicListening;
+    bool isPublic = HatchetSettings::instance()->privateListeningMode() == HatchetSettings::PublicListening;
     m_actionCollection[ "togglePrivacy" ] = new QAction( tr( "&Listen Privately" ) , this );
     m_actionCollection[ "togglePrivacy" ]->setCheckable( true );
     m_actionCollection[ "togglePrivacy" ]->setChecked( !isPublic );
@@ -135,8 +135,8 @@ ActionCollection::initActions()
 #endif
     m_actionCollection[ "diagnostics" ] = new QAction( tr( "Diagnostics..." ), this );
     m_actionCollection[ "diagnostics" ]->setMenuRole( QAction::ApplicationSpecificRole );
-    m_actionCollection[ "aboutTomahawk" ] = new QAction( tr( "About &%applicationName..." ), this );
-    m_actionCollection[ "aboutTomahawk" ]->setMenuRole( QAction::AboutRole );
+    m_actionCollection[ "aboutHatchet" ] = new QAction( tr( "About &%applicationName..." ), this );
+    m_actionCollection[ "aboutHatchet" ]->setMenuRole( QAction::AboutRole );
     m_actionCollection[ "legalInfo" ] = new QAction( tr( "&Legal Information..." ), this );
     m_actionCollection[ "legalInfo" ]->setMenuRole( QAction::ApplicationSpecificRole );
     m_actionCollection[ "openLogfile" ] = new QAction( tr( "&View Logfile" ), this );
@@ -157,10 +157,10 @@ QMenuBar*
 ActionCollection::createMenuBar( QWidget *parent )
 {
     QMenuBar* menuBar = new QMenuBar( parent );
-    menuBar->setFont( TomahawkUtils::systemFont() );
+    menuBar->setFont( HatchetUtils::systemFont() );
 
     QMenu* controlsMenu = new QMenu( tr( "&Controls" ), menuBar );
-    controlsMenu->setFont( TomahawkUtils::systemFont() );
+    controlsMenu->setFont( HatchetUtils::systemFont() );
     controlsMenu->addAction( m_actionCollection[ "playPause" ] );
     controlsMenu->addAction( m_actionCollection[ "previousTrack" ] );
     controlsMenu->addAction( m_actionCollection[ "nextTrack" ] );
@@ -178,14 +178,14 @@ ActionCollection::createMenuBar( QWidget *parent )
     controlsMenu->addAction( m_actionCollection[ "quit" ] );
 
     QMenu* settingsMenu = new QMenu( tr( "&Settings" ), menuBar );
-    settingsMenu->setFont( TomahawkUtils::systemFont() );
+    settingsMenu->setFont( HatchetUtils::systemFont() );
 #ifndef Q_OS_MAC
     settingsMenu->addAction( m_actionCollection[ "toggleMenuBar" ] );
 #endif
     settingsMenu->addAction( m_actionCollection[ "preferences" ] );
 
     QMenu* helpMenu = new QMenu( tr( "&Help" ), menuBar );
-    helpMenu->setFont( TomahawkUtils::systemFont() );
+    helpMenu->setFont( HatchetUtils::systemFont() );
     helpMenu->addAction( m_actionCollection[ "diagnostics" ] );
     helpMenu->addAction( m_actionCollection[ "openLogfile" ] );
     helpMenu->addAction( m_actionCollection[ "legalInfo" ] );
@@ -194,9 +194,9 @@ ActionCollection::createMenuBar( QWidget *parent )
     helpMenu->addAction( m_actionCollection["helpTranslate"] );
     helpMenu->addSeparator();
     QMenu* whatsNew = helpMenu->addMenu( ImageRegistry::instance()->icon( RESPATH "images/whatsnew.svg" ), tr( "What's New in ..." ) );
-    whatsNew->setFont( TomahawkUtils::systemFont() );
+    whatsNew->setFont( HatchetUtils::systemFont() );
     whatsNew->addAction( m_actionCollection[ "whatsnew_0_8" ] );
-    helpMenu->addAction( m_actionCollection[ "aboutTomahawk" ] );
+    helpMenu->addAction( m_actionCollection[ "aboutHatchet" ] );
 
     // Setup update check
 #ifndef Q_OS_MAC
@@ -220,7 +220,7 @@ ActionCollection::createMenuBar( QWidget *parent )
 
 #if defined( Q_OS_MAC )
     QMenu* windowMenu = new QMenu( tr( "&Window" ), menuBar );
-    windowMenu->setFont( TomahawkUtils::systemFont() );
+    windowMenu->setFont( HatchetUtils::systemFont() );
     windowMenu->addAction( m_actionCollection[ "minimize" ] );
     windowMenu->addAction( m_actionCollection[ "zoom" ] );
     windowMenu->addAction( m_actionCollection[ "fullscreen" ] );
@@ -237,7 +237,7 @@ QMenu*
 ActionCollection::createCompactMenu( QWidget* parent )
 {
     QMenu* compactMenu = new QMenu( tr( "Main Menu" ), parent );
-    compactMenu->setFont( TomahawkUtils::systemFont() );
+    compactMenu->setFont( HatchetUtils::systemFont() );
 
     compactMenu->addAction( m_actionCollection[ "playPause" ] );
     compactMenu->addAction( m_actionCollection[ "previousTrack" ] );
@@ -265,7 +265,7 @@ ActionCollection::createCompactMenu( QWidget* parent )
     compactMenu->addAction( m_actionCollection[ "legalInfo" ] );
     QMenu* whatsNew = compactMenu->addMenu( ImageRegistry::instance()->icon( RESPATH "images/whatsnew.svg" ), tr( "What's New in ..." ) );
     whatsNew->addAction( m_actionCollection[ "whatsnew_0_8" ] );
-    compactMenu->addAction( m_actionCollection[ "aboutTomahawk" ] );
+    compactMenu->addAction( m_actionCollection[ "aboutHatchet" ] );
 
     // Setup update check
 #ifndef Q_OS_MAC
@@ -349,12 +349,12 @@ void
 ActionCollection::togglePrivateListeningMode()
 {
     tDebug() << Q_FUNC_INFO;
-    if ( TomahawkSettings::instance()->privateListeningMode() == TomahawkSettings::PublicListening )
-        TomahawkSettings::instance()->setPrivateListeningMode( TomahawkSettings::FullyPrivate );
+    if ( HatchetSettings::instance()->privateListeningMode() == HatchetSettings::PublicListening )
+        HatchetSettings::instance()->setPrivateListeningMode( HatchetSettings::FullyPrivate );
     else
-        TomahawkSettings::instance()->setPrivateListeningMode( TomahawkSettings::PublicListening );
+        HatchetSettings::instance()->setPrivateListeningMode( HatchetSettings::PublicListening );
 
-    bool isPublic = TomahawkSettings::instance()->privateListeningMode() == TomahawkSettings::PublicListening;
+    bool isPublic = HatchetSettings::instance()->privateListeningMode() == HatchetSettings::PublicListening;
     m_actionCollection[ "togglePrivacy" ]->setChecked( !isPublic );
 
     emit privacyModeChanged();

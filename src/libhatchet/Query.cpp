@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013,      Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "Query_p.h"
@@ -35,7 +35,7 @@
 #include <QDebug>
 #include <QCoreApplication>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 query_ptr
@@ -59,7 +59,7 @@ Query::get( const QString& artist, const QString& track, const QString& album, c
 
 
 query_ptr
-Query::get( const Tomahawk::track_ptr& track, const QID& qid )
+Query::get( const Hatchet::track_ptr& track, const QID& qid )
 {
     query_ptr q = query_ptr( new Query( track, qid, false ), &QObject::deleteLater );
     q->setWeakRef( q.toWeakRef() );
@@ -103,7 +103,7 @@ Query::Query( const track_ptr& track, const QID& qid, bool autoResolve )
         connect( Database::instance(), SIGNAL( indexReady() ), SLOT( refreshResults() ), Qt::QueuedConnection );
     }
 
-    connect( Pipeline::instance(), SIGNAL( resolverAdded( Tomahawk::Resolver* ) ), SLOT( onResolverAdded() ), Qt::QueuedConnection );
+    connect( Pipeline::instance(), SIGNAL( resolverAdded( Hatchet::Resolver* ) ), SLOT( onResolverAdded() ), Qt::QueuedConnection );
 }
 
 
@@ -176,14 +176,14 @@ Query::track() const
 
 
 void
-Query::addResults( const QList< Tomahawk::result_ptr >& newresults )
+Query::addResults( const QList< Hatchet::result_ptr >& newresults )
 {
     Q_D( Query );
     {
         QMutexLocker lock( &d->mutex );
 
 /*        const QStringList smt = AudioEngine::instance()->supportedMimeTypes();
-        foreach ( const Tomahawk::result_ptr& result, newresults )
+        foreach ( const Hatchet::result_ptr& result, newresults )
         {
             if ( !smt.contains( result->mimetype() ) )
             {
@@ -210,7 +210,7 @@ Query::addResults( const QList< Tomahawk::result_ptr >& newresults )
 
 
 void
-Query::addAlbums( const QList< Tomahawk::album_ptr >& newalbums )
+Query::addAlbums( const QList< Hatchet::album_ptr >& newalbums )
 {
     {
         Q_D( Query );
@@ -223,7 +223,7 @@ Query::addAlbums( const QList< Tomahawk::album_ptr >& newalbums )
 
 
 void
-Query::addArtists( const QList< Tomahawk::artist_ptr >& newartists )
+Query::addArtists( const QList< Hatchet::artist_ptr >& newartists )
 {
     {
         Q_D( Query );
@@ -267,7 +267,7 @@ Query::onResultStatusChanged()
 
 
 void
-Query::removeResult( const Tomahawk::result_ptr& result )
+Query::removeResult( const Hatchet::result_ptr& result )
 {
     {
         Q_D( Query );
@@ -466,14 +466,14 @@ Query::setPreferredResult( const result_ptr& result )
 
 
 void
-Query::setCurrentResolver( Tomahawk::Resolver* resolver )
+Query::setCurrentResolver( Hatchet::Resolver* resolver )
 {
     Q_D( Query );
     d->resolvers << resolver;
 }
 
 
-Tomahawk::Resolver*
+Hatchet::Resolver*
 Query::currentResolver() const
 {
     Q_D( const Query );
@@ -595,7 +595,7 @@ Query::checkResults()
 
 
 bool
-Query::equals( const Tomahawk::query_ptr& other, bool ignoreCase, bool ignoreAlbum ) const
+Query::equals( const Hatchet::query_ptr& other, bool ignoreCase, bool ignoreAlbum ) const
 {
     if ( !other )
         return false;
@@ -657,7 +657,7 @@ Query::score() const
 
 // TODO make clever (ft. featuring live (stuff) etc)
 float
-Query::howSimilar( const Tomahawk::result_ptr& r )
+Query::howSimilar( const Hatchet::result_ptr& r )
 {
     Q_D( Query );
     if (d->howSimilarCache.find(r->id()) != d->howSimilarCache.end())
@@ -693,8 +693,8 @@ Query::howSimilar( const Tomahawk::result_ptr& r )
     qAlbumname.remove(filterOutChars);
 
     // normal edit distance
-    const int artdist = TomahawkUtils::levenshtein( qArtistname, rArtistname );
-    const int trkdist = TomahawkUtils::levenshtein( qTrackname, rTrackname );
+    const int artdist = HatchetUtils::levenshtein( qArtistname, rArtistname );
+    const int trkdist = HatchetUtils::levenshtein( qTrackname, rTrackname );
 
     // max length of name
     const int mlart = qMax( qArtistname.length(), rArtistname.length() );
@@ -708,7 +708,7 @@ Query::howSimilar( const Tomahawk::result_ptr& r )
     float dcalb = 1.0;
     if ( !qAlbumname.isEmpty() )
     {
-        const int albdist = TomahawkUtils::levenshtein( qAlbumname, rAlbumname );
+        const int albdist = HatchetUtils::levenshtein( qAlbumname, rAlbumname );
         const int mlalb = qMax( qAlbumname.length(), rAlbumname.length() );
         dcalb = (float)( mlalb - albdist ) / mlalb;
     }
@@ -718,7 +718,7 @@ Query::howSimilar( const Tomahawk::result_ptr& r )
         const QString artistTrackname = DatabaseImpl::sortname( fullTextQuery() );
         const QString rArtistTrackname = DatabaseImpl::sortname( r->track()->artist() + " " + r->track()->track() );
 
-        const int atrdist = TomahawkUtils::levenshtein( artistTrackname, rArtistTrackname );
+        const int atrdist = HatchetUtils::levenshtein( artistTrackname, rArtistTrackname );
         const int mlatr = qMax( artistTrackname.length(), rArtistTrackname.length() );
         const float dcatr = (float)( mlatr - atrdist ) / mlatr;
 

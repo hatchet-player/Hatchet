@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef DATABASECOMMAND_LOADTRACKATTRIBUTES_H
@@ -28,14 +28,14 @@
 
 #include "DllMacro.h"
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 /**
  * \class DatabaseCommand_LoadTrackAttributes
  * \brief Database command used to load track attributes from the database.
  *
- * This Database command allows Tomahawk to load track attributes from
+ * This Database command allows Hatchet to load track attributes from
  * the local database.
  *
  */
@@ -46,12 +46,12 @@ Q_OBJECT
 public:
     /**
      * \brief Overloaded constructor for DatabaseCommand_LoadTrackAttributes.
-     * \param result A Tomahawk Query object.
+     * \param result A Hatchet Query object.
      * \param parent Parent class.
      *
      * Constructor which creates a new database command for loading all track attributes.
      */
-    explicit DatabaseCommand_LoadTrackAttributes( const Tomahawk::trackdata_ptr& track, QObject* parent = 0 )
+    explicit DatabaseCommand_LoadTrackAttributes( const Hatchet::trackdata_ptr& track, QObject* parent = 0 )
         : DatabaseCommand( parent ), m_track( track )
     {
         setSource( SourceList::instance()->getLocal() );
@@ -80,7 +80,7 @@ signals:
     void done();
 
 private:
-    Tomahawk::trackdata_ptr m_track;
+    Hatchet::trackdata_ptr m_track;
 };
 
 }

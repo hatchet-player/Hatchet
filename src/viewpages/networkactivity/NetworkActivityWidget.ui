@@ -81,7 +81,7 @@
           </widget>
          </item>
          <item>
-          <widget class="Tomahawk::Widgets::PlaylistWidget" name="playlistView">
+          <widget class="Hatchet::Widgets::PlaylistWidget" name="playlistView">
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
              <horstretch>0</horstretch>
@@ -149,7 +149,7 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1,0">
         <item>
-         <widget class="Tomahawk::Breadcrumb" name="breadCrumbLeft" native="true"/>
+         <widget class="Hatchet::Breadcrumb" name="breadCrumbLeft" native="true"/>
         </item>
         <item>
          <widget class="TrackView" name="tracksViewLeft">
@@ -199,12 +199,12 @@
    <header location="global">playlist/GridView.h</header>
   </customwidget>
   <customwidget>
-   <class>Tomahawk::Widgets::PlaylistWidget</class>
+   <class>Hatchet::Widgets::PlaylistWidget</class>
    <extends>QListWidget</extends>
-   <header>libtomahawk-widgets/PlaylistWidget.h</header>
+   <header>libhatchet-widgets/PlaylistWidget.h</header>
   </customwidget>
   <customwidget>
-   <class>Tomahawk::Breadcrumb</class>
+   <class>Hatchet::Breadcrumb</class>
    <extends>QWidget</extends>
    <header>widgets/Breadcrumb.h</header>
    <container>1</container>

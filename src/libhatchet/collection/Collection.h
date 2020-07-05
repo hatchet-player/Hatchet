@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -24,8 +24,8 @@
     then use artists() etc to get the data.
 */
 
-#ifndef TOMAHAWK_COLLECTION_H
-#define TOMAHAWK_COLLECTION_H
+#ifndef HATCHET_COLLECTION_H
+#define HATCHET_COLLECTION_H
 
 #include "Typedefs.h"
 #include "Playlist.h"
@@ -43,7 +43,7 @@
 #include <QSet>
 
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 class DLLEXPORT Collection : public Resolver
@@ -89,27 +89,27 @@ public:
     virtual void loadAutoPlaylists();
     virtual void loadStations();
 
-    virtual Tomahawk::playlist_ptr playlist( const QString& guid );
-    virtual Tomahawk::dynplaylist_ptr autoPlaylist( const QString& guid );
-    virtual Tomahawk::dynplaylist_ptr station( const QString& guid );
+    virtual Hatchet::playlist_ptr playlist( const QString& guid );
+    virtual Hatchet::dynplaylist_ptr autoPlaylist( const QString& guid );
+    virtual Hatchet::dynplaylist_ptr station( const QString& guid );
 
-    virtual void addPlaylist( const Tomahawk::playlist_ptr& p );
-    virtual void deletePlaylist( const Tomahawk::playlist_ptr& p );
+    virtual void addPlaylist( const Hatchet::playlist_ptr& p );
+    virtual void deletePlaylist( const Hatchet::playlist_ptr& p );
 
-    virtual void addAutoPlaylist( const Tomahawk::dynplaylist_ptr& p );
-    virtual void deleteAutoPlaylist( const Tomahawk::dynplaylist_ptr& p );
+    virtual void addAutoPlaylist( const Hatchet::dynplaylist_ptr& p );
+    virtual void deleteAutoPlaylist( const Hatchet::dynplaylist_ptr& p );
 
-    virtual void addStation( const Tomahawk::dynplaylist_ptr& s );
-    virtual void deleteStation( const Tomahawk::dynplaylist_ptr& s );
+    virtual void addStation( const Hatchet::dynplaylist_ptr& s );
+    virtual void deleteStation( const Hatchet::dynplaylist_ptr& s );
 
-    virtual QList< Tomahawk::playlist_ptr > playlists() { return m_playlists.values(); }
-    virtual QList< Tomahawk::dynplaylist_ptr > autoPlaylists() { return m_autoplaylists.values(); }
-    virtual QList< Tomahawk::dynplaylist_ptr > stations() { return m_stations.values(); }
+    virtual QList< Hatchet::playlist_ptr > playlists() { return m_playlists.values(); }
+    virtual QList< Hatchet::dynplaylist_ptr > autoPlaylists() { return m_autoplaylists.values(); }
+    virtual QList< Hatchet::dynplaylist_ptr > stations() { return m_stations.values(); }
 
     // Async requests. Emit artists/albums/tracksResult in subclasses when finished.
-    virtual Tomahawk::ArtistsRequest* requestArtists() = 0;
-    virtual Tomahawk::AlbumsRequest* requestAlbums( const Tomahawk::artist_ptr& artist ) = 0;
-    virtual Tomahawk::TracksRequest* requestTracks( const Tomahawk::album_ptr& album ) = 0;
+    virtual Hatchet::ArtistsRequest* requestArtists() = 0;
+    virtual Hatchet::AlbumsRequest* requestAlbums( const Hatchet::artist_ptr& artist ) = 0;
+    virtual Hatchet::TracksRequest* requestTracks( const Hatchet::album_ptr& album ) = 0;
 
     unsigned int lastmodified() const { return m_lastmodified; }
 
@@ -119,14 +119,14 @@ signals:
     void tracksAdded( const QList<unsigned int>& fileids );
     void tracksRemoved( const QList<unsigned int>& fileids );
 
-    void playlistsAdded( const QList<Tomahawk::playlist_ptr>& );
-    void playlistsDeleted( const QList<Tomahawk::playlist_ptr>& );
+    void playlistsAdded( const QList<Hatchet::playlist_ptr>& );
+    void playlistsDeleted( const QList<Hatchet::playlist_ptr>& );
 
-    void autoPlaylistsAdded( const QList<Tomahawk::dynplaylist_ptr>& );
-    void autoPlaylistsDeleted( const QList<Tomahawk::dynplaylist_ptr>& );
+    void autoPlaylistsAdded( const QList<Hatchet::dynplaylist_ptr>& );
+    void autoPlaylistsDeleted( const QList<Hatchet::dynplaylist_ptr>& );
 
-    void stationsAdded( const QList<Tomahawk::dynplaylist_ptr>& );
-    void stationsDeleted( const QList<Tomahawk::dynplaylist_ptr>& );
+    void stationsAdded( const QList<Hatchet::dynplaylist_ptr>& );
+    void stationsDeleted( const QList<Hatchet::dynplaylist_ptr>& );
 
     void changed();
 
@@ -134,9 +134,9 @@ signals:
     void offline();
 
 public slots:
-    void setPlaylists( const QList<Tomahawk::playlist_ptr>& plists );
-    void setAutoPlaylists( const QList< Tomahawk::dynplaylist_ptr >& autoplists );
-    void setStations( const QList< Tomahawk::dynplaylist_ptr >& stations );
+    void setPlaylists( const QList<Hatchet::playlist_ptr>& plists );
+    void setAutoPlaylists( const QList< Hatchet::dynplaylist_ptr >& autoplists );
+    void setStations( const QList< Hatchet::dynplaylist_ptr >& stations );
 
     void setTracks( const QList<unsigned int>& fileids );
     void delTracks( const QList<unsigned int>& fileids );
@@ -160,9 +160,9 @@ private:
     collection_wptr m_ownRef;
     source_ptr m_source;
 
-    QHash< QString, Tomahawk::playlist_ptr > m_playlists;
-    QHash< QString, Tomahawk::dynplaylist_ptr > m_autoplaylists;
-    QHash< QString, Tomahawk::dynplaylist_ptr > m_stations;
+    QHash< QString, Hatchet::playlist_ptr > m_playlists;
+    QHash< QString, Hatchet::dynplaylist_ptr > m_autoplaylists;
+    QHash< QString, Hatchet::dynplaylist_ptr > m_stations;
 
     // HACK see line 99 in the dbcmd for why we need this for backwards-compatibility
     void moveAutoToStation( const QString& guid );
@@ -172,9 +172,9 @@ private:
 
 } // ns
 
-inline uint qHash( const QSharedPointer<Tomahawk::Collection>& key )
+inline uint qHash( const QSharedPointer<Hatchet::Collection>& key )
 {
     return qHash( (void *)key.data() );
 }
 
-#endif // TOMAHAWK_COLLECTION_H
+#endif // HATCHET_COLLECTION_H

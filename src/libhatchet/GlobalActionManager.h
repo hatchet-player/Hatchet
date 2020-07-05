@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2011,      Leo Franchi <lfranchi@kde.org>
  *   Copyright 2011-2016, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef GLOBALACTIONMANAGER_H
@@ -51,30 +51,30 @@ public slots:
     /// Takes a spotify link and performs the default open action on it
     bool openSpotifyLink( const QString& link );
 
-    void savePlaylistToFile( const Tomahawk::playlist_ptr& playlist, const QString& filename );
+    void savePlaylistToFile( const Hatchet::playlist_ptr& playlist, const QString& filename );
 
-    bool parseTomahawkLink( const QString& link );
+    bool parseHatchetLink( const QString& link );
     void waitingForResolved( bool );
 
-    Tomahawk::dynplaylist_ptr loadDynamicPlaylist( const QUrl& url, bool station );
+    Hatchet::dynplaylist_ptr loadDynamicPlaylist( const QUrl& url, bool station );
 
-    void handleOpenTrack( const Tomahawk::query_ptr& qry );
-    void handleOpenTracks( const QList< Tomahawk::query_ptr >& queries );
+    void handleOpenTrack( const Hatchet::query_ptr& qry );
+    void handleOpenTracks( const QList< Hatchet::query_ptr >& queries );
 
-    void handlePlayTrack( const Tomahawk::query_ptr& qry );
+    void handlePlayTrack( const Hatchet::query_ptr& qry );
 
 private slots:
     void informationForUrl( const QString& url, const QSharedPointer<QObject>& information );
 
     void showPlaylist();
 
-    void playlistCreatedToShow( const Tomahawk::playlist_ptr& pl );
+    void playlistCreatedToShow( const Hatchet::playlist_ptr& pl );
     void playlistReadyToShow();
 
     void xspfCreated( const QByteArray& xspf );
 
-    void playOrQueueNow( const Tomahawk::query_ptr& );
-    void playNow( const Tomahawk::query_ptr& );
+    void playOrQueueNow( const Hatchet::query_ptr& );
+    void playNow( const Hatchet::query_ptr& );
 
 private:
     explicit GlobalActionManager( QObject* parent = 0 );
@@ -99,8 +99,8 @@ private:
 
     void createPlaylistFromUrl( const QString& type, const QString& url, const QString& title );
 
-    Tomahawk::playlist_ptr m_toShow;
-    Tomahawk::query_ptr m_waitingToPlay;
+    Hatchet::playlist_ptr m_toShow;
+    Hatchet::query_ptr m_waitingToPlay;
     QString m_queuedUrl;
 
     static GlobalActionManager* s_instance;

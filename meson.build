@@ -1,4 +1,4 @@
-# Tomahawk project build file
+# Hatchet project build file
 #============================================================================
 
 
@@ -11,7 +11,7 @@
 # init project
 #---------------------------------------------------
 project(
-    'tomahawk',
+    'hatchet',
     ['c', 'cpp', 'objcpp'],
     default_options : [
         'cpp_std=c++11',
@@ -82,20 +82,20 @@ config_h.set_quoted(
     'PACKAGE_URL', package_url,
     description : 'Define to the home page for this package.')
 
-package_bug_url = 'https://github.com/p01arst0rm/tomahawk/issues'
+package_bug_url = 'https://github.com/hatchet-player/Hatchet/issues'
 config_h.set_quoted(
     'PACKAGE_BUGREPORT', package_bug_url,
     description : 'Define to the address where bug reports for this' +
     'package should be sent.')
 
 
-# Tomahawk application info
+# Hatchet application info
 #---------------------------------------------------
-tomahawk_organization_name = 'Tomahawk'
-tomahawk_organization_domain = 'tomahawk-player.org'
-tomahawk_application_name = 'Tomahawk'
-tomahawk_description_summary = 'The social media player'
-tomahawk_application_package_name = 'org.tomahawk-player.Tomahawk'
+hatchet_organization_name = 'hatchet'
+hatchet_organization_domain = 'hatchet-player.org'
+hatchet_application_name = 'Hatchet'
+hatchet_description_summary = 'Hatchet media player'
+hatchet_application_package_name = 'org.hatchet-player.Hatchet'
 
 
 
@@ -114,7 +114,7 @@ sysconfdir = join_paths(prefix, get_option('sysconfdir'))
 libexecdir = join_paths(prefix, get_option('libexecdir'))
 mandir = join_paths(prefix, get_option('mandir'))
 includedir = join_paths(prefix, get_option('includedir'))
-tomahawk_inc = [include_directories('.', 'src')]
+hatchet_inc = [include_directories('.', 'src')]
 
 
 # set cmake directories
@@ -160,26 +160,26 @@ python = find_program('python', required : true)
 
 
 if (sys_name.contains('nt'))
-    tomahawk_target_name = 'tomahawk'
-    tomahawk_system = 'Windows'
+    hatchet_target_name = 'hatchet'
+    hatchet_system = 'Windows'
 elif sys_name.contains('darwin')
-    tomahawk_target_name = 'Tomahawk'
-    tomahawk_system = 'OS X'
+    hatchet_target_name = 'hatchet'
+    hatchet_system = 'OS X'
 elif sys_name.contains('linux')
-    tomahawk_target_name = 'tomahawk'
-    tomahawk_system = 'Linux'
+    hatchet_target_name = 'hatchet'
+    hatchet_system = 'Linux'
 else
-    tomahawk_target_name = 'Uknown Platform'
-    tomahawk_system = 'Please submit a ticket to resolve this issue' 
+    hatchet_target_name = 'Uknown Platform'
+    hatchet_system = 'Please submit a ticket to resolve this issue' 
 endif
-tomahawk_base_target_name = tomahawk_target_name.to_lower()
+hatchet_base_target_name = hatchet_target_name.to_lower()
 
 
 # build
 #============================================================================
 
 
-# build tomahawk
+# build hatchet
 #---------------------------------------------------
 
 
@@ -198,7 +198,7 @@ foreach dir : project_dirs
 endforeach
 
 
-# foreach x : libtomahawk_gui_src
+# foreach x : libhatchet_gui_src
 #     a = run_command('echo', x).stdout().strip()
 #     message(a)
 # endforeach

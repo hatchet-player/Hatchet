@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2011 - 2012, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef PLAYABLEPIXMAP_H
@@ -29,7 +29,7 @@
 
 class ImageButton;
 
-namespace Tomahawk
+namespace Hatchet
 {
     class ContextMenu;
 };
@@ -62,9 +62,9 @@ public:
     QPixmap pixmap() const { return m_pixmap; }
 
 public slots:
-    virtual void setArtist( const Tomahawk::artist_ptr& artist );
-    virtual void setAlbum( const Tomahawk::album_ptr& album );
-    virtual void setQuery( const Tomahawk::query_ptr& query );
+    virtual void setArtist( const Hatchet::artist_ptr& artist );
+    virtual void setAlbum( const Hatchet::album_ptr& album );
+    virtual void setQuery( const Hatchet::query_ptr& query );
 
     void setShowText( bool b );
     void setShowControls( bool b );
@@ -91,11 +91,11 @@ private:
     QPixmap m_pixmap;
 
     ImageButton* m_button;
-    Tomahawk::ContextMenu* m_contextMenu;
+    Hatchet::ContextMenu* m_contextMenu;
 
-    Tomahawk::artist_ptr m_artist;
-    Tomahawk::album_ptr m_album;
-    Tomahawk::query_ptr m_query;
+    Hatchet::artist_ptr m_artist;
+    Hatchet::album_ptr m_album;
+    Hatchet::query_ptr m_query;
 
     QPoint m_dragStartPosition;
 

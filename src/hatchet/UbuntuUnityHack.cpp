@@ -63,11 +63,11 @@ void UbuntuUnityHack::GetFinished(int exit_code) {
   tDebug() << "Unity whitelist is" << whitelist;
 
   int index = whitelist.lastIndexOf(']');
-  if (index == -1 || whitelist.contains("'tomahawk'")) {
+  if (index == -1 || whitelist.contains("'hatchet'")) {
     return;
   }
 
-  whitelist = whitelist.left(index) + QString(", 'tomahawk'").toUtf8() +
+  whitelist = whitelist.left(index) + QString(", 'hatchet'").toUtf8() +
               whitelist.mid(index);
 
   tLog() << "Setting unity whitelist to" << whitelist;
@@ -77,7 +77,7 @@ void UbuntuUnityHack::GetFinished(int exit_code) {
   set->start(kGSettingsFileName, QStringList()
              << "set" << kUnityPanel << kUnitySystrayWhitelist << whitelist);
 
-  tLog() << "Tomahawk has added itself to the Unity system tray" <<
+  tLog() << "Hatchet has added itself to the Unity system tray" <<
                 "whitelist, but this won't take effect until the next time" <<
                 "you log out and log back in.";
 }

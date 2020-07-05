@@ -1,22 +1,22 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "SourceItem.h"
@@ -41,16 +41,16 @@
 #include "viewpages/PlaylistViewPage.h"
 #include "widgets/HistoryWidget.h"
 #include "utils/ImageRegistry.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 #include "utils/DpiScaler.h"
-#include "TomahawkApp.h"
+#include "HatchetApp.h"
 
 /// SourceItem
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
-SourceItem::SourceItem( SourcesModel* mdl, SourceTreeItem* parent, const Tomahawk::source_ptr& source )
+SourceItem::SourceItem( SourcesModel* mdl, SourceTreeItem* parent, const Hatchet::source_ptr& source )
     : SourceTreeItem( mdl, parent, SourcesModel::Source )
     , m_source( source )
     , m_playlists( 0 )
@@ -63,12 +63,12 @@ SourceItem::SourceItem( SourcesModel* mdl, SourceTreeItem* parent, const Tomahaw
 {
     Q_ASSERT( m_source );
 
-    connect( source.data(), SIGNAL( collectionAdded( Tomahawk::collection_ptr ) ),
-             SLOT( onCollectionAdded( Tomahawk::collection_ptr ) ) );
-    connect( source.data(), SIGNAL( collectionRemoved( Tomahawk::collection_ptr ) ),
-             SLOT( onCollectionRemoved( Tomahawk::collection_ptr ) ) );
+    connect( source.data(), SIGNAL( collectionAdded( Hatchet::collection_ptr ) ),
+             SLOT( onCollectionAdded( Hatchet::collection_ptr ) ) );
+    connect( source.data(), SIGNAL( collectionRemoved( Hatchet::collection_ptr ) ),
+             SLOT( onCollectionRemoved( Hatchet::collection_ptr ) ) );
 
-    foreach ( const Tomahawk::collection_ptr& collection, source->collections() )
+    foreach ( const Hatchet::collection_ptr& collection, source->collections() )
     {
         performAddCollectionItem( collection );
     }
@@ -124,22 +124,22 @@ SourceItem::SourceItem( SourcesModel* mdl, SourceTreeItem* parent, const Tomahaw
     connect( source.data(), SIGNAL( offline() ), SIGNAL( updated() ) );
     connect( source.data(), SIGNAL( online() ), SIGNAL( updated() ) );
 
-    connect( SourceList::instance(), SIGNAL( sourceLatchedOn( Tomahawk::source_ptr, Tomahawk::source_ptr ) ), SLOT( latchedOn( Tomahawk::source_ptr, Tomahawk::source_ptr ) ) );
-    connect( SourceList::instance(), SIGNAL( sourceLatchedOff( Tomahawk::source_ptr, Tomahawk::source_ptr ) ), SLOT( latchedOff( Tomahawk::source_ptr, Tomahawk::source_ptr ) ) );
+    connect( SourceList::instance(), SIGNAL( sourceLatchedOn( Hatchet::source_ptr, Hatchet::source_ptr ) ), SLOT( latchedOn( Hatchet::source_ptr, Hatchet::source_ptr ) ) );
+    connect( SourceList::instance(), SIGNAL( sourceLatchedOff( Hatchet::source_ptr, Hatchet::source_ptr ) ), SLOT( latchedOff( Hatchet::source_ptr, Hatchet::source_ptr ) ) );
 
-    connect( source->dbCollection().data(), SIGNAL( playlistsAdded( QList<Tomahawk::playlist_ptr> ) ),
-             SLOT( onPlaylistsAdded( QList<Tomahawk::playlist_ptr> ) ), Qt::QueuedConnection );
-    connect( source->dbCollection().data(), SIGNAL( autoPlaylistsAdded( QList< Tomahawk::dynplaylist_ptr > ) ),
-             SLOT( onAutoPlaylistsAdded( QList<Tomahawk::dynplaylist_ptr> ) ), Qt::QueuedConnection );
-    connect( source->dbCollection().data(), SIGNAL( stationsAdded( QList<Tomahawk::dynplaylist_ptr> ) ),
-             SLOT( onStationsAdded( QList<Tomahawk::dynplaylist_ptr> ) ), Qt::QueuedConnection );
+    connect( source->dbCollection().data(), SIGNAL( playlistsAdded( QList<Hatchet::playlist_ptr> ) ),
+             SLOT( onPlaylistsAdded( QList<Hatchet::playlist_ptr> ) ), Qt::QueuedConnection );
+    connect( source->dbCollection().data(), SIGNAL( autoPlaylistsAdded( QList< Hatchet::dynplaylist_ptr > ) ),
+             SLOT( onAutoPlaylistsAdded( QList<Hatchet::dynplaylist_ptr> ) ), Qt::QueuedConnection );
+    connect( source->dbCollection().data(), SIGNAL( stationsAdded( QList<Hatchet::dynplaylist_ptr> ) ),
+             SLOT( onStationsAdded( QList<Hatchet::dynplaylist_ptr> ) ), Qt::QueuedConnection );
 
     if ( m_source->isLocal() )
         QTimer::singleShot( 0, this, SLOT( requestExpanding() ) );
 }
 
 
-Tomahawk::source_ptr
+Hatchet::source_ptr
 SourceItem::source() const
 {
     return m_source;
@@ -174,7 +174,7 @@ SourceItem::tooltip() const
         t.append( narf.arg( "dbfriendlyname" ).arg( m_source->dbFriendlyName() ) );
 
         t.append("\n");
-        foreach( Tomahawk::peerinfo_ptr p, m_source->peerInfos() )
+        foreach( Hatchet::peerinfo_ptr p, m_source->peerInfos() )
         {
             QString line( p->sipPlugin()->serviceName() + p->sipPlugin()->friendlyName() + ": " + p->id() + " " + p->friendlyName() );
             t.append( line + "\n\n" );
@@ -233,10 +233,10 @@ SourceItem::pixmap( const QSize& size ) const
 {
     if ( !m_source )
     {
-        return TomahawkUtils::defaultPixmap( TomahawkUtils::SuperCollection, TomahawkUtils::Original, size );
+        return HatchetUtils::defaultPixmap( HatchetUtils::SuperCollection, HatchetUtils::Original, size );
     }
 
-    return m_source->avatar( TomahawkUtils::RoundedCorners, size, true );
+    return m_source->avatar( HatchetUtils::RoundedCorners, size, true );
 }
 
 
@@ -255,13 +255,13 @@ SourceItem::localLatchedOn() const
 }
 
 
-Tomahawk::PlaylistModes::LatchMode
+Hatchet::PlaylistModes::LatchMode
 SourceItem::localLatchMode() const
 {
     if ( !m_source.isNull() && !m_source->isLocal() )
         return m_source->playlistInterface()->latchMode();
 
-    return Tomahawk::PlaylistModes::StayOnSong;
+    return Hatchet::PlaylistModes::StayOnSong;
 }
 
 
@@ -271,7 +271,7 @@ SourceItem::latchedOff( const source_ptr& from, const source_ptr& to )
     if ( from->isLocal() && ( m_source == to || m_source == from ) )
     {
         m_latchedOn = false;
-        disconnect( m_latchedOnTo->playlistInterface().data(), SIGNAL( latchModeChanged( Tomahawk::PlaylistModes::LatchMode ) ) );
+        disconnect( m_latchedOnTo->playlistInterface().data(), SIGNAL( latchModeChanged( Hatchet::PlaylistModes::LatchMode ) ) );
         m_latchedOnTo.clear();
         emit updated();
     }
@@ -285,14 +285,14 @@ SourceItem::latchedOn( const source_ptr& from, const source_ptr& to )
     {
         m_latchedOn = true;
         m_latchedOnTo = to;
-        connect( m_latchedOnTo->playlistInterface().data(), SIGNAL( latchModeChanged( Tomahawk::PlaylistModes::LatchMode ) ), SLOT( latchModeChanged( Tomahawk::PlaylistModes::LatchMode ) ) );
+        connect( m_latchedOnTo->playlistInterface().data(), SIGNAL( latchModeChanged( Hatchet::PlaylistModes::LatchMode ) ), SLOT( latchModeChanged( Hatchet::PlaylistModes::LatchMode ) ) );
         emit updated();
     }
 }
 
 
 void
-SourceItem::latchModeChanged( Tomahawk::PlaylistModes::LatchMode mode )
+SourceItem::latchModeChanged( Hatchet::PlaylistModes::LatchMode mode )
 {
     Q_UNUSED( mode );
     emit updated();
@@ -346,20 +346,20 @@ SourceItem::playlistsAddedInternal( SourceTreeItem* parent, const QList< dynplay
         if ( p->mode() == Static )
         {
             if ( m_source->isLocal() )
-                connect( p.data(), SIGNAL( aboutToBeDeleted( Tomahawk::dynplaylist_ptr ) ),
-                        SLOT( onAutoPlaylistDeleted( Tomahawk::dynplaylist_ptr ) ), Qt::QueuedConnection );
+                connect( p.data(), SIGNAL( aboutToBeDeleted( Hatchet::dynplaylist_ptr ) ),
+                        SLOT( onAutoPlaylistDeleted( Hatchet::dynplaylist_ptr ) ), Qt::QueuedConnection );
             else
-                connect( p.data(), SIGNAL( deleted( Tomahawk::dynplaylist_ptr ) ),
-                        SLOT( onAutoPlaylistDeleted( Tomahawk::dynplaylist_ptr ) ), Qt::QueuedConnection );
+                connect( p.data(), SIGNAL( deleted( Hatchet::dynplaylist_ptr ) ),
+                        SLOT( onAutoPlaylistDeleted( Hatchet::dynplaylist_ptr ) ), Qt::QueuedConnection );
         }
         else
         {
             if ( m_source->isLocal() )
-                connect( p.data(), SIGNAL( aboutToBeDeleted( Tomahawk::dynplaylist_ptr ) ),
-                        SLOT( onStationDeleted( Tomahawk::dynplaylist_ptr ) ), Qt::QueuedConnection );
+                connect( p.data(), SIGNAL( aboutToBeDeleted( Hatchet::dynplaylist_ptr ) ),
+                        SLOT( onStationDeleted( Hatchet::dynplaylist_ptr ) ), Qt::QueuedConnection );
             else
-                connect( p.data(), SIGNAL( deleted( Tomahawk::dynplaylist_ptr ) ),
-                        SLOT( onStationDeleted( Tomahawk::dynplaylist_ptr ) ), Qt::QueuedConnection );
+                connect( p.data(), SIGNAL( deleted( Hatchet::dynplaylist_ptr ) ),
+                        SLOT( onStationDeleted( Hatchet::dynplaylist_ptr ) ), Qt::QueuedConnection );
         }
     }
     parent->endRowsAdded();
@@ -459,11 +459,11 @@ SourceItem::onPlaylistsAdded( const QList< playlist_ptr >& playlists )
         items << plItem;
 
         if ( m_source->isLocal() )
-            connect( p.data(), SIGNAL( aboutToBeDeleted( Tomahawk::playlist_ptr ) ),
-                     SLOT( onPlaylistDeleted( Tomahawk::playlist_ptr ) ), Qt::QueuedConnection );
+            connect( p.data(), SIGNAL( aboutToBeDeleted( Hatchet::playlist_ptr ) ),
+                     SLOT( onPlaylistDeleted( Hatchet::playlist_ptr ) ), Qt::QueuedConnection );
         else
-            connect( p.data(), SIGNAL( deleted( Tomahawk::playlist_ptr ) ),
-                     SLOT( onPlaylistDeleted( Tomahawk::playlist_ptr ) ), Qt::QueuedConnection );
+            connect( p.data(), SIGNAL( deleted( Hatchet::playlist_ptr ) ),
+                     SLOT( onPlaylistDeleted( Hatchet::playlist_ptr ) ), Qt::QueuedConnection );
 
     }
     m_playlists->endRowsAdded();
@@ -558,7 +558,7 @@ SourceItem::getSourceInfoPage() const
 
 
 ViewPage*
-SourceItem::collectionClicked( const Tomahawk::collection_ptr& collection )
+SourceItem::collectionClicked( const Hatchet::collection_ptr& collection )
 {
     if ( m_source.isNull() )
         return 0;
@@ -569,7 +569,7 @@ SourceItem::collectionClicked( const Tomahawk::collection_ptr& collection )
 
 
 ViewPage*
-SourceItem::getCollectionPage( const Tomahawk::collection_ptr& collection ) const
+SourceItem::getCollectionPage( const Hatchet::collection_ptr& collection ) const
 {
     return m_collectionPages[ collection ];
 }
@@ -581,9 +581,9 @@ SourceItem::latestAdditionsClicked()
     if ( !m_latestAdditionsPage )
     {
         PlaylistViewPage* pv = new PlaylistViewPage( ViewManager::instance()->widget() );
-        pv->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::NewAdditions,
-                                                     TomahawkUtils::Original,
-                                                     TomahawkUtils::DpiScaler::scaled( pv, 80, 80 ) ) );
+        pv->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::NewAdditions,
+                                                     HatchetUtils::Original,
+                                                     HatchetUtils::DpiScaler::scaled( pv, 80, 80 ) ) );
 
         RecentlyAddedModel* raModel = new RecentlyAddedModel( pv );
         raModel->setTitle( tr( "Latest Additions" ) );
@@ -687,7 +687,7 @@ SourceItem::dropMimeData( const QMimeData* data, Qt::DropAction action )
 {
     Q_UNUSED( action );
 
-    QList< Tomahawk::query_ptr > queries;
+    QList< Hatchet::query_ptr > queries;
     if ( !DropJob::acceptsMimeData( data, DropJob::Track ) )
         return false;
 
@@ -697,8 +697,8 @@ SourceItem::dropMimeData( const QMimeData* data, Qt::DropAction action )
     DropJob* dj = new DropJob();
     dj->setDropTypes( DropJob::Track );
 
-    connect( dj, SIGNAL( tracks( QList< Tomahawk::query_ptr > ) ),
-             this, SLOT( onTracksDropped( QList< Tomahawk::query_ptr > ) ) );
+    connect( dj, SIGNAL( tracks( QList< Hatchet::query_ptr > ) ),
+             this, SLOT( onTracksDropped( QList< Hatchet::query_ptr > ) ) );
     dj->tracksFromMimeData( data, false, false );
     return true;
 }
@@ -707,8 +707,8 @@ SourceItem::dropMimeData( const QMimeData* data, Qt::DropAction action )
 SourceTreeItem::DropTypes
 SourceItem::supportedDropTypes( const QMimeData* data ) const
 {
-    if ( data->hasFormat( "application/tomahawk.result.list" ) ||
-         data->hasFormat( "application/tomahawk.query.list" ) )
+    if ( data->hasFormat( "application/hatchet.result.list" ) ||
+         data->hasFormat( "application/hatchet.query.list" ) )
         return DropTypeThisTrack;
 
     return DropTypesNone;

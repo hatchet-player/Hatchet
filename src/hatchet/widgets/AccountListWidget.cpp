@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2012, 2013 Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "AccountListWidget.h"
@@ -22,8 +22,8 @@
 #include "accounts/AccountManager.h"
 #include "AccountWidget.h"
 #include "utils/ImageRegistry.h"
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 
 #include <QPushButton>
@@ -31,13 +31,13 @@
 
 AccountListWidget::AccountListWidget( AccountModelFactoryProxy* model, QWidget* parent )
     : QWidget( parent )
-    , TomahawkUtils::DpiScaler( this )
+    , HatchetUtils::DpiScaler( this )
     , m_model( model )
 {
     QVBoxLayout* mainLayout = new QVBoxLayout( this );
-    TomahawkUtils::unmarginLayout( mainLayout );
+    HatchetUtils::unmarginLayout( mainLayout );
     m_layout = new QVBoxLayout;
-    TomahawkUtils::unmarginLayout( m_layout );
+    HatchetUtils::unmarginLayout( m_layout );
     mainLayout->addLayout( m_layout );
     mainLayout->setSpacing( scaledY( 8 ) );
 
@@ -57,15 +57,15 @@ AccountListWidget::AccountListWidget( AccountModelFactoryProxy* model, QWidget* 
     separatorLine->setFixedHeight( 1 );
     separatorLine->setContentsMargins( 0, 0, 0, 0 );
     separatorLine->setStyleSheet( "QWidget { border-top: 1px solid " +
-                                  TomahawkStyle::BORDER_LINE.name() + "; }" ); //from ProxyStyle
+                                  HatchetStyle::BORDER_LINE.name() + "; }" ); //from ProxyStyle
     mainLayout->insertWidget( 0, separatorLine );
     mainLayout->addSpacing( scaledY( 6 ) );
 
     QLabel *connectionsLabel = new QLabel( tr( "Connections" ).toUpper(), this );
     QFont clFont = connectionsLabel->font();
     clFont.setBold( true );
-    connectionsLabel->setStyleSheet( "color: " + TomahawkStyle::GROUP_HEADER.name() );
-    clFont.setPointSize( TomahawkUtils::defaultFontSize() + 1 );
+    connectionsLabel->setStyleSheet( "color: " + HatchetStyle::GROUP_HEADER.name() );
+    clFont.setPointSize( HatchetUtils::defaultFontSize() + 1 );
     connectionsLabel->setFont( clFont );
     connectionsLabel->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Preferred );
 
@@ -91,8 +91,8 @@ AccountListWidget::updateEntries( const QModelIndex& topLeft, const QModelIndex&
     {
         QPersistentModelIndex idx( m_model->index( row, 0 ) );
 
-        int newCount = idx.data( Tomahawk::Accounts::AccountModel::ChildrenOfFactoryRole )
-                            .value< QList< Tomahawk::Accounts::Account* > >().count();
+        int newCount = idx.data( Hatchet::Accounts::AccountModel::ChildrenOfFactoryRole )
+                            .value< QList< Hatchet::Accounts::Account* > >().count();
 
         if( m_entries.value( idx ).count() == newCount )
         {
@@ -142,8 +142,8 @@ AccountListWidget::insertEntries(  const QModelIndex& parent, int start, int end
     for ( int i = start; i <= end; ++i )
     {
         QPersistentModelIndex idx( m_model->index( i, 0, parent ) );
-        int count = idx.data( Tomahawk::Accounts::AccountModel::ChildrenOfFactoryRole )
-                .value< QList< Tomahawk::Accounts::Account* > >().count();
+        int count = idx.data( Hatchet::Accounts::AccountModel::ChildrenOfFactoryRole )
+                .value< QList< Hatchet::Accounts::Account* > >().count();
 
         QList< AccountWidget* > entryAccounts;
         for ( int j = 0; j < count; ++j )
@@ -234,9 +234,9 @@ AccountListWidget::updateToggleOnlineStateButton()
         tDebug() << Q_FUNC_INFO;
         m_toggleOnlineButtonState = newState;
         if ( newState )
-            Tomahawk::Accounts::AccountManager::instance()->connectAll();
+            Hatchet::Accounts::AccountManager::instance()->connectAll();
         else
-            Tomahawk::Accounts::AccountManager::instance()->disconnectAll();
+            Hatchet::Accounts::AccountManager::instance()->disconnectAll();
     }
 
     m_toggleOnlineButton->setText( m_toggleOnlineButtonState ? tr( "Disconnect &All" )

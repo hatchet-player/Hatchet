@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "AlbumViewPage.h"
@@ -35,17 +35,17 @@
 #include "database/DatabaseCommand_AllTracks.h"
 #include "database/DatabaseCommand_AllAlbums.h"
 
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 
 #include <QScrollArea>
 #include <QScrollBar>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
-AlbumInfoWidget::AlbumInfoWidget( const Tomahawk::album_ptr& album, QWidget* parent )
+AlbumInfoWidget::AlbumInfoWidget( const Hatchet::album_ptr& album, QWidget* parent )
     : QWidget( parent )
     , ui( new Ui::AlbumInfoWidget )
 {
@@ -53,7 +53,7 @@ AlbumInfoWidget::AlbumInfoWidget( const Tomahawk::album_ptr& album, QWidget* par
     m_headerWidget = new BasicHeader;
     ui->setupUi( widget );
 
-    m_pixmap = TomahawkUtils::defaultPixmap( TomahawkUtils::DefaultAlbumCover, TomahawkUtils::Original, QSize( 48, 48 ) );
+    m_pixmap = HatchetUtils::defaultPixmap( HatchetUtils::DefaultAlbumCover, HatchetUtils::Original, QSize( 48, 48 ) );
 
     m_tracksModel = new TreeModel();
     m_tracksModel->setMode( Mixed );
@@ -63,8 +63,8 @@ AlbumInfoWidget::AlbumInfoWidget( const Tomahawk::album_ptr& album, QWidget* par
     ui->albumView->trackView()->setPlayableModel( m_tracksModel );
     ui->albumView->setCaption( tr( "Album Details" ) );
 
-/*    ui->topHits->setStyleSheet( QString( "QListView { background-color: %1; }" ).arg( TomahawkStyle::PAGE_BACKGROUND.name() ) );
-    TomahawkStyle::stylePageFrame( ui->trackFrame );
+/*    ui->topHits->setStyleSheet( QString( "QListView { background-color: %1; }" ).arg( HatchetStyle::PAGE_BACKGROUND.name() ) );
+    HatchetStyle::stylePageFrame( ui->trackFrame );
     ui->topHits->setVisible( false );
     ui->topHitsLabel->setVisible( false );*/
 
@@ -75,7 +75,7 @@ AlbumInfoWidget::AlbumInfoWidget( const Tomahawk::album_ptr& album, QWidget* par
         area->setWidget( widget );
 
         QPalette pal = palette();
-        pal.setBrush( backgroundRole(), TomahawkStyle::PAGE_BACKGROUND );
+        pal.setBrush( backgroundRole(), HatchetStyle::PAGE_BACKGROUND );
         area->setPalette( pal );
         area->setAutoFillBackground( true );
         area->setFrameShape( QFrame::NoFrame );
@@ -85,7 +85,7 @@ AlbumInfoWidget::AlbumInfoWidget( const Tomahawk::album_ptr& album, QWidget* par
         layout->addWidget( m_headerWidget );
         layout->addWidget( widget );
         setLayout( layout );
-        TomahawkUtils::unmarginLayout( layout );
+        HatchetUtils::unmarginLayout( layout );
     }
 
     MetaPlaylistInterface* mpl = new MetaPlaylistInterface();
@@ -104,7 +104,7 @@ AlbumInfoWidget::~AlbumInfoWidget()
 }
 
 
-Tomahawk::playlistinterface_ptr
+Hatchet::playlistinterface_ptr
 AlbumInfoWidget::playlistInterface() const
 {
     return m_playlistInterface;
@@ -185,7 +185,7 @@ QPixmap
 AlbumInfoWidget::pixmap() const
 {
     if ( m_pixmap.isNull() )
-        return Tomahawk::ViewPage::pixmap();
+        return Hatchet::ViewPage::pixmap();
     else
         return m_pixmap;
 }

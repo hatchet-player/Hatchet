@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2011-2012, Leo Franchi            <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "GridItemDelegate.h"
@@ -31,8 +31,8 @@
 #include "widgets/HoverControls.h"
 #include "widgets/DownloadButton.h"
 #include "widgets/ImageButton.h"
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/PixmapDelegateFader.h"
 #include "utils/Closure.h"
 #include "utils/AnimatedSpinner.h"
@@ -58,15 +58,15 @@ GridItemDelegate::GridItemDelegate( QAbstractItemView* parent, PlayableProxyMode
     , m_showPosition( false )
     , m_showBuyButtons( false )
     , m_wordWrapping( false )
-    , m_margin( TomahawkUtils::DpiScaler::scaledY( parent, 32 ) )
+    , m_margin( HatchetUtils::DpiScaler::scaledY( parent, 32 ) )
 {
     if ( m_view && m_view->metaObject()->indexOfSignal( "modelChanged()" ) > -1 )
         connect( m_view, SIGNAL( modelChanged() ), this, SLOT( modelChanged() ) );
 
     m_font = m_view->font();
     m_smallFont = m_font;
-    m_font.setPointSize( TomahawkUtils::defaultFontSize() + 2 );
-    m_smallFont.setPointSize( TomahawkUtils::defaultFontSize() );
+    m_font.setPointSize( HatchetUtils::defaultFontSize() + 2 );
+    m_smallFont.setPointSize( HatchetUtils::defaultFontSize() );
 
     connect( this, SIGNAL( updateIndex( QModelIndex ) ), parent, SLOT( update( QModelIndex ) ) );
 
@@ -165,22 +165,22 @@ GridItemDelegate::paint( QPainter* painter, const QStyleOptionViewItem& option, 
     {
         if ( !item->album().isNull() )
         {
-            m_covers.insert( index, QSharedPointer< Tomahawk::PixmapDelegateFader >( new Tomahawk::PixmapDelegateFader( item->album(), r.size(), TomahawkUtils::Original, false ) ) );
+            m_covers.insert( index, QSharedPointer< Hatchet::PixmapDelegateFader >( new Hatchet::PixmapDelegateFader( item->album(), r.size(), HatchetUtils::Original, false ) ) );
         }
         else if ( !item->artist().isNull() )
         {
-            m_covers.insert( index, QSharedPointer< Tomahawk::PixmapDelegateFader >( new Tomahawk::PixmapDelegateFader( item->artist(), r.size(), TomahawkUtils::Original, false ) ) );
+            m_covers.insert( index, QSharedPointer< Hatchet::PixmapDelegateFader >( new Hatchet::PixmapDelegateFader( item->artist(), r.size(), HatchetUtils::Original, false ) ) );
         }
         else
         {
-            m_covers.insert( index, QSharedPointer< Tomahawk::PixmapDelegateFader >( new Tomahawk::PixmapDelegateFader( item->query(), r.size(), TomahawkUtils::Original, false ) ) );
+            m_covers.insert( index, QSharedPointer< Hatchet::PixmapDelegateFader >( new Hatchet::PixmapDelegateFader( item->query(), r.size(), HatchetUtils::Original, false ) ) );
         }
 
         NewClosure( m_covers[ index ], SIGNAL( repaintRequest() ),
                     const_cast<GridItemDelegate*>(this), SLOT( doUpdateIndex( QPersistentModelIndex ) ), QPersistentModelIndex( index ) )->setAutoDelete( false );
     }
 
-    QSharedPointer< Tomahawk::PixmapDelegateFader > fader = m_covers[ index ];
+    QSharedPointer< Hatchet::PixmapDelegateFader > fader = m_covers[ index ];
     if ( fader->size() != r.size() )
         fader->setSize( r.size() );
     const QPixmap cover = fader->currentPixmap();
@@ -227,7 +227,7 @@ GridItemDelegate::paint( QPainter* painter, const QStyleOptionViewItem& option, 
     if ( bottom.isEmpty() )
         oneLiner = true;
 
-    painter->setPen( TomahawkStyle::SELECTION_FOREGROUND );
+    painter->setPen( HatchetStyle::SELECTION_FOREGROUND );
     painter->setFont( m_font );
     painter->setPen( Qt::black );
     painter->setOpacity( 0.8 );
@@ -354,7 +354,7 @@ GridItemDelegate::onPlayClicked( const QPersistentModelIndex& index )
 
     PlayableItem* item = m_model->sourceModel()->itemFromIndex( m_model->mapToSource( index ) );
 
-    NewClosure( AudioEngine::instance(), SIGNAL( started( Tomahawk::result_ptr ) ),
+    NewClosure( AudioEngine::instance(), SIGNAL( started( Hatchet::result_ptr ) ),
                 const_cast<GridItemDelegate*>(this), SLOT( onPlaybackStarted( QPersistentModelIndex ) ), QPersistentModelIndex( index ) );
 
     if ( item )

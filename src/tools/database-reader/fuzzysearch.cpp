@@ -1,6 +1,6 @@
 #include "database/Database.h"
 #include "database/DatabaseCommand_Resolve.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "HatchetVersion.h"
 #include "Typedefs.h"
 
@@ -17,14 +17,14 @@ Q_OBJECT
 public:
     Q_INVOKABLE void startDatabase( QString dbpath )
     {
-        database = QSharedPointer<Tomahawk::Database>( new Tomahawk::Database( dbpath ) );
+        database = QSharedPointer<Hatchet::Database>( new Hatchet::Database( dbpath ) );
         connect( database.data(), SIGNAL( ready() ), SLOT( runCmd() ), Qt::QueuedConnection );
         database->loadIndex();
     }
 
-    Tomahawk::dbcmd_ptr cmd;
-    QSharedPointer<Tomahawk::Database> database;
-    Tomahawk::query_ptr query;
+    Hatchet::dbcmd_ptr cmd;
+    QSharedPointer<Hatchet::Database> database;
+    Hatchet::query_ptr query;
 
     // Time measurements
     std::chrono::high_resolution_clock::time_point startTime;
@@ -37,7 +37,7 @@ public slots:
         startTime = std::chrono::high_resolution_clock::now();
     }
 
-    void onResults( const Tomahawk::QID, const QList< Tomahawk::result_ptr>& results )
+    void onResults( const Hatchet::QID, const QList< Hatchet::result_ptr>& results )
     {
         resolveDoneTime = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> duration =
@@ -65,10 +65,10 @@ int main( int argc, char* argv[] )
 {
     QCoreApplication app( argc, argv );
     // TODO: Add an argument to change the path
-    app.setOrganizationName( TOMAHAWK_ORGANIZATION_NAME );
+    app.setOrganizationName( HATCHET_ORGANIZATION_NAME );
 
-    qRegisterMetaType< QList< Tomahawk::result_ptr > >();
-    qRegisterMetaType< Tomahawk::QID >("Tomahawk::QID");
+    qRegisterMetaType< QList< Hatchet::result_ptr > >();
+    qRegisterMetaType< Hatchet::QID >("Hatchet::QID");
 
     // Helper QObject to connect slots and actions in the correct thread.
     Tasks tasks;
@@ -82,15 +82,15 @@ int main( int argc, char* argv[] )
     tasks.moveToThread( &thread );
 
     // Load the Database
-    tasks.query = Tomahawk::Query::get( "Bloc Party", QString() );
+    tasks.query = Hatchet::Query::get( "Bloc Party", QString() );
     tasks.query->moveToThread( &thread );
-    Tomahawk::DatabaseCommand_Resolve* cmd = new Tomahawk::DatabaseCommand_Resolve( tasks.query );
-    tasks.cmd = Tomahawk::dbcmd_ptr( cmd );
+    Hatchet::DatabaseCommand_Resolve* cmd = new Hatchet::DatabaseCommand_Resolve( tasks.query );
+    tasks.cmd = Hatchet::dbcmd_ptr( cmd );
     tasks.cmd->moveToThread( &thread );
-    QObject::connect( cmd, SIGNAL( results( Tomahawk::QID, QList<Tomahawk::result_ptr> ) ),
-                      &tasks, SLOT( onResults(Tomahawk::QID, QList<Tomahawk::result_ptr>) ),
+    QObject::connect( cmd, SIGNAL( results( Hatchet::QID, QList<Hatchet::result_ptr> ) ),
+                      &tasks, SLOT( onResults(Hatchet::QID, QList<Hatchet::result_ptr>) ),
                       Qt::QueuedConnection );
-    QString dbpath = TomahawkUtils::appDataDir().absoluteFilePath( "tomahawk.db" );
+    QString dbpath = HatchetUtils::appDataDir().absoluteFilePath( "hatchet.db" );
     QMetaObject::invokeMethod( &tasks, "startDatabase", Qt::QueuedConnection, Q_ARG( QString, dbpath ) );
 
     // Wait until the dbcmd was executed.

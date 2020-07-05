@@ -1,25 +1,25 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DynamicControlWrapper.h"
 
 #include "playlist/dynamic/DynamicControl.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 
 #include <QHBoxLayout>
@@ -31,10 +31,10 @@
 #include <QStackedLayout>
 #include <QApplication>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
-DynamicControlWrapper::DynamicControlWrapper( const Tomahawk::dyncontrol_ptr& control, QGridLayout* layout, int row, QWidget* parent )
+DynamicControlWrapper::DynamicControlWrapper( const Hatchet::dyncontrol_ptr& control, QGridLayout* layout, int row, QWidget* parent )
      : QObject( parent )
      , m_parent( parent )
      , m_row( row )
@@ -49,7 +49,7 @@ DynamicControlWrapper::DynamicControlWrapper( const Tomahawk::dyncontrol_ptr& co
     m_entryWidget = QPointer<QWidget>( control->inputField() );
 
     m_minusButton = initButton( m_parent );
-    m_minusButton->setIcon( TomahawkUtils::defaultPixmap( TomahawkUtils::ListRemove ) );
+    m_minusButton->setIcon( HatchetUtils::defaultPixmap( HatchetUtils::ListRemove ) );
     connect( m_minusButton, SIGNAL( clicked( bool ) ), this, SIGNAL( removeControl() ) );
 
     m_plusL = new QStackedLayout();

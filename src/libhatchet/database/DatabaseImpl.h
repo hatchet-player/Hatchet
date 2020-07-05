@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2014,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef DATABASEIMPL_H
@@ -34,11 +34,11 @@
 #include <QThread>
 
 #include "DllMacro.h"
-#include "TomahawkSqlQuery.h"
+#include "HatchetSqlQuery.h"
 #include "Typedefs.h"
 
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 class Database;
@@ -57,15 +57,15 @@ public:
 
     DatabaseImpl* clone() const;
 
-    TomahawkSqlQuery newquery();
+    HatchetSqlQuery newquery();
     QSqlDatabase& database();
 
     int artistId( const QString& name_orig, bool autoCreate ); //also for composers!
     int trackId( int artistid, const QString& name_orig, bool autoCreate );
     int albumId( int artistid, const QString& name_orig, bool autoCreate );
 
-    QList< QPair<int, float> > search( const Tomahawk::query_ptr& query, uint limit = 0 );
-    QList< QPair<int, float> > searchAlbum( const Tomahawk::query_ptr& query, uint limit = 0 );
+    QList< QPair<int, float> > search( const Hatchet::query_ptr& query, uint limit = 0 );
+    QList< QPair<int, float> > searchAlbum( const Hatchet::query_ptr& query, uint limit = 0 );
     QList< int > getTrackFids( int tid );
 
     static QString sortname( const QString& str, bool replaceArticle = false );
@@ -73,8 +73,8 @@ public:
     QVariantMap artist( int id );
     QVariantMap album( int id );
     QVariantMap track( int id );
-    Tomahawk::result_ptr file( int fid );
-    Tomahawk::result_ptr resultFromHint( const Tomahawk::query_ptr& query );
+    Hatchet::result_ptr file( int fid );
+    Hatchet::result_ptr resultFromHint( const Hatchet::query_ptr& query );
 
     static bool scorepairSorter( const QPair<int,float>& left, const QPair<int,float>& right )
     {
@@ -111,7 +111,7 @@ private:
     int m_lastartid, m_lastalbid, m_lasttrkid;
 
     QString m_dbid;
-    Tomahawk::DatabaseFuzzyIndex* m_fuzzyIndex;
+    Hatchet::DatabaseFuzzyIndex* m_fuzzyIndex;
     mutable QMutex m_mutex;
 };
 

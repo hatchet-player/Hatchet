@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "Database.h"
@@ -46,7 +46,7 @@
 #define DEFAULT_WORKER_THREADS 4
 #define MAX_WORKER_THREADS 16
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 dbcmd_ptr
@@ -182,7 +182,7 @@ Database::loadIndex()
 
 
 void
-Database::enqueue( const QList< Tomahawk::dbcmd_ptr >& lc )
+Database::enqueue( const QList< Hatchet::dbcmd_ptr >& lc )
 {
     Q_ASSERT( m_ready );
     if ( !m_ready )
@@ -191,7 +191,7 @@ Database::enqueue( const QList< Tomahawk::dbcmd_ptr >& lc )
         return;
     }
 
-    foreach ( const Tomahawk::dbcmd_ptr& cmd, lc )
+    foreach ( const Hatchet::dbcmd_ptr& cmd, lc )
     {
         DatabaseCommandFactory* factory = commandFactoryByCommandName( cmd->commandname() );
         if ( factory )
@@ -207,7 +207,7 @@ Database::enqueue( const QList< Tomahawk::dbcmd_ptr >& lc )
 
 
 void
-Database::enqueue( const Tomahawk::dbcmd_ptr& lc )
+Database::enqueue( const Hatchet::dbcmd_ptr& lc )
 {
     Q_ASSERT( m_ready );
     if ( !m_ready )
@@ -378,7 +378,7 @@ Database::createCommandInstance(const QVariant& op, const source_ptr& source)
         return command;
 
     command->setSource( source );
-    TomahawkUtils::qvariant2qobject( op.toMap(), command.data() );
+    HatchetUtils::qvariant2qobject( op.toMap(), command.data() );
     return command;
 }
 

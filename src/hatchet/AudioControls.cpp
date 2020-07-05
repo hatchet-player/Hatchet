@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "AudioControls.h"
@@ -32,8 +32,8 @@
 #include "playlist/ContextView.h"
 #include "playlist/TrackView.h"
 #include "playlist/PlayableModel.h"
-#include "utils/TomahawkUtilsGui.h"
-#include "utils/TomahawkStyle.h"
+#include "utils/HatchetUtilsGui.h"
+#include "utils/HatchetStyle.h"
 #include "utils/ImageRegistry.h"
 #include "utils/Logger.h"
 #include "widgets/ImageButton.h"
@@ -47,12 +47,12 @@
 
 const static int ALLOWED_MAX_DIVERSION = 300;
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 AudioControls::AudioControls( QWidget* parent )
     : BackgroundWidget( parent )
-    , TomahawkUtils::DpiScaler( this )
+    , HatchetUtils::DpiScaler( this )
     , ui( new Ui::AudioControls )
     , m_repeatMode( PlaylistModes::NoRepeat )
     , m_shuffled( false )
@@ -62,15 +62,15 @@ AudioControls::AudioControls( QWidget* parent )
 {
     ui->setupUi( this );
     setAutoFillBackground( false );
-    BackgroundWidget::setBackgroundColor( TomahawkStyle::HEADER_BACKGROUND );
+    BackgroundWidget::setBackgroundColor( HatchetStyle::HEADER_BACKGROUND );
     setAcceptDrops( true );
     setFixedHeight( scaledY( 85 ) );
 
     QFont f = font();
-    f.setPointSize( TomahawkUtils::defaultFontSize() + 3 );
+    f.setPointSize( HatchetUtils::defaultFontSize() + 3 );
     ui->trackLabel->setFont( f );
 
-    f.setPointSize( TomahawkUtils::defaultFontSize() + 1 );
+    f.setPointSize( HatchetUtils::defaultFontSize() + 1 );
     ui->dashLabel->setFont( f );
     ui->artistLabel->setFont( f );
     ui->artistLabel->setElideMode( Qt::ElideNone );
@@ -86,7 +86,7 @@ AudioControls::AudioControls( QWidget* parent )
 
     ui->timeLabel->setPalette( queryLabelsPalette );
     ui->timeLeftLabel->setPalette( queryLabelsPalette );
-    f.setPointSize( TomahawkUtils::defaultFontSize() );
+    f.setPointSize( HatchetUtils::defaultFontSize() );
     ui->timeLabel->setFont( f );
     ui->timeLeftLabel->setFont( f );
 
@@ -109,22 +109,22 @@ AudioControls::AudioControls( QWidget* parent )
     ui->shuffleButton->setToolTip( tr( "Shuffle" ) );
     ui->repeatButton->setToolTip( tr( "Repeat" ) );
 
-    ui->ownerButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::DefaultResolver, TomahawkUtils::Original, ui->ownerButton->size() ) );
-    ui->prevButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::PrevButton, TomahawkUtils::Original, ui->prevButton->size() ) );
-    ui->prevButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::PrevButtonPressed, TomahawkUtils::Original, ui->prevButton->size() ), QIcon::Off, QIcon::Active );
-    ui->playPauseButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::PlayButton, TomahawkUtils::Original, ui->playPauseButton->size() ) );
-    ui->playPauseButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::PlayButtonPressed, TomahawkUtils::Original, ui->playPauseButton->size() ), QIcon::Off, QIcon::Active );
-    ui->pauseButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::PauseButton, TomahawkUtils::Original, ui->pauseButton->size() ) );
-    ui->pauseButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::PauseButtonPressed, TomahawkUtils::Original, ui->pauseButton->size() ), QIcon::Off, QIcon::Active );
-    ui->nextButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::NextButton, TomahawkUtils::Original, ui->nextButton->size() ) );
-    ui->nextButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::NextButtonPressed, TomahawkUtils::Original, ui->nextButton->size() ), QIcon::Off, QIcon::Active );
-    ui->shuffleButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::ShuffleOff, TomahawkUtils::Original, ui->shuffleButton->size() ) );
-    ui->shuffleButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::ShuffleOffPressed, TomahawkUtils::Original, ui->shuffleButton->size() ), QIcon::Off, QIcon::Active );
-    ui->repeatButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::RepeatOff, TomahawkUtils::Original, ui->repeatButton->size() ) );
-    ui->repeatButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::RepeatOffPressed, TomahawkUtils::Original, ui->repeatButton->size() ), QIcon::Off, QIcon::Active );
-    ui->volumeLowButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::Volume, TomahawkUtils::Original, ui->volumeLowButton->size() ) );
-//    ui->socialButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::Share, TomahawkUtils::Original, scaled( 20, 20 ) ) );
-//    ui->loveButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::NotLoved, TomahawkUtils::Original, scaled( 20, 20 ) ) );
+    ui->ownerButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::DefaultResolver, HatchetUtils::Original, ui->ownerButton->size() ) );
+    ui->prevButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::PrevButton, HatchetUtils::Original, ui->prevButton->size() ) );
+    ui->prevButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::PrevButtonPressed, HatchetUtils::Original, ui->prevButton->size() ), QIcon::Off, QIcon::Active );
+    ui->playPauseButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::PlayButton, HatchetUtils::Original, ui->playPauseButton->size() ) );
+    ui->playPauseButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::PlayButtonPressed, HatchetUtils::Original, ui->playPauseButton->size() ), QIcon::Off, QIcon::Active );
+    ui->pauseButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::PauseButton, HatchetUtils::Original, ui->pauseButton->size() ) );
+    ui->pauseButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::PauseButtonPressed, HatchetUtils::Original, ui->pauseButton->size() ), QIcon::Off, QIcon::Active );
+    ui->nextButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::NextButton, HatchetUtils::Original, ui->nextButton->size() ) );
+    ui->nextButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::NextButtonPressed, HatchetUtils::Original, ui->nextButton->size() ), QIcon::Off, QIcon::Active );
+    ui->shuffleButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::ShuffleOff, HatchetUtils::Original, ui->shuffleButton->size() ) );
+    ui->shuffleButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::ShuffleOffPressed, HatchetUtils::Original, ui->shuffleButton->size() ), QIcon::Off, QIcon::Active );
+    ui->repeatButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::RepeatOff, HatchetUtils::Original, ui->repeatButton->size() ) );
+    ui->repeatButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::RepeatOffPressed, HatchetUtils::Original, ui->repeatButton->size() ), QIcon::Off, QIcon::Active );
+    ui->volumeLowButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::Volume, HatchetUtils::Original, ui->volumeLowButton->size() ) );
+//    ui->socialButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::Share, HatchetUtils::Original, scaled( 20, 20 ) ) );
+//    ui->loveButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::NotLoved, HatchetUtils::Original, scaled( 20, 20 ) ) );
 //    ui->loveButton->setCheckable( true );
 
     ui->seekSlider->setEnabled( true );
@@ -160,8 +160,8 @@ AudioControls::AudioControls( QWidget* parent )
     connect( ui->ownerButton,      SIGNAL( clicked() ),       SLOT( onOwnerButtonClicked() ) );
     connect( ui->trackLabel,       SIGNAL( clicked() ), ViewManager::instance(), SLOT( showCurrentTrack() ) );
 
-    connect( AudioEngine::instance(), SIGNAL( loading( Tomahawk::result_ptr ) ), SLOT( onPlaybackLoading( Tomahawk::result_ptr ) ) );
-    connect( AudioEngine::instance(), SIGNAL( started( Tomahawk::result_ptr ) ), SLOT( onPlaybackStarted( Tomahawk::result_ptr ) ) );
+    connect( AudioEngine::instance(), SIGNAL( loading( Hatchet::result_ptr ) ), SLOT( onPlaybackLoading( Hatchet::result_ptr ) ) );
+    connect( AudioEngine::instance(), SIGNAL( started( Hatchet::result_ptr ) ), SLOT( onPlaybackStarted( Hatchet::result_ptr ) ) );
     connect( AudioEngine::instance(), SIGNAL( paused() ), SLOT( onPlaybackPaused() ) );
     connect( AudioEngine::instance(), SIGNAL( resumed() ), SLOT( onPlaybackResumed() ) );
     connect( AudioEngine::instance(), SIGNAL( stopped() ), SLOT( onPlaybackStopped() ) );
@@ -171,16 +171,16 @@ AudioControls::AudioControls( QWidget* parent )
     connect( AudioEngine::instance(), SIGNAL( volumeChanged( int ) ), SLOT( onVolumeChanged( int ) ) );
     connect( AudioEngine::instance(), SIGNAL( mutedChanged( bool ) ), SLOT( onMutedChanged( bool ) ) );
     connect( AudioEngine::instance(), SIGNAL( controlStateChanged() ), SLOT( onControlStateChanged() ) );
-    connect( AudioEngine::instance(), SIGNAL( repeatModeChanged( Tomahawk::PlaylistModes::RepeatMode ) ), SLOT( onRepeatModeChanged( Tomahawk::PlaylistModes::RepeatMode ) ) );
+    connect( AudioEngine::instance(), SIGNAL( repeatModeChanged( Hatchet::PlaylistModes::RepeatMode ) ), SLOT( onRepeatModeChanged( Hatchet::PlaylistModes::RepeatMode ) ) );
     connect( AudioEngine::instance(), SIGNAL( shuffleModeChanged( bool ) ), SLOT( onShuffleModeChanged( bool ) ) );
 
     connect( ViewManager::instance(), SIGNAL( viewPageDestroyed() ), SLOT( onControlStateChanged() ) );
 
-    connect( InfoSystem::InfoSystem::instance(), SIGNAL( updatedSupportedPushTypes( Tomahawk::InfoSystem::InfoTypeSet ) ),
-             SLOT( onInfoSystemPushTypesUpdated( Tomahawk::InfoSystem::InfoTypeSet ) ) );
+    connect( InfoSystem::InfoSystem::instance(), SIGNAL( updatedSupportedPushTypes( Hatchet::InfoSystem::InfoTypeSet ) ),
+             SLOT( onInfoSystemPushTypesUpdated( Hatchet::InfoSystem::InfoTypeSet ) ) );
     onInfoSystemPushTypesUpdated( InfoSystem::InfoSystem::instance()->supportedPushTypes() );
 
-    TomahawkUtils::fixMargins( this );
+    HatchetUtils::fixMargins( this );
 
     onPlaybackStopped(); // initial state
 }
@@ -262,7 +262,7 @@ AudioControls::onControlStateChanged()
 
 
 void
-AudioControls::onPlaybackStarted( const Tomahawk::result_ptr result )
+AudioControls::onPlaybackStarted( const Hatchet::result_ptr result )
 {
     if ( result.isNull() )
         return;
@@ -279,8 +279,8 @@ AudioControls::onPlaybackStarted( const Tomahawk::result_ptr result )
     ui->seekSlider->setValue( 0 );
     ui->seekSlider->setEnabled( AudioEngine::instance()->canSeek() );
 
-    ui->timeLabel->setText( TomahawkUtils::timeToString( 0 ) );
-    ui->timeLeftLabel->setText( "-" + TomahawkUtils::timeToString( 0 ) );
+    ui->timeLabel->setText( HatchetUtils::timeToString( 0 ) );
+    ui->timeLeftLabel->setText( "-" + HatchetUtils::timeToString( 0 ) );
 
     tLog() << Q_FUNC_INFO << duration;
     m_sliderTimeLine.setDuration( duration );
@@ -298,7 +298,7 @@ AudioControls::onPlaybackStarted( const Tomahawk::result_ptr result )
 
 
 void
-AudioControls::onPlaybackLoading( const Tomahawk::result_ptr result )
+AudioControls::onPlaybackLoading( const Hatchet::result_ptr result )
 {
     if ( !m_currentTrack.isNull() )
     {
@@ -314,9 +314,9 @@ AudioControls::onPlaybackLoading( const Tomahawk::result_ptr result )
     ui->trackLabel->setResult( result );
     ui->artistLabel->setResult( result );
 
-    const QString duration = TomahawkUtils::timeToString( result.data()->track()->duration() );
+    const QString duration = HatchetUtils::timeToString( result.data()->track()->duration() );
     ui->timeLabel->setFixedWidth( ui->timeLabel->fontMetrics().width( QString( duration.length(), QChar( '0' ) ) ) );
-    ui->timeLabel->setText( TomahawkUtils::timeToString( 0 ) );
+    ui->timeLabel->setText( HatchetUtils::timeToString( 0 ) );
     ui->timeLeftLabel->setFixedWidth( ui->timeLeftLabel->fontMetrics().width( QString( duration.length() + 1, QChar( '0' ) ) ) );
     ui->timeLeftLabel->setText( "-" + duration );
     m_lastTextSecondShown = 0;
@@ -353,7 +353,7 @@ AudioControls::onPlaybackLoading( const Tomahawk::result_ptr result )
 
     onControlStateChanged();
 
-    QPixmap sourceIcon = result->sourceIcon( TomahawkUtils::RoundedCorners, ui->ownerButton->size() );
+    QPixmap sourceIcon = result->sourceIcon( HatchetUtils::RoundedCorners, ui->ownerButton->size() );
     if ( !sourceIcon.isNull() )
     {
         ui->ownerButton->setPixmap( sourceIcon );
@@ -361,7 +361,7 @@ AudioControls::onPlaybackLoading( const Tomahawk::result_ptr result )
     else
     {
         ui->ownerButton->clear();
-        ui->ownerButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::DefaultResolver, TomahawkUtils::Original, QSize( 34, 34 ) ) );
+        ui->ownerButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::DefaultResolver, HatchetUtils::Original, QSize( 34, 34 ) ) );
     }
 
     if ( QUrl( result->linkUrl() ).isValid() || !result->resolvedByCollection().isNull() )
@@ -392,13 +392,13 @@ AudioControls::setCover()
     if ( !m_currentTrack->track()->cover( QSize( 0, 0 ) ).isNull() )
     {
         QPixmap cover = m_currentTrack->track()->cover( QSize( 0, 0 ) );
-        setBackground( QPixmap::fromImage( TomahawkUtils::blurred( cover.toImage(), cover.rect(), 10, false, true ) ) );
+        setBackground( QPixmap::fromImage( HatchetUtils::blurred( cover.toImage(), cover.rect(), 10, false, true ) ) );
     }
     else
     {
         setBackground( QPixmap() );
     }
-//        ui->coverImage->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::DefaultAlbumCover, TomahawkUtils::Original, ui->coverImage->size() ), true );
+//        ui->coverImage->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::DefaultAlbumCover, HatchetUtils::Original, ui->coverImage->size() ), true );
 }
 
 
@@ -437,12 +437,12 @@ AudioControls::setSocialActions()
 {
     if ( m_currentTrack->track()->loved() )
     {
-/*        ui->loveButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::Loved, TomahawkUtils::Original, scaled( 20, 20 ) ) );
+/*        ui->loveButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::Loved, HatchetUtils::Original, scaled( 20, 20 ) ) );
         ui->loveButton->setChecked( true );*/
     }
     else
     {
-/*        ui->loveButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::NotLoved, TomahawkUtils::Original, scaled( 20, 20 ) ) );
+/*        ui->loveButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::NotLoved, HatchetUtils::Original, scaled( 20, 20 ) ) );
         ui->loveButton->setChecked( false );*/
     }
 }
@@ -492,7 +492,7 @@ AudioControls::onPlaybackStopped()
     ui->dashLabel->setVisible( false );
     ui->timeLabel->clear();
     ui->timeLeftLabel->clear();
-    ui->ownerButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::DefaultResolver, TomahawkUtils::Original, QSize( 34, 34 ) ) );
+    ui->ownerButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::DefaultResolver, HatchetUtils::Original, QSize( 34, 34 ) ) );
 
     ui->seekSlider->setVisible( false );
     m_sliderTimeLine.stop();
@@ -554,8 +554,8 @@ AudioControls::onPlaybackTimer( qint64 msElapsed )
     const int seconds = msElapsed / 1000;
     if ( seconds != m_lastTextSecondShown )
     {
-        ui->timeLabel->setText( TomahawkUtils::timeToString( seconds ) );
-        ui->timeLeftLabel->setText( "-" + TomahawkUtils::timeToString( m_currentTrack->track()->duration() - seconds ) );
+        ui->timeLabel->setText( HatchetUtils::timeToString( seconds ) );
+        ui->timeLeftLabel->setText( "-" + HatchetUtils::timeToString( m_currentTrack->track()->duration() - seconds ) );
         m_lastTextSecondShown = seconds;
     }
 
@@ -641,24 +641,24 @@ AudioControls::onRepeatModeChanged( PlaylistModes::RepeatMode mode )
         case PlaylistModes::NoRepeat:
         {
             // switch to RepeatOne
-            ui->repeatButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::RepeatOff, TomahawkUtils::Original, ui->repeatButton->size() ) );
-            ui->repeatButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::RepeatOffPressed, TomahawkUtils::Original, ui->repeatButton->size() ), QIcon::Off, QIcon::Active );
+            ui->repeatButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::RepeatOff, HatchetUtils::Original, ui->repeatButton->size() ) );
+            ui->repeatButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::RepeatOffPressed, HatchetUtils::Original, ui->repeatButton->size() ), QIcon::Off, QIcon::Active );
         }
         break;
 
         case PlaylistModes::RepeatOne:
         {
             // switch to RepeatAll
-            ui->repeatButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::RepeatOne, TomahawkUtils::Original, ui->repeatButton->size() ) );
-            ui->repeatButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::RepeatOnePressed, TomahawkUtils::Original, ui->repeatButton->size() ), QIcon::Off, QIcon::Active );
+            ui->repeatButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::RepeatOne, HatchetUtils::Original, ui->repeatButton->size() ) );
+            ui->repeatButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::RepeatOnePressed, HatchetUtils::Original, ui->repeatButton->size() ), QIcon::Off, QIcon::Active );
         }
         break;
 
         case PlaylistModes::RepeatAll:
         {
             // switch to NoRepeat
-            ui->repeatButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::RepeatAll, TomahawkUtils::Original, ui->repeatButton->size() ) );
-            ui->repeatButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::RepeatAllPressed, TomahawkUtils::Original, ui->repeatButton->size() ), QIcon::Off, QIcon::Active );
+            ui->repeatButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::RepeatAll, HatchetUtils::Original, ui->repeatButton->size() ) );
+            ui->repeatButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::RepeatAllPressed, HatchetUtils::Original, ui->repeatButton->size() ), QIcon::Off, QIcon::Active );
         }
         break;
 
@@ -709,15 +709,15 @@ AudioControls::onShuffleModeChanged( bool enabled )
 
     if ( m_shuffled )
     {
-        ui->shuffleButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::ShuffleOn, TomahawkUtils::Original, ui->shuffleButton->size() ) );
-        ui->shuffleButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::ShuffleOnPressed, TomahawkUtils::Original, ui->shuffleButton->size() ), QIcon::Off, QIcon::Active );
+        ui->shuffleButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::ShuffleOn, HatchetUtils::Original, ui->shuffleButton->size() ) );
+        ui->shuffleButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::ShuffleOnPressed, HatchetUtils::Original, ui->shuffleButton->size() ), QIcon::Off, QIcon::Active );
 
         ui->repeatButton->setEnabled( false );
     }
     else
     {
-        ui->shuffleButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::ShuffleOff, TomahawkUtils::Original, ui->shuffleButton->size() ) );
-        ui->shuffleButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::ShuffleOffPressed, TomahawkUtils::Original, ui->shuffleButton->size() ), QIcon::Off, QIcon::Active );
+        ui->shuffleButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::ShuffleOff, HatchetUtils::Original, ui->shuffleButton->size() ) );
+        ui->shuffleButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::ShuffleOffPressed, HatchetUtils::Original, ui->shuffleButton->size() ), QIcon::Off, QIcon::Active );
 
         ui->repeatButton->setEnabled( true );
     }
@@ -757,7 +757,7 @@ AudioControls::dropEvent( QDropEvent* e )
     {
         DropJob *dj = new DropJob();
         dj->setDropAction( DropJob::Append );
-        connect( dj, SIGNAL( tracks( QList<Tomahawk::query_ptr> ) ), this, SLOT( droppedTracks( QList<Tomahawk::query_ptr> ) ) );
+        connect( dj, SIGNAL( tracks( QList<Hatchet::query_ptr> ) ), this, SLOT( droppedTracks( QList<Hatchet::query_ptr> ) ) );
         dj->tracksFromMimeData( e->mimeData() );
 
         e->accept();
@@ -800,13 +800,13 @@ AudioControls::onLoveButtonClicked( bool checked )
 {
     if ( checked )
     {
-//        ui->loveButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::Loved, TomahawkUtils::Original, scaled( 20, 20 ) ) );
+//        ui->loveButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::Loved, HatchetUtils::Original, scaled( 20, 20 ) ) );
 
         m_currentTrack->track()->setLoved( true );
     }
     else
     {
-//        ui->loveButton->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::NotLoved, TomahawkUtils::Original, scaled( 20, 20 ) ) );
+//        ui->loveButton->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::NotLoved, HatchetUtils::Original, scaled( 20, 20 ) ) );
 
         m_currentTrack->track()->setLoved( false );
     }

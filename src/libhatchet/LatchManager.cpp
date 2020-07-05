@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "LatchManager.h"
@@ -30,13 +30,13 @@
 #include <QAction>
 
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 LatchManager::LatchManager( QObject* parent )
     : QObject( parent )
     , m_state( NotLatched )
 {
-    connect( AudioEngine::instance(), SIGNAL( playlistChanged( Tomahawk::playlistinterface_ptr ) ), this, SLOT( playlistChanged( Tomahawk::playlistinterface_ptr ) ) );
+    connect( AudioEngine::instance(), SIGNAL( playlistChanged( Hatchet::playlistinterface_ptr ) ), this, SLOT( playlistChanged( Hatchet::playlistinterface_ptr ) ) );
     connect( AudioEngine::instance(), SIGNAL( paused() ), SLOT( audioPaused() ) );
 }
 
@@ -67,7 +67,7 @@ LatchManager::latchRequest( const source_ptr& source )
 
 
 void
-LatchManager::playlistChanged( Tomahawk::playlistinterface_ptr )
+LatchManager::playlistChanged( Hatchet::playlistinterface_ptr )
 {
     // If we were latched on and changed, send the listening along stop
     if ( m_latchedOnTo.isNull() )
@@ -85,7 +85,7 @@ LatchManager::playlistChanged( Tomahawk::playlistinterface_ptr )
         cmd->setAction( "latchOn");
         cmd->setComment( m_latchedOnTo->nodeId() );
         cmd->setTimestamp( QDateTime::currentDateTime().toTime_t() );
-        Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+        Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 
         QAction *latchOnAction = ActionCollection::instance()->getAction( "latchOn" );
         latchOnAction->setText( tr( "&Catch Up" ) );
@@ -105,7 +105,7 @@ LatchManager::playlistChanged( Tomahawk::playlistinterface_ptr )
     cmd->setAction( "latchOff");
     cmd->setComment( source->nodeId() );
     cmd->setTimestamp( QDateTime::currentDateTime().toTime_t() );
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 
     if ( !m_waitingForLatch.isNull() &&
           m_waitingForLatch != m_latchedOnTo )
@@ -115,7 +115,7 @@ LatchManager::playlistChanged( Tomahawk::playlistinterface_ptr )
         m_latchedInterface.clear();
 
         // call ourselves to hit the "create latch" condition
-        playlistChanged( Tomahawk::playlistinterface_ptr() );
+        playlistChanged( Hatchet::playlistinterface_ptr() );
         return;
     }
     m_latchedOnTo.clear();
@@ -155,7 +155,7 @@ LatchManager::unlatchRequest( const source_ptr& source )
 {
     Q_UNUSED( source );
     AudioEngine::instance()->stop();
-    AudioEngine::instance()->setPlaylist( Tomahawk::playlistinterface_ptr() );
+    AudioEngine::instance()->setPlaylist( Hatchet::playlistinterface_ptr() );
 
     QAction *latchOnAction = ActionCollection::instance()->getAction( "latchOn" );
     latchOnAction->setText( tr( "&Listen Along" ) );
@@ -164,12 +164,12 @@ LatchManager::unlatchRequest( const source_ptr& source )
 
 
 void
-LatchManager::latchModeChangeRequest( const Tomahawk::source_ptr& source, bool realtime )
+LatchManager::latchModeChangeRequest( const Hatchet::source_ptr& source, bool realtime )
 {
     if ( !isLatched( source ) )
         return;
 
-    source->playlistInterface()->setLatchMode( realtime ? Tomahawk::PlaylistModes::RealTime : Tomahawk::PlaylistModes::StayOnSong );
+    source->playlistInterface()->setLatchMode( realtime ? Hatchet::PlaylistModes::RealTime : Hatchet::PlaylistModes::StayOnSong );
     if ( realtime )
         catchUpRequest();
 }

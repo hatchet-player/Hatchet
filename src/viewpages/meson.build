@@ -2,8 +2,8 @@
 #============================================================================
 
 viewpage_inc = [include_directories('.')]
-viewpage_inc += libtomahawk_inc 
-viewpage_inc += tomahawk_inc
+viewpage_inc += libhatchet_inc 
+viewpage_inc += hatchet_inc
 
 viewpages_dirs = [
     # 'charts',

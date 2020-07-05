@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #pragma once
@@ -23,7 +23,7 @@
 #include "DllMacro.h"
 #include "Typedefs.h"
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 class PlaylistTemplatePrivate;
@@ -38,15 +38,15 @@ public:
                                const QString& info,
                                const QString& creator,
                                bool shared,
-                               const QList<Tomahawk::query_ptr>& queries = QList<Tomahawk::query_ptr>());
+                               const QList<Hatchet::query_ptr>& queries = QList<Hatchet::query_ptr>());
     virtual ~PlaylistTemplate();
 
     /**
      * Create or get the playlist for this template.
      */
-    virtual Tomahawk::playlist_ptr get();
+    virtual Hatchet::playlist_ptr get();
 
-    virtual QList<Tomahawk::query_ptr> tracks() const;
+    virtual QList<Hatchet::query_ptr> tracks() const;
 
 protected:
     PlaylistTemplate( PlaylistTemplatePrivate* d );
@@ -58,6 +58,6 @@ private:
 
 }
 
-Q_DECLARE_METATYPE( QSharedPointer< Tomahawk::PlaylistTemplate > )
+Q_DECLARE_METATYPE( QSharedPointer< Hatchet::PlaylistTemplate > )
 
 #endif // PLAYLISTTEMPLATE_H

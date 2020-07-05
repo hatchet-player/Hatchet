@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2013-2014, Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ColumnViewPreviewWidget.h"
@@ -25,7 +25,7 @@
 #include "widgets/ScrollingLabel.h"
 #include "utils/Logger.h"
 #include "Source.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/DpiScaler.h"
 #include "ViewManager.h"
 #include "widgets/DownloadButton.h"
@@ -33,7 +33,7 @@
 #include <QLabel>
 #include <QVBoxLayout>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 ColumnViewPreviewWidget::ColumnViewPreviewWidget( ColumnView* parent )
@@ -45,7 +45,7 @@ ColumnViewPreviewWidget::ColumnViewPreviewWidget( ColumnView* parent )
     setLayout( mainLayout );
 
 #ifndef Q_OS_MAC //we don't need to scale on OSX anyway
-    mainLayout->addSpacing( TomahawkUtils::DpiScaler::scaledY( this, 8 ) );
+    mainLayout->addSpacing( HatchetUtils::DpiScaler::scaledY( this, 8 ) );
 #else
     mainLayout->addSpacing( 8 );
 #endif
@@ -63,14 +63,14 @@ ColumnViewPreviewWidget::ColumnViewPreviewWidget( ColumnView* parent )
     coverCenterLayout->addStretch();
 
 #ifndef Q_OS_MAC //we don't need to scale on OSX anyway
-    mainLayout->addSpacing( TomahawkUtils::DpiScaler::scaledY( this, 16 ) );
+    mainLayout->addSpacing( HatchetUtils::DpiScaler::scaledY( this, 16 ) );
 #else
     mainLayout->addSpacing( 16 );
 #endif
 
     m_trackLabel = new ScrollingLabel( this );
     QFont font;
-    font.setPointSize( TomahawkUtils::defaultFontSize() + 9 );
+    font.setPointSize( HatchetUtils::defaultFontSize() + 9 );
     font.setBold( true );
     m_trackLabel->setFont( font );
     m_trackLabel->setFixedHeight( QFontMetrics( font ).height() + 6 );
@@ -85,7 +85,7 @@ ColumnViewPreviewWidget::ColumnViewPreviewWidget( ColumnView* parent )
     m_artistLabel->setContentsMargins( 6, 2, 6, 2 );
     m_artistLabel->setType( QueryLabel::Artist );
     m_artistLabel->setAlignment( Qt::AlignCenter );
-    font.setPointSize( TomahawkUtils::defaultFontSize() + 5 );
+    font.setPointSize( HatchetUtils::defaultFontSize() + 5 );
     m_artistLabel->setFont( font );
     QHBoxLayout* artistLayout = new QHBoxLayout;
     artistLayout->addStretch();
@@ -95,7 +95,7 @@ ColumnViewPreviewWidget::ColumnViewPreviewWidget( ColumnView* parent )
     mainLayout->addLayout( artistLayout );
 
 #ifndef Q_OS_MAC //we don't need to scale on OSX anyway
-    mainLayout->addSpacing( TomahawkUtils::DpiScaler::scaledY( this, 16 ) );
+    mainLayout->addSpacing( HatchetUtils::DpiScaler::scaledY( this, 16 ) );
 #else
     mainLayout->addSpacing( 16 );
 #endif
@@ -103,7 +103,7 @@ ColumnViewPreviewWidget::ColumnViewPreviewWidget( ColumnView* parent )
     QGridLayout* gridLayout = new QGridLayout;
     mainLayout->addLayout( gridLayout );
 
-    font.setPointSize( TomahawkUtils::defaultFontSize() + 3 );
+    font.setPointSize( HatchetUtils::defaultFontSize() + 3 );
 
     m_composerLabel = new QLabel( this );
     m_composerLabel->setEnabled( false );
@@ -171,10 +171,10 @@ ColumnViewPreviewWidget::ColumnViewPreviewWidget( ColumnView* parent )
 
     mainLayout->addStretch();
 
-    TomahawkUtils::unmarginLayout( mainLayout );
+    HatchetUtils::unmarginLayout( mainLayout );
 
 #ifndef Q_OS_MAC //we don't need to scale on OSX anyway
-    gridLayout->setSpacing( TomahawkUtils::DpiScaler::scaledX( this, 4 ) );
+    gridLayout->setSpacing( HatchetUtils::DpiScaler::scaledX( this, 4 ) );
 #else
     gridLayout->setSpacing( 4 );
 #endif
@@ -188,7 +188,7 @@ ColumnViewPreviewWidget::~ColumnViewPreviewWidget()
 
 
 void
-ColumnViewPreviewWidget::setQuery( const Tomahawk::query_ptr& query )
+ColumnViewPreviewWidget::setQuery( const Hatchet::query_ptr& query )
 {
     if ( !m_query.isNull() )
     {
@@ -220,8 +220,8 @@ ColumnViewPreviewWidget::setQuery( const Tomahawk::query_ptr& query )
     {
         m_yearValue->setText( QString::number( query->track()->year() ) );
         m_bitrateValue->setText( tr( "%1 kbps" ).arg( query->results().first()->bitrate() ) );
-        m_durationValue->setText( TomahawkUtils::timeToString( query->track()->duration() ) );
-        m_ageValue->setText( TomahawkUtils::ageToString( QDateTime::fromTime_t( query->results().first()->modificationTime() ) ) );
+        m_durationValue->setText( HatchetUtils::timeToString( query->track()->duration() ) );
+        m_ageValue->setText( HatchetUtils::ageToString( QDateTime::fromTime_t( query->results().first()->modificationTime() ) ) );
         m_downloadButton->setQuery( query );
 
         m_yearValue->setVisible( query->track()->year() > 0 );
@@ -256,7 +256,7 @@ ColumnViewPreviewWidget::onCoverUpdated()
 {
     if ( m_query->track()->cover( QSize( 0, 0 ) ).isNull() )
     {
-        m_cover->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::DefaultTrackImage, TomahawkUtils::Original, m_cover->size() ) );
+        m_cover->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::DefaultTrackImage, HatchetUtils::Original, m_cover->size() ) );
         return;
     }
 
@@ -275,6 +275,6 @@ ColumnViewPreviewWidget::onArtistClicked()
 QSize
 ColumnViewPreviewWidget::minimumSize() const
 {
-    int minWidth = TomahawkUtils::DpiScaler::scaledX( this, 280 );
+    int minWidth = HatchetUtils::DpiScaler::scaledX( this, 280 );
     return QSize( qMax( minWidth, 348 ), minimumHeight() );
 }

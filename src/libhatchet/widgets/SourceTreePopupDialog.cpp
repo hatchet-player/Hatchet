@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2012      Leo Franchi <lfranchi@kde.org>
  *   Copyright 2012-2014 Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "SourceTreePopupDialog.h"
@@ -35,11 +35,11 @@
     #include "SourceTreePopupDialog_mac.h"
 #endif
 
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/ImageRegistry.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 SourceTreePopupDialog::SourceTreePopupDialog()
     : QWidget( 0 )
@@ -60,8 +60,8 @@ SourceTreePopupDialog::SourceTreePopupDialog()
     m_title = new QLabel( this );
     QFont titleFont = m_title->font();
     titleFont.setBold( true );
-    m_title->setStyleSheet( "color: " + TomahawkStyle::GROUP_HEADER.name() );
-    titleFont.setPointSize( TomahawkUtils::defaultFontSize() + 1 );
+    m_title->setStyleSheet( "color: " + HatchetStyle::GROUP_HEADER.name() );
+    titleFont.setPointSize( HatchetUtils::defaultFontSize() + 1 );
     m_title->setFont( titleFont );
     m_title->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Preferred );
 
@@ -75,7 +75,7 @@ SourceTreePopupDialog::SourceTreePopupDialog()
     connect( m_buttons, SIGNAL( rejected() ), this, SLOT( onRejected() ) );
 
     m_layout = new QVBoxLayout;
-    TomahawkUtils::unmarginLayout( m_layout );
+    HatchetUtils::unmarginLayout( m_layout );
     setLayout( m_layout );
     m_layout->setSpacing( 8 );
     m_layout->setMargin( 6 );
@@ -86,7 +86,7 @@ SourceTreePopupDialog::SourceTreePopupDialog()
     m_separatorLine->setFixedHeight( 1 );
     m_separatorLine->setContentsMargins( 0, 0, 0, 0 );
     m_separatorLine->setStyleSheet( "QWidget { border-top: 1px solid " +
-                                    TomahawkStyle::BORDER_LINE.name() + "; }" );
+                                    HatchetStyle::BORDER_LINE.name() + "; }" );
     m_layout->addWidget( m_separatorLine );
     m_layout->addWidget( m_label );
     QHBoxLayout* questionsSpacerLayout = new QHBoxLayout;
@@ -94,7 +94,7 @@ SourceTreePopupDialog::SourceTreePopupDialog()
     m_questionsLayout = new QVBoxLayout;
     questionsSpacerLayout->addStretch( 1 );
     questionsSpacerLayout->addLayout( m_questionsLayout );
-    TomahawkUtils::unmarginLayout( questionsSpacerLayout );
+    HatchetUtils::unmarginLayout( questionsSpacerLayout );
     m_layout->addWidget( m_buttons );
     setContentsMargins( contentsMargins().left() + 12,
                         contentsMargins().top() + 8,
@@ -160,7 +160,7 @@ SourceTreePopupDialog::setOkButtonText( const QString& text )
 
 
 void
-SourceTreePopupDialog::setExtraQuestions( const Tomahawk::PlaylistDeleteQuestions& questions )
+SourceTreePopupDialog::setExtraQuestions( const Hatchet::PlaylistDeleteQuestions& questions )
 {
     //First we clear
     clearQuestionWidgets();
@@ -168,7 +168,7 @@ SourceTreePopupDialog::setExtraQuestions( const Tomahawk::PlaylistDeleteQuestion
     m_questions = questions;
 
     int baseHeight = 80;
-    foreach ( const Tomahawk::PlaylistDeleteQuestion& question, m_questions )
+    foreach ( const Hatchet::PlaylistDeleteQuestion& question, m_questions )
     {
         QCheckBox* cb = new QCheckBox( question.first, this );
         cb->setLayoutDirection( Qt::RightToLeft );
@@ -190,7 +190,7 @@ SourceTreePopupDialog::paintEvent( QPaintEvent* event )
 
     // Constants for painting
     const int leftTriangleWidth = 12;
-    const int cornerRounding = TomahawkStyle::POPUP_ROUNDING_RADIUS;
+    const int cornerRounding = HatchetStyle::POPUP_ROUNDING_RADIUS;
     const int leftEdgeOffset = 2 /*margin*/ + leftTriangleWidth / 2;
     const QRect brect = rect().adjusted( 2, 3, -2, -3 );
 
@@ -208,17 +208,17 @@ SourceTreePopupDialog::paintEvent( QPaintEvent* event )
     outline.lineTo( brect.left(), brect.top() + brect.height() / 2 );
 
 #ifndef Q_OS_MAC
-    TomahawkUtils::drawCompositedPopup( this,
+    HatchetUtils::drawCompositedPopup( this,
                                         outline,
-                                        TomahawkStyle::BORDER_LINE,
-                                        TomahawkStyle::POPUP_BACKGROUND,
-                                        TomahawkStyle::POPUP_OPACITY );
+                                        HatchetStyle::BORDER_LINE,
+                                        HatchetStyle::POPUP_BACKGROUND,
+                                        HatchetStyle::POPUP_OPACITY );
 #else
-    TomahawkUtils::drawCompositedPopup( this,
+    HatchetUtils::drawCompositedPopup( this,
                                         outline,
-                                        TomahawkStyle::BORDER_LINE,
-                                        TomahawkStyle::POPUP_OSX_BACKGROUND,
-                                        TomahawkStyle::POPUP_OPACITY );
+                                        HatchetStyle::BORDER_LINE,
+                                        HatchetStyle::POPUP_OSX_BACKGROUND,
+                                        HatchetStyle::POPUP_OPACITY );
 #endif
 }
 

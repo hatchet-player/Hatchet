@@ -1,4 +1,4 @@
-# tomahawk.linux build file
+# hatchet.linux build file
 #============================================================================
 
 
@@ -8,7 +8,7 @@ viewpage_newreleases_inc += viewpage_inc
 
 
 # create target name for convenience
-target='@0@_viewpage_newreleases'.format(tomahawk_base_target_name)
+target='@0@_viewpage_newreleases'.format(hatchet_base_target_name)
 
 # Dependencies
 #============================================================================
@@ -27,8 +27,8 @@ viewpage_newreleases_dep_list = [
     echonest_dep,
     taglib_dep,
 
-    libtomahawk_dep,
-    libtomahawkwidgets_dep]
+    libhatchet_dep,
+    libhatchetwidgets_dep]
 
 
 # Sources

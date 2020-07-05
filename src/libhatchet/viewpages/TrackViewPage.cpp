@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "TrackViewPage.h"
@@ -30,14 +30,14 @@
 #include "playlist/PlayableModel.h"
 #include "audio/AudioEngine.h"
 #include "widgets/BasicHeader.h"
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
-TrackInfoWidget::TrackInfoWidget( const Tomahawk::query_ptr& query, QWidget* parent )
+TrackInfoWidget::TrackInfoWidget( const Hatchet::query_ptr& query, QWidget* parent )
     : QWidget( parent )
     , ui( new Ui::TrackInfoWidget )
 {
@@ -45,7 +45,7 @@ TrackInfoWidget::TrackInfoWidget( const Tomahawk::query_ptr& query, QWidget* par
     m_headerWidget = new BasicHeader;
     ui->setupUi( widget );
 
-    m_pixmap = TomahawkUtils::defaultPixmap( TomahawkUtils::DefaultTrackImage, TomahawkUtils::Original, QSize( 48, 48 ) );
+    m_pixmap = HatchetUtils::defaultPixmap( HatchetUtils::DefaultTrackImage, HatchetUtils::Original, QSize( 48, 48 ) );
 
     m_relatedTracksModel = new PlayableModel( ui->trackView );
     ui->trackView->trackView()->setPlayableModel( m_relatedTracksModel );
@@ -53,7 +53,7 @@ TrackInfoWidget::TrackInfoWidget( const Tomahawk::query_ptr& query, QWidget* par
     ui->trackView->setEmptyTip( tr( "Sorry, but we could not find similar tracks for this song!" ) );
 
     ui->topHits->setStyleSheet( QString( "QListView { background-color: #f9f9f9; }" ) );
-    TomahawkStyle::stylePageFrame( ui->trackFrame );
+    HatchetStyle::stylePageFrame( ui->trackFrame );
     ui->topHits->setVisible( false );
     ui->topHitsLabel->setVisible( false );
 
@@ -64,7 +64,7 @@ TrackInfoWidget::TrackInfoWidget( const Tomahawk::query_ptr& query, QWidget* par
         area->setWidget( widget );
 
         QPalette pal = palette();
-        pal.setBrush( backgroundRole(), TomahawkStyle::PAGE_BACKGROUND );
+        pal.setBrush( backgroundRole(), HatchetStyle::PAGE_BACKGROUND );
         area->setPalette( pal );
         area->setAutoFillBackground( true );
         area->setFrameShape( QFrame::NoFrame );
@@ -74,7 +74,7 @@ TrackInfoWidget::TrackInfoWidget( const Tomahawk::query_ptr& query, QWidget* par
         layout->addWidget( m_headerWidget );
         layout->addWidget( area );
         setLayout( layout );
-        TomahawkUtils::unmarginLayout( layout );
+        HatchetUtils::unmarginLayout( layout );
     }
 
     load( query );
@@ -88,7 +88,7 @@ TrackInfoWidget::~TrackInfoWidget()
 }
 
 
-Tomahawk::playlistinterface_ptr
+Hatchet::playlistinterface_ptr
 TrackInfoWidget::playlistInterface() const
 {
     return ui->trackView->playlistInterface();
@@ -192,7 +192,7 @@ QPixmap
 TrackInfoWidget::pixmap() const
 {
     if ( m_pixmap.isNull() )
-        return Tomahawk::ViewPage::pixmap();
+        return Hatchet::ViewPage::pixmap();
     else
         return m_pixmap;
 }

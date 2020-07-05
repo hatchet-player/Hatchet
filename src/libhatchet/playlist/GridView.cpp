@@ -1,26 +1,26 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "GridView.h"
 
 #include "audio/AudioEngine.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "Artist.h"
 #include "Source.h"
 #include "PlayableItem.h"
@@ -35,8 +35,8 @@
 #include "utils/Logger.h"
 #include "utils/AnimatedSpinner.h"
 #include "utils/PixmapDelegateFader.h"
-#include "utils/TomahawkUtilsGui.h"
-#include "utils/TomahawkStyle.h"
+#include "utils/HatchetUtilsGui.h"
+#include "utils/HatchetStyle.h"
 
 #include <QDrag>
 #include <QHeaderView>
@@ -48,7 +48,7 @@
 
 #define SCROLL_TIMEOUT 280
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 GridView::GridView( QWidget* parent )
@@ -69,7 +69,7 @@ GridView::GridView( QWidget* parent )
     setDropIndicatorShown( false );
     setDragDropOverwriteMode( false );
     setUniformItemSizes( true );
-    setSpacing( TomahawkUtils::DpiScaler::scaledX( this, 16 ) );
+    setSpacing( HatchetUtils::DpiScaler::scaledX( this, 16 ) );
     setContentsMargins( 0, 0, 0, 0 );
     setMouseTracking( true );
     setContextMenuPolicy( Qt::CustomContextMenu );
@@ -79,12 +79,12 @@ GridView::GridView( QWidget* parent )
     setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
     setEditTriggers( NoEditTriggers );
 
-    setStyleSheet( QString( "QListView { background-color: %1; }" ).arg( TomahawkStyle::PAGE_BACKGROUND.name() ) );
+    setStyleSheet( QString( "QListView { background-color: %1; }" ).arg( HatchetStyle::PAGE_BACKGROUND.name() ) );
 
     setAutoFitItems( true );
     setAutoResize( false );
 
-    setItemWidth( TomahawkUtils::DpiScaler::scaledX( this, 170 ) );
+    setItemWidth( HatchetUtils::DpiScaler::scaledX( this, 170 ) );
     setProxyModel( new PlayableProxyModel( this ) );
 
     m_timer.setInterval( SCROLL_TIMEOUT );
@@ -95,7 +95,7 @@ GridView::GridView( QWidget* parent )
     connect( this, SIGNAL( doubleClicked( QModelIndex ) ), SLOT( onItemActivated( QModelIndex ) ) );
     connect( this, SIGNAL( customContextMenuRequested( QPoint ) ), SLOT( onCustomContextMenu( QPoint ) ) );
 
-    m_mpl = new Tomahawk::MetaPlaylistInterface();
+    m_mpl = new Hatchet::MetaPlaylistInterface();
     m_mpl->addChildInterface( proxyModel()->playlistInterface() );
     m_playlistInterface = playlistinterface_ptr( m_mpl );
 }
@@ -398,12 +398,12 @@ GridView::startDrag( Qt::DropActions supportedActions )
     drag->setMimeData( data );
 
     QPixmap p;
-    if ( data->hasFormat( "application/tomahawk.metadata.artist" ) )
-        p = TomahawkUtils::createDragPixmap( TomahawkUtils::MediaTypeArtist, indexes.count() );
-    else if ( data->hasFormat( "application/tomahawk.metadata.album" ) )
-        p = TomahawkUtils::createDragPixmap( TomahawkUtils::MediaTypeAlbum, indexes.count() );
+    if ( data->hasFormat( "application/hatchet.metadata.artist" ) )
+        p = HatchetUtils::createDragPixmap( HatchetUtils::MediaTypeArtist, indexes.count() );
+    else if ( data->hasFormat( "application/hatchet.metadata.album" ) )
+        p = HatchetUtils::createDragPixmap( HatchetUtils::MediaTypeAlbum, indexes.count() );
     else
-        p = TomahawkUtils::createDragPixmap( TomahawkUtils::MediaTypeTrack, indexes.count() );
+        p = HatchetUtils::createDragPixmap( HatchetUtils::MediaTypeTrack, indexes.count() );
 
     drag->setPixmap( p );
     drag->setHotSpot( QPoint( -20, -20 ) );
@@ -490,7 +490,7 @@ GridView::playlistInterface() const
 
 
 void
-GridView::setPlaylistInterface( const Tomahawk::playlistinterface_ptr& playlistInterface )
+GridView::setPlaylistInterface( const Hatchet::playlistinterface_ptr& playlistInterface )
 {
     m_mpl->removeChildInterface( proxyModel()->playlistInterface() );
     proxyModel()->setPlaylistInterface( playlistInterface );

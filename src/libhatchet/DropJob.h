@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2011, Michael Zanetti <mzanetti@kde.org>
  *   Copyright 2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef DROPJOB_H
@@ -28,7 +28,7 @@
 #include <QStringList>
 #include <QMimeData>
 
-namespace Tomahawk {
+namespace Hatchet {
 class DropJobNotifier;
 }
 
@@ -43,7 +43,7 @@ public:
     /**
      * QMimeData helpers
      *
-     *  Call this to parse the tracks in a QMimeData object to query_ptrs. This will parse internal tomahawk
+     *  Call this to parse the tracks in a QMimeData object to query_ptrs. This will parse internal hatchet
      *   data as well as all other formats supported (spotify, etc).
      *
      * Connect to tracks( QList< query_ptr> ); for the extracted tracks.
@@ -120,26 +120,26 @@ public:
 
 signals:
     /// QMimeData parsing results
-    void tracks( const QList< Tomahawk::query_ptr >& tracks );
+    void tracks( const QList< Hatchet::query_ptr >& tracks );
 
 private slots:
     void expandedUrls( QStringList );
     void informationForUrl( const QString& url, const QSharedPointer<QObject>& information );
-    void onTracksAdded( const QList<Tomahawk::query_ptr>& );
+    void onTracksAdded( const QList<Hatchet::query_ptr>& );
 
 private:
     /// handle parsing mime data
     void handleAllUrls( const QString& urls );
     void handleTrackUrls( const QString& urls );
-    QList< Tomahawk::query_ptr > tracksFromQueryList( const QMimeData* d );
-    QList< Tomahawk::query_ptr > tracksFromResultList( const QMimeData* d );
-    QList< Tomahawk::query_ptr > tracksFromArtistMetaData( const QMimeData* d );
-    QList< Tomahawk::query_ptr > tracksFromAlbumMetaData( const QMimeData* d );
+    QList< Hatchet::query_ptr > tracksFromQueryList( const QMimeData* d );
+    QList< Hatchet::query_ptr > tracksFromResultList( const QMimeData* d );
+    QList< Hatchet::query_ptr > tracksFromArtistMetaData( const QMimeData* d );
+    QList< Hatchet::query_ptr > tracksFromAlbumMetaData( const QMimeData* d );
     void tracksFromMixedData( const QMimeData* d );
 
-    QList< Tomahawk::query_ptr > getArtist( const QString& artist, Tomahawk::ModelMode mode = Tomahawk::Mixed );
-    QList< Tomahawk::query_ptr > getAlbum( const QString& artist, const QString& album );
-    QList< Tomahawk::query_ptr > getTopTen( const QString& artist );
+    QList< Hatchet::query_ptr > getArtist( const QString& artist, Hatchet::ModelMode mode = Hatchet::Mixed );
+    QList< Hatchet::query_ptr > getAlbum( const QString& artist, const QString& album );
+    QList< Hatchet::query_ptr > getTopTen( const QString& artist );
 
     void removeDuplicates();
     void removeRemoteSources();
@@ -156,11 +156,11 @@ private:
     DropTypes m_dropTypes;
     DropAction m_dropAction;
 
-    QList<Tomahawk::DropJobNotifier*> m_dropJob;
+    QList<Hatchet::DropJobNotifier*> m_dropJob;
 
-    QList< Tomahawk::query_ptr > m_resultList;
-    QSet< Tomahawk::album_ptr > m_albumsToKeep;
-    QSet< Tomahawk::artist_ptr > m_artistsToKeep;
+    QList< Hatchet::query_ptr > m_resultList;
+    QSet< Hatchet::album_ptr > m_albumsToKeep;
+    QSet< Hatchet::artist_ptr > m_artistsToKeep;
 
     static bool s_canParseSpotifyPlaylists;
 };

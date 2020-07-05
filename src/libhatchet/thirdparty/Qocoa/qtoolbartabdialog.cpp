@@ -31,7 +31,7 @@
 #include <QDebug>
 #include <QPointer>
 
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 
 class QToolbarTabDialogPrivate : public QObject {
     Q_OBJECT
@@ -132,7 +132,7 @@ QToolbarTabDialog::QToolbarTabDialog() :
 
     pimpl->layout->setContentsMargins( 4, 4, 4, 4 );
 #ifdef Q_OS_MAC
-    TomahawkUtils::unmarginLayout( pimpl->layout );
+    HatchetUtils::unmarginLayout( pimpl->layout );
     pimpl->layout->setContentsMargins( 12, 4, 12, 12 );
 #endif
     pimpl->layout->addWidget(pimpl->toolbar);

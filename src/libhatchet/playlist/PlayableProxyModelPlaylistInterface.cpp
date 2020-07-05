@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "PlayableProxyModelPlaylistInterface.h"
@@ -29,7 +29,7 @@
 #include "Result.h"
 #include "Source.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 PlayableProxyModelPlaylistInterface::PlayableProxyModelPlaylistInterface( PlayableProxyModel* proxyModel )
@@ -66,7 +66,7 @@ PlayableProxyModelPlaylistInterface::filter() const
 }
 
 
-QList< Tomahawk::query_ptr >
+QList< Hatchet::query_ptr >
 PlayableProxyModelPlaylistInterface::tracks() const
 {
     if ( m_proxyModel.isNull() )
@@ -253,7 +253,7 @@ PlayableProxyModelPlaylistInterface::siblingIndex( int itemsAway, qint64 rootInd
 }
 
 
-Tomahawk::result_ptr
+Hatchet::result_ptr
 PlayableProxyModelPlaylistInterface::currentItem() const
 {
     if ( m_proxyModel.isNull() )
@@ -269,7 +269,7 @@ PlayableProxyModelPlaylistInterface::currentItem() const
 }
 
 
-Tomahawk::query_ptr
+Hatchet::query_ptr
 PlayableProxyModelPlaylistInterface::queryAt( qint64 index ) const
 {
     if ( m_proxyModel.isNull() )
@@ -283,7 +283,7 @@ PlayableProxyModelPlaylistInterface::queryAt( qint64 index ) const
 }
 
 
-Tomahawk::result_ptr
+Hatchet::result_ptr
 PlayableProxyModelPlaylistInterface::resultAt( qint64 index ) const
 {
     if ( m_proxyModel.isNull() )
@@ -298,7 +298,7 @@ PlayableProxyModelPlaylistInterface::resultAt( qint64 index ) const
 
 
 qint64
-PlayableProxyModelPlaylistInterface::indexOfResult( const Tomahawk::result_ptr& result ) const
+PlayableProxyModelPlaylistInterface::indexOfResult( const Hatchet::result_ptr& result ) const
 {
     if ( m_proxyModel.isNull() )
         return -1;
@@ -312,7 +312,7 @@ PlayableProxyModelPlaylistInterface::indexOfResult( const Tomahawk::result_ptr& 
 
 
 qint64
-PlayableProxyModelPlaylistInterface::indexOfQuery( const Tomahawk::query_ptr& query ) const
+PlayableProxyModelPlaylistInterface::indexOfQuery( const Hatchet::query_ptr& query ) const
 {
     if ( m_proxyModel.isNull() )
         return -1;

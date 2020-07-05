@@ -1,7 +1,7 @@
-# libtomahawk.accounts.configstorage.telepathy build file
+# libhatchet.accounts.configstorage.telepathy build file
 #============================================================================
 
-libtomahawk_inc += include_directories('.')
+libhatchet_inc += include_directories('.')
 telepathy_dir = meson.current_source_dir()
 
 single_app_guard_src = files(
@@ -13,19 +13,19 @@ single_app_guard_src = files(
 # dependancies
 #============================================================================
 
-libtomahawk_telepathy_dep_list = [
+libhatchet_telepathy_dep_list = [
     qt5_dep]
 
 
 # build
 #============================================================================
 
-libtomahawk_telepathy_lib = library(
-    'tomahawktelepathy',
-    dependencies : libtomahawk_telepathy_dep_list,
+libhatchet_telepathy_lib = library(
+    'hatchettelepathy',
+    dependencies : libhatchet_telepathy_dep_list,
 )
 
-libtomahawk_telepathy_dep = declare_dependency(
-    link_with : libtomahawk_telepathy_lib,
+libhatchet_telepathy_dep = declare_dependency(
+    link_with : libhatchet_telepathy_lib,
     include_directories : include_directories('.')
 )

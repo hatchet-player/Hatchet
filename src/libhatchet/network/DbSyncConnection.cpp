@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -43,7 +43,7 @@
 #include "Source.h"
 #include "SourceList.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 DBSyncConnection::DBSyncConnection( Servent* s, const source_ptr& src )
@@ -55,8 +55,8 @@ DBSyncConnection::DBSyncConnection( Servent* s, const source_ptr& src )
     qDebug() << Q_FUNC_INFO << src->id() << thread();
 
     // Be aware of namespaces in these signals/slots!
-    connect( this,            SIGNAL( stateChanged( Tomahawk::DBSyncConnectionState, Tomahawk::DBSyncConnectionState, QString ) ),
-             m_source.data(),   SLOT( onStateChanged( Tomahawk::DBSyncConnectionState, Tomahawk::DBSyncConnectionState, QString ) ) );
+    connect( this,            SIGNAL( stateChanged( Hatchet::DBSyncConnectionState, Hatchet::DBSyncConnectionState, QString ) ),
+             m_source.data(),   SLOT( onStateChanged( Hatchet::DBSyncConnectionState, Hatchet::DBSyncConnectionState, QString ) ) );
     connect( m_source.data(), SIGNAL( commandsFinished() ),
              this,              SLOT( lastOpApplied() ) );
 
@@ -182,7 +182,7 @@ DBSyncConnection::handleMsg( msg_ptr msg )
         DatabaseCommand_CollectionStats* cmd = new DatabaseCommand_CollectionStats( m_source );
         connect( cmd,           SIGNAL( done( const QVariantMap & ) ),
                  m_source.data(), SLOT( setStats( const QVariantMap& ) ), Qt::QueuedConnection );
-        Database::instance()->enqueue( Tomahawk::dbcmd_ptr(cmd) );
+        Database::instance()->enqueue( Hatchet::dbcmd_ptr(cmd) );
         return;
     }
 
@@ -257,7 +257,7 @@ DBSyncConnection::sendOps()
 
     m_uscache.clear();
 
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 }
 
 

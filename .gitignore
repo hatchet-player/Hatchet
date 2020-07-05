@@ -1,4 +1,4 @@
-src/accounts/tomahawk
+src/accounts/hatchet
 build*/*
 !buildfiles/*
 .directory
@@ -12,7 +12,7 @@ build*/*
 Makefile*
 moc_*
 *~
-/tomahawk
+/hatchet
 .kdev4
 *.kdev4
 *.kate-swp

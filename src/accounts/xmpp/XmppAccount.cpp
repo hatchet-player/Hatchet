@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "XmppAccount.h"
@@ -27,7 +27,7 @@
 
 #include <QtPlugin>
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 namespace Accounts
@@ -36,7 +36,7 @@ namespace Accounts
 Account*
 XmppAccountFactory::createAccount( const QString& accountId )
 {
-    return new XmppAccount( accountId.isEmpty() ? Tomahawk::Accounts::generateId( factoryId() ) : accountId );
+    return new XmppAccount( accountId.isEmpty() ? Hatchet::Accounts::generateId( factoryId() ) : accountId );
 }
 
 
@@ -129,7 +129,7 @@ XmppAccount::sipPlugin( bool create )
 
         m_xmppSipPlugin = QPointer< XmppSipPlugin >( new XmppSipPlugin( this ) );
 
-        connect( m_xmppSipPlugin.data(), SIGNAL( stateChanged( Tomahawk::Accounts::Account::ConnectionState ) ), this, SIGNAL( connectionStateChanged( Tomahawk::Accounts::Account::ConnectionState ) ) );
+        connect( m_xmppSipPlugin.data(), SIGNAL( stateChanged( Hatchet::Accounts::Account::ConnectionState ) ), this, SIGNAL( connectionStateChanged( Hatchet::Accounts::Account::ConnectionState ) ) );
         connect( m_xmppSipPlugin.data(), SIGNAL( error( int, QString ) ), this, SIGNAL( error( int, QString ) ) );
 
         return m_xmppSipPlugin.data();
@@ -142,4 +142,4 @@ XmppAccount::sipPlugin( bool create )
 
 }
 
-Q_EXPORT_PLUGIN2( Tomahawk::Accounts::AccountFactory, Tomahawk::Accounts::XmppAccountFactory )
+Q_EXPORT_PLUGIN2( Hatchet::Accounts::AccountFactory, Hatchet::Accounts::XmppAccountFactory )

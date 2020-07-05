@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "FuzzyIndex.h"
@@ -37,7 +37,7 @@ using namespace Lucene;
 FuzzyIndex::FuzzyIndex( QObject* parent, const QString& filename, bool wipe )
     : QObject( parent )
 {
-    m_lucenePath = TomahawkUtils::appDataDir().absoluteFilePath( filename );
+    m_lucenePath = HatchetUtils::appDataDir().absoluteFilePath( filename );
 
     bool failed = false;
     tDebug() << "Opening Lucene directory:" << m_lucenePath;
@@ -127,7 +127,7 @@ FuzzyIndex::endIndexing()
 
 
 void
-FuzzyIndex::appendFields( const Tomahawk::IndexData& data )
+FuzzyIndex::appendFields( const Hatchet::IndexData& data )
 {
     try
     {
@@ -135,13 +135,13 @@ FuzzyIndex::appendFields( const Tomahawk::IndexData& data )
 
         if ( !data.track.isEmpty() )
         {
-            doc->add(newLucene<Field>( L"fulltext", Tomahawk::DatabaseImpl::sortname( QString( "%1 %2" ).arg( data.artist ).arg( data.track ) ).toStdWString(),
+            doc->add(newLucene<Field>( L"fulltext", Hatchet::DatabaseImpl::sortname( QString( "%1 %2" ).arg( data.artist ).arg( data.track ) ).toStdWString(),
                                        Field::STORE_NO, Field::INDEX_NOT_ANALYZED_NO_NORMS ) );
 
-            doc->add(newLucene<Field>( L"track", Tomahawk::DatabaseImpl::sortname( data.track ).toStdWString(),
+            doc->add(newLucene<Field>( L"track", Hatchet::DatabaseImpl::sortname( data.track ).toStdWString(),
                                        Field::STORE_NO, Field::INDEX_NOT_ANALYZED_NO_NORMS ) );
 
-            doc->add(newLucene<Field>( L"artist", Tomahawk::DatabaseImpl::sortname( data.artist ).toStdWString(),
+            doc->add(newLucene<Field>( L"artist", Hatchet::DatabaseImpl::sortname( data.artist ).toStdWString(),
                                        Field::STORE_NO, Field::INDEX_NOT_ANALYZED_NO_NORMS ) );
 
             doc->add(newLucene<Field>( L"artistid", QString::number( data.artistId ).toStdWString(),
@@ -152,7 +152,7 @@ FuzzyIndex::appendFields( const Tomahawk::IndexData& data )
         }
         else if ( !data.album.isEmpty() )
         {
-            doc->add(newLucene<Field>( L"album", Tomahawk::DatabaseImpl::sortname( data.album ).toStdWString(),
+            doc->add(newLucene<Field>( L"album", Hatchet::DatabaseImpl::sortname( data.album ).toStdWString(),
                                        Field::STORE_NO, Field::INDEX_NOT_ANALYZED_NO_NORMS ) );
 
             doc->add(newLucene<Field>( L"albumid", QString::number( data.id ).toStdWString(),
@@ -185,7 +185,7 @@ FuzzyIndex::deleteIndex()
         m_luceneReader.reset();
     }
 
-    TomahawkUtils::removeDirectory( m_lucenePath );
+    HatchetUtils::removeDirectory( m_lucenePath );
 }
 
 
@@ -204,7 +204,7 @@ FuzzyIndex::loadLuceneIndex()
 
 
 QMap< int, float >
-FuzzyIndex::search( const Tomahawk::query_ptr& query )
+FuzzyIndex::search( const Hatchet::query_ptr& query )
 {
 //    QMutexLocker lock( &m_mutex );
     QMap< int, float > resultsmap;
@@ -219,7 +219,7 @@ FuzzyIndex::search( const Tomahawk::query_ptr& query )
 
         if ( query->isFullTextQuery() )
         {
-            const QString q = Tomahawk::DatabaseImpl::sortname( query->fullTextQuery() );
+            const QString q = Hatchet::DatabaseImpl::sortname( query->fullTextQuery() );
 
             FuzzyQueryPtr fqry = newLucene<FuzzyQuery>( newLucene<Term>( L"track", q.toStdWString() ) );
             qry->add( boost::dynamic_pointer_cast<Query>( fqry ), BooleanClause::SHOULD );
@@ -232,9 +232,9 @@ FuzzyIndex::search( const Tomahawk::query_ptr& query )
         }
         else
         {
-            const QString track = Tomahawk::DatabaseImpl::sortname( query->queryTrack()->track() );
-            const QString artist = Tomahawk::DatabaseImpl::sortname( query->queryTrack()->artist() );
-            //QString album = Tomahawk::DatabaseImpl::sortname( query->queryTrack()->album() );
+            const QString track = Hatchet::DatabaseImpl::sortname( query->queryTrack()->track() );
+            const QString artist = Hatchet::DatabaseImpl::sortname( query->queryTrack()->artist() );
+            //QString album = Hatchet::DatabaseImpl::sortname( query->queryTrack()->album() );
 
             FuzzyQueryPtr fqry = newLucene<FuzzyQuery>( newLucene<Term>( L"track", track.toStdWString() ), 0.5, 3 );
             qry->add( boost::dynamic_pointer_cast<Query>( fqry ), BooleanClause::MUST );
@@ -270,7 +270,7 @@ FuzzyIndex::search( const Tomahawk::query_ptr& query )
 
 
 QMap< int, float >
-FuzzyIndex::searchAlbum( const Tomahawk::query_ptr& query )
+FuzzyIndex::searchAlbum( const Hatchet::query_ptr& query )
 {
     Q_ASSERT( query->isFullTextQuery() );
 
@@ -282,7 +282,7 @@ FuzzyIndex::searchAlbum( const Tomahawk::query_ptr& query )
     try
     {
         QueryParserPtr parser = newLucene<QueryParser>( LuceneVersion::LUCENE_CURRENT, L"album", m_analyzer );
-        const QString q = Tomahawk::DatabaseImpl::sortname( query->fullTextQuery() );
+        const QString q = Hatchet::DatabaseImpl::sortname( query->fullTextQuery() );
 
         FuzzyQueryPtr qry = newLucene<FuzzyQuery>( newLucene<Term>( L"album", q.toStdWString() ) );
         TopScoreDocCollectorPtr collector = TopScoreDocCollector::create( 99999, false );

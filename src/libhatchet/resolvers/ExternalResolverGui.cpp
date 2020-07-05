@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ExternalResolverGui.h"
@@ -33,14 +33,14 @@
 #include <QPushButton>
 #include <QDesktopServices>
 
-Tomahawk::ExternalResolverGui::ExternalResolverGui(const QString& filePath)
-    : Tomahawk::ExternalResolver(filePath)
+Hatchet::ExternalResolverGui::ExternalResolverGui(const QString& filePath)
+    : Hatchet::ExternalResolver(filePath)
 {
 }
 
 
 QVariant
-Tomahawk::ExternalResolverGui::configMsgFromWidget( QWidget* w )
+Hatchet::ExternalResolverGui::configMsgFromWidget( QWidget* w )
 {
     if( !w )
         return QVariant();
@@ -54,7 +54,7 @@ Tomahawk::ExternalResolverGui::configMsgFromWidget( QWidget* w )
 
 
 void
-Tomahawk::ExternalResolverGui::addChildProperties( QObject* widget, QVariantMap& m )
+Hatchet::ExternalResolverGui::addChildProperties( QObject* widget, QVariantMap& m )
 {
     // recursively add all properties of this widget to the map, then repeat on all children.
     // bare QWidgets are boring---so skip them! They have no input that the user can set.
@@ -85,7 +85,7 @@ Tomahawk::ExternalResolverGui::addChildProperties( QObject* widget, QVariantMap&
 
 
 void
-Tomahawk::ExternalResolverGui::setupClickHandlerOnUrlButtons( QObject* widget )
+Hatchet::ExternalResolverGui::setupClickHandlerOnUrlButtons( QObject* widget )
 {
     if( !widget || !widget->isWidgetType() )
         return;
@@ -107,7 +107,7 @@ Tomahawk::ExternalResolverGui::setupClickHandlerOnUrlButtons( QObject* widget )
 
 
 AccountConfigWidget*
-Tomahawk::ExternalResolverGui::widgetFromData( QByteArray& data, QWidget* parent )
+Hatchet::ExternalResolverGui::widgetFromData( QByteArray& data, QWidget* parent )
 {
     if( data.isEmpty() )
         return 0;
@@ -135,7 +135,7 @@ Tomahawk::ExternalResolverGui::widgetFromData( QByteArray& data, QWidget* parent
 
 
 QByteArray
-Tomahawk::ExternalResolverGui::fixDataImagePaths( const QByteArray& data, bool compressed, const QVariantMap& images )
+Hatchet::ExternalResolverGui::fixDataImagePaths( const QByteArray& data, bool compressed, const QVariantMap& images )
 {
     // with a list of images and image data, write each to a temp file, replace the path in the .ui file with the temp file path
     QString uiFile = QString::fromUtf8( data );

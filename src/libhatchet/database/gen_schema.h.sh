@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # !!!! You need to manually generate Schema.sql.h when the schema changes:
-# ./gen_schema.h.sh ./Schema.sql tomahawk > Schema.sql.h
+# ./gen_schema.h.sh ./Schema.sql hatchet > Schema.sql.h
 
 schema=$1
 name=$2

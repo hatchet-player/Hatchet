@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "AclJobItem.h"
@@ -27,7 +27,7 @@
 
 #include "JobStatusModel.h"
 #include "infosystem/InfoSystem.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 
 #define ICON_PADDING 1
@@ -105,7 +105,7 @@ ACLJobDelegate::paint( QPainter* painter, const QStyleOptionViewItem& option, co
 QSize
 ACLJobDelegate::sizeHint( const QStyleOptionViewItem& option, const QModelIndex& index ) const
 {
-    QSize size( QStyledItemDelegate::sizeHint( option, index ).width(), ( TomahawkUtils::defaultFontHeight() + 6 ) * 3.5 );
+    QSize size( QStyledItemDelegate::sizeHint( option, index ).width(), ( HatchetUtils::defaultFontHeight() + 6 ) * 3.5 );
     return size;
 }
 
@@ -115,9 +115,9 @@ ACLJobDelegate::drawRoundedButton( QPainter* painter, const QRect& btnRect, bool
 {
     //FIXME const colors
     if ( !red )
-        TomahawkUtils::drawRoundedButton( painter, btnRect, QColor( 54, 127, 211 ), QColor( 43, 104, 182 ), QColor( 34, 85, 159 ), QColor( 35, 79, 147 ) );
+        HatchetUtils::drawRoundedButton( painter, btnRect, QColor( 54, 127, 211 ), QColor( 43, 104, 182 ), QColor( 34, 85, 159 ), QColor( 35, 79, 147 ) );
     else
-        TomahawkUtils::drawRoundedButton( painter, btnRect, QColor( 206, 63, 63 ), QColor( 170, 52, 52 ), QColor( 150, 50, 50 ), QColor( 130, 40, 40 ) );
+        HatchetUtils::drawRoundedButton( painter, btnRect, QColor( 206, 63, 63 ), QColor( 170, 52, 52 ), QColor( 150, 50, 50 ), QColor( 130, 40, 40 ) );
 }
 
 
@@ -146,9 +146,9 @@ ACLJobDelegate::editorEvent( QEvent* event, QAbstractItemModel* model, const QSt
     {
         QMouseEvent* me = static_cast< QMouseEvent* >( event );
         if ( m_savedAcceptRect.contains( me->pos() ) )
-            emit aclResult( Tomahawk::ACLStatus::Stream );
+            emit aclResult( Hatchet::ACLStatus::Stream );
         else if ( m_savedDenyRect.contains( me->pos() ) )
-            emit aclResult( Tomahawk::ACLStatus::Deny );
+            emit aclResult( Hatchet::ACLStatus::Deny );
         return true;
     }
 
@@ -182,8 +182,8 @@ ACLJobItem::createDelegate( QObject* parent )
 
     m_delegate = new ACLJobDelegate( parent );
 
-    Tomahawk::InfoSystem::InfoPushData pushData( "ACLJobItem", Tomahawk::InfoSystem::InfoNotifyUser, tr( "%applicationName needs you to decide whether %1 is allowed to connect." ).arg( m_username ), Tomahawk::InfoSystem::PushNoFlag );
-    Tomahawk::InfoSystem::InfoSystem::instance()->pushInfo( pushData );
+    Hatchet::InfoSystem::InfoPushData pushData( "ACLJobItem", Hatchet::InfoSystem::InfoNotifyUser, tr( "%applicationName needs you to decide whether %1 is allowed to connect." ).arg( m_username ), Hatchet::InfoSystem::PushNoFlag );
+    Hatchet::InfoSystem::InfoSystem::instance()->pushInfo( pushData );
 }
 
 
@@ -195,7 +195,7 @@ ACLJobDelegate::emitSizeHintChanged( const QModelIndex& index )
 
 
 void
-ACLJobItem::aclResult( Tomahawk::ACLStatus::Type result )
+ACLJobItem::aclResult( Hatchet::ACLStatus::Type result )
 {
     tLog() << Q_FUNC_INFO;
     m_user.acl = result;

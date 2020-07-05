@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef DYNAMIC_PLAYLIST_H
@@ -32,7 +32,7 @@
 #include <QList>
 #include <QSharedPointer>
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 class DatabaseCollection;
@@ -44,7 +44,7 @@ class DatabaseCommand_LoadAllSortedPlaylists;
 class DatabaseCommand_LoadDynamicPlaylist;
 class DynamicPlaylistPrivate;
 
-class DLLEXPORT DynamicPlaylist : public Tomahawk::Playlist
+class DLLEXPORT DynamicPlaylist : public Hatchet::Playlist
 {
     Q_OBJECT
 
@@ -55,17 +55,17 @@ class DLLEXPORT DynamicPlaylist : public Tomahawk::Playlist
 
     friend class DatabaseCommand_SetDynamicPlaylistRevision;
     friend class DatabaseCommand_CreateDynamicPlaylist;
-    friend class Tomahawk::DatabaseCommand_LoadDynamicPlaylist;
+    friend class Hatchet::DatabaseCommand_LoadDynamicPlaylist;
     friend class DatabaseCommand_LoadAllSortedPlaylists;
     friend class DatabaseCollection; /// :-(
 
 public:
     virtual ~DynamicPlaylist();
 
-    static Tomahawk::dynplaylist_ptr get( const QString& guid );
+    static Hatchet::dynplaylist_ptr get( const QString& guid );
 
     /// Generate an empty dynamic playlist with default generator
-    static Tomahawk::dynplaylist_ptr create( const source_ptr& author,
+    static Hatchet::dynplaylist_ptr create( const source_ptr& author,
                                              const QString& guid,
                                              const QString& title,
                                              const QString& info,
@@ -90,7 +90,7 @@ public:
     void createNewRevision( const QString& uuid = QString() );
 
     virtual void addEntries( const QList< query_ptr >& queries );
-    virtual void addEntry( const Tomahawk::query_ptr& query );
+    virtual void addEntry( const Hatchet::query_ptr& query );
 
     // <IGNORE hack="true">
     // these need to exist and be public for the json serialization stuff
@@ -104,10 +104,10 @@ public:
 
 signals:
     /// emitted when the playlist revision changes (whenever the playlist changes)
-    void dynamicRevisionLoaded( Tomahawk::DynamicPlaylistRevision );
+    void dynamicRevisionLoaded( Hatchet::DynamicPlaylistRevision );
 
-    void aboutToBeDeleted( const Tomahawk::dynplaylist_ptr& pl );
-    void deleted( const Tomahawk::dynplaylist_ptr& pl );
+    void aboutToBeDeleted( const Hatchet::dynplaylist_ptr& pl );
+    void deleted( const Hatchet::dynplaylist_ptr& pl );
 
 public slots:
     // want to update the playlist from the model?
@@ -117,8 +117,8 @@ public slots:
     // if it is ondemand, no entries are needed implicitly sets mode to ondemand
     void createNewRevision( const QString& newrev, const QString& oldrev, const QString& type, const QList< dyncontrol_ptr>& controls );
 
-    void reportCreated( const Tomahawk::dynplaylist_ptr& self );
-    void reportDeleted( const Tomahawk::dynplaylist_ptr& self );
+    void reportCreated( const Hatchet::dynplaylist_ptr& self );
+    void reportDeleted( const Hatchet::dynplaylist_ptr& self );
 
     // called from setdynamicplaylistrevision db cmd
     // 4 options, because dbcmds can't create qwidgets:
@@ -132,15 +132,15 @@ public slots:
                       const QString& type,
                       const QList< QVariantMap >& controls,
                       bool is_newest_rev,
-                      const QMap< QString, Tomahawk::plentry_ptr >& addedmap,
+                      const QMap< QString, Hatchet::plentry_ptr >& addedmap,
                       bool applied );
     void setRevision( const QString& rev,
                       const QList<QString>& neworderedguids,
                       const QList<QString>& oldorderedguids,
                       const QString& type,
-                      const QList< Tomahawk::dyncontrol_ptr >& controls,
+                      const QList< Hatchet::dyncontrol_ptr >& controls,
                       bool is_newest_rev,
-                      const QMap< QString, Tomahawk::plentry_ptr >& addedmap,
+                      const QMap< QString, Hatchet::plentry_ptr >& addedmap,
                       bool applied );
     // ondemand version
     void setRevision( const QString& rev,
@@ -151,7 +151,7 @@ public slots:
     void setRevision( const QString& rev,
                       bool is_newest_rev,
                       const QString& type,
-                      const QList< Tomahawk::dyncontrol_ptr>& controls,
+                      const QList< Hatchet::dyncontrol_ptr>& controls,
                       bool applied );
 
     void setWeakSelf( QWeakPointer< DynamicPlaylist > self );
@@ -193,6 +193,6 @@ private:
 
 } // namespace
 
-Q_DECLARE_METATYPE( QSharedPointer< Tomahawk::DynamicPlaylist > )
+Q_DECLARE_METATYPE( QSharedPointer< Hatchet::DynamicPlaylist > )
 
 #endif

@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef TRACKVIEW_H
@@ -37,7 +37,7 @@ class PlayableModel;
 class PlayableProxyModel;
 class OverlayWidget;
 
-class DLLEXPORT TrackView : public QTreeView, public Tomahawk::ViewPage
+class DLLEXPORT TrackView : public QTreeView, public Hatchet::ViewPage
 {
 Q_OBJECT
 
@@ -58,14 +58,14 @@ public:
     PlaylistItemDelegate* delegate() const { return m_delegate; }
     ViewHeader* header() const { return m_header; }
     OverlayWidget* overlay() const { return m_overlay; }
-    Tomahawk::ContextMenu* contextMenu() const { return m_contextMenu; }
+    Hatchet::ContextMenu* contextMenu() const { return m_contextMenu; }
     AnimatedSpinner* loadingSpinner() const { return m_loadingSpinner; }
 
     void setEmptyTip( const QString& tip );
 
     virtual QWidget* widget() { return this; }
-    virtual Tomahawk::playlistinterface_ptr playlistInterface() const;
-    void setPlaylistInterface( const Tomahawk::playlistinterface_ptr& playlistInterface );
+    virtual Hatchet::playlistinterface_ptr playlistInterface() const;
+    void setPlaylistInterface( const Hatchet::playlistinterface_ptr& playlistInterface );
 
     virtual QString title() const;
     virtual QString description() const;
@@ -101,7 +101,7 @@ public slots:
 
 signals:
     void itemActivated( const QModelIndex& index );
-    void querySelected( const Tomahawk::query_ptr& query );
+    void querySelected( const Hatchet::query_ptr& query );
     void modelChanged();
 
 protected:
@@ -134,7 +134,7 @@ private slots:
 
     void onCustomContextMenu( const QPoint& pos );
 
-    void autoPlayResolveFinished( const Tomahawk::query_ptr& query, int row );
+    void autoPlayResolveFinished( const Hatchet::query_ptr& query, int row );
 
     void verifySize();
 
@@ -162,8 +162,8 @@ private:
 
     QModelIndex m_contextMenuIndex;
 
-    Tomahawk::query_ptr m_autoPlaying;
-    Tomahawk::ContextMenu* m_contextMenu;
+    Hatchet::query_ptr m_autoPlaying;
+    Hatchet::ContextMenu* m_contextMenu;
 
     QTimer m_timer;
 };

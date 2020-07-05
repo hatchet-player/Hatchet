@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013, Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef SCRIPTCOMMAND_ALLALBUMS_H
@@ -24,15 +24,15 @@
 #include "collection/Collection.h"
 #include "resolvers/ScriptCommand.h"
 
-namespace Tomahawk
+namespace Hatchet
 {
 
-class ScriptCommand_AllAlbums : public ScriptCommand, public Tomahawk::AlbumsRequest
+class ScriptCommand_AllAlbums : public ScriptCommand, public Hatchet::AlbumsRequest
 {
     Q_OBJECT
 public:
-    explicit ScriptCommand_AllAlbums( const Tomahawk::collection_ptr& collection,
-                                      const Tomahawk::artist_ptr& artist,
+    explicit ScriptCommand_AllAlbums( const Hatchet::collection_ptr& collection,
+                                      const Hatchet::artist_ptr& artist,
                                       QObject* parent = nullptr );
     virtual ~ScriptCommand_AllAlbums() {}
 
@@ -41,7 +41,7 @@ public:
     void setFilter( const QString& filter ) override;
 
 signals:
-    void albums( const QList< Tomahawk::album_ptr >& ) override;
+    void albums( const QList< Hatchet::album_ptr >& ) override;
     void done() override;
 
 protected:
@@ -52,13 +52,13 @@ private slots:
     void onAlbumsJobDone( const QVariantMap& result );
 
 private:
-    static QList< Tomahawk::album_ptr > parseAlbumVariantList(  const QList< Tomahawk::artist_ptr >& artists,
+    static QList< Hatchet::album_ptr > parseAlbumVariantList(  const QList< Hatchet::artist_ptr >& artists,
                                                           const QVariantList& reslist );
-    Tomahawk::collection_ptr m_collection;
-    Tomahawk::artist_ptr m_artist;
+    Hatchet::collection_ptr m_collection;
+    Hatchet::artist_ptr m_artist;
     QString m_filter;
 };
 
-} // ns: Tomahawk
+} // ns: Hatchet
 
 #endif // SCRIPTCOMMAND_ALLALBUMS_H

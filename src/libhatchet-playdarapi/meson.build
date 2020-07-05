@@ -1,15 +1,15 @@
-# libtomahawk-playdarapi build file
+# libhatchet-playdarapi build file
 #============================================================================
 
 
-libtomahawplaydarapi_inc = [include_directories('.')]
-libtomahawplaydarapi_dir = meson.current_source_dir()
+libhatchetplaydarapi_inc = [include_directories('.')]
+libhatchetplaydarapi_dir = meson.current_source_dir()
 
 
 # dependancies
 #============================================================================
 
-libtomahawplaydarapi_dep_list = [
+libhatchetplaydarapi_dep_list = [
     boost_dep,
     qca2_dep,
     qt5_dep,
@@ -25,91 +25,91 @@ libtomahawplaydarapi_dep_list = [
     qtcertaddon_dep,
     qxt_dep,
     
-    libtomahawk_dep]
+    libhatchet_dep]
 
 
 
 if (get_option('with_taglib'))
-    libtomahawplaydarapi_dep_list += taglib_dep
+    libhatchetplaydarapi_dep_list += taglib_dep
 endif
 
 if (get_option('with_liblastfm'))
-    libtomahawplaydarapi_dep_list += liblastfm_dep
+    libhatchetplaydarapi_dep_list += liblastfm_dep
 endif
 
 # Source files
 #============================================================================
 
 
-libtomahawplaydarapi_src = files(
-    join_paths(libtomahawplaydarapi_dir, 'Api_v1_5.cpp'),
-    join_paths(libtomahawplaydarapi_dir, 'Api_v1.cpp'),
-    join_paths(libtomahawplaydarapi_dir, 'PlaydarApi.cpp'),
-    join_paths(libtomahawplaydarapi_dir, 'StatResponseHandler.cpp'))
+libhatchetplaydarapi_src = files(
+    join_paths(libhatchetplaydarapi_dir, 'Api_v1_5.cpp'),
+    join_paths(libhatchetplaydarapi_dir, 'Api_v1.cpp'),
+    join_paths(libhatchetplaydarapi_dir, 'PlaydarApi.cpp'),
+    join_paths(libhatchetplaydarapi_dir, 'StatResponseHandler.cpp'))
 
-libtomahawplaydarapi_h = files()
+libhatchetplaydarapi_h = files()
 
 
-libtomahawplaydarapi_moc_h = files(
-    join_paths(libtomahawplaydarapi_dir, 'Api_v1_5.h'),
-    join_paths(libtomahawplaydarapi_dir, 'Api_v1.h'),
-    join_paths(libtomahawplaydarapi_dir, 'PlaydarApi.h'),
-    join_paths(libtomahawplaydarapi_dir, 'StatResponseHandler.h'))
+libhatchetplaydarapi_moc_h = files(
+    join_paths(libhatchetplaydarapi_dir, 'Api_v1_5.h'),
+    join_paths(libhatchetplaydarapi_dir, 'Api_v1.h'),
+    join_paths(libhatchetplaydarapi_dir, 'PlaydarApi.h'),
+    join_paths(libhatchetplaydarapi_dir, 'StatResponseHandler.h'))
 
 
 # Link args
 #============================================================================
 
 
-libtomahawk_link_list = []
+libhatchet_link_list = []
 
 
-libtomahawk_link_args = []
+libhatchet_link_args = []
 
 
 # build
 #============================================================================
 
 
-libtomahawplaydarapi_moc = qt5.preprocess(
-    moc_headers : libtomahawplaydarapi_moc_h,
-    include_directories : libtomahawk_inc,
-    dependencies : libtomahawplaydarapi_dep_list)
+libhatchetplaydarapi_moc = qt5.preprocess(
+    moc_headers : libhatchetplaydarapi_moc_h,
+    include_directories : libhatchet_inc,
+    dependencies : libhatchetplaydarapi_dep_list)
 
 
-libtomahawplaydarapi_lib = library(
-    'tomahawk-playdarapi',
+libhatchetplaydarapi_lib = library(
+    'hatchet-playdarapi',
     sources : [
-        libtomahawplaydarapi_src,
-        libtomahawplaydarapi_moc],
+        libhatchetplaydarapi_src,
+        libhatchetplaydarapi_moc],
     install : true,
     install_mode : 'rwxr-xr-x',
     install_dir : libdir,
-    include_directories : libtomahawplaydarapi_inc,
-    link_with : libtomahawk_link_list,
-    link_args : libtomahawk_link_args,
-    dependencies : libtomahawplaydarapi_dep_list)
+    include_directories : libhatchetplaydarapi_inc,
+    link_with : libhatchet_link_list,
+    link_args : libhatchet_link_args,
+    dependencies : libhatchetplaydarapi_dep_list)
 
 
 install_headers(
-    libtomahawplaydarapi_h,
+    libhatchetplaydarapi_h,
     install_dir : join_paths(includedir, ''))
 
 
-libtomahawplaydarapi_config = pkg.generate(
-    libtomahawplaydarapi_lib,
+libhatchetplaydarapi_config = pkg.generate(
+    libhatchetplaydarapi_lib,
     libraries : [
-        libtomahawplaydarapi_lib],
+        libhatchetplaydarapi_lib],
     version : meson.project_version(),
-    name : 'tomahawk-widgets',
-    subdirs : ['tomahawk-widgets/'],
-    filebase : 'tomahawk-widgets',
+    name : 'hatchet-widgets',
+    subdirs : ['hatchet-widgets/'],
+    filebase : 'hatchet-widgets',
     extra_cflags : '-std=c++11',
-    description : 'Tomahawk Playdar API.')
+    description : 'Hatchet Playdar API.')
 
 
-libtomahawplaydarapi_dep = declare_dependency(
+libhatchetplaydarapi_dep = declare_dependency(
     sources : [
-        libtomahawplaydarapi_moc],
-    link_with : libtomahawplaydarapi_lib,
-    include_directories : libtomahawplaydarapi_inc)
+        libhatchetplaydarapi_moc],
+    link_with : libhatchetplaydarapi_lib,
+    include_directories : libhatchetplaydarapi_inc)

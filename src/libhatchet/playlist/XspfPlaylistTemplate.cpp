@@ -1,14 +1,14 @@
 #include "XspfPlaylistTemplate_p.h"
 
-namespace Tomahawk {
+namespace Hatchet {
 
 XspfPlaylistTemplate::XspfPlaylistTemplate( const QString& _url, const source_ptr& source, const QString& guid )
     : PlaylistTemplate( new XspfPlaylistTemplatePrivate( this, _url, source, guid ) )
 {
     Q_D( XspfPlaylistTemplate );
 
-    connect( d->xspfLoader.data(), SIGNAL( tracks( QList<Tomahawk::query_ptr> ) ),
-             SLOT( xspfTracksLoaded( QList<Tomahawk::query_ptr> ) ) );
+    connect( d->xspfLoader.data(), SIGNAL( tracks( QList<Hatchet::query_ptr> ) ),
+             SLOT( xspfTracksLoaded( QList<Hatchet::query_ptr> ) ) );
 }
 
 
@@ -35,7 +35,7 @@ XspfPlaylistTemplate::load()
 
 
 void
-XspfPlaylistTemplate::xspfTracksLoaded( const QList< Tomahawk::query_ptr >& tracks )
+XspfPlaylistTemplate::xspfTracksLoaded( const QList< Hatchet::query_ptr >& tracks )
 {
     Q_D( XspfPlaylistTemplate );
 
@@ -44,4 +44,4 @@ XspfPlaylistTemplate::xspfTracksLoaded( const QList< Tomahawk::query_ptr >& trac
 }
 
 
-} // namespace Tomahawk
+} // namespace Hatchet

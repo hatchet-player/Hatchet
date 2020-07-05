@@ -1,34 +1,34 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2012       Leo Franchi            <lfranchi@kde.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <QCoreApplication>
 
 #include "InfoSystem.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "InfoSystemCache.h"
 #include "InfoSystemWorker.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
 #include "Source.h"
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 namespace InfoSystem
@@ -37,9 +37,9 @@ namespace InfoSystem
 static const int DEFAULT_TIMEOUT_MILLIS = 10000;
 
 InfoRequestData::InfoRequestData()
-    : requestId( TomahawkUtils::infosystemRequestId() )
+    : requestId( HatchetUtils::infosystemRequestId() )
 {
-    init( QString() , Tomahawk::InfoSystem::InfoNoInfo, QVariant(), QVariantMap() );
+    init( QString() , Hatchet::InfoSystem::InfoNoInfo, QVariant(), QVariantMap() );
 }
 
 
@@ -53,7 +53,7 @@ InfoRequestData::InfoRequestData( const quint64 rId, const QString& callr, const
 void
 InfoRequestData::init( const QString& callr, const InfoType typ, const QVariant& inputvar, const QVariantMap& custom )
 {
-    internalId = TomahawkUtils::infosystemRequestId();
+    internalId = HatchetUtils::infosystemRequestId();
     caller = callr;
     type = typ;
     input = inputvar;
@@ -158,27 +158,27 @@ InfoSystem::init()
         return;
     }
 
-    Tomahawk::InfoSystem::InfoSystemCache* cache = m_infoSystemCacheThreadController->cache();
-    Tomahawk::InfoSystem::InfoSystemWorker* worker = m_infoSystemWorkerThreadController->worker();
+    Hatchet::InfoSystem::InfoSystemCache* cache = m_infoSystemCacheThreadController->cache();
+    Hatchet::InfoSystem::InfoSystemWorker* worker = m_infoSystemWorkerThreadController->worker();
 
-    connect( cache, SIGNAL( info( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ),
-             worker, SLOT( infoSlot( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ), Qt::UniqueConnection );
+    connect( cache, SIGNAL( info( Hatchet::InfoSystem::InfoRequestData, QVariant ) ),
+             worker, SLOT( infoSlot( Hatchet::InfoSystem::InfoRequestData, QVariant ) ), Qt::UniqueConnection );
 
-    connect( worker, SIGNAL( info( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ),
-             this,       SIGNAL( info( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ), Qt::UniqueConnection );
+    connect( worker, SIGNAL( info( Hatchet::InfoSystem::InfoRequestData, QVariant ) ),
+             this,       SIGNAL( info( Hatchet::InfoSystem::InfoRequestData, QVariant ) ), Qt::UniqueConnection );
 
     connect( worker, SIGNAL( finished( QString ) ), this, SIGNAL( finished( QString ) ), Qt::UniqueConnection );
 
-    connect( worker, SIGNAL( finished( QString, Tomahawk::InfoSystem::InfoType ) ),
-             this, SIGNAL( finished( QString, Tomahawk::InfoSystem::InfoType ) ), Qt::UniqueConnection );
+    connect( worker, SIGNAL( finished( QString, Hatchet::InfoSystem::InfoType ) ),
+             this, SIGNAL( finished( QString, Hatchet::InfoSystem::InfoType ) ), Qt::UniqueConnection );
 
-    qRegisterMetaType< Tomahawk::InfoSystem::InfoTypeSet >();
-    connect( worker, SIGNAL( updatedSupportedGetTypes( Tomahawk::InfoSystem::InfoTypeSet ) ),
-             this,   SLOT(   receiveUpdatedSupportedGetTypes( Tomahawk::InfoSystem::InfoTypeSet ) ) );
-    connect( worker, SIGNAL( updatedSupportedPushTypes( Tomahawk::InfoSystem::InfoTypeSet ) ),
-             this,   SLOT(   receiveUpdatedSupportedPushTypes( Tomahawk::InfoSystem::InfoTypeSet ) ) );
+    qRegisterMetaType< Hatchet::InfoSystem::InfoTypeSet >();
+    connect( worker, SIGNAL( updatedSupportedGetTypes( Hatchet::InfoSystem::InfoTypeSet ) ),
+             this,   SLOT(   receiveUpdatedSupportedGetTypes( Hatchet::InfoSystem::InfoTypeSet ) ) );
+    connect( worker, SIGNAL( updatedSupportedPushTypes( Hatchet::InfoSystem::InfoTypeSet ) ),
+             this,   SLOT(   receiveUpdatedSupportedPushTypes( Hatchet::InfoSystem::InfoTypeSet ) ) );
 
-    QMetaObject::invokeMethod( worker, "init", Qt::QueuedConnection, Q_ARG( Tomahawk::InfoSystem::InfoSystemCache*, cache ) );
+    QMetaObject::invokeMethod( worker, "init", Qt::QueuedConnection, Q_ARG( Hatchet::InfoSystem::InfoSystemCache*, cache ) );
 
     m_inited = true;
     emit ready();
@@ -193,7 +193,7 @@ InfoSystem::getInfo( const InfoRequestData& requestData )
         init();
         return false;
     }
-    QMetaObject::invokeMethod( m_infoSystemWorkerThreadController->worker(), "getInfo", Qt::QueuedConnection, Q_ARG( Tomahawk::InfoSystem::InfoRequestData, requestData ) );
+    QMetaObject::invokeMethod( m_infoSystemWorkerThreadController->worker(), "getInfo", Qt::QueuedConnection, Q_ARG( Hatchet::InfoSystem::InfoRequestData, requestData ) );
     return true;
 }
 
@@ -215,7 +215,7 @@ InfoSystem::getInfo( const QString& caller, const QVariantMap& customData, const
         requestData.type = type;
         requestData.input = inputMap[ type ];
         requestData.timeoutMillis = timeoutMap.contains( type ) ? timeoutMap[ type ] : DEFAULT_TIMEOUT_MILLIS;
-        QMetaObject::invokeMethod( m_infoSystemWorkerThreadController->worker(), "getInfo", Qt::QueuedConnection, Q_ARG( Tomahawk::InfoSystem::InfoRequestData, requestData ) );
+        QMetaObject::invokeMethod( m_infoSystemWorkerThreadController->worker(), "getInfo", Qt::QueuedConnection, Q_ARG( Hatchet::InfoSystem::InfoRequestData, requestData ) );
     }
     return false;
 }
@@ -233,7 +233,7 @@ InfoSystem::pushInfo( InfoPushData pushData )
 
     PushInfoPair pushInfoPair( QVariantMap(), pushData.input );
     pushData.infoPair = pushInfoPair;
-    QMetaObject::invokeMethod( m_infoSystemWorkerThreadController->worker(), "pushInfo", Qt::QueuedConnection, Q_ARG( Tomahawk::InfoSystem::InfoPushData, pushData ) );
+    QMetaObject::invokeMethod( m_infoSystemWorkerThreadController->worker(), "pushInfo", Qt::QueuedConnection, Q_ARG( Hatchet::InfoSystem::InfoPushData, pushData ) );
 
     return true;
 }
@@ -252,7 +252,7 @@ InfoSystem::pushInfo( const QString& caller, const InfoTypeMap& input, const Pus
     {
         InfoPushData pushData( caller, type, input[ type ], pushFlags );
         pushData.infoPair = PushInfoPair( QVariantMap(), pushData.input );
-        QMetaObject::invokeMethod( m_infoSystemWorkerThreadController->worker(), "pushInfo", Qt::QueuedConnection, Q_ARG( Tomahawk::InfoSystem::InfoPushData, pushData ) );
+        QMetaObject::invokeMethod( m_infoSystemWorkerThreadController->worker(), "pushInfo", Qt::QueuedConnection, Q_ARG( Hatchet::InfoSystem::InfoPushData, pushData ) );
     }
 
     return true;
@@ -260,12 +260,12 @@ InfoSystem::pushInfo( const QString& caller, const InfoTypeMap& input, const Pus
 
 
 void
-InfoSystem::addInfoPlugin( Tomahawk::InfoSystem::InfoPluginPtr plugin )
+InfoSystem::addInfoPlugin( Hatchet::InfoSystem::InfoPluginPtr plugin )
 {
     // Init is not complete (waiting for worker thread to start and create worker object) so keep trying till then
     if ( !m_inited || !m_infoSystemWorkerThreadController->worker() )
     {
-        QMetaObject::invokeMethod( this, "addInfoPlugin", Qt::QueuedConnection, Q_ARG( Tomahawk::InfoSystem::InfoPluginPtr, plugin ) );
+        QMetaObject::invokeMethod( this, "addInfoPlugin", Qt::QueuedConnection, Q_ARG( Hatchet::InfoSystem::InfoPluginPtr, plugin ) );
         return;
     }
 
@@ -283,17 +283,17 @@ InfoSystem::addInfoPlugin( Tomahawk::InfoSystem::InfoPluginPtr plugin )
     }
 
     tDebug( LOGVERBOSE ) << Q_FUNC_INFO << plugin.data();
-    QMetaObject::invokeMethod( m_infoSystemWorkerThreadController->worker(), "addInfoPlugin", Qt::QueuedConnection, Q_ARG( Tomahawk::InfoSystem::InfoPluginPtr, plugin ) );
+    QMetaObject::invokeMethod( m_infoSystemWorkerThreadController->worker(), "addInfoPlugin", Qt::QueuedConnection, Q_ARG( Hatchet::InfoSystem::InfoPluginPtr, plugin ) );
 }
 
 
 void
-InfoSystem::removeInfoPlugin( Tomahawk::InfoSystem::InfoPluginPtr plugin )
+InfoSystem::removeInfoPlugin( Hatchet::InfoSystem::InfoPluginPtr plugin )
 {
     // Init is not complete (waiting for worker th read to start and create worker object) so keep trying till then
     if ( !m_inited || !m_infoSystemWorkerThreadController->worker() )
     {
-        QMetaObject::invokeMethod( this, "removeInfoPlugin", Qt::QueuedConnection, Q_ARG( Tomahawk::InfoSystem::InfoPluginPtr, plugin ) );
+        QMetaObject::invokeMethod( this, "removeInfoPlugin", Qt::QueuedConnection, Q_ARG( Hatchet::InfoSystem::InfoPluginPtr, plugin ) );
         return;
     }
 
@@ -310,7 +310,7 @@ InfoSystem::removeInfoPlugin( Tomahawk::InfoSystem::InfoPluginPtr plugin )
     }
 
     tDebug( LOGVERBOSE ) << Q_FUNC_INFO << plugin.data();
-    QMetaObject::invokeMethod( m_infoSystemWorkerThreadController->worker(), "removeInfoPlugin", Qt::QueuedConnection, Q_ARG( Tomahawk::InfoSystem::InfoPluginPtr, plugin ) );
+    QMetaObject::invokeMethod( m_infoSystemWorkerThreadController->worker(), "removeInfoPlugin", Qt::QueuedConnection, Q_ARG( Hatchet::InfoSystem::InfoPluginPtr, plugin ) );
 }
 
 
@@ -405,4 +405,4 @@ InfoSystemWorkerThread::worker() const
 
 } //namespace InfoSystem
 
-} //namespace Tomahawk
+} //namespace Hatchet

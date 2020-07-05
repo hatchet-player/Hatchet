@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christopher Reichert <creichert07@gmail.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DatabaseCommand_LoadSocialActions.h"
@@ -30,7 +30,7 @@
 #include "Result.h"
 #include "Track.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 void
@@ -39,7 +39,7 @@ DatabaseCommand_LoadSocialActions::exec( DatabaseImpl* dbi )
     qDebug() << Q_FUNC_INFO;
     Q_ASSERT( !source().isNull() );
 
-    TomahawkSqlQuery query = dbi->newquery();
+    HatchetSqlQuery query = dbi->newquery();
 
     if ( m_actionOnly.isNull() )
     {
@@ -58,10 +58,10 @@ DatabaseCommand_LoadSocialActions::exec( DatabaseImpl* dbi )
         query.prepare( sql );
         query.exec();
 
-        QList< Tomahawk::SocialAction > allSocialActions;
+        QList< Hatchet::SocialAction > allSocialActions;
         while ( query.next() )
         {
-            Tomahawk::SocialAction action;
+            Hatchet::SocialAction action;
             action.action    = query.value( 0 );  // action
             action.value     = query.value( 1 );  // comment
             action.timestamp = query.value( 2 );  // timestamp
@@ -93,7 +93,7 @@ DatabaseCommand_LoadSocialActions::exec( DatabaseImpl* dbi )
             const QVariantMap artist = dbi->artist( track.value( "artist" ).toInt() );
             const track_ptr t = Track::get( artist.value( "name" ).toString(), track.value( "name" ).toString(), QString() );
 
-            Tomahawk::SocialAction action;
+            Hatchet::SocialAction action;
             action.action    = m_actionOnly;  // action
             action.value     = query.value( 1 );  // comment
             action.timestamp = query.value( 2 );  // timestamp

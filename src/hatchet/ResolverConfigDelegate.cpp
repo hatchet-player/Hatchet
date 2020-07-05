@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ResolverConfigDelegate.h"
@@ -52,9 +52,9 @@ ResolverConfigDelegate::paint( QPainter* painter, const QStyleOptionViewItem& op
     path.setItalic( true );
     path.setPointSize( path.pointSize() - 1 );
 
-    const bool error =  (Tomahawk::ExternalResolver::ErrorState)index.data( ResolversModel::ErrorState ).toInt() != Tomahawk::ExternalResolver::NoError;
-    const bool fileNotFound = (Tomahawk::ExternalResolver::ErrorState)index.data( ResolversModel::ErrorState ).toInt() == Tomahawk::ExternalResolver::FileNotFound;
-    const bool failedToLoad = (Tomahawk::ExternalResolver::ErrorState)index.data( ResolversModel::ErrorState ).toInt() == Tomahawk::ExternalResolver::FailedToLoad;
+    const bool error =  (Hatchet::ExternalResolver::ErrorState)index.data( ResolversModel::ErrorState ).toInt() != Hatchet::ExternalResolver::NoError;
+    const bool fileNotFound = (Hatchet::ExternalResolver::ErrorState)index.data( ResolversModel::ErrorState ).toInt() == Hatchet::ExternalResolver::FileNotFound;
+    const bool failedToLoad = (Hatchet::ExternalResolver::ErrorState)index.data( ResolversModel::ErrorState ).toInt() == Hatchet::ExternalResolver::FailedToLoad;
 
     QFontMetrics bfm( name );
     QFontMetrics sfm( path );

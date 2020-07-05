@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "TreeProxyModel.h"
@@ -38,7 +38,7 @@ TreeProxyModel::TreeProxyModel( QObject* parent )
     , m_artistsFilterCmd( 0 )
     , m_model( 0 )
 {
-    setPlaylistInterface( Tomahawk::playlistinterface_ptr( new Tomahawk::TreeProxyModelPlaylistInterface( this ) ) );
+    setPlaylistInterface( Hatchet::playlistinterface_ptr( new Hatchet::TreeProxyModelPlaylistInterface( this ) ) );
 }
 
 
@@ -74,16 +74,16 @@ TreeProxyModel::onRowsInserted( const QModelIndex& parent, int /* start */, int 
     if ( pi->artist().isNull() )
         return;
 
-    Tomahawk::AlbumsRequest* cmd = 0;
+    Hatchet::AlbumsRequest* cmd = 0;
     if ( !m_model->collection().isNull() )
         cmd = m_model->collection()->requestAlbums( pi->artist() );
     else
-        cmd = new Tomahawk::DatabaseCommand_AllAlbums( Tomahawk::collection_ptr(), pi->artist() );
+        cmd = new Hatchet::DatabaseCommand_AllAlbums( Hatchet::collection_ptr(), pi->artist() );
 
     cmd->setFilter( m_filter );
 
-    connect( dynamic_cast< QObject* >( cmd ), SIGNAL( albums( QList<Tomahawk::album_ptr> ) ),
-             SLOT( onFilterAlbums( QList<Tomahawk::album_ptr> ) ) );
+    connect( dynamic_cast< QObject* >( cmd ), SIGNAL( albums( QList<Hatchet::album_ptr> ) ),
+             SLOT( onFilterAlbums( QList<Hatchet::album_ptr> ) ) );
 
     cmd->enqueue();
 }
@@ -111,8 +111,8 @@ TreeProxyModel::setFilter( const QString& pattern )
 
     if ( m_artistsFilterCmd )
     {
-        disconnect( dynamic_cast< QObject* >( m_artistsFilterCmd ), SIGNAL( artists( QList<Tomahawk::artist_ptr> ) ),
-                    this, SLOT( onFilterArtists( QList<Tomahawk::artist_ptr> ) ) );
+        disconnect( dynamic_cast< QObject* >( m_artistsFilterCmd ), SIGNAL( artists( QList<Hatchet::artist_ptr> ) ),
+                    this, SLOT( onFilterArtists( QList<Hatchet::artist_ptr> ) ) );
 
         delete m_artistsFilterCmd;
         m_artistsFilterCmd = 0;
@@ -124,17 +124,17 @@ TreeProxyModel::setFilter( const QString& pattern )
     }
     else
     {
-        Tomahawk::ArtistsRequest* cmd = 0;
+        Hatchet::ArtistsRequest* cmd = 0;
         if ( !m_model->collection().isNull() )
             cmd = m_model->collection()->requestArtists();
         else
-            cmd = new Tomahawk::DatabaseCommand_AllArtists(); //for SuperCollection, TODO: replace with a proper proxy-ArtistsRequest
+            cmd = new Hatchet::DatabaseCommand_AllArtists(); //for SuperCollection, TODO: replace with a proper proxy-ArtistsRequest
 
         cmd->setFilter( pattern );
         m_artistsFilterCmd = cmd;
 
-        connect( dynamic_cast< QObject* >( cmd ), SIGNAL( artists( QList<Tomahawk::artist_ptr> ) ),
-                 SLOT( onFilterArtists( QList<Tomahawk::artist_ptr> ) ) );
+        connect( dynamic_cast< QObject* >( cmd ), SIGNAL( artists( QList<Hatchet::artist_ptr> ) ),
+                 SLOT( onFilterArtists( QList<Hatchet::artist_ptr> ) ) );
 
         cmd->enqueue();
     }
@@ -149,24 +149,24 @@ TreeProxyModel::filter() const
 
 
 void
-TreeProxyModel::onFilterArtists( const QList<Tomahawk::artist_ptr>& artists )
+TreeProxyModel::onFilterArtists( const QList<Hatchet::artist_ptr>& artists )
 {
     bool finished = true;
     m_artistsFilter = artists;
     m_artistsFilterCmd = 0;
 
-    foreach ( const Tomahawk::artist_ptr& artist, artists )
+    foreach ( const Hatchet::artist_ptr& artist, artists )
     {
         const QModelIndex idx = m_model->indexFromArtist( artist );
         if ( m_model->rowCount( idx ) )
         {
             finished = false;
 
-            Tomahawk::AlbumsRequest* cmd = m_model->collection()->requestAlbums( artist );
+            Hatchet::AlbumsRequest* cmd = m_model->collection()->requestAlbums( artist );
             cmd->setFilter( m_filter );
 
-            connect( dynamic_cast< QObject* >( cmd ), SIGNAL( albums( QList<Tomahawk::album_ptr> ) ),
-                     SLOT( onFilterAlbums( QList<Tomahawk::album_ptr> ) ) );
+            connect( dynamic_cast< QObject* >( cmd ), SIGNAL( albums( QList<Hatchet::album_ptr> ) ),
+                     SLOT( onFilterAlbums( QList<Hatchet::album_ptr> ) ) );
 
             cmd->enqueue();
         }
@@ -178,9 +178,9 @@ TreeProxyModel::onFilterArtists( const QList<Tomahawk::artist_ptr>& artists )
 
 
 void
-TreeProxyModel::onFilterAlbums( const QList<Tomahawk::album_ptr>& albums )
+TreeProxyModel::onFilterAlbums( const QList<Hatchet::album_ptr>& albums )
 {
-    foreach ( const Tomahawk::album_ptr& album, albums )
+    foreach ( const Hatchet::album_ptr& album, albums )
     {
         m_albumsFilter << album;
     }
@@ -194,8 +194,8 @@ TreeProxyModel::filterFinished()
 {
     if ( m_artistsFilterCmd )
     {
-        disconnect( dynamic_cast< QObject* >( m_artistsFilterCmd ), SIGNAL( artists( QList<Tomahawk::artist_ptr> ) ),
-                    this, SLOT( onFilterArtists( QList<Tomahawk::artist_ptr> ) ) );
+        disconnect( dynamic_cast< QObject* >( m_artistsFilterCmd ), SIGNAL( artists( QList<Hatchet::artist_ptr> ) ),
+                    this, SLOT( onFilterArtists( QList<Hatchet::artist_ptr> ) ) );
 
         delete m_artistsFilterCmd;
         m_artistsFilterCmd = 0;
@@ -214,10 +214,10 @@ TreeProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex& sourceParent
     Q_ASSERT( item );
 
     //FIXME: m_cache lookup is broken
-    if ( /*m_model->mode() == Tomahawk::DatabaseMode &&*/ !item->query().isNull() )
+    if ( /*m_model->mode() == Hatchet::DatabaseMode &&*/ !item->query().isNull() )
     {
-/*        QList< Tomahawk::query_ptr > rl = m_cache.values( sourceParent );
-        foreach ( const Tomahawk::query_ptr& cachedQuery, rl )
+/*        QList< Hatchet::query_ptr > rl = m_cache.values( sourceParent );
+        foreach ( const Hatchet::query_ptr& cachedQuery, rl )
         {
             if ( cachedQuery.isNull() )
                 continue;
@@ -363,7 +363,7 @@ TreeProxyModel::textForItem( PlayableItem* item ) const
     }
     else if ( !item->album().isNull() )
     {
-        return Tomahawk::DatabaseImpl::sortname( item->album()->name() );
+        return Hatchet::DatabaseImpl::sortname( item->album()->name() );
     }
     else if ( !item->result().isNull() )
     {
@@ -379,28 +379,28 @@ TreeProxyModel::textForItem( PlayableItem* item ) const
 
 
 QModelIndex
-TreeProxyModel::indexFromArtist( const Tomahawk::artist_ptr& artist ) const
+TreeProxyModel::indexFromArtist( const Hatchet::artist_ptr& artist ) const
 {
     return mapFromSource( m_model->indexFromArtist( artist ) );
 }
 
 
 QModelIndex
-TreeProxyModel::indexFromAlbum( const Tomahawk::album_ptr& album ) const
+TreeProxyModel::indexFromAlbum( const Hatchet::album_ptr& album ) const
 {
     return mapFromSource( m_model->indexFromAlbum( album ) );
 }
 
 
 QModelIndex
-TreeProxyModel::indexFromResult( const Tomahawk::result_ptr& result ) const
+TreeProxyModel::indexFromResult( const Hatchet::result_ptr& result ) const
 {
     return mapFromSource( m_model->indexFromResult( result ) );
 }
 
 
 QModelIndex
-TreeProxyModel::indexFromQuery( const Tomahawk::query_ptr& query ) const
+TreeProxyModel::indexFromQuery( const Hatchet::query_ptr& query ) const
 {
     return mapFromSource( m_model->indexFromQuery( query ) );
 }

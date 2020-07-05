@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "Scrobbler.h"
@@ -23,7 +23,7 @@
 #include "Album.h"
 #include "Source.h"
 #include "Typedefs.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "Track.h"
 #include "audio/AudioEngine.h"
 #include "infosystem/InfoSystem.h"
@@ -44,12 +44,12 @@ Scrobbler::Scrobbler( QObject* parent )
     connect( AudioEngine::instance(), SIGNAL( timerSeconds( unsigned int ) ),
                                         SLOT( engineTick( unsigned int ) ), Qt::QueuedConnection );
 
-    connect( Tomahawk::InfoSystem::InfoSystem::instance(),
-             SIGNAL( info( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ),
-             SLOT( infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ) );
+    connect( Hatchet::InfoSystem::InfoSystem::instance(),
+             SIGNAL( info( Hatchet::InfoSystem::InfoRequestData, QVariant ) ),
+             SLOT( infoSystemInfo( Hatchet::InfoSystem::InfoRequestData, QVariant ) ) );
 
-    connect( AudioEngine::instance(), SIGNAL( started( const Tomahawk::result_ptr ) ),
-             SLOT( trackStarted( const Tomahawk::result_ptr ) ), Qt::QueuedConnection );
+    connect( AudioEngine::instance(), SIGNAL( started( const Hatchet::result_ptr ) ),
+             SLOT( trackStarted( const Hatchet::result_ptr ) ), Qt::QueuedConnection );
 
     connect( AudioEngine::instance(), SIGNAL( paused() ),
              SLOT( trackPaused() ), Qt::QueuedConnection );
@@ -60,7 +60,7 @@ Scrobbler::Scrobbler( QObject* parent )
     connect( AudioEngine::instance(), SIGNAL( stopped() ),
              SLOT( trackStopped() ), Qt::QueuedConnection );
 
-    connect( Tomahawk::InfoSystem::InfoSystem::instance(), SIGNAL( finished( QString ) ), SLOT( infoSystemFinished( QString ) ) );
+    connect( Hatchet::InfoSystem::InfoSystem::instance(), SIGNAL( finished( QString ) ), SLOT( infoSystemFinished( QString ) ) );
 }
 
 
@@ -70,7 +70,7 @@ Scrobbler::~Scrobbler()
 
 
 void
-Scrobbler::trackStarted( const Tomahawk::result_ptr track )
+Scrobbler::trackStarted( const Hatchet::result_ptr track )
 {
     Q_ASSERT( QThread::currentThread() == thread() );
 
@@ -80,7 +80,7 @@ Scrobbler::trackStarted( const Tomahawk::result_ptr track )
         scrobble();
     }
 
-    Tomahawk::InfoSystem::InfoStringHash trackInfo;
+    Hatchet::InfoSystem::InfoStringHash trackInfo;
     trackInfo["title"] = track->track()->track();
     trackInfo["artist"] = track->track()->artist();
     trackInfo["album"] = track->track()->album();
@@ -88,15 +88,15 @@ Scrobbler::trackStarted( const Tomahawk::result_ptr track )
     trackInfo["albumpos"] = QString::number( track->track()->albumpos() );
 
     QVariantMap playInfo;
-    playInfo["trackinfo"] = QVariant::fromValue< Tomahawk::InfoSystem::InfoStringHash >( trackInfo );
-    playInfo["private"] = TomahawkSettings::instance()->privateListeningMode();
+    playInfo["trackinfo"] = QVariant::fromValue< Hatchet::InfoSystem::InfoStringHash >( trackInfo );
+    playInfo["private"] = HatchetSettings::instance()->privateListeningMode();
 
-    Tomahawk::InfoSystem::InfoPushData pushData (
-        s_scInfoIdentifier, Tomahawk::InfoSystem::InfoSubmitNowPlaying,
+    Hatchet::InfoSystem::InfoPushData pushData (
+        s_scInfoIdentifier, Hatchet::InfoSystem::InfoSubmitNowPlaying,
         playInfo,
-        Tomahawk::InfoSystem::PushNoFlag );
+        Hatchet::InfoSystem::PushNoFlag );
 
-    Tomahawk::InfoSystem::InfoSystem::instance()->pushInfo( pushData );
+    Hatchet::InfoSystem::InfoSystem::instance()->pushInfo( pushData );
 
     // liblastfm forces 0-length tracks to scrobble after 4 minutes, stupid.
     if ( track->track()->duration() == 0 )
@@ -146,16 +146,16 @@ Scrobbler::scrobble()
 {
     Q_ASSERT( QThread::currentThread() == thread() );
 
-    Tomahawk::InfoSystem::InfoPushData pushData (
-        s_scInfoIdentifier, Tomahawk::InfoSystem::InfoSubmitScrobble,
-        QVariant(), Tomahawk::InfoSystem::PushNoFlag );
+    Hatchet::InfoSystem::InfoPushData pushData (
+        s_scInfoIdentifier, Hatchet::InfoSystem::InfoSubmitScrobble,
+        QVariant(), Hatchet::InfoSystem::PushNoFlag );
 
-    Tomahawk::InfoSystem::InfoSystem::instance()->pushInfo( pushData );
+    Hatchet::InfoSystem::InfoSystem::instance()->pushInfo( pushData );
 }
 
 
 void
-Scrobbler::infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData requestData, QVariant output )
+Scrobbler::infoSystemInfo( Hatchet::InfoSystem::InfoRequestData requestData, QVariant output )
 {
     Q_UNUSED( output );
     if ( requestData.caller == s_scInfoIdentifier )

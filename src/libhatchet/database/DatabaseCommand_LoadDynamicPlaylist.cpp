@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DatabaseCommand_LoadDynamicPlaylist.h"
@@ -28,9 +28,9 @@
 #include <QSqlQuery>
 
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
-Tomahawk::DatabaseCommand_LoadDynamicPlaylist::DatabaseCommand_LoadDynamicPlaylist( const source_ptr& s, const QString& guid, QObject* parent )
+Hatchet::DatabaseCommand_LoadDynamicPlaylist::DatabaseCommand_LoadDynamicPlaylist( const source_ptr& s, const QString& guid, QObject* parent )
     : DatabaseCommand( s, parent )
     , m_plid( guid )
 {
@@ -39,9 +39,9 @@ Tomahawk::DatabaseCommand_LoadDynamicPlaylist::DatabaseCommand_LoadDynamicPlayli
 
 
 void
-Tomahawk::DatabaseCommand_LoadDynamicPlaylist::exec( DatabaseImpl* dbi )
+Hatchet::DatabaseCommand_LoadDynamicPlaylist::exec( DatabaseImpl* dbi )
 {
-    TomahawkSqlQuery query = dbi->newquery();
+    HatchetSqlQuery query = dbi->newquery();
 
     query.exec( QString( "SELECT playlist.guid as guid, title, info, creator, createdOn, lastmodified, shared, currentrevision, dynamic_playlist.pltype, dynamic_playlist.plmode "
                          "FROM playlist, dynamic_playlist WHERE "

@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #pragma once
@@ -31,12 +31,12 @@
 
 #include <QNetworkReply>
 
-// TODO: Move into Tomahawk namespace
+// TODO: Move into Hatchet namespace
 class Msg;
 
 typedef QSharedPointer<Msg> msg_ptr;
 
-namespace Tomahawk
+namespace Hatchet
 {
     class Artist;
     class Album;
@@ -207,7 +207,7 @@ namespace Tomahawk
             InfoAlbumSongs = 49,
             InfoAlbumPurchaseUrl = 50,
 
-            /** \var Tomahawk::InfoSystem::InfoType Tomahawk::InfoSystem::InfoType::InfoChartCapabilities
+            /** \var Hatchet::InfoSystem::InfoType Hatchet::InfoSystem::InfoType::InfoChartCapabilities
             * Documentation for InfoChartCapabilities
             *
             * Clients of this InfoType expect a QVariant
@@ -284,6 +284,6 @@ inline static QString uuid()
 Q_DECLARE_METATYPE( QModelIndex )
 Q_DECLARE_METATYPE( QPersistentModelIndex )
 Q_DECLARE_METATYPE( QNetworkReply* )
-Q_DECLARE_METATYPE( Tomahawk::ACLStatus::Type )
+Q_DECLARE_METATYPE( Hatchet::ACLStatus::Type )
 
 #endif // TYPEDEFS_H

@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2015,      Dominik Schmidt <domme@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "Result.h"
@@ -24,20 +24,20 @@
 #include "filemetadata/MetadataEditor.h"
 #include "resolvers/ExternalResolverGui.h"
 #include "resolvers/Resolver.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 
 #include "Album.h"
 #include "Pipeline.h"
 #include "PlaylistInterface.h"
 #include "Source.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "Track.h"
 #include "Typedefs.h"
 
 #include <QCoreApplication>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 static QHash< QString, result_wptr > s_results;
 static QMutex s_mutex;
@@ -47,7 +47,7 @@ Q_GLOBAL_STATIC( SourceIconCache, sourceIconCache );
 static QMutex s_sourceIconMutex;
 
 inline QString
-sourceCacheKey( Resolver* resolver, const QSize& size, TomahawkUtils::ImageMode style )
+sourceCacheKey( Resolver* resolver, const QSize& size, HatchetUtils::ImageMode style )
 {
     QString str;
     QTextStream stream( &str );
@@ -56,7 +56,7 @@ sourceCacheKey( Resolver* resolver, const QSize& size, TomahawkUtils::ImageMode 
 }
 
 
-Tomahawk::result_ptr
+Hatchet::result_ptr
 Result::get( const QString& url, const track_ptr& track )
 {
     if ( url.trimmed().isEmpty() || track.isNull() )
@@ -108,7 +108,7 @@ Result::Result( const QString& url, const track_ptr& track )
     , m_fileId( 0 )
     , m_track( track )
 {
-    connect( Pipeline::instance(), SIGNAL( resolverRemoved( Tomahawk::Resolver* ) ), SLOT( onResolverRemoved( Tomahawk::Resolver* ) ), Qt::QueuedConnection );
+    connect( Pipeline::instance(), SIGNAL( resolverRemoved( Hatchet::Resolver* ) ), SLOT( onResolverRemoved( Hatchet::Resolver* ) ), Qt::QueuedConnection );
 }
 
 
@@ -133,7 +133,7 @@ Result::deleteLater()
 
 
 void
-Result::onResolverRemoved( Tomahawk::Resolver* resolver )
+Result::onResolverRemoved( Hatchet::Resolver* resolver )
 {
     m_mutex.lock();
 
@@ -295,20 +295,20 @@ Result::toString() const
 }
 
 
-Tomahawk::query_ptr
+Hatchet::query_ptr
 Result::toQuery()
 {
     QMutexLocker l( &m_mutex );
 
     if ( m_query.isNull() )
     {
-        query_ptr query = Tomahawk::Query::get( m_track );
+        query_ptr query = Hatchet::Query::get( m_track );
         if ( !query )
             return query_ptr();
 
         m_query = query->weakRef();
 
-        QList<Tomahawk::result_ptr> rl;
+        QList<Hatchet::result_ptr> rl;
         rl << m_ownRef.toStrongRef();
         m_mutex.unlock();
         query->addResults( rl );
@@ -337,7 +337,7 @@ Result::onOffline()
 
 
 void
-Result::setResolvedByCollection( const Tomahawk::collection_ptr& collection, bool emitOnlineEvents )
+Result::setResolvedByCollection( const Hatchet::collection_ptr& collection, bool emitOnlineEvents )
 {
     m_collection = collection;
 
@@ -483,7 +483,7 @@ Result::linkUrl() const
 
 
 QPixmap
-Result::sourceIcon( TomahawkUtils::ImageMode style, const QSize& desiredSize ) const
+Result::sourceIcon( HatchetUtils::ImageMode style, const QSize& desiredSize ) const
 {
     if ( resolvedByCollection().isNull() )
     {
@@ -507,12 +507,12 @@ Result::sourceIcon( TomahawkUtils::ImageMode style, const QSize& desiredSize ) c
 
                 switch ( style )
                 {
-                    case TomahawkUtils::DropShadow:
-                        pixmap = TomahawkUtils::addDropShadow( pixmap, QSize() );
+                    case HatchetUtils::DropShadow:
+                        pixmap = HatchetUtils::addDropShadow( pixmap, QSize() );
                         break;
 
-                    case TomahawkUtils::RoundedCorners:
-                        pixmap = TomahawkUtils::createRoundedImage( pixmap, QSize() );
+                    case HatchetUtils::RoundedCorners:
+                        pixmap = HatchetUtils::createRoundedImage( pixmap, QSize() );
                         break;
 
                     default:
@@ -572,7 +572,7 @@ Result::setFileId( unsigned int id )
 }
 
 
-Tomahawk::Resolver*
+Hatchet::Resolver*
 Result::resolvedBy() const
 {
     QMutexLocker lock( &m_mutex );
@@ -585,11 +585,11 @@ Result::resolvedBy() const
 
 
 void
-Result::setResolvedByResolver( Tomahawk::Resolver* resolver )
+Result::setResolvedByResolver( Hatchet::Resolver* resolver )
 {
     QMutexLocker lock( &m_mutex );
 
-    m_resolver = QPointer< Tomahawk::Resolver >( resolver );
+    m_resolver = QPointer< Hatchet::Resolver >( resolver );
 }
 
 
@@ -638,7 +638,7 @@ Result::setDownloadFormats( const QList<DownloadFormat>& formats )
     m_formats.clear();
     foreach ( const DownloadFormat& format, formats )
     {
-        if ( format.extension.toLower() == TomahawkSettings::instance()->downloadsPreferredFormat().toLower() )
+        if ( format.extension.toLower() == HatchetSettings::instance()->downloadsPreferredFormat().toLower() )
         {
             m_formats.insert( 0, format );
         }
@@ -650,11 +650,11 @@ Result::setDownloadFormats( const QList<DownloadFormat>& formats )
 
     if ( !m_formats.isEmpty() )
     {
-        connect( TomahawkSettings::instance(), SIGNAL( changed() ), this, SLOT( onSettingsChanged() ), Qt::UniqueConnection );
+        connect( HatchetSettings::instance(), SIGNAL( changed() ), this, SLOT( onSettingsChanged() ), Qt::UniqueConnection );
     }
     else
     {
-        disconnect( TomahawkSettings::instance(), SIGNAL( changed() ), this, SLOT( onSettingsChanged() ) );
+        disconnect( HatchetSettings::instance(), SIGNAL( changed() ), this, SLOT( onSettingsChanged() ) );
     }
 }
 
@@ -662,7 +662,7 @@ Result::setDownloadFormats( const QList<DownloadFormat>& formats )
 void
 Result::onSettingsChanged()
 {
-    if ( TomahawkSettings::instance()->downloadsPreferredFormat().toLower() != downloadFormats().first().extension.toLower() )
+    if ( HatchetSettings::instance()->downloadsPreferredFormat().toLower() != downloadFormats().first().extension.toLower() )
     {
         setDownloadFormats( downloadFormats() );
         emit updated();

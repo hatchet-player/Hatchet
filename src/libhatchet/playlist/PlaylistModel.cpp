@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2010-2012, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "PlaylistModel_p.h"
@@ -27,7 +27,7 @@
 #include "database/DatabaseCommand_PlaybackHistory.h"
 #include "playlist/dynamic/GeneratorInterface.h"
 #include "utils/Logger.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 
 #include "Album.h"
 #include "Artist.h"
@@ -38,7 +38,7 @@
 #include "Source.h"
 #include "SourceList.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 void
@@ -86,14 +86,14 @@ PlaylistModel::guid() const
 
 
 void
-PlaylistModel::loadPlaylist( const Tomahawk::playlist_ptr& playlist, bool loadEntries )
+PlaylistModel::loadPlaylist( const Hatchet::playlist_ptr& playlist, bool loadEntries )
 {
     Q_D( PlaylistModel );
 
     if ( d->playlist )
     {
-        disconnect( d->playlist.data(), SIGNAL( revisionLoaded( Tomahawk::PlaylistRevision ) ), this, SLOT( onRevisionLoaded( Tomahawk::PlaylistRevision ) ) );
-        disconnect( d->playlist.data(), SIGNAL( deleted( Tomahawk::playlist_ptr ) ), this, SIGNAL( playlistDeleted() ) );
+        disconnect( d->playlist.data(), SIGNAL( revisionLoaded( Hatchet::PlaylistRevision ) ), this, SLOT( onRevisionLoaded( Hatchet::PlaylistRevision ) ) );
+        disconnect( d->playlist.data(), SIGNAL( deleted( Hatchet::playlist_ptr ) ), this, SIGNAL( playlistDeleted() ) );
         disconnect( d->playlist.data(), SIGNAL( changed() ), this, SLOT( onPlaylistChanged() ) );
     }
 
@@ -104,8 +104,8 @@ PlaylistModel::loadPlaylist( const Tomahawk::playlist_ptr& playlist, bool loadEn
     }
 
     d->playlist = playlist;
-    connect( playlist.data(), SIGNAL( revisionLoaded( Tomahawk::PlaylistRevision ) ), SLOT( onRevisionLoaded( Tomahawk::PlaylistRevision ) ) );
-    connect( playlist.data(), SIGNAL( deleted( Tomahawk::playlist_ptr ) ), SIGNAL( playlistDeleted() ) );
+    connect( playlist.data(), SIGNAL( revisionLoaded( Hatchet::PlaylistRevision ) ), SLOT( onRevisionLoaded( Hatchet::PlaylistRevision ) ) );
+    connect( playlist.data(), SIGNAL( deleted( Hatchet::playlist_ptr ) ), SIGNAL( playlistDeleted() ) );
     connect( playlist.data(), SIGNAL( changed() ), SLOT( onPlaylistChanged() ) );
 
     setReadOnly( !d->playlist->author()->isLocal() );
@@ -133,7 +133,7 @@ void
 PlaylistModel::onPlaylistChanged()
 {
     Q_D( PlaylistModel );
-    QString age = TomahawkUtils::ageToString( QDateTime::fromTime_t( d->playlist->createdOn() ), true );
+    QString age = HatchetUtils::ageToString( QDateTime::fromTime_t( d->playlist->createdOn() ), true );
     QString desc;
 
     // we check for "someone" to work-around an old bug
@@ -182,7 +182,7 @@ PlaylistModel::appendEntries( const QList< plentry_ptr >& entries )
 
 
 void
-PlaylistModel::insertAlbums( const QList< Tomahawk::album_ptr >& albums, int row )
+PlaylistModel::insertAlbums( const QList< Hatchet::album_ptr >& albums, int row )
 {
     Q_D( PlaylistModel );
     // FIXME: This currently appends, not inserts!
@@ -193,8 +193,8 @@ PlaylistModel::insertAlbums( const QList< Tomahawk::album_ptr >& albums, int row
         if ( !album )
             return;
 
-        connect( album.data(), SIGNAL( tracksAdded( QList<Tomahawk::query_ptr>, Tomahawk::ModelMode, Tomahawk::collection_ptr ) ),
-                                 SLOT( appendQueries( QList<Tomahawk::query_ptr> ) ) );
+        connect( album.data(), SIGNAL( tracksAdded( QList<Hatchet::query_ptr>, Hatchet::ModelMode, Hatchet::collection_ptr ) ),
+                                 SLOT( appendQueries( QList<Hatchet::query_ptr> ) ) );
 
         appendQueries( album->playlistInterface( Mixed )->tracks() );
     }
@@ -209,7 +209,7 @@ PlaylistModel::insertAlbums( const QList< Tomahawk::album_ptr >& albums, int row
 
 
 void
-PlaylistModel::insertArtists( const QList< Tomahawk::artist_ptr >& artists, int row )
+PlaylistModel::insertArtists( const QList< Hatchet::artist_ptr >& artists, int row )
 {
     Q_D( PlaylistModel );
     // FIXME: This currently appends, not inserts!
@@ -220,8 +220,8 @@ PlaylistModel::insertArtists( const QList< Tomahawk::artist_ptr >& artists, int 
         if ( !artist )
             return;
 
-        connect( artist.data(), SIGNAL( tracksAdded( QList<Tomahawk::query_ptr>, Tomahawk::ModelMode, Tomahawk::collection_ptr ) ),
-                                  SLOT( appendQueries( QList<Tomahawk::query_ptr> ) ) );
+        connect( artist.data(), SIGNAL( tracksAdded( QList<Hatchet::query_ptr>, Hatchet::ModelMode, Hatchet::collection_ptr ) ),
+                                  SLOT( appendQueries( QList<Hatchet::query_ptr> ) ) );
 
         appendQueries( artist->playlistInterface( Mixed )->tracks() );
     }
@@ -236,10 +236,10 @@ PlaylistModel::insertArtists( const QList< Tomahawk::artist_ptr >& artists, int 
 
 
 void
-PlaylistModel::insertQueries( const QList< Tomahawk::query_ptr >& queries, int row, const QList< Tomahawk::PlaybackLog >& logs, const QModelIndex& /* parent */ )
+PlaylistModel::insertQueries( const QList< Hatchet::query_ptr >& queries, int row, const QList< Hatchet::PlaybackLog >& logs, const QModelIndex& /* parent */ )
 {
     Q_D( PlaylistModel );
-    QList< Tomahawk::plentry_ptr > entries;
+    QList< Hatchet::plentry_ptr > entries;
     foreach ( const query_ptr& query, queries )
     {
         if ( d->acceptPlayableQueriesOnly && query && query->resolvingFinished() && !query->playable() )
@@ -265,7 +265,7 @@ PlaylistModel::insertQueries( const QList< Tomahawk::query_ptr >& queries, int r
 
 
 void
-PlaylistModel::insertEntries( const QList< Tomahawk::plentry_ptr >& entries, int row, const QModelIndex& parent, const QList< Tomahawk::PlaybackLog >& logs )
+PlaylistModel::insertEntries( const QList< Hatchet::plentry_ptr >& entries, int row, const QModelIndex& parent, const QList< Hatchet::PlaybackLog >& logs )
 {
     Q_D( PlaylistModel );
     if ( entries.isEmpty() )
@@ -288,7 +288,7 @@ PlaylistModel::insertEntries( const QList< Tomahawk::plentry_ptr >& entries, int
 
     emit beginInsertRows( parent, crows.first, crows.second );
 
-    QList< Tomahawk::query_ptr > queries;
+    QList< Hatchet::query_ptr > queries;
     int i = 0;
     foreach( const plentry_ptr& entry, entries )
     {
@@ -340,7 +340,7 @@ void
 PlaylistModel::trackResolved( bool )
 {
     Q_D( PlaylistModel );
-    Tomahawk::Query* q = qobject_cast< Query* >( sender() );
+    Hatchet::Query* q = qobject_cast< Query* >( sender() );
     if ( !q )
     {
         // Track has been removed from the playlist by now
@@ -361,7 +361,7 @@ PlaylistModel::trackResolved( bool )
 
 
 void
-PlaylistModel::onRevisionLoaded( Tomahawk::PlaylistRevision revision )
+PlaylistModel::onRevisionLoaded( Hatchet::PlaylistRevision revision )
 {
     Q_D( PlaylistModel );
 
@@ -384,7 +384,7 @@ PlaylistModel::mimeData( const QModelIndexList& indexes ) const
     // Add the playlist id to the mime data so that we can detect dropping on ourselves
     QMimeData* data = PlayableModel::mimeData( indexes );
     if ( d->playlist )
-        data->setData( "application/tomahawk.playlist.id", d->playlist->guid().toLatin1() );
+        data->setData( "application/hatchet.playlist.id", d->playlist->guid().toLatin1() );
 
     return data;
 }
@@ -419,14 +419,14 @@ PlaylistModel::dropMimeData( const QMimeData* data, Qt::DropAction action, int r
 #ifdef Q_OS_MAC
     // On mac, drags from outside the app are still Qt::MoveActions instead of Qt::CopyAction by default
     // so check if the drag originated in this playlist to determine whether or not to copy
-    if ( !data->hasFormat( "application/tomahawk.playlist.id" ) ||
-       ( d->playlist && data->data( "application/tomahawk.playlist.id" ) != d->playlist->guid() ) )
+    if ( !data->hasFormat( "application/hatchet.playlist.id" ) ||
+       ( d->playlist && data->data( "application/hatchet.playlist.id" ) != d->playlist->guid() ) )
     {
         dj->setDropAction( DropJob::Append );
     }
 #endif
 
-    connect( dj, SIGNAL( tracks( QList< Tomahawk::query_ptr > ) ), SLOT( parsedDroppedTracks( QList< Tomahawk::query_ptr > ) ) );
+    connect( dj, SIGNAL( tracks( QList< Hatchet::query_ptr > ) ), SLOT( parsedDroppedTracks( QList< Hatchet::query_ptr > ) ) );
     dj->tracksFromMimeData( data );
 
     return true;
@@ -512,7 +512,7 @@ PlaylistModel::endPlaylistChanges()
     QString newrev = uuid();
     d->waitForRevision << newrev;
 
-    if ( dynplaylist_ptr dynplaylist = d->playlist.dynamicCast<Tomahawk::DynamicPlaylist>() )
+    if ( dynplaylist_ptr dynplaylist = d->playlist.dynamicCast<Hatchet::DynamicPlaylist>() )
     {
         if ( dynplaylist->mode() == OnDemand )
         {
@@ -570,7 +570,7 @@ PlaylistModel::endPlaylistChanges()
 }
 
 
-QList<Tomahawk::plentry_ptr>
+QList<Hatchet::plentry_ptr>
 PlaylistModel::playlistEntries() const
 {
     QList<plentry_ptr> l;

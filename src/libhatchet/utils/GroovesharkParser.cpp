@@ -1,22 +1,22 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
- *   Copyright 2010-2011, Hugo Lindström <hugolm84@gmail.com>
+ *   Copyright 2010-2011, Hugo Lindstrï¿½m <hugolm84@gmail.com>
  *   Copyright 2010-2012, Stefan Derkits <stefan@derkits.at>
  *   Copyright 2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "GroovesharkParser.h"
@@ -40,11 +40,11 @@
 #include "jobview/ErrorStatusMessage.h"
 #include "utils/Json.h"
 #include "utils/NetworkReply.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
 #include "utils/NetworkAccessManager.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 QPixmap* GroovesharkParser::s_pixmap = 0;
 
@@ -123,7 +123,7 @@ GroovesharkParser::lookupGroovesharkPlaylist( const QString& linkRaw )
     DropJob::DropType type;
     type = DropJob::Playlist;
     QString base_url( "http://api.grooveshark.com/ws3.php?sig=" );
-    QByteArray data = QString( "{\"method\":\"getPlaylistSongs\",\"parameters\":{\"playlistID\":\"%1\"},\"header\":{\"wsKey\":\"tomahawkplayer\"}}" ).arg( playlistID ).toLocal8Bit();
+    QByteArray data = QString( "{\"method\":\"getPlaylistSongs\",\"parameters\":{\"playlistID\":\"%1\"},\"header\":{\"wsKey\":\"hatchetplayer\"}}" ).arg( playlistID ).toLocal8Bit();
 
     QCA::MessageAuthenticationCode hmac( "hmac(md5)", m_apiKey );
 
@@ -134,7 +134,7 @@ GroovesharkParser::lookupGroovesharkPlaylist( const QString& linkRaw )
     QString hash = QCA::arrayToHex( resultArray.toByteArray() );
     QUrl url = QUrl( base_url + hash );
 
-    NetworkReply* reply = new NetworkReply( Tomahawk::Utils::nam()->post( QNetworkRequest( url ), data ) );
+    NetworkReply* reply = new NetworkReply( Hatchet::Utils::nam()->post( QNetworkRequest( url ), data ) );
     connect( reply, SIGNAL( finished() ), SLOT( groovesharkLookupFinished() ) );
 
     m_browseJob = new DropJobNotifier( pixmap(), "Grooveshark", type, reply );
@@ -149,7 +149,7 @@ GroovesharkParser::lookupGroovesharkTrack( const QString& track )
 {
     tLog() << "Parsing Grooveshark Track Page:" << track;
 
-    NetworkReply* reply = new NetworkReply( Tomahawk::Utils::nam()->get( QNetworkRequest( QUrl( track ) ) ) );
+    NetworkReply* reply = new NetworkReply( Hatchet::Utils::nam()->get( QNetworkRequest( QUrl( track ) ) ) );
     connect( reply, SIGNAL( finished() ), SLOT( trackPageFetchFinished() ) );
 
     m_browseJob = new DropJobNotifier( pixmap(), "Grooveshark", DropJob::Track, reply );
@@ -182,7 +182,7 @@ GroovesharkParser::trackPageFetchFinished()
     {
         tDebug() << "Got track info from grooveshark, enough to create a query:" << title.toPlainText() << artist.toPlainText() << album.toPlainText();
 
-        Tomahawk::query_ptr q = Tomahawk::Query::get( artist.toPlainText(), title.toPlainText(), album.toPlainText(), uuid(), true );
+        Hatchet::query_ptr q = Hatchet::Query::get( artist.toPlainText(), title.toPlainText(), album.toPlainText(), uuid(), true );
         if ( !q.isNull() )
             m_tracks << q;
     }
@@ -204,7 +204,7 @@ GroovesharkParser::groovesharkLookupFinished()
     {
         bool ok;
         QByteArray jsonData = r->reply()->readAll();
-        QVariantMap res = TomahawkUtils::parseJson( jsonData, &ok ).toMap();
+        QVariantMap res = HatchetUtils::parseJson( jsonData, &ok ).toMap();
 
         if ( !ok )
         {
@@ -230,7 +230,7 @@ GroovesharkParser::groovesharkLookupFinished()
                 return;
             }
 
-            Tomahawk::query_ptr q = Tomahawk::Query::get( artist, title, album, uuid(), m_trackMode );
+            Hatchet::query_ptr q = Hatchet::Query::get( artist, title, album, uuid(), m_trackMode );
             m_tracks << q;
         }
     }
@@ -266,7 +266,7 @@ GroovesharkParser::checkPlaylistFinished()
                                        m_creator,
                                        false,
                                        m_tracks );
-            connect( m_playlist.data(), SIGNAL( revisionLoaded( Tomahawk::PlaylistRevision ) ), this, SLOT( playlistCreated() ) );
+            connect( m_playlist.data(), SIGNAL( revisionLoaded( Hatchet::PlaylistRevision ) ), this, SLOT( playlistCreated() ) );
             return;
         }
 

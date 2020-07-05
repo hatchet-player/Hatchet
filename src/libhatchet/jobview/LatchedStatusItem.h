@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef LATCHEDSTATUSITEM_H
@@ -31,7 +31,7 @@ class LatchedStatusItem : public JobStatusItem
 {
     Q_OBJECT
 public:
-    explicit LatchedStatusItem( const Tomahawk::source_ptr& from, const Tomahawk::source_ptr& to, LatchedStatusManager* );
+    explicit LatchedStatusItem( const Hatchet::source_ptr& from, const Hatchet::source_ptr& to, LatchedStatusManager* );
     virtual ~LatchedStatusItem();
 
     virtual QString rightColumnText() const { return QString(); }
@@ -41,7 +41,7 @@ public:
 
     void stop();
 private:
-    Tomahawk::source_ptr m_from, m_to;
+    Hatchet::source_ptr m_from, m_to;
     QString m_text;
     LatchedStatusManager* m_parent;
 };
@@ -56,8 +56,8 @@ public:
     QPixmap pixmap() const;
 
 private slots:
-    void latchedOn( const Tomahawk::source_ptr&, const Tomahawk::source_ptr& );
-    void latchedOff( const Tomahawk::source_ptr&, const Tomahawk::source_ptr& );
+    void latchedOn( const Hatchet::source_ptr&, const Hatchet::source_ptr& );
+    void latchedOff( const Hatchet::source_ptr&, const Hatchet::source_ptr& );
     void sourceOffline();
 
 private:

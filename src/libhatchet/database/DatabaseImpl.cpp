@@ -1,22 +1,22 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2014,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DatabaseImpl.h"
@@ -24,7 +24,7 @@
 #include "database/Database.h"
 #include "utils/Logger.h"
 #include "utils/ResultUrlChecker.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 
 #include "Album.h"
 #include "Artist.h"
@@ -43,14 +43,14 @@
 #include <QTimer>
 
 /* !!!! You need to manually generate Schema.sql.h when the schema changes:
-    cd src/libtomahawk/database
-   ./gen_schema.h.sh ./Schema.sql tomahawk > Schema.sql.h
+    cd src/libhatchet/database
+   ./gen_schema.h.sh ./Schema.sql hatchet > Schema.sql.h
 */
 #include "Schema.sql.h"
 
 #define CURRENT_SCHEMA_VERSION 31
 
-Tomahawk::DatabaseImpl::DatabaseImpl( const QString& dbname )
+Hatchet::DatabaseImpl::DatabaseImpl( const QString& dbname )
 {
     QTime t;
     t.start();
@@ -66,7 +66,7 @@ Tomahawk::DatabaseImpl::DatabaseImpl( const QString& dbname )
     bool schemaUpdated = openDatabase( dbname );
     tDebug( LOGVERBOSE ) << "Opened database:" << t.elapsed();
 
-    TomahawkSqlQuery query = newquery();
+    HatchetSqlQuery query = newquery();
     query.exec( "SELECT v FROM settings WHERE k='dbid'" );
     if ( query.next() )
     {
@@ -89,7 +89,7 @@ Tomahawk::DatabaseImpl::DatabaseImpl( const QString& dbname )
     query.exec( "UPDATE source SET isonline = 'false'" );
     query.exec( "DELETE FROM oplog WHERE source IS NULL AND singleton = 'true'" );
 
-    m_fuzzyIndex = new Tomahawk::DatabaseFuzzyIndex( this, schemaUpdated );
+    m_fuzzyIndex = new Hatchet::DatabaseFuzzyIndex( this, schemaUpdated );
 
     tDebug( LOGVERBOSE ) << "Loaded index:" << t.elapsed();
     if ( qApp->arguments().contains( "--dumpdb" ) )
@@ -100,7 +100,7 @@ Tomahawk::DatabaseImpl::DatabaseImpl( const QString& dbname )
 }
 
 
-Tomahawk::DatabaseImpl::DatabaseImpl( const QString& dbname, bool internal )
+Hatchet::DatabaseImpl::DatabaseImpl( const QString& dbname, bool internal )
 {
     Q_UNUSED( internal );
     openDatabase( dbname, false );
@@ -109,24 +109,24 @@ Tomahawk::DatabaseImpl::DatabaseImpl( const QString& dbname, bool internal )
 
 
 void
-Tomahawk::DatabaseImpl::init()
+Hatchet::DatabaseImpl::init()
 {
     m_lastartid = m_lastalbid = m_lasttrkid = 0;
 
-    TomahawkSqlQuery query = newquery();
+    HatchetSqlQuery query = newquery();
 
      // make sqlite behave how we want:
     query.exec( "PRAGMA foreign_keys = ON" );
 }
 
 
-Tomahawk::DatabaseImpl::~DatabaseImpl()
+Hatchet::DatabaseImpl::~DatabaseImpl()
 {
     tDebug() << "Shutting down database connection.";
 
 /*
-#ifdef TOMAHAWK_QUERY_ANALYZE
-    TomahawkSqlQuery q = newquery();
+#ifdef HATCHET_QUERY_ANALYZE
+    HatchetSqlQuery q = newquery();
 
     q.exec( "ANALYZE" );
     q.exec( "SELECT * FROM sqlite_stat1" );
@@ -140,24 +140,24 @@ Tomahawk::DatabaseImpl::~DatabaseImpl()
 }
 
 
-TomahawkSqlQuery
-Tomahawk::DatabaseImpl::newquery()
+HatchetSqlQuery
+Hatchet::DatabaseImpl::newquery()
 {
     QMutexLocker lock( &m_mutex );
-    return TomahawkSqlQuery( m_db );
+    return HatchetSqlQuery( m_db );
 }
 
 
 QSqlDatabase&
-Tomahawk::DatabaseImpl::database()
+Hatchet::DatabaseImpl::database()
 {
     QMutexLocker lock( &m_mutex );
     return m_db;
 }
 
 
-Tomahawk::DatabaseImpl*
-Tomahawk::DatabaseImpl::clone() const
+Hatchet::DatabaseImpl*
+Hatchet::DatabaseImpl::clone() const
 {
     QMutexLocker lock( &m_mutex );
 
@@ -169,7 +169,7 @@ Tomahawk::DatabaseImpl::clone() const
 
 
 void
-Tomahawk::DatabaseImpl::dumpDatabase()
+Hatchet::DatabaseImpl::dumpDatabase()
 {
     QFile dump( "dbdump.txt" );
     if ( !dump.open( QIODevice::WriteOnly | QIODevice::Text ) )
@@ -180,7 +180,7 @@ Tomahawk::DatabaseImpl::dumpDatabase()
     else
     {
         QTextStream dumpout( &dump );
-        TomahawkSqlQuery query = newquery();
+        HatchetSqlQuery query = newquery();
 
         query.exec( "SELECT * FROM oplog" );
         while ( query.next() )
@@ -197,7 +197,7 @@ Tomahawk::DatabaseImpl::dumpDatabase()
 
 
 void
-Tomahawk::DatabaseImpl::loadIndex()
+Hatchet::DatabaseImpl::loadIndex()
 {
     connect( m_fuzzyIndex, SIGNAL( indexStarted() ), SIGNAL( indexStarted() ) );
     connect( m_fuzzyIndex, SIGNAL( indexReady() ), SIGNAL( indexReady() ) );
@@ -206,13 +206,13 @@ Tomahawk::DatabaseImpl::loadIndex()
 
 
 bool
-Tomahawk::DatabaseImpl::updateSchema( int oldVersion )
+Hatchet::DatabaseImpl::updateSchema( int oldVersion )
 {
     // we are called here with the old database. we must migrate it to the CURRENT_SCHEMA_VERSION from the oldVersion
     if ( oldVersion == 0 ) // empty database, so create our tables and stuff
     {
         tLog() << "Create tables... old version is" << oldVersion;
-        QString sql( get_tomahawk_sql() );
+        QString sql( get_hatchet_sql() );
         QStringList statements = sql.split( ";", QString::SkipEmptyParts );
         m_db.transaction();
 
@@ -223,7 +223,7 @@ Tomahawk::DatabaseImpl::updateSchema( int oldVersion )
                 continue;
 
             tLog() << "Executing:" << s;
-            TomahawkSqlQuery query = newquery();
+            HatchetSqlQuery query = newquery();
             query.exec( s );
         }
 
@@ -257,7 +257,7 @@ Tomahawk::DatabaseImpl::updateSchema( int oldVersion )
                     continue;
 
                 tLog() << "Executing upgrade statement:" << clean;
-                TomahawkSqlQuery q = newquery();
+                HatchetSqlQuery q = newquery();
                 q.exec( clean );
 
                 //Report to splash screen
@@ -274,7 +274,7 @@ Tomahawk::DatabaseImpl::updateSchema( int oldVersion )
 
 
 QString
-Tomahawk::DatabaseImpl::cleanSql( const QString& sql )
+Hatchet::DatabaseImpl::cleanSql( const QString& sql )
 {
     QString fixed = sql;
     QRegExp r( "--[^\\n]*" );
@@ -283,11 +283,11 @@ Tomahawk::DatabaseImpl::cleanSql( const QString& sql )
 }
 
 
-Tomahawk::result_ptr
-Tomahawk::DatabaseImpl::file( int fid )
+Hatchet::result_ptr
+Hatchet::DatabaseImpl::file( int fid )
 {
-    Tomahawk::result_ptr r;
-    TomahawkSqlQuery query = newquery();
+    Hatchet::result_ptr r;
+    HatchetSqlQuery query = newquery();
     query.exec( QString( "SELECT url, mtime, size, md5, mimetype, duration, bitrate, "
                          "file_join.artist, file_join.album, file_join.track, file_join.composer, "
                          "(SELECT name FROM artist WHERE id = file_join.artist) AS artname, "
@@ -303,18 +303,18 @@ Tomahawk::DatabaseImpl::file( int fid )
     if ( query.next() )
     {
         QString url = query.value( 0 ).toString();
-        Tomahawk::source_ptr s = SourceList::instance()->get( query.value( 15 ).toUInt() );
+        Hatchet::source_ptr s = SourceList::instance()->get( query.value( 15 ).toUInt() );
         if ( !s )
             return r;
         if ( !s->isLocal() )
             url = QString( "servent://%1\t%2" ).arg( s->nodeId() ).arg( url );
 
-        Tomahawk::track_ptr track = Tomahawk::Track::get( query.value( 9 ).toUInt(), query.value( 11 ).toString(), query.value( 13 ).toString(),
+        Hatchet::track_ptr track = Hatchet::Track::get( query.value( 9 ).toUInt(), query.value( 11 ).toString(), query.value( 13 ).toString(),
                                                           query.value( 12 ).toString(), query.value( 16 ).toString(), query.value( 5 ).toUInt(),
                                                           query.value( 14 ).toString(), 0, 0 );
         if ( !track )
             return r;
-        r = Tomahawk::Result::get( url, track );
+        r = Hatchet::Result::get( url, track );
         if ( !r )
             return r;
 
@@ -331,15 +331,15 @@ Tomahawk::DatabaseImpl::file( int fid )
 
 
 int
-Tomahawk::DatabaseImpl::artistId( const QString& name_orig, bool autoCreate )
+Hatchet::DatabaseImpl::artistId( const QString& name_orig, bool autoCreate )
 {
     if ( m_lastart == name_orig )
         return m_lastartid;
 
     int id = 0;
-    QString sortname = Tomahawk::DatabaseImpl::sortname( name_orig );
+    QString sortname = Hatchet::DatabaseImpl::sortname( name_orig );
 
-    TomahawkSqlQuery query = newquery();
+    HatchetSqlQuery query = newquery();
     query.prepare( "SELECT id FROM artist WHERE sortname = ?" );
     query.addBindValue( sortname );
     query.exec();
@@ -376,13 +376,13 @@ Tomahawk::DatabaseImpl::artistId( const QString& name_orig, bool autoCreate )
 
 
 int
-Tomahawk::DatabaseImpl::trackId( int artistid, const QString& name_orig, bool autoCreate )
+Hatchet::DatabaseImpl::trackId( int artistid, const QString& name_orig, bool autoCreate )
 {
     int id = 0;
-    QString sortname = Tomahawk::DatabaseImpl::sortname( name_orig );
+    QString sortname = Hatchet::DatabaseImpl::sortname( name_orig );
     //if( ( id = m_artistcache[sortname] ) ) return id;
 
-    TomahawkSqlQuery query = newquery();
+    HatchetSqlQuery query = newquery();
     query.prepare( "SELECT id FROM track WHERE artist = ? AND sortname = ?" );
     query.addBindValue( artistid );
     query.addBindValue( sortname );
@@ -419,7 +419,7 @@ Tomahawk::DatabaseImpl::trackId( int artistid, const QString& name_orig, bool au
 
 
 int
-Tomahawk::DatabaseImpl::albumId( int artistid, const QString& name_orig, bool autoCreate )
+Hatchet::DatabaseImpl::albumId( int artistid, const QString& name_orig, bool autoCreate )
 {
     if ( name_orig.isEmpty() )
     {
@@ -431,10 +431,10 @@ Tomahawk::DatabaseImpl::albumId( int artistid, const QString& name_orig, bool au
         return m_lastalbid;
 
     int id = 0;
-    QString sortname = Tomahawk::DatabaseImpl::sortname( name_orig );
+    QString sortname = Hatchet::DatabaseImpl::sortname( name_orig );
     //if( ( id = m_albumcache[sortname] ) ) return id;
 
-    TomahawkSqlQuery query = newquery();
+    HatchetSqlQuery query = newquery();
     query.prepare( "SELECT id FROM album WHERE artist = ? AND sortname = ?" );
     query.addBindValue( artistid );
     query.addBindValue( sortname );
@@ -473,7 +473,7 @@ Tomahawk::DatabaseImpl::albumId( int artistid, const QString& name_orig, bool au
 
 
 QList< QPair<int, float> >
-Tomahawk::DatabaseImpl::search( const Tomahawk::query_ptr& query, uint limit )
+Hatchet::DatabaseImpl::search( const Hatchet::query_ptr& query, uint limit )
 {
     QList< QPair<int, float> > resultslist;
 
@@ -482,7 +482,7 @@ Tomahawk::DatabaseImpl::search( const Tomahawk::query_ptr& query, uint limit )
     {
         resultslist << QPair<int, float>( i, (float)resultsmap.value( i ) );
     }
-    qSort( resultslist.begin(), resultslist.end(), Tomahawk::DatabaseImpl::scorepairSorter );
+    qSort( resultslist.begin(), resultslist.end(), Hatchet::DatabaseImpl::scorepairSorter );
 
     if ( !limit )
         return resultslist;
@@ -498,7 +498,7 @@ Tomahawk::DatabaseImpl::search( const Tomahawk::query_ptr& query, uint limit )
 
 
 QList< QPair<int, float> >
-Tomahawk::DatabaseImpl::searchAlbum( const Tomahawk::query_ptr& query, uint limit )
+Hatchet::DatabaseImpl::searchAlbum( const Hatchet::query_ptr& query, uint limit )
 {
     QList< QPair<int, float> > resultslist;
 
@@ -507,7 +507,7 @@ Tomahawk::DatabaseImpl::searchAlbum( const Tomahawk::query_ptr& query, uint limi
     {
         resultslist << QPair<int, float>( i, (float)resultsmap.value( i ) );
     }
-    qSort( resultslist.begin(), resultslist.end(), Tomahawk::DatabaseImpl::scorepairSorter );
+    qSort( resultslist.begin(), resultslist.end(), Hatchet::DatabaseImpl::scorepairSorter );
 
     if ( !limit )
         return resultslist;
@@ -523,11 +523,11 @@ Tomahawk::DatabaseImpl::searchAlbum( const Tomahawk::query_ptr& query, uint limi
 
 
 QList< int >
-Tomahawk::DatabaseImpl::getTrackFids( int tid )
+Hatchet::DatabaseImpl::getTrackFids( int tid )
 {
     QList< int > ret;
 
-    TomahawkSqlQuery query = newquery();
+    HatchetSqlQuery query = newquery();
     query.exec( QString( "SELECT file.id FROM file, file_join "
                          "WHERE file_join.file=file.id "
                          "AND file_join.track = %1 ").arg( tid ) );
@@ -541,7 +541,7 @@ Tomahawk::DatabaseImpl::getTrackFids( int tid )
 
 
 QString
-Tomahawk::DatabaseImpl::sortname( const QString& str, bool replaceArticle )
+Hatchet::DatabaseImpl::sortname( const QString& str, bool replaceArticle )
 {
     QString s = str.simplified().toLower();
 
@@ -555,9 +555,9 @@ Tomahawk::DatabaseImpl::sortname( const QString& str, bool replaceArticle )
 
 
 QVariantMap
-Tomahawk::DatabaseImpl::artist( int id )
+Hatchet::DatabaseImpl::artist( int id )
 {
-    TomahawkSqlQuery query = newquery();
+    HatchetSqlQuery query = newquery();
     query.exec( QString( "SELECT id, name, sortname FROM artist WHERE id = %1" ).arg( id ) );
 
     QVariantMap m;
@@ -572,9 +572,9 @@ Tomahawk::DatabaseImpl::artist( int id )
 
 
 QVariantMap
-Tomahawk::DatabaseImpl::track( int id )
+Hatchet::DatabaseImpl::track( int id )
 {
-    TomahawkSqlQuery query = newquery();
+    HatchetSqlQuery query = newquery();
     query.exec( QString( "SELECT id, artist, name, sortname FROM track WHERE id = %1" ).arg( id ) );
 
     QVariantMap m;
@@ -590,9 +590,9 @@ Tomahawk::DatabaseImpl::track( int id )
 
 
 QVariantMap
-Tomahawk::DatabaseImpl::album( int id )
+Hatchet::DatabaseImpl::album( int id )
 {
-    TomahawkSqlQuery query = newquery();
+    HatchetSqlQuery query = newquery();
     query.exec( QString( "SELECT id, artist, name, sortname FROM album WHERE id = %1" ).arg( id ) );
 
     QVariantMap m;
@@ -607,13 +607,13 @@ Tomahawk::DatabaseImpl::album( int id )
 }
 
 
-Tomahawk::result_ptr
-Tomahawk::DatabaseImpl::resultFromHint( const Tomahawk::query_ptr& origquery )
+Hatchet::result_ptr
+Hatchet::DatabaseImpl::resultFromHint( const Hatchet::query_ptr& origquery )
 {
     QString url = origquery->resultHint();
-    TomahawkSqlQuery query = newquery();
-    Tomahawk::source_ptr s;
-    Tomahawk::result_ptr res;
+    HatchetSqlQuery query = newquery();
+    Hatchet::source_ptr s;
+    Hatchet::result_ptr res;
     QString fileUrl;
 
     if ( url.contains( "servent://" ) )
@@ -630,16 +630,16 @@ Tomahawk::DatabaseImpl::resultFromHint( const Tomahawk::query_ptr& origquery )
         s = SourceList::instance()->getLocal();
         fileUrl = url;
     }
-    else if ( TomahawkUtils::whitelistedHttpResultHint( url ) )
+    else if ( HatchetUtils::whitelistedHttpResultHint( url ) )
     {
-        Tomahawk::track_ptr track = Tomahawk::Track::get( origquery->queryTrack()->artist(),
+        Hatchet::track_ptr track = Hatchet::Track::get( origquery->queryTrack()->artist(),
                                                           origquery->queryTrack()->track(),
                                                           origquery->queryTrack()->album(),
                                                           QString(),
                                                           origquery->queryTrack()->duration() );
 
         // Return http resulthint directly
-        res = Tomahawk::Result::get( url, track );
+        res = Hatchet::Result::get( url, track );
         res->setRID( uuid() );
         const QUrl u = QUrl::fromUserInput( url );
         res->setFriendlySource( u.host() );
@@ -698,13 +698,13 @@ Tomahawk::DatabaseImpl::resultFromHint( const Tomahawk::query_ptr& origquery )
     if ( query.next() )
     {
         QString url = query.value( 0 ).toString();
-        Tomahawk::source_ptr s = SourceList::instance()->get( query.value( 15 ).toUInt() );
+        Hatchet::source_ptr s = SourceList::instance()->get( query.value( 15 ).toUInt() );
         if ( !s )
             return res;
         if ( !s->isLocal() )
             url = QString( "servent://%1\t%2" ).arg( s->nodeId() ).arg( url );
 
-        Tomahawk::track_ptr track = Tomahawk::Track::get( query.value( 9 ).toUInt(),
+        Hatchet::track_ptr track = Hatchet::Track::get( query.value( 9 ).toUInt(),
                                                           query.value( 11 ).toString(),
                                                           query.value( 13 ).toString(),
                                                           query.value( 12 ).toString(),
@@ -715,7 +715,7 @@ Tomahawk::DatabaseImpl::resultFromHint( const Tomahawk::query_ptr& origquery )
                                                           query.value( 17 ).toUInt() );
         track->loadAttributes();
 
-        res = Tomahawk::Result::get( url, track );
+        res = Hatchet::Result::get( url, track );
         res->setModificationTime( query.value( 1 ).toUInt() );
         res->setSize( query.value( 2 ).toUInt() );
         res->setMimetype( query.value( 4 ).toString() );
@@ -729,9 +729,9 @@ Tomahawk::DatabaseImpl::resultFromHint( const Tomahawk::query_ptr& origquery )
 
 
 bool
-Tomahawk::DatabaseImpl::openDatabase( const QString& dbname, bool checkSchema )
+Hatchet::DatabaseImpl::openDatabase( const QString& dbname, bool checkSchema )
 {
-    QString connName( "tomahawk" );
+    QString connName( "hatchet" );
     if ( !checkSchema )
     {
         // secondary connection, use a unique connection name

@@ -1,25 +1,25 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2012 Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "BinaryInstallerHelper.h"
 
 #include "accounts/AccountManager.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include <QTemporaryFile>
 
 BinaryInstallerHelper::BinaryInstallerHelper( QTemporaryFile* tempFile, const QString& resolverId, bool createAccount, AtticaManager* manager )
@@ -54,17 +54,17 @@ BinaryInstallerHelper::installSucceeded( const QString& path )
 
     if ( m_createAccount )
     {
-        Tomahawk::Accounts::Account* acct = Tomahawk::Accounts::AccountManager::instance()->accountFromPath( path );
+        Hatchet::Accounts::Account* acct = Hatchet::Accounts::AccountManager::instance()->accountFromPath( path );
 
-        Tomahawk::Accounts::AccountManager::instance()->addAccount( acct );
-        TomahawkSettings::instance()->addAccount( acct->accountId() );
-        Tomahawk::Accounts::AccountManager::instance()->enableAccount( acct );
+        Hatchet::Accounts::AccountManager::instance()->addAccount( acct );
+        HatchetSettings::instance()->addAccount( acct->accountId() );
+        Hatchet::Accounts::AccountManager::instance()->enableAccount( acct );
     }
 
     m_manager.data()->m_resolverStates[ m_resolverId ].scriptPath = path;
     m_manager.data()->m_resolverStates[ m_resolverId ].state = AtticaManager::Installed;
 
-    TomahawkSettings::instance()->setAtticaResolverStates( m_manager.data()->m_resolverStates );
+    HatchetSettings::instance()->setAtticaResolverStates( m_manager.data()->m_resolverStates );
     emit m_manager.data()->resolverInstalled( m_resolverId );
     emit m_manager.data()->resolverStateChanged( m_resolverId );
 

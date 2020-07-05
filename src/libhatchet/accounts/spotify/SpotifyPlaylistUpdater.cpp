@@ -1,27 +1,27 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2012, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2012, Hugo Lindström <hugolm84@gmail.com>
  *   Copyright 2013, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "SpotifyPlaylistUpdater.h"
 
 #include "accounts/AccountManager.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
 #include "SpotifyAccount.h"
 #include "Track.h"
@@ -29,13 +29,13 @@
 #include <QApplication>
 #include <QMessageBox>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 using namespace Accounts;
 
 QPixmap* SpotifyPlaylistUpdater::s_typePixmap = 0;
 
-Tomahawk::PlaylistUpdaterInterface*
-SpotifyUpdaterFactory::create( const Tomahawk::playlist_ptr& pl, const QVariantHash &settings )
+Hatchet::PlaylistUpdaterInterface*
+SpotifyUpdaterFactory::create( const Hatchet::playlist_ptr& pl, const QVariantHash &settings )
 {
     if ( !m_account )
     {
@@ -99,15 +99,15 @@ SpotifyPlaylistUpdater::SpotifyPlaylistUpdater( SpotifyAccount* acct, const QStr
 void
 SpotifyPlaylistUpdater::init()
 {
-    connect( playlist().data(), SIGNAL( tracksInserted( QList<Tomahawk::plentry_ptr>, int ) ),
-                                  SLOT( tomahawkTracksInserted( QList<Tomahawk::plentry_ptr>, int ) ) );
-    connect( playlist().data(), SIGNAL( tracksRemoved( QList<Tomahawk::query_ptr> ) ),
-                                  SLOT( tomahawkTracksRemoved( QList<Tomahawk::query_ptr> ) ) );
-    connect( playlist().data(), SIGNAL( tracksMoved( QList<Tomahawk::plentry_ptr>, int ) ),
-                                  SLOT( tomahawkTracksMoved( QList<Tomahawk::plentry_ptr>, int ) ) );
+    connect( playlist().data(), SIGNAL( tracksInserted( QList<Hatchet::plentry_ptr>, int ) ),
+                                  SLOT( hatchetTracksInserted( QList<Hatchet::plentry_ptr>, int ) ) );
+    connect( playlist().data(), SIGNAL( tracksRemoved( QList<Hatchet::query_ptr> ) ),
+                                  SLOT( hatchetTracksRemoved( QList<Hatchet::query_ptr> ) ) );
+    connect( playlist().data(), SIGNAL( tracksMoved( QList<Hatchet::plentry_ptr>, int ) ),
+                                  SLOT( hatchetTracksMoved( QList<Hatchet::plentry_ptr>, int ) ) );
     connect( playlist().data(), SIGNAL( renamed( QString, QString ) ),
-                                  SLOT( tomahawkPlaylistRenamed( QString, QString ) ) );
-    connect( playlist().data(), SIGNAL( revisionLoaded( Tomahawk::PlaylistRevision ) ),
+                                  SLOT( hatchetPlaylistRenamed( QString, QString ) ) );
+    connect( playlist().data(), SIGNAL( revisionLoaded( Hatchet::PlaylistRevision ) ),
                                   SLOT( playlistRevisionLoaded() ), Qt::QueuedConnection ); // Queued so that in Playlist.cpp:443 we let the playlist clear its own queue first
     // TODO reorders in a playlist
 
@@ -348,9 +348,9 @@ SpotifyPlaylistUpdater::deleteQuestions() const
 {
     // 1234 is our magic key
     if ( m_sync && !m_subscribed )
-        return Tomahawk::PlaylistDeleteQuestions() << qMakePair<QString, int>( tr( "Delete associated Spotify playlist?" ), 1234 );
+        return Hatchet::PlaylistDeleteQuestions() << qMakePair<QString, int>( tr( "Delete associated Spotify playlist?" ), 1234 );
     else
-        return Tomahawk::PlaylistDeleteQuestions();
+        return Hatchet::PlaylistDeleteQuestions();
 }
 
 
@@ -379,7 +379,7 @@ SpotifyPlaylistUpdater::spotifyTracksAdded( const QVariantList& tracks, const QS
 
     const QList< query_ptr > queries = variantToQueries( tracks );
 
-    qDebug() << Q_FUNC_INFO << "inserting tracks in middle of tomahawk playlist, from spotify command!" << tracks << startPosId << newRev << oldRev;
+    qDebug() << Q_FUNC_INFO << "inserting tracks in middle of hatchet playlist, from spotify command!" << tracks << startPosId << newRev << oldRev;
     // Uh oh, dont' want to get out of sync!!
 //     Q_ASSERT( m_latestRev == oldRev );
 //     m_latestRev = newRev;
@@ -422,7 +422,7 @@ SpotifyPlaylistUpdater::spotifyTracksRemoved( const QVariantList& trackIds, cons
         return;
     }
 
-    tDebug() << Q_FUNC_INFO << "remove tracks in middle of tomahawk playlist, from spotify command!" << trackIds << newRev << oldRev;
+    tDebug() << Q_FUNC_INFO << "remove tracks in middle of hatchet playlist, from spotify command!" << trackIds << newRev << oldRev;
     // Uh oh, dont' want to get out of sync!!
 //     Q_ASSERT( m_latestRev == oldRev );
 //     m_latestRev = newRev;
@@ -461,7 +461,7 @@ SpotifyPlaylistUpdater::spotifyTracksRemoved( const QVariantList& trackIds, cons
 
     if ( sizeDiff > 0 )
     {
-        // Won't get a tomahawkTracksInserted or tomahawkTracksRemoved slot called, no need to block
+        // Won't get a hatchetTracksInserted or hatchetTracksRemoved slot called, no need to block
         playlist()->createNewRevision( uuid(), playlist()->currentrevision(), entries );
     }
 }
@@ -486,7 +486,7 @@ SpotifyPlaylistUpdater::spotifyPlaylistRenamed( const QString& title, const QStr
 
 
 void
-SpotifyPlaylistUpdater::tomahawkPlaylistRenamed( const QString &newT, const QString &oldT )
+SpotifyPlaylistUpdater::hatchetPlaylistRenamed( const QString &newT, const QString &oldT )
 {
     qDebug() << Q_FUNC_INFO;
     QVariantMap msg;
@@ -572,7 +572,7 @@ SpotifyPlaylistUpdater::spotifyTracksMoved( const QVariantList& tracks, const QS
 
 
 void
-SpotifyPlaylistUpdater::tomahawkTracksInserted( const QList< plentry_ptr >& tracks, int pos )
+SpotifyPlaylistUpdater::hatchetTracksInserted( const QList< plentry_ptr >& tracks, int pos )
 {
     if ( m_spotify.isNull() )
         return;
@@ -699,7 +699,7 @@ SpotifyPlaylistUpdater::onTracksInsertedReturn( const QString& msgType, const QV
 
 
 void
-SpotifyPlaylistUpdater::tomahawkTracksRemoved( const QList< query_ptr >& tracks )
+SpotifyPlaylistUpdater::hatchetTracksRemoved( const QList< query_ptr >& tracks )
 {
     if ( m_spotify.isNull() )
         return;
@@ -733,13 +733,13 @@ SpotifyPlaylistUpdater::onTracksRemovedReturn( const QString& msgType, const QVa
 
 
 void
-SpotifyPlaylistUpdater::tomahawkTracksMoved( const QList< plentry_ptr >& tracks, int position )
+SpotifyPlaylistUpdater::hatchetTracksMoved( const QList< plentry_ptr >& tracks, int position )
 {
     if ( playlist()->busy() )
     {
         // the playlist has had the new revision set, but it might not be finished, if it's not finished, playlist()->entries() still
         // contains the *old* order, so we get the wrong data
-        m_queuedOps << NewClosure( 0, "", this, SLOT(tomahawkTracksMoved(QList<Tomahawk::plentry_ptr>,int)), tracks, position );
+        m_queuedOps << NewClosure( 0, "", this, SLOT(hatchetTracksMoved(QList<Hatchet::plentry_ptr>,int)), tracks, position );
         return;
     }
 

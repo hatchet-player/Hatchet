@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef DATABASECOMMAND_ALLARTISTS_H
@@ -33,10 +33,10 @@
 
 #include "DllMacro.h"
 
-namespace Tomahawk
+namespace Hatchet
 {
 
-class DLLEXPORT DatabaseCommand_AllArtists : public DatabaseCommand, public Tomahawk::ArtistsRequest
+class DLLEXPORT DatabaseCommand_AllArtists : public DatabaseCommand, public Hatchet::ArtistsRequest
 {
 Q_OBJECT
 public:
@@ -46,7 +46,7 @@ public:
         ModificationTime = 1
     };
 
-    explicit DatabaseCommand_AllArtists( const Tomahawk::collection_ptr& collection = Tomahawk::collection_ptr(), QObject* parent = 0 );
+    explicit DatabaseCommand_AllArtists( const Hatchet::collection_ptr& collection = Hatchet::collection_ptr(), QObject* parent = 0 );
     virtual ~DatabaseCommand_AllArtists();
 
     void exec( DatabaseImpl* ) Q_DECL_OVERRIDE;
@@ -54,7 +54,7 @@ public:
     bool doesMutates() const Q_DECL_OVERRIDE { return false; }
     QString commandname() const Q_DECL_OVERRIDE { return "allartists"; }
 
-    void enqueue() Q_DECL_OVERRIDE { Database::instance()->enqueue( Tomahawk::dbcmd_ptr( this ) ); }
+    void enqueue() Q_DECL_OVERRIDE { Database::instance()->enqueue( Hatchet::dbcmd_ptr( this ) ); }
 
     void setLimit( unsigned int amount ) { m_amount = amount; }
     void setSortOrder( DatabaseCommand_AllArtists::SortOrder order ) { m_sortOrder = order; }
@@ -62,7 +62,7 @@ public:
     void setFilter( const QString& filter ) override { m_filter = filter; }
 
 signals:
-    void artists( const QList<Tomahawk::artist_ptr>& ) override;
+    void artists( const QList<Hatchet::artist_ptr>& ) override;
     void done();
 
 private:

@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013-2014, Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "PlaylistItemDelegate.h"
@@ -39,8 +39,8 @@
 #include "utils/ImageRegistry.h"
 #include "utils/PixmapDelegateFader.h"
 #include "utils/Closure.h"
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 
 #include <QAbstractTextDocumentLayout>
@@ -50,7 +50,7 @@
 #include <QPainter>
 #include <QToolTip>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 PlaylistItemDelegate::PlaylistItemDelegate( TrackView* parent, PlayableProxyModel* proxy )
@@ -69,11 +69,11 @@ PlaylistItemDelegate::PlaylistItemDelegate( TrackView* parent, PlayableProxyMode
     m_centerRightOption.setWrapMode( QTextOption::NoWrap );
 
     m_demiBoldFont = parent->font();
-    m_demiBoldFont.setPointSize( TomahawkUtils::defaultFontSize() + 1 );
+    m_demiBoldFont.setPointSize( HatchetUtils::defaultFontSize() + 1 );
     m_demiBoldFont.setWeight( QFont::DemiBold );
 
     m_normalFont = parent->font();
-    m_normalFont.setPointSize( TomahawkUtils::defaultFontSize() + 1 );
+    m_normalFont.setPointSize( HatchetUtils::defaultFontSize() + 1 );
 
     connect( this, SIGNAL( updateIndex( QModelIndex ) ), parent, SLOT( update( QModelIndex ) ) );
     connect( proxy, SIGNAL( modelReset() ), SLOT( modelChanged() ) );
@@ -110,7 +110,7 @@ PlaylistItemDelegate::prepareStyleOption( QStyleOptionViewItem* option, const QM
 {
     initStyleOption( option, index );
 
-    TomahawkUtils::prepareStyleOption( option, index, item );
+    HatchetUtils::prepareStyleOption( option, index, item );
 }
 
 
@@ -207,7 +207,7 @@ PlaylistItemDelegate::paintDetailed( QPainter* painter, const QStyleOptionViewIt
         fillR.adjust( 0, 0, -( fillR.width() - fillerWidth ), 0 );
 
         if ( opt.state & QStyle::State_Selected && !item->isPlaying() )
-            painter->setBrush( TomahawkUtils::Colors::NOW_PLAYING_ITEM.lighter() );
+            painter->setBrush( HatchetUtils::Colors::NOW_PLAYING_ITEM.lighter() );
         else
             painter->setBrush( barColor );
 
@@ -228,7 +228,7 @@ PlaylistItemDelegate::paintDetailed( QPainter* painter, const QStyleOptionViewIt
             const int pixMargin = 1;
             const int pixHeight = r.height() - pixMargin * 2;
             const QRect npr = r.adjusted( pixMargin, pixMargin, pixHeight - r.width() + pixMargin, -pixMargin );
-            painter->drawPixmap( npr, TomahawkUtils::defaultPixmap( TomahawkUtils::NowPlayingSpeaker, TomahawkUtils::Original, npr.size() ) );
+            painter->drawPixmap( npr, HatchetUtils::defaultPixmap( HatchetUtils::NowPlayingSpeaker, HatchetUtils::Original, npr.size() ) );
             r.adjust( pixHeight + 6, 0, 0, 0 );
         }
 
@@ -253,7 +253,7 @@ PlaylistItemDelegate::drawInfoButton( QPainter* painter, const QRect& rect, cons
     const int iconSize = rect.height() * height;
     QRect pixmapRect = QRect( ( rect.height() - iconSize ) / 2 + rect.left(), rect.center().y() - iconSize / 2, iconSize, iconSize );
 
-    painter->drawPixmap( pixmapRect, TomahawkUtils::defaultPixmap( TomahawkUtils::InfoIcon, TomahawkUtils::Original, pixmapRect.size() ) );
+    painter->drawPixmap( pixmapRect, HatchetUtils::defaultPixmap( HatchetUtils::InfoIcon, HatchetUtils::Original, pixmapRect.size() ) );
     m_infoButtonRects[ index ] = pixmapRect;
 
     return rect.adjusted( rect.height(), 0, 0, 0 );
@@ -268,7 +268,7 @@ PlaylistItemDelegate::drawCover( QPainter* painter, const QRect& rect, PlayableI
 
     if ( !m_pixmaps.contains( index ) )
     {
-        m_pixmaps.insert( index, QSharedPointer< Tomahawk::PixmapDelegateFader >( new Tomahawk::PixmapDelegateFader( item->query(), pixmapRect.size(), TomahawkUtils::RoundedCorners, false ) ) );
+        m_pixmaps.insert( index, QSharedPointer< Hatchet::PixmapDelegateFader >( new Hatchet::PixmapDelegateFader( item->query(), pixmapRect.size(), HatchetUtils::RoundedCorners, false ) ) );
         _detail::Closure* closure = NewClosure( m_pixmaps[ index ], SIGNAL( repaintRequest() ), const_cast<PlaylistItemDelegate*>(this), SLOT( doUpdateIndex( const QPersistentModelIndex& ) ), QPersistentModelIndex( index ) );
         closure->setAutoDelete( false );
     }
@@ -286,8 +286,8 @@ PlaylistItemDelegate::drawLoveBox( QPainter* painter, const QRect& rect, Playabl
     const int avatarSize = rect.height() - 4 * 2;
     const int avatarMargin = 2;
 
-    QList< Tomahawk::source_ptr > sources;
-    foreach ( const Tomahawk::SocialAction& sa, item->query()->queryTrack()->socialActions( "Love", true, true ) )
+    QList< Hatchet::source_ptr > sources;
+    foreach ( const Hatchet::SocialAction& sa, item->query()->queryTrack()->socialActions( "Love", true, true ) )
     {
         sources << sa.source;
     }
@@ -306,9 +306,9 @@ PlaylistItemDelegate::drawLoveBox( QPainter* painter, const QRect& rect, Playabl
 
     drawAvatarsForBox( painter, avatarsRect, avatarSize, avatarMargin, count, sources, index );
 
-    TomahawkUtils::ImageType type = item->query()->queryTrack()->loved() ? TomahawkUtils::Loved : TomahawkUtils::NotLoved;
+    HatchetUtils::ImageType type = item->query()->queryTrack()->loved() ? HatchetUtils::Loved : HatchetUtils::NotLoved;
     QRect r = innerRect.adjusted( innerRect.width() - rect.height() + 4, 4, -4, -4 );
-    painter->drawPixmap( r, TomahawkUtils::defaultPixmap( type, TomahawkUtils::Original, QSize( r.height(), r.height() ) ) );
+    painter->drawPixmap( r, HatchetUtils::defaultPixmap( type, HatchetUtils::Original, QSize( r.height(), r.height() ) ) );
     m_loveButtonRects[ index ] = r;
 
     return rect;
@@ -319,7 +319,7 @@ QRect
 PlaylistItemDelegate::drawGenericBox( QPainter* painter,
                                       const QStyleOptionViewItem& option,
                                       const QRect& rect, const QString& text,
-                                      const QList< Tomahawk::source_ptr >& sources,
+                                      const QList< Hatchet::source_ptr >& sources,
                                       const QModelIndex& index ) const
 {
     const int avatarSize = rect.height() - 4 * 2;
@@ -375,15 +375,15 @@ PlaylistItemDelegate::drawAvatarsForBox( QPainter* painter,
                                          int avatarSize,
                                          int avatarMargin,
                                          int count,
-                                         const QList< Tomahawk::source_ptr >& sources,
+                                         const QList< Hatchet::source_ptr >& sources,
                                          const QModelIndex& index ) const
 {
     painter->save();
 
-    QHash< Tomahawk::source_ptr, QRect > rectsToSave;
+    QHash< Hatchet::source_ptr, QRect > rectsToSave;
 
     int i = 0;
-    foreach ( const Tomahawk::source_ptr& s, sources )
+    foreach ( const Hatchet::source_ptr& s, sources )
     {
         if ( i >= count )
             break;
@@ -391,7 +391,7 @@ PlaylistItemDelegate::drawAvatarsForBox( QPainter* painter,
         QRect r = avatarsRect.adjusted( ( avatarSize + avatarMargin ) * i, 0, 0, 0 );
         r.setWidth( avatarSize + avatarMargin );
 
-        QPixmap pixmap = s->avatar( TomahawkUtils::Original, QSize( avatarSize, avatarSize ), true );
+        QPixmap pixmap = s->avatar( HatchetUtils::Original, QSize( avatarSize, avatarSize ), true );
         painter->drawPixmap( r.adjusted( avatarMargin / 2, 0, -( avatarMargin / 2 ), 0 ), pixmap );
 
         rectsToSave.insert( s, r );
@@ -439,7 +439,7 @@ PlaylistItemDelegate::drawSourceIcon( QPainter* painter, const QRect& rect, Play
     if ( item->query()->numResults( true ) == 0 )
         return resultRect;
 
-    const QPixmap sourceIcon = item->query()->results().first()->sourceIcon( TomahawkUtils::RoundedCorners, QSize( sourceIconSize, sourceIconSize ) );
+    const QPixmap sourceIcon = item->query()->results().first()->sourceIcon( HatchetUtils::RoundedCorners, QSize( sourceIconSize, sourceIconSize ) );
     if ( sourceIcon.isNull() )
         return resultRect;
 
@@ -462,13 +462,13 @@ PlaylistItemDelegate::drawSource( QPainter* painter, const QStyleOptionViewItem&
     QRect textRect = avatarRect.adjusted( avatarRect.height() + 24, 0, -32, 0 );
     avatarRect.setWidth( avatarRect.height() );
 
-    QPixmap avatar = item->source()->avatar( TomahawkUtils::RoundedCorners, avatarRect.size(), true ) ;
+    QPixmap avatar = item->source()->avatar( HatchetUtils::RoundedCorners, avatarRect.size(), true ) ;
     painter->drawPixmap( avatarRect, avatar );
 
     QTextOption to = QTextOption( Qt::AlignVCenter );
     to.setWrapMode( QTextOption::NoWrap );
     QFont f = painter->font();
-    f.setPointSize( TomahawkUtils::defaultFontSize() + 2 );
+    f.setPointSize( HatchetUtils::defaultFontSize() + 2 );
     painter->setFont( f );
 
     painter->setOpacity( 0.8 );
@@ -500,11 +500,11 @@ PlaylistItemDelegate::drawTrack( QPainter* painter, const QStyleOptionViewItem& 
 
     if ( option.state & QStyle::State_Selected )
     {
-        painter->setPen( TomahawkStyle::SELECTION_BACKGROUND );
-        painter->setBrush( TomahawkStyle::SELECTION_BACKGROUND );
+        painter->setPen( HatchetStyle::SELECTION_BACKGROUND );
+        painter->setBrush( HatchetStyle::SELECTION_BACKGROUND );
         painter->drawRect( rect.adjusted( 0, 4, -rightMargin, -4 ) );
     }
-    painter->setPen( TomahawkStyle::SELECTION_FOREGROUND );
+    painter->setPen( HatchetStyle::SELECTION_FOREGROUND );
     painter->setFont( m_demiBoldFont );
 
     QRect r = rect.adjusted( 32, 6, -32 -rightMargin, -6 );
@@ -584,7 +584,7 @@ PlaylistItemDelegate::drawTrack( QPainter* painter, const QStyleOptionViewItem& 
     {
         const int iconHeight = numberRect.size().height() / 2;
         const QRect sourceIconRect( numberRect.x(), numberRect.y() + ( numberRect.size().height() - iconHeight ) / 2, iconHeight, iconHeight );
-        painter->drawPixmap( sourceIconRect, item->query()->results().first()->sourceIcon( TomahawkUtils::Original, sourceIconRect.size() ) );
+        painter->drawPixmap( sourceIconRect, item->query()->results().first()->sourceIcon( HatchetUtils::Original, sourceIconRect.size() ) );
     }
     else
     {
@@ -599,7 +599,7 @@ PlaylistItemDelegate::drawTrack( QPainter* painter, const QStyleOptionViewItem& 
     {
         if ( m_nowPlaying != index )
         {
-            connect( AudioEngine::instance(), SIGNAL( started( Tomahawk::result_ptr ) ), SLOT( onPlaybackChange() ), Qt::UniqueConnection );
+            connect( AudioEngine::instance(), SIGNAL( started( Hatchet::result_ptr ) ), SLOT( onPlaybackChange() ), Qt::UniqueConnection );
             connect( AudioEngine::instance(), SIGNAL( stopped() ), SLOT( onPlaybackChange() ), Qt::UniqueConnection );
             connect( AudioEngine::instance(), SIGNAL( timerMilliSeconds( qint64 ) ), SLOT( onAudioEngineTick( qint64 ) ), Qt::UniqueConnection );
             m_nowPlaying = QPersistentModelIndex( index );
@@ -635,7 +635,7 @@ PlaylistItemDelegate::drawTrack( QPainter* painter, const QStyleOptionViewItem& 
     else if ( track->duration() > 0 )
     {
         painter->setOpacity( 0.5 * opacityCo );
-        painter->drawText( extraRect, TomahawkUtils::timeToString( track->duration() ), m_centerRightOption );
+        painter->drawText( extraRect, HatchetUtils::timeToString( track->duration() ), m_centerRightOption );
     }
 
     painter->restore();
@@ -660,7 +660,7 @@ PlaylistItemDelegate::editorEvent( QEvent* event, QAbstractItemModel* model, con
     bool hoveringInfo = false;
     bool hoveringLove = false;
     bool hoveringDownloadDropDown = false;
-    Tomahawk::source_ptr hoveredAvatar;
+    Hatchet::source_ptr hoveredAvatar;
     QRect hoveredAvatarRect;
 
     if ( m_infoButtonRects.contains( index ) )
@@ -690,7 +690,7 @@ PlaylistItemDelegate::editorEvent( QEvent* event, QAbstractItemModel* model, con
     if ( m_avatarBoxRects.contains( index ) )
     {
         const QMouseEvent* ev = static_cast< QMouseEvent* >( event );
-        for ( QHash< Tomahawk::source_ptr, QRect >::const_iterator it = m_avatarBoxRects[ index ].constBegin();
+        for ( QHash< Hatchet::source_ptr, QRect >::const_iterator it = m_avatarBoxRects[ index ].constBegin();
               it != m_avatarBoxRects[ index ].constEnd(); ++it )
         {
             if ( it.value().contains( ev->pos() ) )
@@ -874,7 +874,7 @@ PlaylistItemDelegate::onAudioEngineTick( qint64 /* ms */ )
 void
 PlaylistItemDelegate::onPlaybackChange()
 {
-    disconnect( AudioEngine::instance(), SIGNAL( started( Tomahawk::result_ptr ) ), this, SLOT( onPlaybackChange() ) );
+    disconnect( AudioEngine::instance(), SIGNAL( started( Hatchet::result_ptr ) ), this, SLOT( onPlaybackChange() ) );
     disconnect( AudioEngine::instance(), SIGNAL( stopped() ), this, SLOT( onPlaybackChange() ) );
     disconnect( AudioEngine::instance(), SIGNAL( timerMilliSeconds( qint64 ) ), this, SLOT( onAudioEngineTick( qint64 ) ) );
     doUpdateIndex( m_nowPlaying );

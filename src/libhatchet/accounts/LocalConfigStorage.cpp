@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013, Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "LocalConfigStorage.h"
@@ -23,13 +23,13 @@
 #include "CredentialsManager.h"
 #include "utils/Logger.h"
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 namespace Accounts
 {
 
-const QString LocalConfigStorage::s_credentialsServiceName = "Tomahawk";
+const QString LocalConfigStorage::s_credentialsServiceName = "Hatchet";
 
 #ifdef Q_OS_MAC
 QString
@@ -41,7 +41,7 @@ LocalConfigStorage::credentialsServiceName()
 
 LocalConfigStorage::LocalConfigStorage( QObject* parent )
     : ConfigStorage( parent )
-    , m_accountIds( TomahawkSettings::instance()->accounts() )
+    , m_accountIds( HatchetSettings::instance()->accounts() )
 {
 }
 
@@ -109,7 +109,7 @@ void
 LocalConfigStorage::save( const QString& accountId, const Account::Configuration& cfg )
 {
     tDebug() << Q_FUNC_INFO << "about to save configuration for" << accountId;
-    TomahawkSettings* s = TomahawkSettings::instance();
+    HatchetSettings* s = HatchetSettings::instance();
     s->beginGroup( "accounts/" + accountId );
     s->setValue( "accountfriendlyname", cfg.accountFriendlyName );
     s->setValue( "enabled", cfg.enabled );
@@ -131,7 +131,7 @@ void
 LocalConfigStorage::load( const QString& accountId, Account::Configuration& cfg ) const
 {
     tDebug() << Q_FUNC_INFO << "about to load creds for" << accountId << "- assuming CredentialsManager is *ready*.";
-    TomahawkSettings* s = TomahawkSettings::instance();
+    HatchetSettings* s = HatchetSettings::instance();
     s->beginGroup( "accounts/" + accountId );
     cfg.accountFriendlyName = s->value( "accountfriendlyname", QString() ).toString();
     cfg.enabled =             s->value( "enabled", false ).toBool();
@@ -150,7 +150,7 @@ LocalConfigStorage::load( const QString& accountId, Account::Configuration& cfg 
 void
 LocalConfigStorage::remove( const QString& accountId )
 {
-    TomahawkSettings* s = TomahawkSettings::instance();
+    HatchetSettings* s = HatchetSettings::instance();
     s->beginGroup( "accounts/" + accountId );
     s->remove( "accountfriendlyname" );
     s->remove( "enabled" );

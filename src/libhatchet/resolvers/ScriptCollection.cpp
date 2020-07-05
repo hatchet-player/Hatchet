@@ -1,26 +1,26 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013, Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 
 #include "ScriptCollection.h"
 
 #include "Source.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/NetworkAccessManager.h"
 #include "utils/Logger.h"
 #include "resolvers/ScriptCommand_AllArtists.h"
@@ -36,7 +36,7 @@
 #include <QFileInfo>
 
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 ScriptCollection::ScriptCollection( const scriptobject_ptr& scriptObject,
@@ -143,7 +143,7 @@ ScriptCollection::bigIcon() const
 
     if ( !source()->isLocal() )
     {
-        big = big.scaled( TomahawkUtils::defaultIconSize(),
+        big = big.scaled( HatchetUtils::defaultIconSize(),
                           Qt::KeepAspectRatio,
                           Qt::SmoothTransformation );
 
@@ -174,28 +174,28 @@ ScriptCollection::description() const
 }
 
 
-Tomahawk::ArtistsRequest*
+Hatchet::ArtistsRequest*
 ScriptCollection::requestArtists()
 {
-    Tomahawk::ArtistsRequest* cmd = new ScriptCommand_AllArtists( weakRef().toStrongRef() );
+    Hatchet::ArtistsRequest* cmd = new ScriptCommand_AllArtists( weakRef().toStrongRef() );
 
     return cmd;
 }
 
 
-Tomahawk::AlbumsRequest*
-ScriptCollection::requestAlbums( const Tomahawk::artist_ptr& artist )
+Hatchet::AlbumsRequest*
+ScriptCollection::requestAlbums( const Hatchet::artist_ptr& artist )
 {
-    Tomahawk::AlbumsRequest* cmd = new ScriptCommand_AllAlbums( weakRef().toStrongRef(), artist );
+    Hatchet::AlbumsRequest* cmd = new ScriptCommand_AllAlbums( weakRef().toStrongRef(), artist );
 
     return cmd;
 }
 
 
-Tomahawk::TracksRequest*
-ScriptCollection::requestTracks( const Tomahawk::album_ptr& album )
+Hatchet::TracksRequest*
+ScriptCollection::requestTracks( const Hatchet::album_ptr& album )
 {
-    Tomahawk::TracksRequest* cmd = new ScriptCommand_AllTracks( weakRef().toStrongRef(), album );
+    Hatchet::TracksRequest* cmd = new ScriptCommand_AllTracks( weakRef().toStrongRef(), album );
 
     return cmd;
 }
@@ -325,7 +325,7 @@ ScriptCollection::fetchIcon( const QString& iconUrlString )
         {
             QNetworkRequest req( iconUrl );
             tDebug() << "Creating a QNetworkReply with url:" << req.url().toString();
-            QNetworkReply* reply = Tomahawk::Utils::nam()->get( req );
+            QNetworkReply* reply = Hatchet::Utils::nam()->get( req );
 
             connect( reply, SIGNAL( finished() ),
                         this, SLOT( onIconFetched() ) );
@@ -366,7 +366,7 @@ ScriptCollection::weight() const
 
 
 void
-ScriptCollection::resolve( const Tomahawk::query_ptr& query )
+ScriptCollection::resolve( const Hatchet::query_ptr& query )
 {
     ScriptJob* job = scriptAccount()->resolve( scriptObject(), query, "collection" );
 
@@ -387,11 +387,11 @@ ScriptCollection::onResolveRequestDone( const QVariantMap& data )
 
     if ( job->error() )
     {
-        Tomahawk::Pipeline::instance()->reportError( qid, this );
+        Hatchet::Pipeline::instance()->reportError( qid, this );
     }
     else
     {
-        QList< Tomahawk::result_ptr > results = scriptAccount()->parseResultVariantList( data.value( "tracks" ).toList() );
+        QList< Hatchet::result_ptr > results = scriptAccount()->parseResultVariantList( data.value( "tracks" ).toList() );
 
         foreach( const result_ptr& result, results )
         {
@@ -399,7 +399,7 @@ ScriptCollection::onResolveRequestDone( const QVariantMap& data )
             result->setFriendlySource( prettyName() );
         }
 
-        Tomahawk::Pipeline::instance()->reportResults( qid, this, results );
+        Hatchet::Pipeline::instance()->reportResults( qid, this, results );
     }
 
     sender()->deleteLater();

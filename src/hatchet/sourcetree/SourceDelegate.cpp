@@ -1,4 +1,4 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2011-2012, Leo Franchi <lfranchi@kde.org>
@@ -6,18 +6,18 @@
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "SourceDelegate.h"
@@ -34,15 +34,15 @@
 
 #include "audio/AudioEngine.h"
 #include "Source.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "ActionCollection.h"
 #include "ViewManager.h"
 #include "ContextMenu.h"
 #include "resolvers/ScriptCollection.h"
 #include "network/DBSyncConnectionState.h"
 
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/DpiScaler.h"
 #include "utils/Logger.h"
 
@@ -58,7 +58,7 @@ SourceDelegate::SourceDelegate( QAbstractItemView* parent )
     : QStyledItemDelegate( parent )
     , m_parent( parent )
     , m_lastClicked( -1 )
-    , m_margin( TomahawkUtils::DpiScaler::scaledY( m_parent, 32 ) )
+    , m_margin( HatchetUtils::DpiScaler::scaledY( m_parent, 32 ) )
 {
     m_dropMimeData = new QMimeData();
 }
@@ -83,7 +83,7 @@ SourceDelegate::sizeHint( const QStyleOptionViewItem& option, const QModelIndex&
     }
     else if ( type == SourcesModel::Divider )
     {
-        return QSize( option.rect.width(), TomahawkUtils::DpiScaler::scaledY( m_parent, 6 ) );
+        return QSize( option.rect.width(), HatchetUtils::DpiScaler::scaledY( m_parent, 6 ) );
     }
     else if ( type == SourcesModel::Group )
     {
@@ -99,7 +99,7 @@ void
 SourceDelegate::paintStandardItem( QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index, const QString& count ) const
 {
     QFont font = painter->font();
-    font.setPointSize( TomahawkUtils::defaultFontSize() );
+    font.setPointSize( HatchetUtils::defaultFontSize() );
     painter->setFont( font );
 
     SourcesModel::RowType type = static_cast< SourcesModel::RowType >( index.data( SourcesModel::SourceTreeItemTypeRole ).toInt() );
@@ -175,7 +175,7 @@ SourceDelegate::paintDecorations( QPainter* painter, const QStyleOptionViewItem&
     {
         const int iconW = option.rect.height() - m_margin / 4;
         const QRect iconRect( m_margin / 4, option.rect.y() + m_margin / 8, iconW, iconW );
-        const QPixmap speaker = TomahawkUtils::defaultPixmap( TomahawkUtils::NowPlayingSpeakerDark, TomahawkUtils::Original, iconRect.size() );
+        const QPixmap speaker = HatchetUtils::defaultPixmap( HatchetUtils::NowPlayingSpeakerDark, HatchetUtils::Original, iconRect.size() );
 
         painter->drawPixmap( iconRect, speaker );
     }
@@ -188,7 +188,7 @@ SourceDelegate::paintSource( QPainter* painter, const QStyleOptionViewItem& opti
     painter->save();
     painter->setPen( Qt::black );
     QFont font = painter->font();
-    font.setPointSize( TomahawkUtils::defaultFontSize() );
+    font.setPointSize( HatchetUtils::defaultFontSize() );
     painter->setFont( font );
 
     SourceTreeItem* item = index.data( SourcesModel::SourceTreeItemRole ).value< SourceTreeItem* >();
@@ -252,7 +252,7 @@ SourceDelegate::paintSource( QPainter* painter, const QStyleOptionViewItem& opti
         }
 
         avatar = scItem->icon().pixmap( iconRect.size() );
-        desc = qobject_cast< Tomahawk::ScriptCollection* >( scItem->collection().data() )->description();
+        desc = qobject_cast< Hatchet::ScriptCollection* >( scItem->collection().data() )->description();
     }
 
     painter->setOpacity( 1.0 );
@@ -274,7 +274,7 @@ SourceDelegate::paintSource( QPainter* painter, const QStyleOptionViewItem& opti
         SourceItem* colItem = qobject_cast< SourceItem* >( item );
         Q_ASSERT( colItem );
 
-        bool privacyOn = TomahawkSettings::instance()->privateListeningMode() == TomahawkSettings::FullyPrivate;
+        bool privacyOn = HatchetSettings::instance()->privateListeningMode() == HatchetSettings::FullyPrivate;
         if ( !colItem->source().isNull() && colItem->source()->isLocal() && privacyOn )
         {
             QRect pmRect = textRect;
@@ -285,29 +285,29 @@ SourceDelegate::paintSource( QPainter* painter, const QStyleOptionViewItem& opti
         if ( ( isPlaying || ( !colItem->source().isNull() && colItem->source()->isLocal() ) ) && !shouldDrawDropHint )
         {
             // Show a listen icon
-            TomahawkUtils::ImageType listenAlongPixmap = TomahawkUtils::Invalid;
-            TomahawkUtils::ImageType realtimeListeningAlongPixmap = TomahawkUtils::Invalid;
+            HatchetUtils::ImageType listenAlongPixmap = HatchetUtils::Invalid;
+            HatchetUtils::ImageType realtimeListeningAlongPixmap = HatchetUtils::Invalid;
             if ( index.data( SourcesModel::LatchedOnRole ).toBool() )
             {
                 // Currently listening along
-                listenAlongPixmap = TomahawkUtils::HeadphonesOn;
+                listenAlongPixmap = HatchetUtils::HeadphonesOn;
                 if ( !colItem->source()->isLocal() )
                 {
                     realtimeListeningAlongPixmap =
-                        colItem->source()->playlistInterface()->latchMode() == Tomahawk::PlaylistModes::RealTime ?
-                            TomahawkUtils::PadlockClosed : TomahawkUtils::PadlockOpen;
+                        colItem->source()->playlistInterface()->latchMode() == Hatchet::PlaylistModes::RealTime ?
+                            HatchetUtils::PadlockClosed : HatchetUtils::PadlockOpen;
                 }
             }
             else if ( !colItem->source()->isLocal() )
             {
-                listenAlongPixmap = TomahawkUtils::HeadphonesOff;
+                listenAlongPixmap = HatchetUtils::HeadphonesOff;
             }
 
-            if ( listenAlongPixmap != TomahawkUtils::Invalid )
+            if ( listenAlongPixmap != HatchetUtils::Invalid )
             {
                 QRect pmRect = textRect;
                 pmRect.setRight( pmRect.left() + pmRect.height() );
-                painter->drawPixmap( pmRect, TomahawkUtils::defaultPixmap( listenAlongPixmap, TomahawkUtils::Original, pmRect.size() ) );
+                painter->drawPixmap( pmRect, HatchetUtils::defaultPixmap( listenAlongPixmap, HatchetUtils::Original, pmRect.size() ) );
                 textRect.adjust( pmRect.width() + m_margin / 8, 0, 0, 0 );
 
                 m_headphoneRects[ index ] = pmRect;
@@ -315,11 +315,11 @@ SourceDelegate::paintSource( QPainter* painter, const QStyleOptionViewItem& opti
             else
                 m_headphoneRects.remove( index );
 
-            if ( realtimeListeningAlongPixmap != TomahawkUtils::Invalid )
+            if ( realtimeListeningAlongPixmap != HatchetUtils::Invalid )
             {
                 QRect pmRect = textRect;
                 pmRect.setRight( pmRect.left() + pmRect.height() );
-                painter->drawPixmap( pmRect, TomahawkUtils::defaultPixmap( realtimeListeningAlongPixmap, TomahawkUtils::Original, pmRect.size() ) );
+                painter->drawPixmap( pmRect, HatchetUtils::defaultPixmap( realtimeListeningAlongPixmap, HatchetUtils::Original, pmRect.size() ) );
                 textRect.adjust( pmRect.width() + m_margin / 8, 0, 0, 0 );
 
                 m_lockRects[ index ] = pmRect;
@@ -359,7 +359,7 @@ SourceDelegate::paintSource( QPainter* painter, const QStyleOptionViewItem& opti
         SourceItem* colItem = qobject_cast< SourceItem* >( item );
         Q_ASSERT( colItem );
 
-        if ( colItem->source() && colItem->source()->currentTrack() && colItem->source()->state() == Tomahawk::SYNCED )
+        if ( colItem->source() && colItem->source()->currentTrack() && colItem->source()->state() == Hatchet::SYNCED )
             m_trackRects[ index ] = textRect.adjusted( 0, 0, -textRect.width() + painter->fontMetrics().width( text ), 0 );
         else
             m_trackRects.remove( index );
@@ -375,7 +375,7 @@ SourceDelegate::paintSource( QPainter* painter, const QStyleOptionViewItem& opti
         if ( shouldDrawDropHint )
         {
             const QRect figRect = option.rect.adjusted( option.rect.width() - figWidth - iconRectVertMargin, iconRectVertMargin, -iconRectVertMargin, -iconRectVertMargin );
-            painter->drawPixmap( figRect, TomahawkUtils::defaultPixmap( TomahawkUtils::Inbox, TomahawkUtils::Original, figRect.size() ) );
+            painter->drawPixmap( figRect, HatchetUtils::defaultPixmap( HatchetUtils::Inbox, HatchetUtils::Original, figRect.size() ) );
         }
         else
         {
@@ -394,7 +394,7 @@ SourceDelegate::paintCategory( QPainter* painter, const QStyleOptionViewItem& op
     painter->save();
 
     QFont font = painter->font();
-    font.setPointSize( TomahawkUtils::defaultFontSize() - 1 );
+    font.setPointSize( HatchetUtils::defaultFontSize() - 1 );
     painter->setFont( font );
 
     painter->setPen( Qt::black );
@@ -408,7 +408,7 @@ SourceDelegate::paintCategory( QPainter* painter, const QStyleOptionViewItem& op
             text = tr( "Hide" );
 
         // draw close icon
-        painter->setPen( TomahawkStyle::GROUP_HEADER );
+        painter->setPen( HatchetStyle::GROUP_HEADER );
         painter->drawText( option.rect.translated( -m_margin / 4, 0 ), text, QTextOption( Qt::AlignVCenter | Qt::AlignRight ) );
     }
 
@@ -422,7 +422,7 @@ SourceDelegate::paintGroup( QPainter* painter, const QStyleOptionViewItem& optio
     painter->save();
 
     QFont font = painter->font();
-    font.setPointSize( TomahawkUtils::defaultFontSize() - 1 );
+    font.setPointSize( HatchetUtils::defaultFontSize() - 1 );
     painter->setFont( font );
 
     painter->setPen( Qt::black );
@@ -436,7 +436,7 @@ SourceDelegate::paintGroup( QPainter* painter, const QStyleOptionViewItem& optio
             text = tr( "Hide" );
 
         // draw close icon
-        painter->setPen( TomahawkStyle::GROUP_HEADER );
+        painter->setPen( HatchetStyle::GROUP_HEADER );
         painter->drawText( option.rect.translated( -m_margin / 4, -m_margin / 4 ), text, QTextOption( Qt::AlignBottom | Qt::AlignRight ) );
     }
 
@@ -482,7 +482,7 @@ SourceDelegate::paint( QPainter* painter, const QStyleOptionViewItem& option, co
         }
 
         const int indentDelta = optIndentation.rect.x() - m_parent->viewport()->x();
-        optIndentation.rect.setX( optIndentation.rect.x() - indentDelta + indentMult * TomahawkUtils::DpiScaler::scaledY( m_parent, TREEVIEW_INDENT_ADD ) );
+        optIndentation.rect.setX( optIndentation.rect.x() - indentDelta + indentMult * HatchetUtils::DpiScaler::scaledY( m_parent, TREEVIEW_INDENT_ADD ) );
         opt.rect.setX( 0 );
     }
 
@@ -547,7 +547,7 @@ SourceDelegate::paint( QPainter* painter, const QStyleOptionViewItem& option, co
 
                 // draw close icon
                 const QRect r( opt.rect.right() - m_margin / 8 - m_iconHeight, opt.rect.y() + ( opt.rect.height() - m_iconHeight ) / 2, m_iconHeight, m_iconHeight );
-                painter->drawPixmap( r, TomahawkUtils::defaultPixmap( TomahawkUtils::ListRemove, TomahawkUtils::Original, r.size() ) );
+                painter->drawPixmap( r, HatchetUtils::defaultPixmap( HatchetUtils::ListRemove, HatchetUtils::Original, r.size() ) );
             }
             else
                 paintStandardItem( painter, optIndentation, index );
@@ -570,7 +570,7 @@ SourceDelegate::paint( QPainter* painter, const QStyleOptionViewItem& option, co
                 const int imgWidth = optIndentation.rect.height() / 2;
                 const QRect subRect( optIndentation.rect.left(), optIndentation.rect.top(), imgWidth, imgWidth );
 
-                painter->drawPixmap( subRect, TomahawkUtils::defaultPixmap( TomahawkUtils::GreenDot, TomahawkUtils::Original, subRect.size() ) );
+                painter->drawPixmap( subRect, HatchetUtils::defaultPixmap( HatchetUtils::GreenDot, HatchetUtils::Original, subRect.size() ) );
             }
         }
         else
@@ -596,7 +596,7 @@ SourceDelegate::updateEditorGeometry( QWidget* editor, const QStyleOptionViewIte
 #ifdef Q_OS_MAC
         newGeometry.adjust( 3 * TREEVIEW_INDENT_ADD + 5, 0, 0, 0 );  //compensate for osx indentation
 #else
-        newGeometry.adjust( 3 * TomahawkUtils::DpiScaler::scaledY( m_parent, TREEVIEW_INDENT_ADD ), 0, 0, 0 );  //compensate for indentation
+        newGeometry.adjust( 3 * HatchetUtils::DpiScaler::scaledY( m_parent, TREEVIEW_INDENT_ADD ), 0, 0, 0 );  //compensate for indentation
 #endif
         editor->setGeometry( newGeometry );
     }
@@ -706,7 +706,7 @@ SourceDelegate::editorEvent( QEvent* event, QAbstractItemModel* model, const QSt
                 }
                 else if ( event->type() == QEvent::MouseButtonPress && mEvent->button() == Qt::RightButton )
                 {
-                    Tomahawk::ContextMenu* contextMenu = new Tomahawk::ContextMenu( m_parent );
+                    Hatchet::ContextMenu* contextMenu = new Hatchet::ContextMenu( m_parent );
                     contextMenu->setQuery( colItem->source()->currentTrack() );
                     contextMenu->exec( QCursor::pos() );
                     return true;

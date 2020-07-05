@@ -1,25 +1,25 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "XspfUpdater.h"
 
 #include "utils/XspfLoader.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
 
 #include "Pipeline.h"
@@ -31,7 +31,7 @@
 #include <QTimer>
 
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 PlaylistUpdaterInterface*
 XspfUpdaterFactory::create( const playlist_ptr &pl, const QVariantHash& settings )
@@ -105,12 +105,12 @@ XspfUpdater::updateNow()
     l->setAutoResolveTracks( false );
     l->setErrorTitle( playlist()->title() );
     l->load( m_url );
-    connect( l, SIGNAL( tracks( QList<Tomahawk::query_ptr> ) ), this, SLOT( playlistLoaded( QList<Tomahawk::query_ptr> ) ) );
+    connect( l, SIGNAL( tracks( QList<Hatchet::query_ptr> ) ), this, SLOT( playlistLoaded( QList<Hatchet::query_ptr> ) ) );
 }
 
 
 void
-XspfUpdater::playlistLoaded( const QList<Tomahawk::query_ptr>& newEntries )
+XspfUpdater::playlistLoaded( const QList<Hatchet::query_ptr>& newEntries )
 {
     XSPFLoader* loader = qobject_cast< XSPFLoader* >( sender() );
     if ( loader )
@@ -125,12 +125,12 @@ XspfUpdater::playlistLoaded( const QList<Tomahawk::query_ptr>& newEntries )
         tracks << ple->query();
 
     bool changed = false;
-    QList< query_ptr > mergedTracks = TomahawkUtils::mergePlaylistChanges( tracks, newEntries, changed );
+    QList< query_ptr > mergedTracks = HatchetUtils::mergePlaylistChanges( tracks, newEntries, changed );
 
     if ( !changed )
         return;
 
-    QList<Tomahawk::plentry_ptr> el = playlist()->entriesFromQueries( mergedTracks, true );
+    QList<Hatchet::plentry_ptr> el = playlist()->entriesFromQueries( mergedTracks, true );
     playlist()->createNewRevision( uuid(), playlist()->currentrevision(), el );
 }
 

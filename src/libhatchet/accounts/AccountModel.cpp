@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "AccountModel.h"
@@ -23,14 +23,14 @@
 #include "AccountManager.h"
 #include "AtticaManager.h"
 #include "ResolverAccount.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "utils/Logger.h"
 
 #include <QMessageBox>
 
 #include <attica/content.h>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 using namespace Accounts;
 
 #define ACCOUNTMODEL_DEBUG 1
@@ -63,8 +63,8 @@ AccountModel::init()
     connect( AtticaManager::instance(), SIGNAL( resolverInstalled( QString ) ), this, SLOT( onFinishedInstalling( QString ) ) );
     connect( AtticaManager::instance(), SIGNAL( resolverInstallationFailed( QString ) ), this, SLOT( resolverInstallFailed( QString ) ) );
 
-    connect( AccountManager::instance(), SIGNAL( added( Tomahawk::Accounts::Account* ) ), this, SLOT( accountAdded( Tomahawk::Accounts::Account* ) ) );
-    connect( AccountManager::instance(), SIGNAL( removed( Tomahawk::Accounts::Account* ) ), this, SLOT( accountRemoved( Tomahawk::Accounts::Account* ) ) );
+    connect( AccountManager::instance(), SIGNAL( added( Hatchet::Accounts::Account* ) ), this, SLOT( accountAdded( Hatchet::Accounts::Account* ) ) );
+    connect( AccountManager::instance(), SIGNAL( removed( Hatchet::Accounts::Account* ) ), this, SLOT( accountRemoved( Hatchet::Accounts::Account* ) ) );
     connect( AccountManager::instance(), SIGNAL( stateChanged( Account* ,Accounts::Account::ConnectionState ) ), this, SLOT( accountStateChanged( Account*, Accounts::Account::ConnectionState ) ) );
 
     loadData();
@@ -203,7 +203,7 @@ AccountModel::data( const QModelIndex& index, int role ) const
                 case Qt::DecorationRole:
                     return fac->icon();
                 case StateRole:
-                    return ShippedWithTomahawk;
+                    return ShippedWithHatchet;
                 case Qt::ToolTipRole:
                 case DescriptionRole:
                     return fac->description();
@@ -214,7 +214,7 @@ AccountModel::data( const QModelIndex& index, int role ) const
                 case AccountData:
                     return QVariant::fromValue< QObject* >( node->factory );
                 case ChildrenOfFactoryRole:
-                    return QVariant::fromValue< QList< Tomahawk::Accounts::Account* > >( node->accounts );
+                    return QVariant::fromValue< QList< Hatchet::Accounts::Account* > >( node->accounts );
                 case HasConfig:
                     return !node->accounts.isEmpty();
                 case AccountTypeRole:
@@ -373,7 +373,7 @@ AccountModel::data( const QModelIndex& index, int role ) const
                 case StateRole:
                     return Installed;
                 case ChildrenOfFactoryRole:
-                    return QVariant::fromValue< QList< Tomahawk::Accounts::Account* > >( node->accounts );
+                    return QVariant::fromValue< QList< Hatchet::Accounts::Account* > >( node->accounts );
                 case AccountTypeRole:
                     return QVariant::fromValue< AccountTypes >( acct->types() );
                 default:
@@ -403,7 +403,7 @@ AccountModel::data( const QModelIndex& index, int role ) const
                 case Qt::DecorationRole:
                     return account->icon();
                 case StateRole:
-                    return ShippedWithTomahawk;
+                    return ShippedWithHatchet;
                 case Qt::ToolTipRole:
                 case DescriptionRole:
                     return hasAttica ? content.description() : node->factory->description();
@@ -466,7 +466,7 @@ AccountModel::setData( const QModelIndex& index, const QVariant& value, int role
                     // Don't add it to node->accounts here, slot attached to accountmanager::accountcreated will do it for us
                     acct = node->factory->createAccount();
                     AccountManager::instance()->addAccount( acct );
-                    TomahawkSettings::instance()->addAccount( acct->accountId() );
+                    HatchetSettings::instance()->addAccount( acct->accountId() );
                 }
                 else
                 {
@@ -492,7 +492,7 @@ AccountModel::setData( const QModelIndex& index, const QVariant& value, int role
                 }
 
                 // Don't install if we're unchecking. This happens if e.g. the user deletes his config file
-                // and opens tomahawk
+                // and opens hatchet
                 if ( state == AtticaManager::Installed || checkState == Qt::Unchecked )
                 {
                     qDebug() << "Already installed with resolver, or unchecking, just enabling/disabling";
@@ -565,7 +565,7 @@ AccountModel::setData( const QModelIndex& index, const QVariant& value, int role
             box.setTextFormat( Qt::RichText );
             box.setIcon( QMessageBox::Information );
             box.setText( tr( "Unfortunately, automatic installation of this resolver is not available or disabled for your platform.<br /><br />"
-            "Please use \"Install from file\" above, by fetching it from your distribution or compiling it yourself. Further instructions can be found here:<br /><br />http://www.tomahawk-player.org/resolvers/%1" ).arg( acct->accountServiceName() ) );
+            "Please use \"Install from file\" above, by fetching it from your distribution or compiling it yourself. Further instructions can be found here:<br /><br />http://www.hatchet-player.org/resolvers/%1" ).arg( acct->accountServiceName() ) );
             box.setStandardButtons( QMessageBox::Ok );
             box.exec();
         }

@@ -1,25 +1,25 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2012, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "PlayableItem.h"
 
 #include "utils/Logger.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 
 #include "Artist.h"
 #include "Album.h"
@@ -28,7 +28,7 @@
 #include "Result.h"
 #include "Source.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 PlayableItem::~PlayableItem()
@@ -54,7 +54,7 @@ PlayableItem::PlayableItem( PlayableItem* parent )
 }
 
 
-PlayableItem::PlayableItem( const Tomahawk::album_ptr& album, PlayableItem* parent, int row )
+PlayableItem::PlayableItem( const Hatchet::album_ptr& album, PlayableItem* parent, int row )
     : QObject( parent )
     , m_album( album )
     , m_parent( parent )
@@ -65,7 +65,7 @@ PlayableItem::PlayableItem( const Tomahawk::album_ptr& album, PlayableItem* pare
 }
 
 
-PlayableItem::PlayableItem( const Tomahawk::artist_ptr& artist, PlayableItem* parent, int row )
+PlayableItem::PlayableItem( const Hatchet::artist_ptr& artist, PlayableItem* parent, int row )
     : QObject( parent )
     , m_artist( artist )
     , m_parent( parent )
@@ -76,7 +76,7 @@ PlayableItem::PlayableItem( const Tomahawk::artist_ptr& artist, PlayableItem* pa
 }
 
 
-PlayableItem::PlayableItem( const Tomahawk::result_ptr& result, PlayableItem* parent, int row )
+PlayableItem::PlayableItem( const Hatchet::result_ptr& result, PlayableItem* parent, int row )
     : QObject( parent )
     , m_result( result )
     , m_parent( parent )
@@ -87,7 +87,7 @@ PlayableItem::PlayableItem( const Tomahawk::result_ptr& result, PlayableItem* pa
 }
 
 
-PlayableItem::PlayableItem( const Tomahawk::query_ptr& query, PlayableItem* parent, int row )
+PlayableItem::PlayableItem( const Hatchet::query_ptr& query, PlayableItem* parent, int row )
     : QObject( parent )
     , m_query( query )
     , m_parent( parent )
@@ -96,7 +96,7 @@ PlayableItem::PlayableItem( const Tomahawk::query_ptr& query, PlayableItem* pare
 }
 
 
-PlayableItem::PlayableItem( const Tomahawk::plentry_ptr& entry, PlayableItem* parent, int row )
+PlayableItem::PlayableItem( const Hatchet::plentry_ptr& entry, PlayableItem* parent, int row )
     : QObject( parent )
     , m_entry( entry )
     , m_query( entry->query() )
@@ -106,7 +106,7 @@ PlayableItem::PlayableItem( const Tomahawk::plentry_ptr& entry, PlayableItem* pa
 }
 
 
-PlayableItem::PlayableItem( const Tomahawk::source_ptr& source, PlayableItem* parent, int row )
+PlayableItem::PlayableItem( const Hatchet::source_ptr& source, PlayableItem* parent, int row )
     : QObject( parent )
     , m_source( source )
     , m_parent( parent )
@@ -227,7 +227,7 @@ PlayableItem::albumName() const
 }
 
 
-const Tomahawk::result_ptr&
+const Hatchet::result_ptr&
 PlayableItem::result() const
 {
     if ( !m_result && m_query )
@@ -240,7 +240,7 @@ PlayableItem::result() const
 }
 
 
-Tomahawk::PlaybackLog
+Hatchet::PlaybackLog
 PlayableItem::playbackLog() const
 {
     return m_playbackLog;
@@ -248,7 +248,7 @@ PlayableItem::playbackLog() const
 
 
 void
-PlayableItem::setPlaybackLog( const Tomahawk::PlaybackLog& log )
+PlayableItem::setPlaybackLog( const Hatchet::PlaybackLog& log )
 {
     m_playbackLog = log;
 }

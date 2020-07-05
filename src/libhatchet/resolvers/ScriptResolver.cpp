@@ -1,27 +1,27 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Leo Franchi            <lfranchi@kde.org>
  *   Copyright 2013,      Teo Mrnjavac           <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ScriptResolver.h"
 
 #include "accounts/AccountConfigWidget.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Json.h"
 #include "utils/Logger.h"
 #include "utils/NetworkAccessManager.h"
@@ -44,17 +44,17 @@
 #include <shlwapi.h>
 #endif
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 ScriptResolver::ScriptResolver( const QString& exe )
-    : Tomahawk::ExternalResolverGui( exe )
+    : Hatchet::ExternalResolverGui( exe )
     , m_num_restarts( 0 )
     , m_msgsize( 0 )
     , m_ready( false )
     , m_stopped( true )
     , m_configSent( false )
     , m_deleting( false )
-    , m_error( Tomahawk::ExternalResolver::NoError )
+    , m_error( Hatchet::ExternalResolver::NoError )
 {
     tLog() << Q_FUNC_INFO << "Created script resolver:" << exe;
     connect( &m_proc, SIGNAL( readyReadStandardError() ), SLOT( readStderr() ) );
@@ -63,14 +63,14 @@ ScriptResolver::ScriptResolver( const QString& exe )
 
     startProcess();
 
-    if ( !Tomahawk::Utils::nam() )
+    if ( !Hatchet::Utils::nam() )
         return;
 
     // set the name to the binary, if we launch properly we'll get the name the resolver reports
     m_name = QFileInfo( filePath() ).baseName();
 
     // set the icon, if we launch properly we'll get the icon the resolver reports
-    m_icon = TomahawkUtils::defaultPixmap( TomahawkUtils::DefaultResolver, TomahawkUtils::Original, QSize( 128, 128 ) );
+    m_icon = HatchetUtils::defaultPixmap( HatchetUtils::DefaultResolver, HatchetUtils::Original, QSize( 128, 128 ) );
 }
 
 
@@ -85,7 +85,7 @@ ScriptResolver::~ScriptResolver()
 
     bool finished = m_proc.state() != QProcess::Running || m_proc.waitForFinished( 2500 ); // might call handleMsg
 
-    Tomahawk::Pipeline::instance()->removeResolver( this );
+    Hatchet::Pipeline::instance()->removeResolver( this );
 
     if ( !finished || m_proc.state() == QProcess::Running )
     {
@@ -102,7 +102,7 @@ ScriptResolver::~ScriptResolver()
 }
 
 
-Tomahawk::ExternalResolver*
+Hatchet::ExternalResolver*
 ScriptResolver::factory( const QString& accountId, const QString& exe, const QStringList& unused )
 {
     Q_UNUSED( accountId )
@@ -126,7 +126,7 @@ ScriptResolver::start()
 {
     m_stopped = false;
     if ( m_ready )
-        Tomahawk::Pipeline::instance()->addResolver( this );
+        Hatchet::Pipeline::instance()->addResolver( this );
     else if ( !m_configSent )
         sendConfig();
     // else, we've sent our config msg so are waiting for the resolver to react
@@ -143,10 +143,10 @@ ScriptResolver::sendConfig()
 
     m_configSent = true;
 
-    tDebug() << "Nam is:" << Tomahawk::Utils::nam();
-    tDebug() << "Nam proxy is:" << Tomahawk::Utils::nam()->proxyFactory();
-    Tomahawk::Utils::nam()->proxyFactory()->queryProxy();
-    Tomahawk::Utils::NetworkProxyFactory* factory = dynamic_cast<Tomahawk::Utils::NetworkProxyFactory*>( Tomahawk::Utils::nam()->proxyFactory() );
+    tDebug() << "Nam is:" << Hatchet::Utils::nam();
+    tDebug() << "Nam proxy is:" << Hatchet::Utils::nam()->proxyFactory();
+    Hatchet::Utils::nam()->proxyFactory()->queryProxy();
+    Hatchet::Utils::NetworkProxyFactory* factory = dynamic_cast<Hatchet::Utils::NetworkProxyFactory*>( Hatchet::Utils::nam()->proxyFactory() );
     QNetworkProxy proxy = factory->proxy();
     QString proxyType = ( proxy.type() == QNetworkProxy::Socks5Proxy ? "socks5" : "none" );
     m.insert( "proxytype", proxyType );
@@ -162,7 +162,7 @@ ScriptResolver::sendConfig()
     m.insert( "noproxyhosts", hosts );
 
     bool ok;
-    QByteArray data = TomahawkUtils::toJson( m, &ok );
+    QByteArray data = HatchetUtils::toJson( m, &ok );
     Q_ASSERT( ok );
     sendMsg( data );
 }
@@ -186,7 +186,7 @@ void
 ScriptResolver::sendMessage( const QVariantMap& map )
 {
     bool ok;
-    QByteArray data = TomahawkUtils::toJson( map, &ok );
+    QByteArray data = HatchetUtils::toJson( map, &ok );
     Q_ASSERT( ok );
     sendMsg( data );
 }
@@ -260,7 +260,7 @@ ScriptResolver::handleMsg( const QByteArray& msg )
         return;
 
     bool ok;
-    QVariant v = TomahawkUtils::parseJson( msg, &ok );
+    QVariant v = HatchetUtils::parseJson( msg, &ok );
     if ( !ok || v.type() != QVariant::Map )
     {
         Q_ASSERT( false );
@@ -282,7 +282,7 @@ ScriptResolver::handleMsg( const QByteArray& msg )
     else if ( msgtype == "results" )
     {
         const QString qid = m.value( "qid" ).toString();
-        QList< Tomahawk::result_ptr > results;
+        QList< Hatchet::result_ptr > results;
         const QVariantList reslist = m.value( "results" ).toList();
 
         foreach( const QVariant& rv, reslist )
@@ -290,7 +290,7 @@ ScriptResolver::handleMsg( const QByteArray& msg )
             QVariantMap m = rv.toMap();
             tDebug( LOGVERBOSE ) << "Found result:" << m;
 
-            Tomahawk::track_ptr track = Tomahawk::Track::get( m.value( "artist" ).toString(),
+            Hatchet::track_ptr track = Hatchet::Track::get( m.value( "artist" ).toString(),
                                                               m.value( "track" ).toString(),
                                                               m.value( "album" ).toString(),
                                                               m.value( "albumartist" ).toString(),
@@ -301,7 +301,7 @@ ScriptResolver::handleMsg( const QByteArray& msg )
             if ( !track )
                 continue;
 
-            Tomahawk::result_ptr rp = Tomahawk::Result::get( m.value( "url" ).toString(), track );
+            Hatchet::result_ptr rp = Hatchet::Result::get( m.value( "url" ).toString(), track );
             if ( !rp )
                 continue;
 
@@ -323,7 +323,7 @@ ScriptResolver::handleMsg( const QByteArray& msg )
             rp->setMimetype( m.value( "mimetype" ).toString() );
             if ( rp->mimetype().isEmpty() )
             {
-                rp->setMimetype( TomahawkUtils::extensionToMimetype( m.value( "extension" ).toString() ) );
+                rp->setMimetype( HatchetUtils::extensionToMimetype( m.value( "extension" ).toString() ) );
                 Q_ASSERT( !rp->mimetype().isEmpty() );
             }
 
@@ -331,7 +331,7 @@ ScriptResolver::handleMsg( const QByteArray& msg )
             results << rp;
         }
 
-        Tomahawk::Pipeline::instance()->reportResults( qid, this, results );
+        Hatchet::Pipeline::instance()->reportResults( qid, this, results );
     }
     else
     {
@@ -346,7 +346,7 @@ ScriptResolver::cmdExited( int code, QProcess::ExitStatus status )
 {
     m_ready = false;
     tLog() << Q_FUNC_INFO << "SCRIPT EXITED, code" << code << "status" << status << filePath();
-    Tomahawk::Pipeline::instance()->removeResolver( this );
+    Hatchet::Pipeline::instance()->removeResolver( this );
 
     m_error = ExternalResolver::FailedToLoad;
     emit changed();
@@ -374,7 +374,7 @@ ScriptResolver::cmdExited( int code, QProcess::ExitStatus status )
 
 
 void
-ScriptResolver::resolve( const Tomahawk::query_ptr& query )
+ScriptResolver::resolve( const Hatchet::query_ptr& query )
 {
     QVariantMap m;
     m.insert( "_msgtype", "rq" );
@@ -395,7 +395,7 @@ ScriptResolver::resolve( const Tomahawk::query_ptr& query )
             m.insert( "resultHint", query->resultHint() );
     }
 
-    const QByteArray msg = TomahawkUtils::toJson( QVariant( m ) );
+    const QByteArray msg = HatchetUtils::toJson( QVariant( m ) );
     sendMsg( msg );
 }
 
@@ -450,7 +450,7 @@ ScriptResolver::doSetup( const QVariantMap& m )
     m_num_restarts = 0;
 
     if ( !m_stopped )
-        Tomahawk::Pipeline::instance()->addResolver( this );
+        Hatchet::Pipeline::instance()->addResolver( this );
 
     emit changed();
 }
@@ -480,10 +480,10 @@ void
 ScriptResolver::startProcess()
 {
     if ( !QFile::exists( filePath() ) )
-        m_error = Tomahawk::ExternalResolver::FileNotFound;
+        m_error = Hatchet::ExternalResolver::FileNotFound;
     else
     {
-        m_error = Tomahawk::ExternalResolver::NoError;
+        m_error = Hatchet::ExternalResolver::NoError;
     }
 
     const QFileInfo fi( filePath() );
@@ -545,7 +545,7 @@ ScriptResolver::saveConfig()
     QVariant widgets = configMsgFromWidget( m_configWidget.data() );
     m.insert( "widgets", widgets );
     bool ok;
-    QByteArray data = TomahawkUtils::toJson( m, &ok );
+    QByteArray data = HatchetUtils::toJson( m, &ok );
     Q_ASSERT( ok );
 
     sendMsg( data );
@@ -584,5 +584,5 @@ ScriptResolver::stop()
 {
     m_stopped = true;
 
-    Tomahawk::Pipeline::instance()->removeResolver( this );
+    Hatchet::Pipeline::instance()->removeResolver( this );
 }

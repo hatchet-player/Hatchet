@@ -76,7 +76,7 @@
       </font>
      </property>
      <property name="text">
-      <string>To import a playlist from Spotify, Rdio, Beats, etc. - simply drag the link into Tomahawk.</string>
+      <string>To import a playlist from Spotify, Rdio, Beats, etc. - simply drag the link into Hatchet.</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

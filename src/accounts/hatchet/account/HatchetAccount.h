@@ -1,13 +1,13 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2012 Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
@@ -29,7 +29,7 @@ class QNetworkReply;
 
 class HatchetSipPlugin;
 
-namespace Tomahawk
+namespace Hatchet
 {
 namespace Accounts
 {
@@ -39,8 +39,8 @@ class HatchetAccountConfig;
 class ACCOUNTDLLEXPORT HatchetAccountFactory : public AccountFactory
 {
     Q_OBJECT
-    Q_INTERFACES( Tomahawk::Accounts::AccountFactory )
-    Q_PLUGIN_METADATA( IID "org.tomahawk-player.Player.AccountFactory" )
+    Q_INTERFACES( Hatchet::Accounts::AccountFactory )
+    Q_PLUGIN_METADATA( IID "org.hatchet-player.Player.AccountFactory" )
 
 public:
     HatchetAccountFactory();
@@ -79,7 +79,7 @@ public:
     void setConnectionState( Account::ConnectionState connectionState );
     ConnectionState connectionState() const;
 
-    virtual Tomahawk::InfoSystem::InfoPluginPtr infoPlugin() { return Tomahawk::InfoSystem::InfoPluginPtr(); }
+    virtual Hatchet::InfoSystem::InfoPluginPtr infoPlugin() { return Hatchet::InfoSystem::InfoPluginPtr(); }
     SipPlugin* sipPlugin( bool create = true );
 
     AccountConfigWidget* configurationWidget();
@@ -115,7 +115,7 @@ private:
 
     Account::ConnectionState m_state;
 
-    QPointer< HatchetSipPlugin > m_tomahawkSipPlugin;
+    QPointer< HatchetSipPlugin > m_hatchetSipPlugin;
 
     static HatchetAccount* s_instance;
     friend class HatchetAccountConfig;

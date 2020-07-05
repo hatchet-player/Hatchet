@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2012, Dominik Schmidt <dev@dominik-schmidt.de>
  *   Copyright 2013, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef PEERINFO_P_H
@@ -24,7 +24,7 @@
 
 #include "utils/WeakObjectHash.h"
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 class PeerInfoPrivate
@@ -43,10 +43,10 @@ public:
     PeerInfo* q_ptr;
     Q_DECLARE_PUBLIC ( PeerInfo )
 
-    static Tomahawk::Utils::WeakObjectHash<PeerInfo> s_peersByCacheKey;
+    static Hatchet::Utils::WeakObjectHash<PeerInfo> s_peersByCacheKey;
 
 private:
-    QWeakPointer< Tomahawk::PeerInfo > ownRef;
+    QWeakPointer< Hatchet::PeerInfo > ownRef;
     QPointer< ControlConnection > controlConnection;
 
     SipPlugin* parent;
@@ -65,7 +65,7 @@ private:
 
     mutable QByteArray avatarBuffer;
     mutable QByteArray avatarHash;
-    mutable QHash< TomahawkUtils::ImageMode, QHash< int, QPixmap > > coverCache;
+    mutable QHash< HatchetUtils::ImageMode, QHash< int, QPixmap > > coverCache;
 };
 
 }

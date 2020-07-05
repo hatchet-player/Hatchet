@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DatabaseCommand_SetPlaylistRevision.h"
@@ -26,12 +26,12 @@
 #include "DatabaseImpl.h"
 #include "PlaylistEntry.h"
 #include "Source.h"
-#include "TomahawkSqlQuery.h"
+#include "HatchetSqlQuery.h"
 #include "Track.h"
 
 #include <QSqlQuery>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 DatabaseCommand_SetPlaylistRevision::DatabaseCommand_SetPlaylistRevision(
@@ -131,7 +131,7 @@ DatabaseCommand_SetPlaylistRevision::exec( DatabaseImpl* lib )
     QString currentRevision;
     // get the current revision for this playlist
     // this also serves to check the playlist exists.
-    TomahawkSqlQuery chkq = lib->newquery();
+    HatchetSqlQuery chkq = lib->newquery();
     chkq.prepare( "SELECT currentrevision FROM playlist WHERE guid = ?" );
     chkq.addBindValue( m_playlistguid );
     if ( chkq.exec() && chkq.next() )
@@ -148,10 +148,10 @@ DatabaseCommand_SetPlaylistRevision::exec( DatabaseImpl* lib )
     }
 
     QVariantList vlist = m_orderedguids;
-    const QByteArray entries = TomahawkUtils::toJson( vlist );
+    const QByteArray entries = HatchetUtils::toJson( vlist );
 
     // add any new items:
-    TomahawkSqlQuery adde = lib->newquery();
+    HatchetSqlQuery adde = lib->newquery();
     if ( m_localOnly )
     {
         QString sql = "UPDATE playlist_item SET result_hint = ? WHERE guid = ?";
@@ -225,7 +225,7 @@ DatabaseCommand_SetPlaylistRevision::exec( DatabaseImpl* lib )
     }
 
     // add / update the revision:
-    TomahawkSqlQuery query = lib->newquery();
+    HatchetSqlQuery query = lib->newquery();
     QString sql = "INSERT INTO playlist_revision(guid, playlist, entries, author, timestamp, previous_revision) "
                   "VALUES(?, ?, ?, ?, ?, ?)";
     query.prepare( sql );
@@ -244,7 +244,7 @@ DatabaseCommand_SetPlaylistRevision::exec( DatabaseImpl* lib )
     {
         tDebug() << "Updating current revision, optimistic locking ok" << m_newrev;
 
-        TomahawkSqlQuery query2 = lib->newquery();
+        HatchetSqlQuery query2 = lib->newquery();
         query2.prepare( "UPDATE playlist SET currentrevision = ? WHERE guid = ?" );
         query2.bindValue( 0, m_newrev );
         query2.bindValue( 1, m_playlistguid );
@@ -254,7 +254,7 @@ DatabaseCommand_SetPlaylistRevision::exec( DatabaseImpl* lib )
 
         // load previous revision entries, which we need to pass on
         // so the change can be diffed
-        TomahawkSqlQuery query_entries = lib->newquery();
+        HatchetSqlQuery query_entries = lib->newquery();
         query_entries.prepare( "SELECT entries, playlist, author, timestamp, previous_revision "
                                "FROM playlist_revision "
                                "WHERE guid = :guid" );
@@ -263,7 +263,7 @@ DatabaseCommand_SetPlaylistRevision::exec( DatabaseImpl* lib )
         if ( query_entries.next() )
         {
             bool ok;
-            QVariant v = TomahawkUtils::parseJson( query_entries.value( 0 ).toByteArray(), &ok );
+            QVariant v = HatchetUtils::parseJson( query_entries.value( 0 ).toByteArray(), &ok );
             Q_ASSERT( ok && v.type() == QVariant::List ); //TODO
 
             m_previous_rev_orderedguids = v.toStringList();
@@ -286,7 +286,7 @@ DatabaseCommand_SetPlaylistRevision::setAddedentriesV( const QVariantList& vlist
     foreach( const QVariant& v, vlist )
     {
         PlaylistEntry* pep = new PlaylistEntry;
-        TomahawkUtils::qvariant2qobject( v.toMap(), pep );
+        HatchetUtils::qvariant2qobject( v.toMap(), pep );
 
         if ( pep->isValid() )
             m_addedentries << plentry_ptr( pep );
@@ -303,7 +303,7 @@ DatabaseCommand_SetPlaylistRevision::addedentriesV() const
         if ( !pe->isValid() )
             continue;
 
-        QVariant v = TomahawkUtils::qobject2qvariant( pe.data() );
+        QVariant v = HatchetUtils::qobject2qvariant( pe.data() );
         vlist << v;
     }
     return vlist;

@@ -1,2 +1,2 @@
-DOCKER_IMAGE_NAME=tomahawkmusicplayer/ubuntu
+DOCKER_IMAGE_NAME=hatchetmusicplayer/ubuntu
 DOCKER_IMAGE_VER=latest

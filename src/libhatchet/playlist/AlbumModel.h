@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef ALBUMMODEL_H
@@ -40,29 +40,29 @@ public:
     explicit AlbumModel( QObject* parent = 0 );
     virtual ~AlbumModel();
 
-    Tomahawk::collection_ptr collection() const { return m_collection; }
+    Hatchet::collection_ptr collection() const { return m_collection; }
 
-    void addCollection( const Tomahawk::collection_ptr& collection, bool overwrite = false );
-    void addFilteredCollection( const Tomahawk::collection_ptr& collection, unsigned int amount, Tomahawk::DatabaseCommand_AllAlbums::SortOrder order, bool overwrite = false );
+    void addCollection( const Hatchet::collection_ptr& collection, bool overwrite = false );
+    void addFilteredCollection( const Hatchet::collection_ptr& collection, unsigned int amount, Hatchet::DatabaseCommand_AllAlbums::SortOrder order, bool overwrite = false );
 
-    PlayableItem* findItem( const Tomahawk::artist_ptr& artist ) const;
-    PlayableItem* findItem( const Tomahawk::album_ptr& album ) const;
+    PlayableItem* findItem( const Hatchet::artist_ptr& artist ) const;
+    PlayableItem* findItem( const Hatchet::album_ptr& album ) const;
 
 public slots:
-    void addAlbums( const QList<Tomahawk::album_ptr>& albums );
-    void addArtists( const QList<Tomahawk::artist_ptr>& artists );
-    void addQueries( const QList<Tomahawk::query_ptr>& queries );
+    void addAlbums( const QList<Hatchet::album_ptr>& albums );
+    void addArtists( const QList<Hatchet::artist_ptr>& artists );
+    void addQueries( const QList<Hatchet::query_ptr>& queries );
 
 signals:
 
 private slots:
-    void onSourceAdded( const Tomahawk::source_ptr& source );
+    void onSourceAdded( const Hatchet::source_ptr& source );
     void onCollectionChanged();
 
 private:
     bool m_overwriteOnAdd;
 
-    Tomahawk::collection_ptr m_collection;
+    Hatchet::collection_ptr m_collection;
 };
 
 #endif // ALBUMMODEL_H

@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef TRACKDATA_H
@@ -31,7 +31,7 @@
 #include "Typedefs.h"
 
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 class DatabaseCommand_LogPlayback;
@@ -53,13 +53,13 @@ public:
     QString id() const;
 
     QString toString() const;
-    Tomahawk::query_ptr toQuery();
+    Hatchet::query_ptr toQuery();
 
     const QString& artistSortname() const { return m_artistSortname; }
     const QString& trackSortname() const { return m_trackSortname; }
 
-    QWeakPointer< Tomahawk::TrackData > weakRef() { return m_ownRef; }
-    void setWeakRef( QWeakPointer< Tomahawk::TrackData > weakRef ) { m_ownRef = weakRef; }
+    QWeakPointer< Hatchet::TrackData > weakRef() { return m_ownRef; }
+    void setWeakRef( QWeakPointer< Hatchet::TrackData > weakRef ) { m_ownRef = weakRef; }
 
     QString artist() const { return m_artist; }
     QString track() const { return m_track; }
@@ -69,7 +69,7 @@ public:
     void setLoved( bool loved );
     bool loved();
 
-    void share( const Tomahawk::source_ptr& source );
+    void share( const Hatchet::source_ptr& source );
 
     unsigned int trackId() const;
     void loadId( bool autoCreate ) const;
@@ -79,19 +79,19 @@ public:
     void setAttributes( const QVariantMap& map ) { m_attributes = map; updateAttributes(); }
 
     void loadSocialActions( bool force = false );
-    QList< Tomahawk::SocialAction > allSocialActions() const;
-    QList< Tomahawk::SocialAction > socialActions( const QString& actionName, const QVariant& value = QVariant(), bool filterDupeSourceNames = false );
-    void setAllSocialActions( const QList< Tomahawk::SocialAction >& socialActions );
+    QList< Hatchet::SocialAction > allSocialActions() const;
+    QList< Hatchet::SocialAction > socialActions( const QString& actionName, const QVariant& value = QVariant(), bool filterDupeSourceNames = false );
+    void setAllSocialActions( const QList< Hatchet::SocialAction >& socialActions );
 
     void loadStats();
-    QList< Tomahawk::PlaybackLog > playbackHistory( const Tomahawk::source_ptr& source = Tomahawk::source_ptr() ) const;
-    void setPlaybackHistory( const QList< Tomahawk::PlaybackLog >& playbackData );
-    unsigned int playbackCount( const Tomahawk::source_ptr& source = Tomahawk::source_ptr() );
+    QList< Hatchet::PlaybackLog > playbackHistory( const Hatchet::source_ptr& source = Hatchet::source_ptr() ) const;
+    void setPlaybackHistory( const QList< Hatchet::PlaybackLog >& playbackData );
+    unsigned int playbackCount( const Hatchet::source_ptr& source = Hatchet::source_ptr() );
 
     unsigned int chartPosition() const;
     unsigned int chartCount() const;
 
-    QList<Tomahawk::query_ptr> similarTracks() const;
+    QList<Hatchet::query_ptr> similarTracks() const;
     QStringList lyrics() const;
 
 public slots:
@@ -107,7 +107,7 @@ signals:
 private slots:
     void onTrackStatsLoaded( unsigned int chartPos, unsigned int chartCount );
 
-    void infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData requestData, QVariant output );
+    void infoSystemInfo( Hatchet::InfoSystem::InfoRequestData requestData, QVariant output );
     void infoSystemFinished( QString target );
 
 private:
@@ -139,7 +139,7 @@ private:
     unsigned int m_chartCount;
 
     bool m_simTracksLoaded;
-    QList<Tomahawk::query_ptr> m_similarTracks;
+    QList<Hatchet::query_ptr> m_similarTracks;
 
     bool m_lyricsLoaded;
     QStringList m_lyrics;
@@ -151,7 +151,7 @@ private:
     mutable QFuture<unsigned int> m_idFuture;
     mutable unsigned int m_trackId;
 
-    QWeakPointer< Tomahawk::TrackData > m_ownRef;
+    QWeakPointer< Hatchet::TrackData > m_ownRef;
 
     static QHash< QString, trackdata_wptr > s_trackDatasByName;
     static QHash< unsigned int, trackdata_wptr > s_trackDatasById;
@@ -161,9 +161,9 @@ private:
     friend class DatabaseCommand_PlaybackHistory;
 };
 
-} // namespace Tomahawk
+} // namespace Hatchet
 
-Q_DECLARE_METATYPE( QList<Tomahawk::PlaybackLog> )
-Q_DECLARE_METATYPE( Tomahawk::trackdata_ptr )
+Q_DECLARE_METATYPE( QList<Hatchet::PlaybackLog> )
+Q_DECLARE_METATYPE( Hatchet::trackdata_ptr )
 
 #endif // TRACKDATA_H

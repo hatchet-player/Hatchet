@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "CategoryItems.h"
@@ -22,18 +22,18 @@
 #include <QMimeData>
 
 #include "DropJob.h"
-#include "TomahawkApp.h"
+#include "HatchetApp.h"
 #include "ViewManager.h"
 #include "ViewPage.h"
 #include "SourceList.h"
 #include "SourceTreeView.h"
-#include "TomahawkWindow.h"
-#include "utils/TomahawkUtils.h"
+#include "HatchetWindow.h"
+#include "utils/HatchetUtils.h"
 #include "playlist/dynamic/GeneratorInterface.h"
 #include "utils/ImageRegistry.h"
 #include "utils/Logger.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 /// CategoryAddItem
@@ -126,13 +126,13 @@ CategoryAddItem::supportedDropTypes( const QMimeData* data ) const
 
     if ( m_categoryType == SourcesModel::PlaylistsCategory )
     {
-        if ( data->hasFormat( "application/tomahawk.query.list" ) )
+        if ( data->hasFormat( "application/hatchet.query.list" ) )
             return types | DropTypeThisTrack | DropTypeThisAlbum | DropTypeAllFromArtist | DropTypeLocalItems | DropTypeTop50;
-        else if ( data->hasFormat( "application/tomahawk.result.list" ) )
+        else if ( data->hasFormat( "application/hatchet.result.list" ) )
             return types | DropTypeThisTrack | DropTypeThisAlbum | DropTypeAllFromArtist | DropTypeLocalItems | DropTypeTop50;
-        else if ( data->hasFormat( "application/tomahawk.metadata.album" ) )
+        else if ( data->hasFormat( "application/hatchet.metadata.album" ) )
             return types | DropTypeThisAlbum | DropTypeAllFromArtist | DropTypeLocalItems | DropTypeTop50;
-        else if ( data->hasFormat( "application/tomahawk.metadata.artist" ) )
+        else if ( data->hasFormat( "application/hatchet.metadata.artist" ) )
             return types | DropTypeAllFromArtist | DropTypeLocalItems | DropTypeTop50;
     }
 
@@ -145,13 +145,13 @@ CategoryAddItem::dropMimeData( const QMimeData* data, Qt::DropAction )
 {
     // As DropJob always converts dropped items to query_ptrs for all tracks we need to extract album/artist metadata ourselves for stations
     if ( m_categoryType == SourcesModel::StationsCategory &&
-         ( data->hasFormat( "application/tomahawk.metadata.artist" ) || data->hasFormat( "application/tomahawk.metadata.album" ) ) )
+         ( data->hasFormat( "application/hatchet.metadata.artist" ) || data->hasFormat( "application/hatchet.metadata.album" ) ) )
     {
         QByteArray mimeData;
-        if ( data->hasFormat( "application/tomahawk.metadata.artist" ) )
-            mimeData = data->data( "application/tomahawk.metadata.artist" );
-        else if ( data->hasFormat( "application/tomahawk.metadata.album" ) )
-            mimeData = data->data( "application/tomahawk.metadata.album" );
+        if ( data->hasFormat( "application/hatchet.metadata.artist" ) )
+            mimeData = data->data( "application/hatchet.metadata.artist" );
+        else if ( data->hasFormat( "application/hatchet.metadata.album" ) )
+            mimeData = data->data( "application/hatchet.metadata.album" );
 
         QDataStream stream( &mimeData, QIODevice::ReadOnly );
 
@@ -169,7 +169,7 @@ CategoryAddItem::dropMimeData( const QMimeData* data, Qt::DropAction )
                 firstArtist = artist;
 
             QString album;
-            if ( data->hasFormat( "application/tomahawk.metadata.album" ) )
+            if ( data->hasFormat( "application/hatchet.metadata.album" ) )
                 stream >> album; // throw away album title... we only create artists filters for now
 
             dyncontrol_ptr c = newpl->generator()->createControl( "Artist" );
@@ -180,7 +180,7 @@ CategoryAddItem::dropMimeData( const QMimeData* data, Qt::DropAction )
         QString name = firstArtist.isEmpty() ? tr( "New Station" ) : tr( "%1 Station" ).arg( firstArtist );
         newpl->createNewRevision( uuid(), newpl->currentrevision(), newpl->type(), contrls );
         newpl->setProperty( "newname", name );
-        connect( newpl.data(), SIGNAL( dynamicRevisionLoaded( Tomahawk::DynamicPlaylistRevision ) ), this, SLOT( playlistToRenameLoaded() ) );
+        connect( newpl.data(), SIGNAL( dynamicRevisionLoaded( Hatchet::DynamicPlaylistRevision ) ), this, SLOT( playlistToRenameLoaded() ) );
 
         ViewManager::instance()->show( newpl );
         return true;
@@ -190,9 +190,9 @@ CategoryAddItem::dropMimeData( const QMimeData* data, Qt::DropAction )
     // If they never will, or if they do and this code still is not used, throw it away!
     // If you enable this, make sure to remove the checks for album above.
 
-    /* if ( m_categoryType == SourcesModel::StationsCategory && data->hasFormat( "application/tomahawk.metadata.album" ) )
+    /* if ( m_categoryType == SourcesModel::StationsCategory && data->hasFormat( "application/hatchet.metadata.album" ) )
     {
-        QByteArray mimeData = data->data( "application/tomahawk.metadata.album" );
+        QByteArray mimeData = data->data( "application/hatchet.metadata.album" );
         QDataStream stream( &mimeData, QIODevice::ReadOnly );
 
         dynplaylist_ptr newpl = DynamicPlaylist::create( SourceList::instance()->getLocal(), uuid(), QString(), "", SourceList::instance()->getLocal()->friendlyName(), OnDemand, false );
@@ -232,7 +232,7 @@ CategoryAddItem::dropMimeData( const QMimeData* data, Qt::DropAction )
     // Create a new playlist seeded with these items
     DropJob *dj = new DropJob();
 
-    connect( dj, SIGNAL( tracks( QList< Tomahawk::query_ptr > ) ), this, SLOT( parsedDroppedTracks( QList< Tomahawk::query_ptr > ) ), Qt::QueuedConnection );
+    connect( dj, SIGNAL( tracks( QList< Hatchet::query_ptr > ) ), this, SLOT( parsedDroppedTracks( QList< Hatchet::query_ptr > ) ), Qt::QueuedConnection );
     if ( dropType() == DropTypeAllFromArtist )
         dj->setGetWholeArtists( true );
     if ( dropType() == DropTypeThisAlbum )
@@ -267,8 +267,8 @@ CategoryAddItem::playlistToRenameLoaded()
     else
         QTimer::singleShot( 400, APP->mainWindow()->sourceTreeView(), SLOT( renamePlaylist() ) );
 
-    disconnect( pl, SIGNAL( dynamicRevisionLoaded( Tomahawk::DynamicPlaylistRevision ) ), this, SLOT( playlistToRenameLoaded() ) );
-    disconnect( pl, SIGNAL( revisionLoaded( Tomahawk::PlaylistRevision ) ), this, SLOT( playlistToRenameLoaded() ) );
+    disconnect( pl, SIGNAL( dynamicRevisionLoaded( Hatchet::DynamicPlaylistRevision ) ), this, SLOT( playlistToRenameLoaded() ) );
+    disconnect( pl, SIGNAL( revisionLoaded( Hatchet::PlaylistRevision ) ), this, SLOT( playlistToRenameLoaded() ) );
 }
 
 
@@ -280,7 +280,7 @@ CategoryAddItem::parsedDroppedTracks( const QList< query_ptr >& tracks )
         playlist_ptr newpl = Playlist::create( SourceList::instance()->getLocal(), uuid(), "New Playlist", "", SourceList::instance()->getLocal()->friendlyName(), false, tracks );
         ViewManager::instance()->show( newpl );
 
-        connect( newpl.data(), SIGNAL( revisionLoaded( Tomahawk::PlaylistRevision ) ), this, SLOT( playlistToRenameLoaded() ) );
+        connect( newpl.data(), SIGNAL( revisionLoaded( Hatchet::PlaylistRevision ) ), this, SLOT( playlistToRenameLoaded() ) );
     }
     else if ( m_categoryType == SourcesModel::StationsCategory )
     {
@@ -293,7 +293,7 @@ CategoryAddItem::parsedDroppedTracks( const QList< query_ptr >& tracks )
 
         // now we want to add each query as a song or similar artist filter...
         QList< dyncontrol_ptr > controls;
-        foreach ( const Tomahawk::query_ptr& q, tracks )
+        foreach ( const Hatchet::query_ptr& q, tracks )
         {
             dyncontrol_ptr c = newpl->generator()->createControl( "Song" );
             c->setInput( QString( "%1 %2" ).arg( q->track()->track() ).arg( q->track()->artist() ) );
@@ -303,7 +303,7 @@ CategoryAddItem::parsedDroppedTracks( const QList< query_ptr >& tracks )
         newpl->createNewRevision( uuid(), newpl->currentrevision(), newpl->type(), controls );
 
         ViewManager::instance()->show( newpl );
-        connect( newpl.data(), SIGNAL( dynamicRevisionLoaded( Tomahawk::DynamicPlaylistRevision ) ), this, SLOT( playlistToRenameLoaded() ) );
+        connect( newpl.data(), SIGNAL( dynamicRevisionLoaded( Hatchet::DynamicPlaylistRevision ) ), this, SLOT( playlistToRenameLoaded() ) );
     }
 }
 

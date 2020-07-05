@@ -1,33 +1,33 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2012       Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "InfoSystemWorker.h"
 
 #include "utils/Logger.h"
 #include "utils/ShortLinkHelper.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "config.h"
 #include "utils/LinkGenerator.h"
 #include "InfoSystemCache.h"
 #include "PlaylistEntry.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
 #include "utils/PluginLoader.h"
 #include "utils/Closure.h"
@@ -37,7 +37,7 @@
 #include <QNetworkConfiguration>
 #include <QNetworkProxy>
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 namespace InfoSystem
@@ -70,7 +70,7 @@ InfoSystemWorker::plugins() const
 
 
 void
-InfoSystemWorker::init( Tomahawk::InfoSystem::InfoSystemCache* cache )
+InfoSystemWorker::init( Hatchet::InfoSystem::InfoSystemCache* cache )
 {
     tDebug() << Q_FUNC_INFO;
     m_shortLinksWaiting = 0;
@@ -81,7 +81,7 @@ InfoSystemWorker::init( Tomahawk::InfoSystem::InfoSystemCache* cache )
 
 
 void
-InfoSystemWorker::addInfoPlugin( Tomahawk::InfoSystem::InfoPluginPtr plugin )
+InfoSystemWorker::addInfoPlugin( Hatchet::InfoSystem::InfoPluginPtr plugin )
 {
     tDebug() << Q_FUNC_INFO << plugin;
     foreach ( InfoPluginPtr ptr, m_plugins )
@@ -105,24 +105,24 @@ InfoSystemWorker::addInfoPlugin( Tomahawk::InfoSystem::InfoPluginPtr plugin )
 
     connect(
         plugin.data(),
-            SIGNAL( info( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ),
+            SIGNAL( info( Hatchet::InfoSystem::InfoRequestData, QVariant ) ),
             this,
-            SLOT( infoSlot( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ),
+            SLOT( infoSlot( Hatchet::InfoSystem::InfoRequestData, QVariant ) ),
             Qt::QueuedConnection
     );
 
     connect(
         plugin.data(),
-            SIGNAL( getCachedInfo( Tomahawk::InfoSystem::InfoStringHash, qint64, Tomahawk::InfoSystem::InfoRequestData ) ),
+            SIGNAL( getCachedInfo( Hatchet::InfoSystem::InfoStringHash, qint64, Hatchet::InfoSystem::InfoRequestData ) ),
             m_cache,
-            SLOT( getCachedInfoSlot( Tomahawk::InfoSystem::InfoStringHash, qint64, Tomahawk::InfoSystem::InfoRequestData ) ),
+            SLOT( getCachedInfoSlot( Hatchet::InfoSystem::InfoStringHash, qint64, Hatchet::InfoSystem::InfoRequestData ) ),
             Qt::QueuedConnection
     );
     connect(
         plugin.data(),
-            SIGNAL( updateCache( Tomahawk::InfoSystem::InfoStringHash, qint64, Tomahawk::InfoSystem::InfoType, QVariant ) ),
+            SIGNAL( updateCache( Hatchet::InfoSystem::InfoStringHash, qint64, Hatchet::InfoSystem::InfoType, QVariant ) ),
             m_cache,
-            SLOT( updateCacheSlot( Tomahawk::InfoSystem::InfoStringHash, qint64, Tomahawk::InfoSystem::InfoType, QVariant ) ),
+            SLOT( updateCacheSlot( Hatchet::InfoSystem::InfoStringHash, qint64, Hatchet::InfoSystem::InfoType, QVariant ) ),
             Qt::QueuedConnection
     );
 
@@ -134,7 +134,7 @@ InfoSystemWorker::addInfoPlugin( Tomahawk::InfoSystem::InfoPluginPtr plugin )
 
 
 void
-InfoSystemWorker::removeInfoPlugin( Tomahawk::InfoSystem::InfoPluginPtr plugin )
+InfoSystemWorker::removeInfoPlugin( Hatchet::InfoSystem::InfoPluginPtr plugin )
 {
     tDebug() << Q_FUNC_INFO << plugin;
 
@@ -161,7 +161,7 @@ InfoSystemWorker::removeInfoPlugin( Tomahawk::InfoSystem::InfoPluginPtr plugin )
 void
 InfoSystemWorker::loadInfoPlugins()
 {
-    QHash< QString, QObject* > plugins = Tomahawk::Utils::PluginLoader( "infoplugin" ).loadPlugins();
+    QHash< QString, QObject* > plugins = Hatchet::Utils::PluginLoader( "infoplugin" ).loadPlugins();
     foreach ( QObject* plugin, plugins.values() )
     {
         InfoPlugin* infoPlugin = qobject_cast< InfoPlugin* >( plugin );
@@ -212,7 +212,7 @@ InfoSystemWorker::determineOrderedMatches( const InfoType type ) const
 
 
 void
-InfoSystemWorker::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
+InfoSystemWorker::getInfo( Hatchet::InfoSystem::InfoRequestData requestData )
 {
     //qDebug() << Q_FUNC_INFO << "type is " << requestData.type << " and allSources = " << (allSources ? "true" : "false" );
 
@@ -223,7 +223,7 @@ InfoSystemWorker::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
         QTimer* timer = new QTimer();
         timer->setInterval( 500 );
         timer->setSingleShot( true );
-        NewClosure( timer, SIGNAL( timeout() ), this, SLOT( getInfo( Tomahawk::InfoSystem::InfoRequestData ) ), requestData );
+        NewClosure( timer, SIGNAL( timeout() ), this, SLOT( getInfo( Hatchet::InfoSystem::InfoRequestData ) ), requestData );
         timer->start();
 
 /*        emit info( requestData, QVariant() );
@@ -247,7 +247,7 @@ InfoSystemWorker::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
         {
             if ( m_savedRequestMap.contains( requestData.requestId ) )
                 tDebug() << Q_FUNC_INFO << "Warning: reassigning requestId because it already exists";
-            requestData.internalId = TomahawkUtils::infosystemRequestId();
+            requestData.internalId = HatchetUtils::infosystemRequestId();
         }
         else
             requestData.internalId = requestData.requestId;
@@ -270,7 +270,7 @@ InfoSystemWorker::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
         data->customData = requestData.customData;
         m_savedRequestMap[ requestId ] = data;
 
-        QMetaObject::invokeMethod( ptr.data(), "getInfo", Qt::QueuedConnection, Q_ARG( Tomahawk::InfoSystem::InfoRequestData, requestData ) );
+        QMetaObject::invokeMethod( ptr.data(), "getInfo", Qt::QueuedConnection, Q_ARG( Hatchet::InfoSystem::InfoRequestData, requestData ) );
     }
 
     if ( !foundOne )
@@ -282,20 +282,20 @@ InfoSystemWorker::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
 
 
 void
-InfoSystemWorker::pushInfo( Tomahawk::InfoSystem::InfoPushData pushData )
+InfoSystemWorker::pushInfo( Hatchet::InfoSystem::InfoPushData pushData )
 {
     tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "type is " << pushData.type << "number of matching plugins: " << m_infoPushMap[ pushData.type ].size();
 
     Q_FOREACH( InfoPluginPtr ptr, m_infoPushMap[ pushData.type ] )
     {
         if( ptr )
-            QMetaObject::invokeMethod( ptr.data(), "pushInfo", Qt::QueuedConnection, Q_ARG( Tomahawk::InfoSystem::InfoPushData, pushData ) );
+            QMetaObject::invokeMethod( ptr.data(), "pushInfo", Qt::QueuedConnection, Q_ARG( Hatchet::InfoSystem::InfoPushData, pushData ) );
     }
 }
 
 
 void
-InfoSystemWorker::infoSlot( Tomahawk::InfoSystem::InfoRequestData requestData, QVariant output )
+InfoSystemWorker::infoSlot( Hatchet::InfoSystem::InfoRequestData requestData, QVariant output )
 {
 //    qDebug() << Q_FUNC_INFO << "with requestId" << requestId;
 
@@ -324,7 +324,7 @@ InfoSystemWorker::infoSlot( Tomahawk::InfoSystem::InfoRequestData requestData, Q
 
 
 void
-InfoSystemWorker::checkFinished( const Tomahawk::InfoSystem::InfoRequestData &requestData )
+InfoSystemWorker::checkFinished( const Hatchet::InfoSystem::InfoRequestData &requestData )
 {
     if ( m_dataTracker[ requestData.caller ][ requestData.type ] == 0 )
         emit finished( requestData.caller, requestData.type );
@@ -394,4 +394,4 @@ InfoSystemWorker::checkTimeoutsTimerFired()
 
 } //namespace InfoSystem
 
-} //namespace Tomahawk
+} //namespace Hatchet

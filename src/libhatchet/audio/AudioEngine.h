@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef AUDIOENGINE_H
@@ -76,7 +76,7 @@ public:
      *
      * Note: This might be different to the current playlist!
      */
-    Tomahawk::playlistinterface_ptr currentTrackPlaylist() const;
+    Hatchet::playlistinterface_ptr currentTrackPlaylist() const;
 
     /**
      * Returns the PlaylistInterface of the current playlist.
@@ -84,10 +84,10 @@ public:
      * Note: The currently playing track might still be from a different
      * playlist!
      */
-    Tomahawk::playlistinterface_ptr playlist() const;
+    Hatchet::playlistinterface_ptr playlist() const;
 
-    Tomahawk::result_ptr currentTrack() const;
-    Tomahawk::query_ptr stopAfterTrack() const;
+    Hatchet::result_ptr currentTrack() const;
+    Hatchet::query_ptr stopAfterTrack() const;
 
     /**
      * Get the current position in the media.
@@ -135,25 +135,25 @@ public slots:
     void toggleMute();
 
     void play( const QUrl& url );
-    void playItem( Tomahawk::playlistinterface_ptr playlist, const Tomahawk::result_ptr& result, const Tomahawk::query_ptr& fromQuery = Tomahawk::query_ptr() );
-    void playItem( Tomahawk::playlistinterface_ptr playlist, const Tomahawk::query_ptr& query );
-    void playItem( const Tomahawk::artist_ptr& artist );
-    void playItem( const Tomahawk::album_ptr& album );
-    void playPlaylistInterface( const Tomahawk::playlistinterface_ptr& playlist );
-    void setPlaylist( Tomahawk::playlistinterface_ptr playlist );
-    void setQueue( const Tomahawk::playlistinterface_ptr& queue );
+    void playItem( Hatchet::playlistinterface_ptr playlist, const Hatchet::result_ptr& result, const Hatchet::query_ptr& fromQuery = Hatchet::query_ptr() );
+    void playItem( Hatchet::playlistinterface_ptr playlist, const Hatchet::query_ptr& query );
+    void playItem( const Hatchet::artist_ptr& artist );
+    void playItem( const Hatchet::album_ptr& album );
+    void playPlaylistInterface( const Hatchet::playlistinterface_ptr& playlist );
+    void setPlaylist( Hatchet::playlistinterface_ptr playlist );
+    void setQueue( const Hatchet::playlistinterface_ptr& queue );
 
-    void setStopAfterTrack( const Tomahawk::query_ptr& query );
+    void setStopAfterTrack( const Hatchet::query_ptr& query );
 
-    void setRepeatMode( Tomahawk::PlaylistModes::RepeatMode mode );
+    void setRepeatMode( Hatchet::PlaylistModes::RepeatMode mode );
     void setShuffled( bool enabled );
 
 signals:
     void initialized();
 
-    void loading( const Tomahawk::result_ptr track );
-    void started( const Tomahawk::result_ptr track );
-    void finished( const Tomahawk::result_ptr track );
+    void loading( const Hatchet::result_ptr track );
+    void started( const Hatchet::result_ptr track );
+    void finished( const Hatchet::result_ptr track );
     void stopped();
     void paused();
     void resumed();
@@ -165,7 +165,7 @@ signals:
     void seeked( qint64 ms );
 
     void shuffleModeChanged( bool enabled );
-    void repeatModeChanged( Tomahawk::PlaylistModes::RepeatMode mode );
+    void repeatModeChanged( Hatchet::PlaylistModes::RepeatMode mode );
     void controlStateChanged();
     void stateChanged( AudioState newState, AudioState oldState );
     void volumeChanged( int volume /* in percent */ );
@@ -176,19 +176,19 @@ signals:
     void timerPercentage( unsigned int percentage );
     void trackPosition( float position );
 
-    void playlistChanged( Tomahawk::playlistinterface_ptr playlist );
-    void currentTrackPlaylistChanged( Tomahawk::playlistinterface_ptr playlist );
+    void playlistChanged( Hatchet::playlistinterface_ptr playlist );
+    void currentTrackPlaylistChanged( Hatchet::playlistinterface_ptr playlist );
 
     void error( AudioEngine::AudioErrorCode errorCode );
 
 private slots:
-    void loadTrack( const Tomahawk::result_ptr& result ); //async!
+    void loadTrack( const Hatchet::result_ptr& result ); //async!
     void gotStreamUrl( const QVariantMap& data );
-    void gotRedirectedStreamUrl( const Tomahawk::result_ptr& result, NetworkReply* reply );
+    void gotRedirectedStreamUrl( const Hatchet::result_ptr& result, NetworkReply* reply );
 
 
-    void performLoadIODevice( const Tomahawk::result_ptr& result, const QString& url ); //only call from loadTrack kthxbi
-    void performLoadTrack( const Tomahawk::result_ptr result, const QString& url, QSharedPointer< QIODevice > io ); //only call from loadTrack or performLoadIODevice kthxbi
+    void performLoadIODevice( const Hatchet::result_ptr& result, const QString& url ); //only call from loadTrack kthxbi
+    void performLoadTrack( const Hatchet::result_ptr result, const QString& url, QSharedPointer< QIODevice > io ); //only call from loadTrack or performLoadIODevice kthxbi
     void loadPreviousTrack();
     void loadNextTrack();
 
@@ -196,16 +196,16 @@ private slots:
     void timerTriggered( qint64 time );
     void onPositionChanged( float new_position );
 
-    void setCurrentTrack( const Tomahawk::result_ptr& result );
-    void onNowPlayingInfoReady( const Tomahawk::InfoSystem::InfoType type );
+    void setCurrentTrack( const Hatchet::result_ptr& result );
+    void onNowPlayingInfoReady( const Hatchet::InfoSystem::InfoType type );
     void onPlaylistNextTrackAvailable();
 
-    void sendNowPlayingNotification( const Tomahawk::InfoSystem::InfoType type );
+    void sendNowPlayingNotification( const Hatchet::InfoSystem::InfoType type );
     void sendWaitingNotification() const;
 
 private:
     void setState( AudioState state );
-    void setCurrentTrackPlaylist( const Tomahawk::playlistinterface_ptr& playlist );
+    void setCurrentTrackPlaylist( const Hatchet::playlistinterface_ptr& playlist );
 
 //    void audioDataArrived( QMap< AudioEngine::AudioChannel, QVector< qint16 > >& data );
 

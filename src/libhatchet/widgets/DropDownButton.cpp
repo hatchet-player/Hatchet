@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DropDownButton.h"
@@ -25,11 +25,11 @@
 #include "Artist.h"
 #include "Album.h"
 #include "Query.h"
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 DropDownButton::DropDownButton( QWidget* parent )
@@ -67,13 +67,13 @@ DropDownButton::drawPrimitive( QPainter* p, const QRect& rect, const QString& te
     p->setRenderHint( QPainter::TextAntialiasing );
     QRect r = rect.adjusted( 2, 2, -2, -2 );
 
-    QColor bgColor = hovering ? TomahawkStyle::PLAYLIST_BUTTON_HOVER_BACKGROUND : TomahawkStyle::PLAYLIST_BUTTON_BACKGROUND;
+    QColor bgColor = hovering ? HatchetStyle::PLAYLIST_BUTTON_HOVER_BACKGROUND : HatchetStyle::PLAYLIST_BUTTON_BACKGROUND;
 
     p->setOpacity( 1.0 );
     p->setPen( bgColor );
     p->setBrush( bgColor );
     p->drawRect( r );
-    p->setPen( TomahawkStyle::PLAYLIST_BUTTON_FOREGROUND );
+    p->setPen( HatchetStyle::PLAYLIST_BUTTON_FOREGROUND );
     
     int dropdownWidth = 0;
 
@@ -90,8 +90,8 @@ DropDownButton::drawPrimitive( QPainter* p, const QRect& rect, const QString& te
         dropPath.lineTo( currentPosition.x() + 6, currentPosition.y() );
         dropPath.lineTo( currentPosition.x() + 3, currentPosition.y() + 3 );
         dropPath.closeSubpath();
-        p->setPen( TomahawkStyle::PLAYLIST_BUTTON_FOREGROUND );
-        p->setBrush( TomahawkStyle::PLAYLIST_BUTTON_FOREGROUND );
+        p->setPen( HatchetStyle::PLAYLIST_BUTTON_FOREGROUND );
+        p->setBrush( HatchetStyle::PLAYLIST_BUTTON_FOREGROUND );
         p->setRenderHint( QPainter::Antialiasing, false );
         p->drawPath( dropPath );
         p->restore();
@@ -142,7 +142,7 @@ void
 DropDownButton::setupPainter( QPainter* p )
 {
     QFont f = p->font();
-    f.setPointSize( TomahawkUtils::defaultFontSize() - 1 );
+    f.setPointSize( HatchetUtils::defaultFontSize() - 1 );
     f.setBold( true );
     p->setFont( f );
 }

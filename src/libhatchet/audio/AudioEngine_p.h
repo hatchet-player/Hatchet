@@ -30,11 +30,11 @@ public slots:
 private:
     QSharedPointer<QIODevice> input;
 
-    Tomahawk::query_ptr stopAfterTrack;
-    Tomahawk::result_ptr currentTrack;
-    Tomahawk::playlistinterface_ptr playlist;
-    Tomahawk::playlistinterface_ptr currentTrackPlaylist;
-    Tomahawk::playlistinterface_ptr queue;
+    Hatchet::query_ptr stopAfterTrack;
+    Hatchet::result_ptr currentTrack;
+    Hatchet::playlistinterface_ptr playlist;
+    Hatchet::playlistinterface_ptr currentTrackPlaylist;
+    Hatchet::playlistinterface_ptr queue;
 
     AudioOutput* audioOutput;
 

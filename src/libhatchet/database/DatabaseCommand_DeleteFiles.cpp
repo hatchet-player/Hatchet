@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DatabaseCommand_DeleteFiles.h"
@@ -26,14 +26,14 @@
 #include "database/DatabaseImpl.h"
 #include "network/Servent.h"
 #include "utils/Logger.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 
 #include "Artist.h"
 #include "Album.h"
 #include "PlaylistEntry.h"
 #include "Source.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 // After changing a collection, we need to tell other bits of the system:
@@ -64,11 +64,11 @@ DatabaseCommand_DeleteFiles::exec( DatabaseImpl* dbi )
     Q_ASSERT( !source().isNull() );
 
     int srcid = source()->isLocal() ? 0 : source()->id();
-    TomahawkSqlQuery delquery = dbi->newquery();
+    HatchetSqlQuery delquery = dbi->newquery();
 
     if ( m_deleteAll )
     {
-        TomahawkSqlQuery dirquery = dbi->newquery();
+        HatchetSqlQuery dirquery = dbi->newquery();
         dirquery.prepare( QString( "SELECT id FROM file WHERE source %1" )
                     .arg( source()->isLocal() ? "IS NULL" : QString( "= %1" ).arg( source()->id() ) ) );
         dirquery.exec();
@@ -81,9 +81,9 @@ DatabaseCommand_DeleteFiles::exec( DatabaseImpl* dbi )
         if ( m_dir.path() != QString( "." ) )
         {
             tDebug() << "Deleting" << m_dir.path() << "from db for localsource" << srcid;
-            TomahawkSqlQuery dirquery = dbi->newquery();
+            HatchetSqlQuery dirquery = dbi->newquery();
             QString path( "file://" + m_dir.canonicalPath() + "/%" );
-            dirquery.prepare( QString( "SELECT id FROM file WHERE source IS NULL AND url LIKE '%1'" ).arg( TomahawkSqlQuery::escape( path ) ) );
+            dirquery.prepare( QString( "SELECT id FROM file WHERE source IS NULL AND url LIKE '%1'" ).arg( HatchetSqlQuery::escape( path ) ) );
             dirquery.exec();
 
             while ( dirquery.next() )

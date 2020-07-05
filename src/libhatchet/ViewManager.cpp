@@ -1,28 +1,28 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2010-2012, Leo Franchi   <lfranchi@kde.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ViewManager.h"
 
 #include "SourceList.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 
 #include "audio/AudioEngine.h"
 
@@ -49,13 +49,13 @@
 #include "viewpages/CollectionViewPage.h"
 
 #include "utils/Logger.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 
 #include <QVBoxLayout>
 #include <QMetaMethod>
 
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 ViewManager* ViewManager::s_instance = 0;
 
@@ -82,7 +82,7 @@ ViewManager::ViewManager( QObject* parent )
     m_inboxModel = new InboxModel( this );
     m_inboxModel->setTitle( tr( "Inbox" ) );
     m_inboxModel->setDescription( tr( "Listening suggestions from your friends" ) );
-    m_inboxModel->setIcon( TomahawkUtils::defaultPixmap( TomahawkUtils::Inbox ) );
+    m_inboxModel->setIcon( HatchetUtils::defaultPixmap( HatchetUtils::Inbox ) );
 
     m_widget->layout()->addWidget( m_stack );
 
@@ -92,7 +92,7 @@ ViewManager::ViewManager( QObject* parent )
     m_widget->layout()->setMargin( 0 );
     m_widget->layout()->setSpacing( 0 );
 
-    connect( AudioEngine::instance(), SIGNAL( playlistChanged( Tomahawk::playlistinterface_ptr ) ), this, SLOT( playlistInterfaceChanged( Tomahawk::playlistinterface_ptr ) ) );
+    connect( AudioEngine::instance(), SIGNAL( playlistChanged( Hatchet::playlistinterface_ptr ) ), this, SLOT( playlistInterfaceChanged( Hatchet::playlistinterface_ptr ) ) );
 }
 
 
@@ -158,8 +158,8 @@ ViewManager::playlistForPage( ViewPage* page ) const
 }
 
 
-Tomahawk::ViewPage*
-ViewManager::show( const Tomahawk::playlist_ptr& playlist )
+Hatchet::ViewPage*
+ViewManager::show( const Hatchet::playlist_ptr& playlist )
 {
     if ( !playlist->loaded() )
         playlist->loadRevision();
@@ -181,12 +181,12 @@ ViewManager::show( const Tomahawk::playlist_ptr& playlist )
 }
 
 
-Tomahawk::ViewPage*
-ViewManager::show( const Tomahawk::dynplaylist_ptr& playlist )
+Hatchet::ViewPage*
+ViewManager::show( const Hatchet::dynplaylist_ptr& playlist )
 {
     if ( !m_dynamicWidgets.contains( playlist ) || m_dynamicWidgets.value( playlist ).isNull() )
     {
-       m_dynamicWidgets[ playlist ] = new Tomahawk::DynamicWidget( playlist, m_stack );
+       m_dynamicWidgets[ playlist ] = new Hatchet::DynamicWidget( playlist, m_stack );
 
        playlist->resolve();
     }
@@ -197,8 +197,8 @@ ViewManager::show( const Tomahawk::dynplaylist_ptr& playlist )
 }
 
 
-Tomahawk::ViewPage*
-ViewManager::show( const Tomahawk::artist_ptr& artist )
+Hatchet::ViewPage*
+ViewManager::show( const Hatchet::artist_ptr& artist )
 {
     ArtistInfoWidget* swidget;
     if ( !m_artistViews.contains( artist ) || m_artistViews.value( artist ).isNull() )
@@ -216,8 +216,8 @@ ViewManager::show( const Tomahawk::artist_ptr& artist )
 }
 
 
-Tomahawk::ViewPage*
-ViewManager::show( const Tomahawk::album_ptr& album )
+Hatchet::ViewPage*
+ViewManager::show( const Hatchet::album_ptr& album )
 {
     AlbumInfoWidget* swidget;
     if ( !m_albumViews.contains( album ) || m_albumViews.value( album ).isNull() )
@@ -235,8 +235,8 @@ ViewManager::show( const Tomahawk::album_ptr& album )
 }
 
 
-Tomahawk::ViewPage*
-ViewManager::show( const Tomahawk::query_ptr& query )
+Hatchet::ViewPage*
+ViewManager::show( const Hatchet::query_ptr& query )
 {
     TrackInfoWidget* swidget;
     if ( !m_trackViews.contains( query ) || m_trackViews.value( query ).isNull() )
@@ -254,8 +254,8 @@ ViewManager::show( const Tomahawk::query_ptr& query )
 }
 
 
-Tomahawk::ViewPage*
-ViewManager::show( const Tomahawk::collection_ptr& collection )
+Hatchet::ViewPage*
+ViewManager::show( const Hatchet::collection_ptr& collection )
 {
     m_currentCollection = collection;
 
@@ -278,8 +278,8 @@ ViewManager::show( const Tomahawk::collection_ptr& collection )
 }
 
 
-Tomahawk::ViewPage*
-ViewManager::show( const Tomahawk::source_ptr& source )
+Hatchet::ViewPage*
+ViewManager::show( const Hatchet::source_ptr& source )
 {
     SourceInfoWidget* swidget;
     if ( !m_sourceViews.contains( source ) || m_sourceViews.value( source ).isNull() )
@@ -297,7 +297,7 @@ ViewManager::show( const Tomahawk::source_ptr& source )
 }
 
 
-Tomahawk::ViewPage*
+Hatchet::ViewPage*
 ViewManager::show( ViewPage* page )
 {
     setPage( page );
@@ -307,23 +307,23 @@ ViewManager::show( ViewPage* page )
 
 
 void
-ViewManager::playlistInterfaceChanged( Tomahawk::playlistinterface_ptr interface )
+ViewManager::playlistInterfaceChanged( Hatchet::playlistinterface_ptr interface )
 {
     playlist_ptr pl = playlistForInterface( interface );
     if ( !pl.isNull() )
     {
-        TomahawkSettings::instance()->appendRecentlyPlayedPlaylist( pl->guid(), pl->author()->id() );
+        HatchetSettings::instance()->appendRecentlyPlayedPlaylist( pl->guid(), pl->author()->id() );
     }
     else
     {
         pl = dynamicPlaylistForInterface( interface );
         if ( !pl.isNull() )
-            TomahawkSettings::instance()->appendRecentlyPlayedPlaylist( pl->guid(), pl->author()->id() );
+            HatchetSettings::instance()->appendRecentlyPlayedPlaylist( pl->guid(), pl->author()->id() );
     }
 }
 
 
-Tomahawk::ViewPage*
+Hatchet::ViewPage*
 ViewManager::showQueuePage()
 {
     if ( !m_queue )
@@ -333,7 +333,7 @@ ViewManager::showQueuePage()
 }
 
 
-Tomahawk::ViewPage *
+Hatchet::ViewPage *
 ViewManager::showInboxPage()
 {
     if ( !m_inboxWidget )
@@ -496,7 +496,7 @@ ViewManager::onWidgetDestroyed( QWidget* widget )
 
     bool resetWidget = ( m_stack->currentWidget() == widget );
 
-    QList< Tomahawk::ViewPage* > p = historyPages();
+    QList< Hatchet::ViewPage* > p = historyPages();
     for ( int i = 0; i < p.count(); i++ )
     {
         ViewPage* page = p.at( i );
@@ -542,9 +542,9 @@ ViewManager::pageForPlaylist(const playlist_ptr& pl) const
 
 
 ViewPage*
-ViewManager::pageForInterface( Tomahawk::playlistinterface_ptr interface ) const
+ViewManager::pageForInterface( Hatchet::playlistinterface_ptr interface ) const
 {
-    QList< Tomahawk::ViewPage* > pages = allPages();
+    QList< Hatchet::ViewPage* > pages = allPages();
 
     for ( int i = 0; i < pages.count(); i++ )
     {
@@ -559,25 +559,25 @@ ViewManager::pageForInterface( Tomahawk::playlistinterface_ptr interface ) const
 }
 
 
-Tomahawk::playlistinterface_ptr
+Hatchet::playlistinterface_ptr
 ViewManager::currentPlaylistInterface() const
 {
     if ( currentPage() )
         return currentPage()->playlistInterface();
     else
-        return Tomahawk::playlistinterface_ptr();
+        return Hatchet::playlistinterface_ptr();
 }
 
 
-Tomahawk::ViewPage*
+Hatchet::ViewPage*
 ViewManager::currentPage() const
 {
     return m_currentPage;
 }
 
 
-Tomahawk::playlist_ptr
-ViewManager::playlistForInterface( Tomahawk::playlistinterface_ptr interface ) const
+Hatchet::playlist_ptr
+ViewManager::playlistForInterface( Hatchet::playlistinterface_ptr interface ) const
 {
     foreach ( QPointer<PlaylistViewPage> view, m_playlistViews.values() )
     {
@@ -587,12 +587,12 @@ ViewManager::playlistForInterface( Tomahawk::playlistinterface_ptr interface ) c
         }
     }
 
-    return Tomahawk::playlist_ptr();
+    return Hatchet::playlist_ptr();
 }
 
 
-Tomahawk::dynplaylist_ptr
-ViewManager::dynamicPlaylistForInterface( Tomahawk::playlistinterface_ptr interface ) const
+Hatchet::dynplaylist_ptr
+ViewManager::dynamicPlaylistForInterface( Hatchet::playlistinterface_ptr interface ) const
 {
     foreach ( QPointer<DynamicWidget> view, m_dynamicWidgets.values() )
     {
@@ -602,7 +602,7 @@ ViewManager::dynamicPlaylistForInterface( Tomahawk::playlistinterface_ptr interf
         }
     }
 
-    return Tomahawk::dynplaylist_ptr();
+    return Hatchet::dynplaylist_ptr();
 }
 
 
@@ -619,7 +619,7 @@ ViewManager::showCurrentTrack()
 }
 
 
-Tomahawk::ViewPage*
+Hatchet::ViewPage*
 ViewManager::inboxWidget() const
 {
     return m_inboxWidget;
@@ -640,7 +640,7 @@ ViewManager::dynamicPageWidget( const QString& pageName ) const
 
 
 void
-ViewManager::addDynamicPage( Tomahawk::ViewPagePlugin* viewPage, const QString& pageName )
+ViewManager::addDynamicPage( Hatchet::ViewPagePlugin* viewPage, const QString& pageName )
 {
     const QString pageId = !pageName.isEmpty() ? pageName : viewPage->defaultName();
 
@@ -658,7 +658,7 @@ ViewManager::addDynamicPage( Tomahawk::ViewPagePlugin* viewPage, const QString& 
 
 
 /*void
-ViewManager::addDynamicPage( const QString& pageName, const QString& text, const QIcon& icon, function<Tomahawk::ViewPage*()> instanceLoader, int sortValue )
+ViewManager::addDynamicPage( const QString& pageName, const QString& text, const QIcon& icon, function<Hatchet::ViewPage*()> instanceLoader, int sortValue )
 {
     tLog() << Q_FUNC_INFO << "Trying to add" << pageName;
 

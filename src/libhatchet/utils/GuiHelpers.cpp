@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "GuiHelpers.h"
@@ -24,22 +24,22 @@
 #include "accounts/AccountManager.h"
 #include "accounts/DelegateConfigWrapper.h"
 #include "accounts/AccountConfigWidget.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 
-namespace TomahawkUtils
+namespace HatchetUtils
 {
 
 void
-handleAccountAdded( Tomahawk::Accounts::Account* account, bool added )
+handleAccountAdded( Hatchet::Accounts::Account* account, bool added )
 {
     if ( added )
     {
         account->setEnabled( true );
         account->saveConfig();
 
-        TomahawkSettings::instance()->addAccount( account->accountId() );
-        Tomahawk::Accounts::AccountManager::instance()->addAccount( account );
-        Tomahawk::Accounts::AccountManager::instance()->hookupAndEnable( account );
+        HatchetSettings::instance()->addAccount( account->accountId() );
+        Hatchet::Accounts::AccountManager::instance()->addAccount( account );
+        Hatchet::Accounts::AccountManager::instance()->hookupAndEnable( account );
     }
     else
     {
@@ -59,7 +59,7 @@ public slots:
     void
     accountCreateConfigClosed( int ret )
     {
-        Tomahawk::Accounts::Account* account = qobject_cast< Tomahawk::Accounts::Account* >( m_w->property( "accountplugin" ).value< QObject* >() );
+        Hatchet::Accounts::Account* account = qobject_cast< Hatchet::Accounts::Account* >( m_w->property( "accountplugin" ).value< QObject* >() );
         Q_ASSERT( account );
 
         bool added = ( ret == QDialog::Accepted );
@@ -72,7 +72,7 @@ public slots:
     {
         if( ret == QDialog::Accepted )
         {
-            Tomahawk::Accounts::Account* account = qobject_cast< Tomahawk::Accounts::Account* >( m_w->property( "accountplugin" ).value< QObject* >() );
+            Hatchet::Accounts::Account* account = qobject_cast< Hatchet::Accounts::Account* >( m_w->property( "accountplugin" ).value< QObject* >() );
             account->saveConfig();
         }
     }
@@ -80,9 +80,9 @@ public slots:
     void
     accountConfigDelete()
     {
-        Tomahawk::Accounts::Account* account = qobject_cast< Tomahawk::Accounts::Account* >( m_w->property( "accountplugin" ).value< QObject* >() );
+        Hatchet::Accounts::Account* account = qobject_cast< Hatchet::Accounts::Account* >( m_w->property( "accountplugin" ).value< QObject* >() );
         Q_ASSERT( account );
-        Tomahawk::Accounts::AccountManager::instance()->removeAccount( account );
+        Hatchet::Accounts::AccountManager::instance()->removeAccount( account );
     }
 private:
     DelegateConfigWrapper* m_w;
@@ -91,10 +91,10 @@ private:
 
 
 void
-createAccountFromFactory( Tomahawk::Accounts::AccountFactory* factory, QWidget* parent )
+createAccountFromFactory( Hatchet::Accounts::AccountFactory* factory, QWidget* parent )
 {
     //if exited with OK, create it, if not, delete it immediately!
-    Tomahawk::Accounts::Account* account = factory->createAccount();
+    Hatchet::Accounts::Account* account = factory->createAccount();
     bool added = false;
     if( account->configurationWidget() )
     {
@@ -135,7 +135,7 @@ createAccountFromFactory( Tomahawk::Accounts::AccountFactory* factory, QWidget* 
 }
 
 void
-openAccountConfig( Tomahawk::Accounts::Account* account, QWidget* parent, bool showDelete )
+openAccountConfig( Hatchet::Accounts::Account* account, QWidget* parent, bool showDelete )
 {
     if( account->configurationWidget() )
     {
@@ -146,7 +146,7 @@ openAccountConfig( Tomahawk::Accounts::Account* account, QWidget* parent, bool s
         int ret = dialog.exec();
         if ( !watcher.isNull() && dialog.deleted() )
         {
-            Tomahawk::Accounts::AccountManager::instance()->removeAccount( account );
+            Hatchet::Accounts::AccountManager::instance()->removeAccount( account );
         }
         else if( !watcher.isNull() && ret == QDialog::Accepted )
         {
@@ -168,6 +168,6 @@ openAccountConfig( Tomahawk::Accounts::Account* account, QWidget* parent, bool s
     }
 }
 
-} // namespace TomahawkUtils
+} // namespace HatchetUtils
 
 #include "GuiHelpers.moc"

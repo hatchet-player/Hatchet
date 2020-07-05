@@ -24,7 +24,7 @@ THE SOFTWARE.
 #include "qsearchfield.h"
 
 #include "widgets/searchlineedit/SearchLineEdit.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 
 #include <QLineEdit>
 #include <QVBoxLayout>
@@ -52,7 +52,7 @@ QSearchField::QSearchField(QWidget *parent) : QWidget(parent)
 
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(lineEdit);
-    TomahawkUtils::unmarginLayout(layout);
+    HatchetUtils::unmarginLayout(layout);
     setContentsMargins(0, 0, 0, 0);
 
     lineEdit->setStyleSheet( "QLineEdit { border: 1px solid gray; border-radius: 6px; }" );

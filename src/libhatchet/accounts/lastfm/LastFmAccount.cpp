@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2012, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "LastFmAccount.h"
@@ -22,13 +22,13 @@
 #include "infosystem/InfoSystem.h"
 #include "LastFmInfoPlugin.h"
 #include "resolvers/ExternalResolverGui.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 #include "AtticaManager.h"
 #include "Pipeline.h"
 #include "accounts/AccountManager.h"
 #include "Source.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 using namespace InfoSystem;
 using namespace Accounts;
 
@@ -47,7 +47,7 @@ LastFmAccountFactory::createAccount( const QString& accountId )
 QPixmap
 LastFmAccountFactory::icon() const
 {
-    return TomahawkUtils::defaultPixmap( TomahawkUtils::LastfmIcon );
+    return HatchetUtils::defaultPixmap( HatchetUtils::LastfmIcon );
 }
 
 
@@ -69,10 +69,10 @@ LastFmAccount::LastFmAccount( const QString& accountId )
     }
 
 
-    if ( infoPlugin() && Tomahawk::InfoSystem::InfoSystem::instance()->workerThread() )
+    if ( infoPlugin() && Hatchet::InfoSystem::InfoSystem::instance()->workerThread() )
     {
-        infoPlugin()->moveToThread( Tomahawk::InfoSystem::InfoSystem::instance()->workerThread().data() );
-        Tomahawk::InfoSystem::InfoSystem::instance()->addInfoPlugin( infoPlugin() );
+        infoPlugin()->moveToThread( Hatchet::InfoSystem::InfoSystem::instance()->workerThread().data() );
+        Hatchet::InfoSystem::InfoSystem::instance()->addInfoPlugin( infoPlugin() );
     }
 }
 
@@ -81,7 +81,7 @@ LastFmAccount::~LastFmAccount()
 {
     if ( m_infoPlugin )
     {
-        Tomahawk::InfoSystem::InfoSystem::instance()->removeInfoPlugin( infoPlugin() );
+        Hatchet::InfoSystem::InfoSystem::instance()->removeInfoPlugin( infoPlugin() );
     }
 
     delete m_resolver.data();
@@ -159,7 +159,7 @@ LastFmAccount::connectionState() const
 QPixmap
 LastFmAccount::icon() const
 {
-    return TomahawkUtils::defaultPixmap( TomahawkUtils::LastfmIcon );
+    return HatchetUtils::defaultPixmap( HatchetUtils::LastfmIcon );
 }
 
 

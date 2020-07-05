@@ -30,7 +30,7 @@ meson setup build \
     -Dcmake_prefix_path="${cmake_path}"
 
 
-# Build Tomahawk
+# Build Hatchet
 #---------------------------------------------------
 cd build
 ninja

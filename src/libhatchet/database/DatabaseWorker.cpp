@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DatabaseWorker.h"
@@ -27,7 +27,7 @@
 #include "DatabaseCommandLoggable.h"
 #include "PlaylistEntry.h"
 #include "Source.h"
-#include "TomahawkSqlQuery.h"
+#include "HatchetSqlQuery.h"
 
 #include <QTimer>
 #include <QTime>
@@ -38,7 +38,7 @@
 #endif
 
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 DatabaseWorkerThread::DatabaseWorkerThread( Database* db, bool mutates )
@@ -100,7 +100,7 @@ DatabaseWorker::~DatabaseWorker()
 
     if ( m_outstanding )
     {
-        foreach ( const Tomahawk::dbcmd_ptr& cmd, m_commands )
+        foreach ( const Hatchet::dbcmd_ptr& cmd, m_commands )
         {
             tDebug() << "Outstanding db command to finish:" << cmd->guid() << cmd->commandname();
         }
@@ -109,7 +109,7 @@ DatabaseWorker::~DatabaseWorker()
 
 
 void
-DatabaseWorker::enqueue( const QList< Tomahawk::dbcmd_ptr >& cmds )
+DatabaseWorker::enqueue( const QList< Hatchet::dbcmd_ptr >& cmds )
 {
     QMutexLocker lock( &m_mut );
     m_outstanding += cmds.count();
@@ -121,7 +121,7 @@ DatabaseWorker::enqueue( const QList< Tomahawk::dbcmd_ptr >& cmds )
 
 
 void
-DatabaseWorker::enqueue( const Tomahawk::dbcmd_ptr& cmd )
+DatabaseWorker::enqueue( const Hatchet::dbcmd_ptr& cmd )
 {
     QMutexLocker lock( &m_mut );
     m_outstanding++;
@@ -148,8 +148,8 @@ DatabaseWorker::doWork()
     timer.start();
 #endif
 
-    QList< Tomahawk::dbcmd_ptr > cmdGroup;
-    Tomahawk::dbcmd_ptr cmd;
+    QList< Hatchet::dbcmd_ptr > cmdGroup;
+    Hatchet::dbcmd_ptr cmd;
     {
         QMutexLocker lock( &m_mut );
         cmd = m_commands.takeFirst();
@@ -194,7 +194,7 @@ DatabaseWorker::doWork()
                         //
                         if ( !cmd->singletonCmd() )
                         {
-                            TomahawkSqlQuery query = impl->newquery();
+                            HatchetSqlQuery query = impl->newquery();
                             query.prepare( "UPDATE source SET lastop = ? WHERE id = ?" );
                             query.addBindValue( cmd->guid() );
                             query.addBindValue( cmd->source()->id() );
@@ -239,7 +239,7 @@ DatabaseWorker::doWork()
             tDebug() << "DBCmd Duration:" << duration << "ms, now running postcommit for" << cmd->commandname();
 #endif
 
-            foreach ( Tomahawk::dbcmd_ptr c, cmdGroup )
+            foreach ( Hatchet::dbcmd_ptr c, cmdGroup )
                 c->postCommit();
 
 #ifdef DEBUG_TIMING
@@ -272,7 +272,7 @@ DatabaseWorker::doWork()
         throw;
     }
 
-    foreach ( Tomahawk::dbcmd_ptr c, cmdGroup )
+    foreach ( Hatchet::dbcmd_ptr c, cmdGroup )
         c->emitFinished();
 
     QMutexLocker lock( &m_mut );
@@ -286,13 +286,13 @@ DatabaseWorker::doWork()
 void
 DatabaseWorker::logOp( DatabaseCommandLoggable* command )
 {
-    TomahawkSqlQuery oplogquery = Database::instance()->impl()->newquery();
+    HatchetSqlQuery oplogquery = Database::instance()->impl()->newquery();
     tLog( LOGVERBOSE ) << "INSERTING INTO OPLOG:" << command->source()->id() << command->guid() << command->commandname();
     oplogquery.prepare( "INSERT INTO oplog(source, guid, command, singleton, compressed, json) "
                         "VALUES(?, ?, ?, ?, ?, ?)" );
 
-    QVariantMap variant = TomahawkUtils::qobject2qvariant( command );
-    QByteArray ba = TomahawkUtils::toJson( variant );
+    QVariantMap variant = HatchetUtils::qobject2qvariant( command );
+    QByteArray ba = HatchetUtils::toJson( variant );
 
     bool compressed = false;
     if ( ba.length() >= 512 )
@@ -308,7 +308,7 @@ DatabaseWorker::logOp( DatabaseCommandLoggable* command )
     {
         tLog( LOGVERBOSE ) << "Singleton command, deleting previous oplog commands";
 
-        TomahawkSqlQuery oplogdelquery = Database::instance()->impl()->newquery();
+        HatchetSqlQuery oplogdelquery = Database::instance()->impl()->newquery();
         oplogdelquery.prepare( QString( "DELETE FROM oplog WHERE "
                                         "source %1 "
                                         "AND (singleton = 'true' or singleton = 1) "

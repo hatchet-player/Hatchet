@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ConnectionManager_p.h"
@@ -38,7 +38,7 @@
 /* Management of ConnectionManagers */
 
 static QMutex nodeMapMutex;
-static Tomahawk::Utils::WeakObjectHash< ConnectionManager > connectionManagers;
+static Hatchet::Utils::WeakObjectHash< ConnectionManager > connectionManagers;
 static QHash< QString, QSharedPointer< ConnectionManager > > activeConnectionManagers;
 
 
@@ -90,7 +90,7 @@ ConnectionManager::~ConnectionManager()
 
 
 void
-ConnectionManager::handleSipInfo( const Tomahawk::peerinfo_ptr& peerInfo )
+ConnectionManager::handleSipInfo( const Hatchet::peerinfo_ptr& peerInfo )
 {
     // Start handling in a separate thread so that we do not block the event loop.
     QtConcurrent::run( &ConnectionManager::handleSipInfoPrivateS, peerInfo, weakRef().toStrongRef() );
@@ -150,12 +150,12 @@ ConnectionManager::authFailed()
 
 
 void
-ConnectionManager::handleSipInfoPrivate( const Tomahawk::peerinfo_ptr& peerInfo )
+ConnectionManager::handleSipInfoPrivate( const Hatchet::peerinfo_ptr& peerInfo )
 {
     activate();
     // Respect different behaviour before 0.7.100
-    peerInfoDebug( peerInfo ) << Q_FUNC_INFO << "Trying to connect to client with version " << peerInfo->versionString().split(' ').last() << TomahawkUtils::compareVersionStrings( peerInfo->versionString().split(' ').last(), "0.7.99" );
-    if ( !peerInfo->versionString().isEmpty() && TomahawkUtils::compareVersionStrings( peerInfo->versionString().split(' ').last(), "0.7.100" ) < 0 )
+    peerInfoDebug( peerInfo ) << Q_FUNC_INFO << "Trying to connect to client with version " << peerInfo->versionString().split(' ').last() << HatchetUtils::compareVersionStrings( peerInfo->versionString().split(' ').last(), "0.7.99" );
+    if ( !peerInfo->versionString().isEmpty() && HatchetUtils::compareVersionStrings( peerInfo->versionString().split(' ').last(), "0.7.100" ) < 0 )
     {
         peerInfoDebug( peerInfo ) << Q_FUNC_INFO << "Using old-style (<0.7.100) connection order.";
         SipInfo we = Servent::getSipInfoForOldVersions( Servent::instance()->getLocalSipInfos( QString( "default" ), QString( "default" ) ) );
@@ -190,13 +190,13 @@ ConnectionManager::handleSipInfoPrivate( const Tomahawk::peerinfo_ptr& peerInfo 
 
 
 void
-ConnectionManager::newControlConnection( const Tomahawk::peerinfo_ptr& peerInfo )
+ConnectionManager::newControlConnection( const Hatchet::peerinfo_ptr& peerInfo )
 {
     Q_D( ConnectionManager );
     QVariantMap m;
     m["conntype"]  = "accept-offer";
     m["key"]       = peerInfo->key();
-    m["nodeid"]    = Tomahawk::Database::instance()->impl()->dbid();
+    m["nodeid"]    = Hatchet::Database::instance()->impl()->dbid();
 
     d->controlConnection = QPointer<ControlConnection>( new ControlConnection( Servent::instance() ) );
     d->controlConnection->setShutdownOnEmptyPeerInfos( false );
@@ -215,7 +215,7 @@ ConnectionManager::newControlConnection( const Tomahawk::peerinfo_ptr& peerInfo 
 
 
 void
-ConnectionManager::connectToPeer( const Tomahawk::peerinfo_ptr& peerInfo, bool lock )
+ConnectionManager::connectToPeer( const Hatchet::peerinfo_ptr& peerInfo, bool lock )
 {
     Q_D( ConnectionManager );
 
@@ -357,7 +357,7 @@ ConnectionManager::tryConnect()
         if ( info.host() == ha.toString() && info.port() == Servent::instance()->port() )
         {
             peerInfoDebug( d->currentPeerInfo ) << Q_FUNC_INFO
-                                                << "Tomahawk won't try to connect to"
+                                                << "Hatchet won't try to connect to"
                                                 << info.host() << ":" << info.port()
                                                 << ": same ip:port as ourselves.";
             tryConnect();
@@ -368,7 +368,7 @@ ConnectionManager::tryConnect()
          && info.port() == Servent::instance()->additionalPort() )
     {
         peerInfoDebug( d->currentPeerInfo ) << Q_FUNC_INFO
-                                            << "Tomahawk won't try to connect to"
+                                            << "Hatchet won't try to connect to"
                                             << info.host() << ":" << info.port()
                                             << ": same ip:port as ourselves.";
         tryConnect();
@@ -416,7 +416,7 @@ ConnectionManager::socketError( QAbstractSocket::SocketError error )
 
 
 void
-ConnectionManager::handleSipInfoPrivateS( const Tomahawk::peerinfo_ptr& peerInfo, const QSharedPointer<ConnectionManager>& connectionManager )
+ConnectionManager::handleSipInfoPrivateS( const Hatchet::peerinfo_ptr& peerInfo, const QSharedPointer<ConnectionManager>& connectionManager )
 {
     connectionManager->handleSipInfoPrivate( peerInfo );
 }

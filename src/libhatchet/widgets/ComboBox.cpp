@@ -1,25 +1,25 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2011, Casey Link <unnamedrambler@gmail.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ComboBox.h"
 
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 
 #include <QStyle>
@@ -54,9 +54,9 @@ ComboBox::paintEvent( QPaintEvent* )
     QStyleOptionComboBox cb;
     initStyleOption( &cb );
     QRect r = cb.rect;
-    r.setHeight( TomahawkUtils::defaultFontHeight() + 8 );
+    r.setHeight( HatchetUtils::defaultFontHeight() + 8 );
 
-    TomahawkStyle::horizontalHeader( &p, r );
+    HatchetStyle::horizontalHeader( &p, r );
 
     if ( cb.state & QStyle::State_MouseOver )
     {
@@ -68,7 +68,7 @@ ComboBox::paintEvent( QPaintEvent* )
         highlightRect.setSize( hS );
         highlightRect.translate( 0, 2 );
         p.setRenderHint( QPainter::Antialiasing );
-        p.setBrush( TomahawkStyle::HEADER_HIGHLIGHT );
+        p.setBrush( HatchetStyle::HEADER_HIGHLIGHT );
         p.drawRoundedRect( highlightRect, 10.0, 10.0 );
         p.restore();
     }
@@ -77,7 +77,7 @@ ComboBox::paintEvent( QPaintEvent* )
     QTextOption to( Qt::AlignVCenter );
     r.adjust( 8, 0, -8, 0 );
     p.setPen( Qt::white );
-    p.setBrush( TomahawkStyle::HEADER_TEXT );
+    p.setBrush( HatchetStyle::HEADER_TEXT );
     p.drawText( r, cb.currentText, to );
 
     bool reverse = cb.direction == Qt::RightToLeft;
@@ -88,6 +88,6 @@ ComboBox::paintEvent( QPaintEvent* )
 
     QStyleOption arrowOpt = cb;
     arrowOpt.rect = arrowRect;
-    TomahawkStyle::drawArrow( QStyle::PE_IndicatorArrowDown, &p, &arrowOpt );
+    HatchetStyle::drawArrow( QStyle::PE_IndicatorArrowDown, &p, &arrowOpt );
     p.restore();
 }

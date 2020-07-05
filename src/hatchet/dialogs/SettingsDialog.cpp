@@ -1,22 +1,22 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2012-2014, Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "SettingsDialog.h"
@@ -32,13 +32,13 @@
 #include "AtticaManager.h"
 #include "network/acl/AclRegistry.h"
 #include "GlobalActionManager.h"
-#include "TomahawkApp.h"
-#include "TomahawkSettings.h"
+#include "HatchetApp.h"
+#include "HatchetSettings.h"
 #include "accounts/DelegateConfigWrapper.h"
 #include "Pipeline.h"
 #include "resolvers/Resolver.h"
 #include "resolvers/ExternalResolverGui.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/GuiHelpers.h"
 #include "accounts/AccountDelegate.h"
 #include "database/Database.h"
@@ -72,7 +72,7 @@
 #include <QToolBar>
 #include <QMenu>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 using namespace Accounts;
 
 SettingsDialog::SettingsDialog(QObject *parent )
@@ -92,10 +92,10 @@ SettingsDialog::SettingsDialog(QObject *parent )
     , m_sipSpinner( 0 )
     , m_contextMenu( 0 )
 {
-    m_accountsWidget->setFont( TomahawkUtils::systemFont() );
-    m_collectionWidget->setFont( TomahawkUtils::systemFont() );
-    m_advancedWidget->setFont( TomahawkUtils::systemFont() );
-    m_downloadsWidget->setFont( TomahawkUtils::systemFont() );
+    m_accountsWidget->setFont( HatchetUtils::systemFont() );
+    m_collectionWidget->setFont( HatchetUtils::systemFont() );
+    m_advancedWidget->setFont( HatchetUtils::systemFont() );
+    m_downloadsWidget->setFont( HatchetUtils::systemFont() );
 
     m_accountsWidgetUi->setupUi( m_accountsWidget );
     m_collectionWidgetUi->setupUi( m_collectionWidget );
@@ -104,7 +104,7 @@ SettingsDialog::SettingsDialog(QObject *parent )
 
     m_accountsWidgetUi->accountsFilterCombo->setFocusPolicy( Qt::NoFocus );
     m_dialog = new QToolbarTabDialog;
-    TomahawkSettings* s = TomahawkSettings::instance();
+    HatchetSettings* s = HatchetSettings::instance();
 
     m_advancedWidgetUi->checkBoxReporter->setChecked( s->crashReporterEnabled() );
     m_advancedWidgetUi->checkBoxHttp->setChecked( s->httpEnabled() );
@@ -112,23 +112,23 @@ SettingsDialog::SettingsDialog(QObject *parent )
     m_advancedWidgetUi->checkBoxSongChangeNotifications->setChecked( s->songChangeNotificationEnabled() );
 
     //Network settings
-    Tomahawk::Network::ExternalAddress::Mode mode = TomahawkSettings::instance()->externalAddressMode();
-    if ( mode == Tomahawk::Network::ExternalAddress::Lan )
+    Hatchet::Network::ExternalAddress::Mode mode = HatchetSettings::instance()->externalAddressMode();
+    if ( mode == Hatchet::Network::ExternalAddress::Lan )
         m_advancedWidgetUi->lanOnlyRadioButton->setChecked( true );
-    else if ( mode == Tomahawk::Network::ExternalAddress::Static )
+    else if ( mode == Hatchet::Network::ExternalAddress::Static )
         m_advancedWidgetUi->staticIpRadioButton->setChecked( true );
     else
         m_advancedWidgetUi->upnpRadioButton->setChecked( true );
 
     m_advancedWidgetUi->staticHostSettingsButton->setEnabled( m_advancedWidgetUi->staticIpRadioButton->isChecked() );
 
-    bool useProxy = TomahawkSettings::instance()->proxyType() == QNetworkProxy::Socks5Proxy;
+    bool useProxy = HatchetSettings::instance()->proxyType() == QNetworkProxy::Socks5Proxy;
     m_advancedWidgetUi->enableProxyCheckBox->setChecked( useProxy );
     m_advancedWidgetUi->proxyButton->setEnabled( useProxy );
 
     m_advancedWidgetUi->vlcArgsLineEdit->setText( s->vlcArguments() );
 
-    m_advancedWidgetUi->aclEntryClearButton->setEnabled( TomahawkSettings::instance()->aclEntries().size() > 0 );
+    m_advancedWidgetUi->aclEntryClearButton->setEnabled( HatchetSettings::instance()->aclEntries().size() > 0 );
     connect( m_advancedWidgetUi->aclEntryClearButton, SIGNAL( clicked( bool ) ), this, SLOT( aclEntryClearButtonClicked() ) );
 
 #ifdef Q_OS_MAC
@@ -151,13 +151,13 @@ SettingsDialog::SettingsDialog(QObject *parent )
     m_accountsWidgetUi->accountsView->setMouseTracking( true );
 
     m_contextMenu = new QMenu( m_accountsWidgetUi->accountsView );
-    m_contextMenu->setFont( TomahawkUtils::systemFont() );
+    m_contextMenu->setFont( HatchetUtils::systemFont() );
     connect( m_accountsWidgetUi->accountsView, SIGNAL( customContextMenuRequested( QPoint ) ), SLOT( onCustomContextMenu( QPoint ) ) );
     QAction* showDebuggerAction = m_contextMenu->addAction( tr( "Open Account &Debugger..." ) );
     connect( showDebuggerAction, SIGNAL( triggered(bool) ), SLOT( onShowDebuggerForSelectedAccount() ) );
 
-    connect( accountDelegate, SIGNAL( openConfig( Tomahawk::Accounts::Account* ) ), SLOT( openAccountConfig( Tomahawk::Accounts::Account* ) ) );
-    connect( accountDelegate, SIGNAL( openConfig( Tomahawk::Accounts::AccountFactory* ) ), SLOT( openAccountFactoryConfig( Tomahawk::Accounts::AccountFactory* ) ) );
+    connect( accountDelegate, SIGNAL( openConfig( Hatchet::Accounts::Account* ) ), SLOT( openAccountConfig( Hatchet::Accounts::Account* ) ) );
+    connect( accountDelegate, SIGNAL( openConfig( Hatchet::Accounts::AccountFactory* ) ), SLOT( openAccountFactoryConfig( Hatchet::Accounts::AccountFactory* ) ) );
     connect( accountDelegate, SIGNAL( update( QModelIndex ) ), m_accountsWidgetUi->accountsView, SLOT( update( QModelIndex ) ) );
 
     m_accountModel = new AccountModel( this );
@@ -172,7 +172,7 @@ SettingsDialog::SettingsDialog(QObject *parent )
     m_accountsWidgetUi->accountsView->setModel( m_accountProxy );
 
     connect( m_accountsWidgetUi->installFromFileBtn, SIGNAL( clicked( bool ) ), SLOT( installFromFile() ) );
-    connect( m_accountModel, SIGNAL( createAccount( Tomahawk::Accounts::AccountFactory* ) ), SLOT( createAccountFromFactory( Tomahawk::Accounts::AccountFactory* ) ) );
+    connect( m_accountModel, SIGNAL( createAccount( Hatchet::Accounts::AccountFactory* ) ), SLOT( createAccountFromFactory( Hatchet::Accounts::AccountFactory* ) ) );
 
     m_accountsWidgetUi->accountsFilterCombo->addItem( tr( "All" ), Accounts::NoType );
     m_accountsWidgetUi->accountsFilterCombo->addItem( accountTypeToString( SipType ), SipType );
@@ -209,13 +209,13 @@ SettingsDialog::SettingsDialog(QObject *parent )
         m_collectionWidgetUi->scannerTimeSpinBox->hide();
     }
 
-/*    foreach ( const QString& dir, TomahawkSettings::instance()->scannerPaths() )
+/*    foreach ( const QString& dir, HatchetSettings::instance()->scannerPaths() )
     {
         m_collectionWidgetUi->dirTree->checkPath( dir, Qt::Checked );
     }*/
-    m_collectionWidgetUi->pathListWidget->addItems( TomahawkSettings::instance()->scannerPaths() );
+    m_collectionWidgetUi->pathListWidget->addItems( HatchetSettings::instance()->scannerPaths() );
 
-    const int buttonSize = TomahawkUtils::defaultFontHeight() * 2.5;
+    const int buttonSize = HatchetUtils::defaultFontHeight() * 2.5;
     m_collectionWidgetUi->addLibraryPathButton->setFixedSize( buttonSize, buttonSize );
     m_collectionWidgetUi->removeLibraryPathButton->setFixedSize( m_collectionWidgetUi->addLibraryPathButton->size() );
 
@@ -227,7 +227,7 @@ SettingsDialog::SettingsDialog(QObject *parent )
     m_advancedWidgetUi->proxyButton->setFixedWidth( buttonsWidth );
     m_advancedWidgetUi->aclEntryClearButton->setFixedWidth( buttonsWidth );
 
-    m_downloadsWidgetUi->downloadsFolder->setText( TomahawkSettings::instance()->downloadsPath() );
+    m_downloadsWidgetUi->downloadsFolder->setText( HatchetSettings::instance()->downloadsPath() );
     connect( m_downloadsWidgetUi->pickFolderButton, SIGNAL( clicked() ), SLOT( pickDownloadsPath() ) );
 
     m_downloadsFormats.insert( "MP3", tr( "MP3" ) );
@@ -238,7 +238,7 @@ SettingsDialog::SettingsDialog(QObject *parent )
     {
         m_downloadsWidgetUi->preferredFormatComboBox->addItem( format );
     }
-    int i = m_downloadsWidgetUi->preferredFormatComboBox->findText( m_downloadsFormats.value( TomahawkSettings::instance()->downloadsPreferredFormat() ) );
+    int i = m_downloadsWidgetUi->preferredFormatComboBox->findText( m_downloadsFormats.value( HatchetSettings::instance()->downloadsPreferredFormat() ) );
     if ( i < 0 )
         i = m_downloadsWidgetUi->preferredFormatComboBox->findText( "MP3" );
     m_downloadsWidgetUi->preferredFormatComboBox->setCurrentIndex( i );
@@ -268,20 +268,20 @@ SettingsDialog::SettingsDialog(QObject *parent )
 //     ui->checkBoxEnableAdium->hide();
 // #endif
 
-    m_dialog->addTab( m_accountsWidget, TomahawkUtils::defaultPixmap( TomahawkUtils::AccountSettings ),
+    m_dialog->addTab( m_accountsWidget, HatchetUtils::defaultPixmap( HatchetUtils::AccountSettings ),
                       tr( "Plug-Ins" ), tr( "Configure the accounts and services used by %applicationName "
                                              "to search and retrieve music, find your friends and "
                                              "update your status." ) );
 
-    m_dialog->addTab( m_collectionWidget, TomahawkUtils::defaultPixmap( TomahawkUtils::MusicSettings ),
+    m_dialog->addTab( m_collectionWidget, HatchetUtils::defaultPixmap( HatchetUtils::MusicSettings ),
                       tr( "Collection" ), tr( "Manage how %applicationName finds music on your computer." ) );
 
-    m_dialog->addTab( m_advancedWidget, TomahawkUtils::defaultPixmap( TomahawkUtils::AdvancedSettings ),
+    m_dialog->addTab( m_advancedWidget, HatchetUtils::defaultPixmap( HatchetUtils::AdvancedSettings ),
                       tr( "Advanced" ), tr( "Configure %applicationName advanced settings, including "
                                             "network connectivity settings, browser interaction "
                                             "and more." ) );
 
-    m_dialog->addTab( m_downloadsWidget, TomahawkUtils::defaultPixmap( TomahawkUtils::DownloadsSettings ),
+    m_dialog->addTab( m_downloadsWidget, HatchetUtils::defaultPixmap( HatchetUtils::DownloadsSettings ),
                       tr( "Downloads" ), tr( "Configure %applicationName's integrated download manager." ) );
 
     m_dialog->setCurrentIndex( 0 );
@@ -310,14 +310,14 @@ SettingsDialog::saveSettings()
 {
     qDebug() << Q_FUNC_INFO;
 
-    TomahawkSettings* s = TomahawkSettings::instance();
+    HatchetSettings* s = HatchetSettings::instance();
 
     s->setCrashReporterEnabled( m_advancedWidgetUi->checkBoxReporter->checkState() == Qt::Checked );
     s->setHttpEnabled( m_advancedWidgetUi->checkBoxHttp->checkState() == Qt::Checked );
     s->setHttpBindAll( m_advancedWidgetUi->checkBoxListenApi->checkState() == Qt::Checked );
     s->setSongChangeNotificationEnabled( m_advancedWidgetUi->checkBoxSongChangeNotifications->checkState() == Qt::Checked );
     s->setProxyType( m_advancedWidgetUi->enableProxyCheckBox->isChecked() ? QNetworkProxy::Socks5Proxy : QNetworkProxy::NoProxy );
-    s->setExternalAddressMode( m_advancedWidgetUi->upnpRadioButton->isChecked() ? Tomahawk::Network::ExternalAddress::Upnp : ( m_advancedWidgetUi->lanOnlyRadioButton->isChecked() ? Tomahawk::Network::ExternalAddress::Lan : Tomahawk::Network::ExternalAddress::Static ) );
+    s->setExternalAddressMode( m_advancedWidgetUi->upnpRadioButton->isChecked() ? Hatchet::Network::ExternalAddress::Upnp : ( m_advancedWidgetUi->lanOnlyRadioButton->isChecked() ? Hatchet::Network::ExternalAddress::Lan : Hatchet::Network::ExternalAddress::Static ) );
 
     QStringList libraryPaths;
     for ( int i = 0; i < m_collectionWidgetUi->pathListWidget->count(); i++ )
@@ -345,7 +345,7 @@ SettingsDialog::saveSettings()
 
 //    m_collectionWidgetUi->dirTree->cleanup();
 
-    Tomahawk::Utils::NetworkProxyFactory* proxyFactory = Tomahawk::Utils::proxyFactory();
+    Hatchet::Utils::NetworkProxyFactory* proxyFactory = Hatchet::Utils::proxyFactory();
     if ( !m_advancedWidgetUi->enableProxyCheckBox->isChecked() )
     {
         tDebug() << Q_FUNC_INFO << "Got NoProxy selected";
@@ -406,10 +406,10 @@ SettingsDialog::onCustomContextMenu( const QPoint& point )
         return;
 
     // HACK until there is a proper ScriptAccount
-    ResolverAccount* account = qobject_cast< ResolverAccount* >( m_accountProxy->data( index, AccountModel::AccountData ).value< Tomahawk::Accounts::Account* >() );
+    ResolverAccount* account = qobject_cast< ResolverAccount* >( m_accountProxy->data( index, AccountModel::AccountData ).value< Hatchet::Accounts::Account* >() );
     if ( !account )
         return;
-    Tomahawk::JSResolver* jsResolver = qobject_cast< Tomahawk::JSResolver* >( account->resolver() );
+    Hatchet::JSResolver* jsResolver = qobject_cast< Hatchet::JSResolver* >( account->resolver() );
     if ( !jsResolver )
         return;
 
@@ -420,8 +420,8 @@ SettingsDialog::onCustomContextMenu( const QPoint& point )
 void
 SettingsDialog::onShowDebuggerForSelectedAccount()
 {
-    ResolverAccount* account = qobject_cast< ResolverAccount* >( m_accountProxy->data( m_accountsWidgetUi->accountsView->currentIndex(), AccountModel::AccountData ).value< Tomahawk::Accounts::Account* >() );
-    Tomahawk::JSResolver* jsResolver = qobject_cast< Tomahawk::JSResolver* >( account->resolver() );
+    ResolverAccount* account = qobject_cast< ResolverAccount* >( m_accountProxy->data( m_accountsWidgetUi->accountsView->currentIndex(), AccountModel::AccountData ).value< Hatchet::Accounts::Account* >() );
+    Hatchet::JSResolver* jsResolver = qobject_cast< Hatchet::JSResolver* >( account->resolver() );
     jsResolver->scriptAccount()->showDebugger();
 }
 
@@ -580,14 +580,14 @@ SettingsDialog::openAccountFactoryConfig( AccountFactory* factory )
 void
 SettingsDialog::createAccountFromFactory( AccountFactory* factory )
 {
-    TomahawkUtils::createAccountFromFactory( factory, 0 );
+    HatchetUtils::createAccountFromFactory( factory, 0 );
 }
 
 
 void
 SettingsDialog::openAccountConfig( Account* account, bool showDelete )
 {
-    TomahawkUtils::openAccountConfig( account, 0, showDelete );
+    HatchetUtils::openAccountConfig( account, 0, showDelete );
 }
 
 
@@ -595,7 +595,7 @@ void
 SettingsDialog::installFromFile()
 {
     const QString resolver = QFileDialog::getOpenFileName( m_accountsWidget, tr( "Install plug-in from file" ),
-                                                           TomahawkSettings::instance()->scriptDefaultPath(),
+                                                           HatchetSettings::instance()->scriptDefaultPath(),
                                                            tr( "%applicationName Plug-Ins (*.axe *.js);;"
                                                            "All files (*)" ),
                                                            0,
@@ -646,7 +646,7 @@ HostDialog::HostDialog( QWidget* parent )
 {
     ui->setupUi( this );
 
-    TomahawkSettings* s = TomahawkSettings::instance();
+    HatchetSettings* s = HatchetSettings::instance();
 
     connect( ui->autoDetectIpCheckBox, SIGNAL( toggled( bool ) ),
              SLOT( toggleAutoDetectIp( bool ) ) );
@@ -660,7 +660,7 @@ HostDialog::HostDialog( QWidget* parent )
 void
 HostDialog::saveSettings()
 {
-    TomahawkSettings* s = TomahawkSettings::instance();
+    HatchetSettings* s = HatchetSettings::instance();
 
     s->setAutoDetectExternalIp( ui->autoDetectIpCheckBox->isChecked() );
     s->setExternalHostname( ui->staticHostName->text() );
@@ -684,7 +684,7 @@ ProxyDialog::ProxyDialog( QWidget *parent )
     ui->setupUi( this );
 
     // ugly, I know, but...
-    TomahawkSettings* s = TomahawkSettings::instance();
+    HatchetSettings* s = HatchetSettings::instance();
 
     ui->hostLineEdit->setText( s->proxyHost() );
     ui->portSpinBox->setValue( s->proxyPort() );
@@ -701,7 +701,7 @@ ProxyDialog::saveSettings()
     qDebug() << Q_FUNC_INFO;
 
     //First set settings
-    TomahawkSettings* s = TomahawkSettings::instance();
+    HatchetSettings* s = HatchetSettings::instance();
     s->setProxyHost( ui->hostLineEdit->text() );
 
     int port = ui->portSpinBox->value();

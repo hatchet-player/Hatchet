@@ -1,4 +1,4 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2011,      Leo Franchi <lfranchi@kde.org>
  *   Copyright 2011-2016, Christian Muehlhaeuser <muesli@tomahawk-player.org>
@@ -6,18 +6,18 @@
  *   Copyright 2013,      Uwe L. Korn <uwelk@xhochy.com>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "GlobalActionManager.h"
@@ -43,7 +43,7 @@
 #include "viewpages/SearchViewPage.h"
 
 #include "Pipeline.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "ViewManager.h"
 
 #include <QMessageBox>
@@ -52,8 +52,8 @@
 
 GlobalActionManager* GlobalActionManager::s_instance = 0;
 
-using namespace Tomahawk;
-using namespace TomahawkUtils;
+using namespace Hatchet;
+using namespace HatchetUtils;
 
 
 GlobalActionManager*
@@ -81,13 +81,13 @@ void
 GlobalActionManager::installResolverFromFile( const QString& resolverPath )
 {
     const QFileInfo resolverAbsoluteFilePath( resolverPath );
-    TomahawkSettings::instance()->setScriptDefaultPath( resolverAbsoluteFilePath.absolutePath() );
+    HatchetSettings::instance()->setScriptDefaultPath( resolverAbsoluteFilePath.absolutePath() );
 
-    if ( resolverAbsoluteFilePath.baseName() == "spotify_tomahawkresolver" )
+    if ( resolverAbsoluteFilePath.baseName() == "spotify_hatchetresolver" )
     {
         // HACK if this is a spotify resolver, we treat it specially.
         // usually we expect the user to just download the spotify resolver from attica,
-        // however developers, those who build their own tomahawk, can't do that, or linux
+        // however developers, those who build their own hatchet, can't do that, or linux
         // users can't do that. However, we have an already-existing SpotifyAccount that we
         // know exists that we need to use this resolver path.
         //
@@ -141,7 +141,7 @@ GlobalActionManager::installResolverFromFile( const QString& resolverPath )
         return;
 
     Accounts::AccountManager::instance()->addAccount( acct );
-    TomahawkSettings::instance()->addAccount( acct->accountId() );
+    HatchetSettings::instance()->addAccount( acct->accountId() );
     Accounts::AccountManager::instance()->enableAccount( acct );
 }
 
@@ -150,8 +150,8 @@ bool
 GlobalActionManager::openUrl( const QString& url )
 {
     // Native Implementations
-    if ( url.startsWith( "tomahawk://" ) )
-        return parseTomahawkLink( url );
+    if ( url.startsWith( "hatchet://" ) )
+        return parseHatchetLink( url );
     else if ( url.contains( "open.spotify.com" ) || url.startsWith( "spotify:" ) )
         return openSpotifyLink( url );
 
@@ -213,18 +213,18 @@ GlobalActionManager::xspfCreated( const QByteArray& xspf )
 
 
 bool
-GlobalActionManager::parseTomahawkLink( const QString& urlIn )
+GlobalActionManager::parseHatchetLink( const QString& urlIn )
 {
     QString url = urlIn;
     if ( urlIn.startsWith( "http://toma.hk" ) )
-        url.replace( "http://toma.hk/", "tomahawk://" );
+        url.replace( "http://toma.hk/", "hatchet://" );
 
-    if ( url.contains( "tomahawk://" ) )
+    if ( url.contains( "hatchet://" ) )
     {
         QString cmd = url.mid( 11 );
         cmd.replace( "%2B", "%20" );
         cmd.replace( "+", "%20" ); // QUrl doesn't parse '+' into " "
-        tLog() << "Parsing tomahawk link command" << cmd;
+        tLog() << "Parsing hatchet link command" << cmd;
 
         QString cmdType = cmd.split( "/" ).first();
         QUrl u = QUrl::fromEncoded( cmd.toUtf8() );
@@ -238,7 +238,7 @@ GlobalActionManager::parseTomahawkLink( const QString& urlIn )
                 XSPFLoader* l = new XSPFLoader( true, true, this );
                 tDebug() << "Loading spiff:" << xspf.toString();
                 l->load( xspf );
-                connect( l, SIGNAL( ok( Tomahawk::playlist_ptr ) ), ViewManager::instance(), SLOT( show( Tomahawk::playlist_ptr ) ) );
+                connect( l, SIGNAL( ok( Hatchet::playlist_ptr ) ), ViewManager::instance(), SLOT( show( Hatchet::playlist_ptr ) ) );
 
                 return true;
             }
@@ -249,7 +249,7 @@ GlobalActionManager::parseTomahawkLink( const QString& urlIn )
 
                 tDebug() << "Loading jspiff:" << jspf.toString();
                 l->load( jspf );
-                connect( l, SIGNAL( ok( Tomahawk::playlist_ptr ) ), ViewManager::instance(), SLOT( show( Tomahawk::playlist_ptr ) ) );
+                connect( l, SIGNAL( ok( Hatchet::playlist_ptr ) ), ViewManager::instance(), SLOT( show( Hatchet::playlist_ptr ) ) );
 
                 return true;
             }
@@ -305,13 +305,13 @@ GlobalActionManager::parseTomahawkLink( const QString& urlIn )
         }
         else
         {
-            tLog() << "Tomahawk link not supported, command not known!" << cmdType << u.path();
+            tLog() << "Hatchet link not supported, command not known!" << cmdType << u.path();
             return false;
         }
     }
     else
     {
-        tLog() << "Not a tomahawk:// link!";
+        tLog() << "Not a hatchet:// link!";
         return false;
     }
 }
@@ -404,7 +404,7 @@ GlobalActionManager::createPlaylistFromUrl( const QString& type, const QString &
         XSPFLoader* l= new XSPFLoader( true, true, this );
         l->setOverrideTitle( title );
         l->load( xspf );
-        connect( l, SIGNAL( ok( Tomahawk::playlist_ptr ) ), this, SLOT( playlistCreatedToShow( Tomahawk::playlist_ptr) ) );
+        connect( l, SIGNAL( ok( Hatchet::playlist_ptr ) ), this, SLOT( playlistCreatedToShow( Hatchet::playlist_ptr) ) );
     }
     else if ( type == "jspf" )
     {
@@ -412,7 +412,7 @@ GlobalActionManager::createPlaylistFromUrl( const QString& type, const QString &
         JSPFLoader* l= new JSPFLoader( true, this );
         l->setOverrideTitle( title );
         l->load( jspf );
-        connect( l, SIGNAL( ok( Tomahawk::playlist_ptr ) ), this, SLOT( playlistCreatedToShow( Tomahawk::playlist_ptr) ) );
+        connect( l, SIGNAL( ok( Hatchet::playlist_ptr ) ), this, SLOT( playlistCreatedToShow( Hatchet::playlist_ptr) ) );
     }
 }
 
@@ -420,19 +420,19 @@ GlobalActionManager::createPlaylistFromUrl( const QString& type, const QString &
 void
 GlobalActionManager::playlistCreatedToShow( const playlist_ptr& pl )
 {
-    connect( pl.data(), SIGNAL( revisionLoaded( Tomahawk::PlaylistRevision ) ), this, SLOT( playlistReadyToShow() ) );
-    pl->setProperty( "sharedptr", QVariant::fromValue<Tomahawk::playlist_ptr>( pl ) );
+    connect( pl.data(), SIGNAL( revisionLoaded( Hatchet::PlaylistRevision ) ), this, SLOT( playlistReadyToShow() ) );
+    pl->setProperty( "sharedptr", QVariant::fromValue<Hatchet::playlist_ptr>( pl ) );
 }
 
 
 void
 GlobalActionManager::playlistReadyToShow()
 {
-    playlist_ptr pl = sender()->property( "sharedptr" ).value<Tomahawk::playlist_ptr>();
+    playlist_ptr pl = sender()->property( "sharedptr" ).value<Hatchet::playlist_ptr>();
     if ( !pl.isNull() )
         ViewManager::instance()->show( pl );
 
-    disconnect( sender(), SIGNAL( revisionLoaded( Tomahawk::PlaylistRevision ) ), this, SLOT( playlistReadyToShow() ) );
+    disconnect( sender(), SIGNAL( revisionLoaded( Hatchet::PlaylistRevision ) ), this, SLOT( playlistReadyToShow() ) );
 }
 
 
@@ -560,7 +560,7 @@ GlobalActionManager::informationForUrl(const QString& url, const QSharedPointer<
     m_queuedUrl = "";
 
     // Try to interpret as Artist
-    Tomahawk::artist_ptr artist = information.objectCast<Tomahawk::Artist>();
+    Hatchet::artist_ptr artist = information.objectCast<Hatchet::Artist>();
     if ( !artist.isNull() )
     {
         // The Url describes an artist
@@ -569,7 +569,7 @@ GlobalActionManager::informationForUrl(const QString& url, const QSharedPointer<
     }
 
     // Try to interpret as Album
-    Tomahawk::album_ptr album = information.objectCast<Tomahawk::Album>();
+    Hatchet::album_ptr album = information.objectCast<Hatchet::Album>();
     if ( !album.isNull() )
     {
         // The Url describes an album
@@ -577,7 +577,7 @@ GlobalActionManager::informationForUrl(const QString& url, const QSharedPointer<
         return;
     }
 
-    Tomahawk::playlisttemplate_ptr pltemplate = information.objectCast<Tomahawk::PlaylistTemplate>();
+    Hatchet::playlisttemplate_ptr pltemplate = information.objectCast<Hatchet::PlaylistTemplate>();
     if ( !pltemplate.isNull() )
     {
         ViewManager::instance()->show( pltemplate->get() );
@@ -585,7 +585,7 @@ GlobalActionManager::informationForUrl(const QString& url, const QSharedPointer<
     }
 
     // Try to interpret as Track/Query
-    Tomahawk::query_ptr query = information.objectCast<Tomahawk::Query>();
+    Hatchet::query_ptr query = information.objectCast<Hatchet::Query>();
     if ( !query.isNull() )
     {
         // The Url describes a track
@@ -594,7 +594,7 @@ GlobalActionManager::informationForUrl(const QString& url, const QSharedPointer<
     }
 
     // Try to interpret as Playlist
-    Tomahawk::playlist_ptr playlist = information.objectCast<Tomahawk::Playlist>();
+    Hatchet::playlist_ptr playlist = information.objectCast<Hatchet::Playlist>();
     if ( !playlist.isNull() )
     {
         // The url describes a playlist
@@ -733,7 +733,7 @@ GlobalActionManager::doQueueAdd( const QStringList& parts, const QList< QPair< Q
         if ( !xspfUrl.isEmpty() )
         {
             XSPFLoader* loader = new XSPFLoader( false, false, this );
-            connect( loader, SIGNAL( tracks( QList<Tomahawk::query_ptr> ) ), this, SLOT( handleOpenTracks( QList< Tomahawk::query_ptr > ) ) );
+            connect( loader, SIGNAL( tracks( QList<Hatchet::query_ptr> ) ), this, SLOT( handleOpenTracks( QList< Hatchet::query_ptr > ) ) );
             loader->load( QUrl( xspfUrl ) );
             loader->setAutoDelete( true );
 
@@ -742,7 +742,7 @@ GlobalActionManager::doQueueAdd( const QStringList& parts, const QList< QPair< Q
         else if ( !jspfUrl.isEmpty() )
         {
             JSPFLoader* loader = new JSPFLoader( false, this );
-            connect( loader, SIGNAL( tracks( QList<Tomahawk::query_ptr> ) ), this, SLOT( handleOpenTracks( QList< Tomahawk::query_ptr > ) ) );
+            connect( loader, SIGNAL( tracks( QList<Hatchet::query_ptr> ) ), this, SLOT( handleOpenTracks( QList< Hatchet::query_ptr > ) ) );
             loader->load( QUrl( jspfUrl ) );
             loader->setAutoDelete( true );
 
@@ -873,14 +873,14 @@ GlobalActionManager::handleAutoPlaylistCommand( const QUrl& url )
 }
 
 
-Tomahawk::dynplaylist_ptr
+Hatchet::dynplaylist_ptr
 GlobalActionManager::loadDynamicPlaylist( const QUrl& url, bool station )
 {
     QStringList parts = url.path().split( "/" ).mid( 1 ); // get the rest of the command
     if ( parts.isEmpty() )
     {
         tLog() << "No specific station command:" << url.toString();
-        return Tomahawk::dynplaylist_ptr();
+        return Hatchet::dynplaylist_ptr();
     }
 
     if ( parts[ 0 ] == "create" )
@@ -888,7 +888,7 @@ GlobalActionManager::loadDynamicPlaylist( const QUrl& url, bool station )
         if ( !urlHasQueryItem( url, "title" ) || !urlHasQueryItem( url, "type" ) )
         {
             tLog() << "Station create command needs title and type..." << url.toString();
-            return Tomahawk::dynplaylist_ptr();
+            return Hatchet::dynplaylist_ptr();
         }
         QString title = urlQueryItemValue( url, "title" );
         QString type = urlQueryItemValue( url, "type" );
@@ -1056,7 +1056,7 @@ GlobalActionManager::loadDynamicPlaylist( const QUrl& url, bool station )
         return pl;
     }
 
-    return Tomahawk::dynplaylist_ptr();
+    return Hatchet::dynplaylist_ptr();
 }
 
 
@@ -1122,7 +1122,7 @@ GlobalActionManager::playSpotify( const QUrl& url )
 
     QString spotifyUrl = urlHasQueryItem( url, "spotifyURI" ) ? urlQueryItemValue( url, "spotifyURI" ) : urlQueryItemValue( url, "spotifyURL" );
     SpotifyParser* p = new SpotifyParser( spotifyUrl, false, this );
-    connect( p, SIGNAL( track( Tomahawk::query_ptr ) ), this, SLOT( playOrQueueNow( Tomahawk::query_ptr ) ) );
+    connect( p, SIGNAL( track( Hatchet::query_ptr ) ), this, SLOT( playOrQueueNow( Hatchet::query_ptr ) ) );
 
     return true;
 }
@@ -1198,7 +1198,7 @@ bool
 GlobalActionManager::openSpotifyLink( const QString& link )
 {
     SpotifyParser* spot = new SpotifyParser( link, false, this );
-    connect( spot, SIGNAL( track( Tomahawk::query_ptr ) ), this, SLOT( handleOpenTrack( Tomahawk::query_ptr ) ) );
+    connect( spot, SIGNAL( track( Hatchet::query_ptr ) ), this, SLOT( handleOpenTrack( Hatchet::query_ptr ) ) );
 
     return true;
 }

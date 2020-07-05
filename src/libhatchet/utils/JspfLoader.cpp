@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org
  *   Copyright 2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 
@@ -23,7 +23,7 @@
 #include "utils/Json.h"
 #include "utils/Logger.h"
 #include "utils/NetworkReply.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/NetworkAccessManager.h"
 
 #include "Playlist.h"
@@ -34,7 +34,7 @@
 #include <QDomDocument>
 #include <QMessageBox>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 JSPFLoader::JSPFLoader( bool autoCreate, QObject* parent )
@@ -50,7 +50,7 @@ JSPFLoader::~JSPFLoader()
 }
 
 
-QList< Tomahawk::query_ptr >
+QList< Hatchet::query_ptr >
 JSPFLoader::entries() const
 {
     return m_entries;
@@ -62,8 +62,8 @@ JSPFLoader::load( const QUrl& url )
 {
     QNetworkRequest request( url );
 
-    Q_ASSERT( Tomahawk::Utils::nam() != 0 );
-    NetworkReply* reply = new NetworkReply( Tomahawk::Utils::nam()->get( request ) );
+    Q_ASSERT( Hatchet::Utils::nam() != 0 );
+    NetworkReply* reply = new NetworkReply( Hatchet::Utils::nam()->get( request ) );
 
     connect( reply, SIGNAL( finished() ), SLOT( networkLoadFinished() ) );
     connect( reply, SIGNAL( error( QNetworkReply::NetworkError ) ), SLOT( networkError( QNetworkReply::NetworkError ) ) );
@@ -126,7 +126,7 @@ void
 JSPFLoader::gotBody()
 {
     bool retOk;
-    QVariantMap wrapper = TomahawkUtils::parseJson( m_body, &retOk ).toMap();
+    QVariantMap wrapper = HatchetUtils::parseJson( m_body, &retOk ).toMap();
 
     if ( !retOk )
     {
@@ -179,8 +179,8 @@ JSPFLoader::gotBody()
                 continue;
             }
 
-            track_ptr t = Tomahawk::Track::get( artist, track, album, QString(), duration.toInt() / 1000 );
-            query_ptr q = Tomahawk::Query::get( t );
+            track_ptr t = Hatchet::Track::get( artist, track, album, QString(), duration.toInt() / 1000 );
+            query_ptr q = Hatchet::Query::get( t );
             if ( !q )
                 continue;
 

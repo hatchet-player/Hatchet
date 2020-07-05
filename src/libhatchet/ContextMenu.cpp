@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ContextMenu.h"
@@ -40,7 +40,7 @@
 #include <QDesktopServices>
 #include <QFileInfo>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 ContextMenu::ContextMenu( QWidget* parent )
@@ -49,7 +49,7 @@ ContextMenu::ContextMenu( QWidget* parent )
     , m_sources_sigmap( 0 )
     , m_loveAction( 0 )
 {
-    setFont( TomahawkUtils::systemFont() );
+    setFont( HatchetUtils::systemFont() );
 
     m_sigmap = new QSignalMapper( this );
     connect( m_sigmap, SIGNAL( mapped( int ) ), SLOT( onTriggered( int ) ) );
@@ -86,7 +86,7 @@ ContextMenu::itemCount() const
 void
 ContextMenu::addToPlaylist( int playlistIdx )
 {
-    Tomahawk::playlist_ptr playlist = m_playlists.at( playlistIdx );
+    Hatchet::playlist_ptr playlist = m_playlists.at( playlistIdx );
     playlist->addEntries( m_queries );
 }
 
@@ -94,8 +94,8 @@ ContextMenu::addToPlaylist( int playlistIdx )
 void
 ContextMenu::sendToSource( int sourceIdx )
 {
-    const Tomahawk::source_ptr &src = m_sources.at( sourceIdx );
-    foreach ( Tomahawk::query_ptr query, m_queries )
+    const Hatchet::source_ptr &src = m_sources.at( sourceIdx );
+    foreach ( Hatchet::query_ptr query, m_queries )
     {
         query->queryTrack()->share( src );
     }
@@ -103,21 +103,21 @@ ContextMenu::sendToSource( int sourceIdx )
 
 
 bool
-playlistsLessThan( const Tomahawk::playlist_ptr& s1, const Tomahawk::playlist_ptr& s2 )
+playlistsLessThan( const Hatchet::playlist_ptr& s1, const Hatchet::playlist_ptr& s2 )
 {
     return s1->title().toLower() < s2->title().toLower();
 }
 
 
 bool
-sourcesLessThan( const Tomahawk::source_ptr& s1, const Tomahawk::source_ptr& s2 )
+sourcesLessThan( const Hatchet::source_ptr& s1, const Hatchet::source_ptr& s2 )
 {
     return s1->friendlyName().toLower() < s2->friendlyName().toLower();
 }
 
 
 void
-ContextMenu::setQueries( const QList<Tomahawk::query_ptr>& queries )
+ContextMenu::setQueries( const QList<Hatchet::query_ptr>& queries )
 {
     if ( queries.isEmpty() )
         return;
@@ -138,7 +138,7 @@ ContextMenu::setQueries( const QList<Tomahawk::query_ptr>& queries )
     if ( m_supportedActions & ActionPlaylist )
     {
         // Get the current list of all playlists.
-        m_playlists = QList< Tomahawk::playlist_ptr >( SourceList::instance()->getLocal()->dbCollection()->playlists() );
+        m_playlists = QList< Hatchet::playlist_ptr >( SourceList::instance()->getLocal()->dbCollection()->playlists() );
         // Sort the playlist
         qSort( m_playlists.begin(), m_playlists.end(), playlistsLessThan );
         if ( m_playlists_sigmap != 0 )
@@ -242,7 +242,7 @@ ContextMenu::setQueries( const QList<Tomahawk::query_ptr>& queries )
     if ( m_supportedActions & ActionMarkListened )
     {
         bool thereAreUnlistenedTracks = false;
-        foreach ( const Tomahawk::query_ptr& query, m_queries )
+        foreach ( const Hatchet::query_ptr& query, m_queries )
         {
             if ( !query->queryTrack()->isListened() )
             {
@@ -268,7 +268,7 @@ ContextMenu::setQueries( const QList<Tomahawk::query_ptr>& queries )
 
 
 void
-ContextMenu::setQuery( const Tomahawk::query_ptr& query )
+ContextMenu::setQuery( const Hatchet::query_ptr& query )
 {
     if ( query.isNull() )
         return;
@@ -280,7 +280,7 @@ ContextMenu::setQuery( const Tomahawk::query_ptr& query )
 
 
 void
-ContextMenu::setAlbums( const QList<Tomahawk::album_ptr>& albums )
+ContextMenu::setAlbums( const QList<Hatchet::album_ptr>& albums )
 {
     if ( albums.isEmpty() )
         return;
@@ -319,7 +319,7 @@ ContextMenu::setAlbums( const QList<Tomahawk::album_ptr>& albums )
 
 
 void
-ContextMenu::setAlbum( const Tomahawk::album_ptr& album )
+ContextMenu::setAlbum( const Hatchet::album_ptr& album )
 {
     QList<album_ptr> albums;
     albums << album;
@@ -328,7 +328,7 @@ ContextMenu::setAlbum( const Tomahawk::album_ptr& album )
 
 
 void
-ContextMenu::setArtists( const QList<Tomahawk::artist_ptr>& artists )
+ContextMenu::setArtists( const QList<Hatchet::artist_ptr>& artists )
 {
     if ( artists.isEmpty() )
         return;
@@ -367,7 +367,7 @@ ContextMenu::setArtists( const QList<Tomahawk::artist_ptr>& artists )
 
 
 void
-ContextMenu::setArtist( const Tomahawk::artist_ptr& artist )
+ContextMenu::setArtist( const Hatchet::artist_ptr& artist )
 {
     QList<artist_ptr> artists;
     artists << artist;
@@ -525,7 +525,7 @@ ContextMenu::onSocialActionsLoaded()
 
 
 void
-ContextMenu::setPlaylistInterface( const Tomahawk::playlistinterface_ptr& plInterface )
+ContextMenu::setPlaylistInterface( const Hatchet::playlistinterface_ptr& plInterface )
 {
     m_interface = plInterface;
 }

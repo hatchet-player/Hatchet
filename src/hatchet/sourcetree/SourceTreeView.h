@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef SOURCETREEVIEW_H
@@ -33,7 +33,7 @@ class SourcesModel;
 class SourcesProxyModel;
 class SourceDelegate;
 
-namespace Tomahawk
+namespace Hatchet
 {
     class LatchManager;
 }
@@ -49,7 +49,7 @@ public:
 public slots:
     void showOfflineSources( bool offlineSourcesShown );
 
-    void renamePlaylist( const Tomahawk::playlist_ptr& playlist );
+    void renamePlaylist( const Hatchet::playlist_ptr& playlist );
     void renamePlaylist();
 
     void update( const QModelIndex &index );
@@ -58,10 +58,10 @@ signals:
     void onOnline( const QModelIndex& index );
     void onOffline( const QModelIndex& index );
 
-    void latchRequest( const Tomahawk::source_ptr& source );
-    void unlatchRequest( const Tomahawk::source_ptr& source );
+    void latchRequest( const Hatchet::source_ptr& source );
+    void unlatchRequest( const Hatchet::source_ptr& source );
     void catchUpRequest();
-    void latchModeChangeRequest( const Tomahawk::source_ptr& source, bool realtime );
+    void latchModeChangeRequest( const Hatchet::source_ptr& source, bool realtime );
 
 private slots:
     void onItemExpanded( const QModelIndex& idx );
@@ -79,8 +79,8 @@ private slots:
 
     void latchOnOrCatchUp();
     void latchOff();
-    void latchOnOrCatchUp( const Tomahawk::source_ptr& source );
-    void latchOff( const Tomahawk::source_ptr& source );
+    void latchOnOrCatchUp( const Hatchet::source_ptr& source );
+    void latchOff( const Hatchet::source_ptr& source );
     void latchModeToggled( bool checked );
 
     void onCustomContextMenu( const QPoint& pos );
@@ -88,7 +88,7 @@ private slots:
 
     void onDeletePlaylistResult( bool result );
 
-    void shortLinkReady( const Tomahawk::playlist_ptr& playlist, const QUrl& shortUrl );
+    void shortLinkReady( const Hatchet::playlist_ptr& playlist, const QUrl& shortUrl );
     void onPlaylistLinkReady( const QVariantMap& data );
 
 protected:
@@ -112,7 +112,7 @@ private:
     SourcesProxyModel* m_proxyModel;
     QModelIndex m_contextMenuIndex;
     SourceDelegate* m_delegate;
-    Tomahawk::LatchManager* m_latchManager;
+    Hatchet::LatchManager* m_latchManager;
     QPointer<SourceTreePopupDialog> m_popupDialog;
 
     QMenu m_playlistMenu;

@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2011,      Leo Franchi <lfranchi@kde.org>
  *   Copyright 2014,      Dominik Schmidt <domme@tomahawk-player.org>
  *   Copyright 2015-2016, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ScriptAccount.h"
@@ -40,7 +40,7 @@
 #include <QTime>
 
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 ScriptAccount::ScriptAccount( const QString& name )
@@ -216,7 +216,7 @@ ScriptAccount::unregisterScriptPlugin( const QString& type, const QString& objec
     }
     else
     {
-        tLog() << "This plugin type is not handled by Tomahawk or simply cannot be removed yet";
+        tLog() << "This plugin type is not handled by Hatchet or simply cannot be removed yet";
         Q_ASSERT( false );
     }
 }
@@ -258,7 +258,7 @@ ScriptAccount::scriptPluginFactory( const QString& type, const scriptobject_ptr&
     }
     else
     {
-        tLog() << "This plugin type is not handled by Tomahawk";
+        tLog() << "This plugin type is not handled by Hatchet";
         Q_ASSERT( false );
     }
 }
@@ -277,10 +277,10 @@ ScriptAccount::onJobDeleted( const QString& jobId )
 }
 
 
-QList< Tomahawk::artist_ptr >
+QList< Hatchet::artist_ptr >
 ScriptAccount::parseArtistVariantList( const QVariantList& artistList )
 {
-    QList< Tomahawk::artist_ptr > artists;
+    QList< Hatchet::artist_ptr > artists;
 
     QString artist;
     foreach( const QVariant& a, artistList )
@@ -289,17 +289,17 @@ ScriptAccount::parseArtistVariantList( const QVariantList& artistList )
         if ( artist.isEmpty() )
             continue;
 
-        artists << Tomahawk::Artist::get( artist );
+        artists << Hatchet::Artist::get( artist );
     }
 
     return artists;
 }
 
 
-QList< Tomahawk::album_ptr >
+QList< Hatchet::album_ptr >
 ScriptAccount::parseAlbumVariantList( const QVariantList& albumList )
 {
-    QList< Tomahawk::album_ptr > albums;
+    QList< Hatchet::album_ptr > albums;
 
     QString artistString;
     QString albumString;
@@ -312,17 +312,17 @@ ScriptAccount::parseAlbumVariantList( const QVariantList& albumList )
         if ( artistString.isEmpty() || albumString.isEmpty() )
             continue;
 
-        albums << Tomahawk::Album::get( Tomahawk::Artist::get( artistString ), albumString );
+        albums << Hatchet::Album::get( Hatchet::Artist::get( artistString ), albumString );
     }
 
     return albums;
 }
 
 
-QList< Tomahawk::result_ptr >
+QList< Hatchet::result_ptr >
 ScriptAccount::parseResultVariantList( const QVariantList& reslist )
 {
-    QList< Tomahawk::result_ptr > results;
+    QList< Hatchet::result_ptr > results;
 
 
     foreach( const QVariant& rv, reslist )
@@ -345,7 +345,7 @@ ScriptAccount::parseResultVariantList( const QVariantList& reslist )
             duration = time.secsTo( QTime( 0, 0 ) ) * -1;
         }
 
-        Tomahawk::track_ptr track = Tomahawk::Track::get( artistString,
+        Hatchet::track_ptr track = Hatchet::Track::get( artistString,
                                                           trackString,
                                                           m.value( "album" ).toString(),
                                                           m.value( "albumArtist" ).toString(),
@@ -356,7 +356,7 @@ ScriptAccount::parseResultVariantList( const QVariantList& reslist )
         if ( !track )
             continue;
 
-        Tomahawk::result_ptr rp = Tomahawk::Result::get( m.value( "url" ).toString(), track );
+        Hatchet::result_ptr rp = Hatchet::Result::get( m.value( "url" ).toString(), track );
         if ( !rp )
             continue;
 
@@ -381,7 +381,7 @@ ScriptAccount::parseResultVariantList( const QVariantList& reslist )
         QString mimetype = m.value( "mimetype" ).toString();
         if ( mimetype.isEmpty() )
         {
-            mimetype = TomahawkUtils::extensionToMimetype( m.value( "extension" ).toString() );
+            mimetype = HatchetUtils::extensionToMimetype( m.value( "extension" ).toString() );
         }
         Q_ASSERT( !mimetype.isEmpty() );
 
@@ -401,7 +401,7 @@ ScriptAccount::parseResultVariantList( const QVariantList& reslist )
             DownloadFormat format;
             format.url = downloadUrl.value( "url" ).toUrl();
             format.extension = downloadUrl.value( "extension").toString().toLower();
-            format.mimetype = TomahawkUtils::extensionToMimetype( format.extension );
+            format.mimetype = HatchetUtils::extensionToMimetype( format.extension );
 
             fl << format;
         }

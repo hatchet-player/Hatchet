@@ -1,26 +1,26 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2011,      Leo Franchi <lfranchi@kde.org>
  *   Copyright 2014,      Dominik Schmidt <domme@tomahawk-player.org>
  *   Copyright 2015-2016, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #pragma once
-#ifndef TOMAHAWK_SCRIPTACCOUNT_H
-#define TOMAHAWK_SCRIPTACCOUNT_H
+#ifndef HATCHET_SCRIPTACCOUNT_H
+#define HATCHET_SCRIPTACCOUNT_H
 
 #include "../Typedefs.h"
 
@@ -35,7 +35,7 @@
 
 #include "../DllMacro.h"
 
-namespace Tomahawk {
+namespace Hatchet {
 
 class ScriptObject;
 class ScriptJob;
@@ -79,9 +79,9 @@ public:
     virtual void showDebugger();
 
     // helpers
-    QList< Tomahawk::artist_ptr > parseArtistVariantList( const QVariantList& artistList );
-    QList< Tomahawk::album_ptr > parseAlbumVariantList( const QVariantList& albumList );
-    QList< Tomahawk::result_ptr > parseResultVariantList( const QVariantList& reslist );
+    QList< Hatchet::artist_ptr > parseArtistVariantList( const QVariantList& artistList );
+    QList< Hatchet::album_ptr > parseAlbumVariantList( const QVariantList& albumList );
+    QList< Hatchet::result_ptr > parseResultVariantList( const QVariantList& reslist );
     ScriptJob* resolve( const scriptobject_ptr& scriptObject, const query_ptr& query, const QString& resolveType );
 
 private slots:
@@ -102,6 +102,6 @@ private: // TODO: pimple, might be renamed before tho
     ScriptInfoPluginFactory* m_infoPluginFactory;
 };
 
-} // ns: Tomahawk
+} // ns: Hatchet
 
-#endif // TOMAHAWK_SCRIPTACCOUNT_H
+#endif // HATCHET_SCRIPTACCOUNT_H

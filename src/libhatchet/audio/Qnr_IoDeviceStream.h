@@ -35,7 +35,7 @@
 class QIODevice;
 class QTimer;
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 class DLLEXPORT QNR_IODeviceStream : public MediaStream
@@ -58,6 +58,6 @@ private:
     QSharedPointer<QNetworkReply> m_networkReply;
 };
 
-} // namespace Tomahawk
+} // namespace Hatchet
 
 #endif // QNR_IODEVICESTREAM_H

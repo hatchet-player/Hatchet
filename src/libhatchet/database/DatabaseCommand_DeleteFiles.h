@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef DATABASECOMMAND_DELETEFILES_H
@@ -30,7 +30,7 @@
 #include "DllMacro.h"
 
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 class DLLEXPORT DatabaseCommand_DeleteFiles : public DatabaseCommandLoggable
@@ -44,19 +44,19 @@ public:
         : DatabaseCommandLoggable( parent )
     {}
 
-    explicit DatabaseCommand_DeleteFiles( const Tomahawk::source_ptr& source, QObject* parent = 0 )
+    explicit DatabaseCommand_DeleteFiles( const Hatchet::source_ptr& source, QObject* parent = 0 )
     : DatabaseCommandLoggable( parent ), m_deleteAll( true )
     {
         setSource( source );
     }
 
-    explicit DatabaseCommand_DeleteFiles( const QDir& dir, const Tomahawk::source_ptr& source, QObject* parent = 0 )
+    explicit DatabaseCommand_DeleteFiles( const QDir& dir, const Hatchet::source_ptr& source, QObject* parent = 0 )
     : DatabaseCommandLoggable( parent ), m_dir( dir ), m_deleteAll( false )
     {
         setSource( source );
     }
 
-    explicit DatabaseCommand_DeleteFiles( const QVariantList& ids, const Tomahawk::source_ptr& source, QObject* parent = 0 )
+    explicit DatabaseCommand_DeleteFiles( const QVariantList& ids, const Hatchet::source_ptr& source, QObject* parent = 0 )
     : DatabaseCommandLoggable( parent ), m_ids( ids ), m_deleteAll( false )
     {
         setSource( source );
@@ -77,7 +77,7 @@ public:
     void setDeleteAll( const bool deleteAll ) { m_deleteAll = deleteAll; }
 
 signals:
-    void done( const QList<unsigned int>&, const Tomahawk::collection_ptr& );
+    void done( const QList<unsigned int>&, const Hatchet::collection_ptr& );
     void notify( const QList<unsigned int>& ids );
 
 private:

@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "SourceList.h"
@@ -30,7 +30,7 @@
 #include "utils/Json.h"
 #include "utils/Logger.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 SourceList* SourceList::s_instance = 0;
 
@@ -78,17 +78,17 @@ SourceList::webSource() const
 void
 SourceList::loadSources()
 {
-    Tomahawk::DatabaseCommand_LoadAllSources* cmd = new Tomahawk::DatabaseCommand_LoadAllSources();
+    Hatchet::DatabaseCommand_LoadAllSources* cmd = new Hatchet::DatabaseCommand_LoadAllSources();
 
-    connect( cmd, SIGNAL( done( QList<Tomahawk::source_ptr> ) ),
-                    SLOT( setSources( QList<Tomahawk::source_ptr> ) ) );
+    connect( cmd, SIGNAL( done( QList<Hatchet::source_ptr> ) ),
+                    SLOT( setSources( QList<Hatchet::source_ptr> ) ) );
 
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 }
 
 
 void
-SourceList::setSources( const QList<Tomahawk::source_ptr>& sources )
+SourceList::setSources( const QList<Hatchet::source_ptr>& sources )
 {
     {
         QMutexLocker lock( &m_mut );
@@ -107,7 +107,7 @@ SourceList::setSources( const QList<Tomahawk::source_ptr>& sources )
 
 
 void
-SourceList::setLocal( const Tomahawk::source_ptr& localSrc )
+SourceList::setLocal( const Hatchet::source_ptr& localSrc )
 {
     Q_ASSERT( localSrc->isLocal() );
     Q_ASSERT( m_local.isNull() );
@@ -119,8 +119,8 @@ SourceList::setLocal( const Tomahawk::source_ptr& localSrc )
     }
 
 
-    connect( localSrc.data(), SIGNAL( latchedOn( Tomahawk::source_ptr ) ), this, SLOT( latchedOn( Tomahawk::source_ptr ) ) );
-    connect( localSrc.data(), SIGNAL( latchedOff( Tomahawk::source_ptr ) ), this, SLOT( latchedOff( Tomahawk::source_ptr ) ) );
+    connect( localSrc.data(), SIGNAL( latchedOn( Hatchet::source_ptr ) ), this, SLOT( latchedOn( Hatchet::source_ptr ) ) );
+    connect( localSrc.data(), SIGNAL( latchedOff( Hatchet::source_ptr ) ), this, SLOT( latchedOff( Hatchet::source_ptr ) ) );
     emit sourceAdded( localSrc );
 }
 
@@ -141,8 +141,8 @@ SourceList::add( const source_ptr& source )
     coll->setWeakRef( coll.toWeakRef() );
     source->addCollection( coll );
 
-    connect( source.data(), SIGNAL( latchedOn( Tomahawk::source_ptr ) ), this, SLOT( latchedOn( Tomahawk::source_ptr ) ) );
-    connect( source.data(), SIGNAL( latchedOff( Tomahawk::source_ptr ) ), this, SLOT( latchedOff( Tomahawk::source_ptr ) ) );
+    connect( source.data(), SIGNAL( latchedOn( Hatchet::source_ptr ) ), this, SLOT( latchedOn( Hatchet::source_ptr ) ) );
+    connect( source.data(), SIGNAL( latchedOff( Hatchet::source_ptr ) ), this, SLOT( latchedOff( Hatchet::source_ptr ) ) );
     emit sourceAdded( source );
 }
 
@@ -221,19 +221,19 @@ SourceList::get( const QString& username, const QString& friendlyName, bool auto
 
 
 void
-SourceList::createPlaylist( const Tomahawk::source_ptr& src, const QVariant& contents )
+SourceList::createPlaylist( const Hatchet::source_ptr& src, const QVariant& contents )
 {
-    Tomahawk::playlist_ptr p = Tomahawk::playlist_ptr( new Tomahawk::Playlist( src ) );
-    TomahawkUtils::qvariant2qobject( contents.toMap(), p.data() );
+    Hatchet::playlist_ptr p = Hatchet::playlist_ptr( new Hatchet::Playlist( src ) );
+    HatchetUtils::qvariant2qobject( contents.toMap(), p.data() );
     p->reportCreated( p );
 }
 
 
 void
-SourceList::createDynamicPlaylist( const Tomahawk::source_ptr& src, const QVariant& contents )
+SourceList::createDynamicPlaylist( const Hatchet::source_ptr& src, const QVariant& contents )
 {
-    Tomahawk::dynplaylist_ptr p = Tomahawk::dynplaylist_ptr( new Tomahawk::DynamicPlaylist( src, contents.toMap().value( "type", QString() ).toString()  ) );
-    TomahawkUtils::qvariant2qobject( contents.toMap(), p.data() );
+    Hatchet::dynplaylist_ptr p = Hatchet::dynplaylist_ptr( new Hatchet::DynamicPlaylist( src, contents.toMap().value( "type", QString() ).toString()  ) );
+    HatchetUtils::qvariant2qobject( contents.toMap(), p.data() );
     p->reportCreated( p );
 }
 

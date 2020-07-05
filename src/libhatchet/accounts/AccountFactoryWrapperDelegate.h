@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2012, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef ACCOUNTFACTORYWRAPPERDELEGATE_H
@@ -23,7 +23,7 @@
 
 #define ACCOUNT_ROW_HEIGHT 20
 
-namespace Tomahawk {
+namespace Hatchet {
 namespace Accounts {
 class Account;
 }
@@ -43,10 +43,10 @@ public:
 signals:
     void update( const QModelIndex& );
 
-    void openConfig( Tomahawk::Accounts::Account* );
-    void removeAccount( Tomahawk::Accounts::Account* );
+    void openConfig( Hatchet::Accounts::Account* );
+    void removeAccount( Hatchet::Accounts::Account* );
 
-    void checkOrUncheck( const QModelIndex& row, Tomahawk::Accounts::Account* account, Qt::CheckState newState );
+    void checkOrUncheck( const QModelIndex& row, Hatchet::Accounts::Account* account, Qt::CheckState newState );
 
 private:
     QModelIndex m_configPressed;

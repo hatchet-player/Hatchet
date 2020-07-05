@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "Pipeline_p.h"
@@ -38,7 +38,7 @@
 #define MINSCORE 0.5
 #define DEFAULT_RESOLVER_TIMEOUT 5000 // 5 seconds
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 Pipeline* PipelinePrivate::s_instance = 0;
 
@@ -149,7 +149,7 @@ Pipeline::removeResolver( Resolver* r )
 }
 
 
-QList< Tomahawk::Resolver* >
+QList< Hatchet::Resolver* >
 Pipeline::resolvers() const
 {
     Q_D( const Pipeline );
@@ -178,7 +178,7 @@ Pipeline::addExternalResolverFactory( ResolverFactoryFunc resolverFactory )
 }
 
 
-Tomahawk::ExternalResolver*
+Hatchet::ExternalResolver*
 Pipeline::addScriptResolver( const QString& accountId, const QString& path, const QStringList& additionalScriptPaths )
 {
     Q_D( Pipeline );
@@ -333,14 +333,14 @@ Pipeline::resolve( QID qid, bool prioritized, bool temporaryQuery )
 
 
 void
-Pipeline::reportError( QID qid, Tomahawk::Resolver* r )
+Pipeline::reportError( QID qid, Hatchet::Resolver* r )
 {
     reportResults( qid, r, QList< result_ptr>() );
 }
 
 
 void
-Pipeline::reportResults( QID qid, Tomahawk::Resolver* r, const QList< result_ptr >& results )
+Pipeline::reportResults( QID qid, Hatchet::Resolver* r, const QList< result_ptr >& results )
 {
     Q_D( Pipeline );
     if ( !d->running )
@@ -446,7 +446,7 @@ Pipeline::onResultUrlCheckerDone()
         return;
     }*/
 
-    decQIDState( q, reinterpret_cast<Tomahawk::Resolver*>( checker->userData() ) );
+    decQIDState( q, reinterpret_cast<Hatchet::Resolver*>( checker->userData() ) );
 }
 
 
@@ -554,7 +554,7 @@ Pipeline::shuntNext()
 
 
 void
-Pipeline::timeoutShunt( const query_ptr& q, Tomahawk::Resolver* r )
+Pipeline::timeoutShunt( const query_ptr& q, Hatchet::Resolver* r )
 {
     Q_D( Pipeline );
     if ( !d->running )
@@ -605,8 +605,8 @@ Pipeline::shunt( const query_ptr& q )
 }
 
 
-Tomahawk::Resolver*
-Pipeline::nextResolver( const Tomahawk::query_ptr& query ) const
+Hatchet::Resolver*
+Pipeline::nextResolver( const Hatchet::query_ptr& query ) const
 {
     Q_D( const Pipeline );
     Resolver* newResolver = 0;
@@ -631,7 +631,7 @@ Pipeline::nextResolver( const Tomahawk::query_ptr& query ) const
 
 
 void
-Pipeline::checkQIDState( const Tomahawk::query_ptr& query )
+Pipeline::checkQIDState( const Hatchet::query_ptr& query )
 {
     Q_D( Pipeline );
     QMutexLocker lock( &d->mut );
@@ -655,7 +655,7 @@ Pipeline::checkQIDState( const Tomahawk::query_ptr& query )
 
 
 void
-Pipeline::incQIDState( const Tomahawk::query_ptr& query, Tomahawk::Resolver* r )
+Pipeline::incQIDState( const Hatchet::query_ptr& query, Hatchet::Resolver* r )
 {
     Q_D( Pipeline );
     QMutexLocker lock( &d->mut );
@@ -665,7 +665,7 @@ Pipeline::incQIDState( const Tomahawk::query_ptr& query, Tomahawk::Resolver* r )
 
 
 void
-Pipeline::decQIDState( const Tomahawk::query_ptr& query, Tomahawk::Resolver* r )
+Pipeline::decQIDState( const Hatchet::query_ptr& query, Hatchet::Resolver* r )
 {
     Q_D( Pipeline );
 
@@ -695,7 +695,7 @@ Pipeline::onTemporaryQueryTimer()
         query_ptr q = d->queries_temporary.takeAt( i );
 
         d->qids.remove( q->id() );
-        foreach ( const Tomahawk::result_ptr& r, q->results() )
+        foreach ( const Hatchet::result_ptr& r, q->results() )
             d->rids.remove( r->id() );
     }
 }

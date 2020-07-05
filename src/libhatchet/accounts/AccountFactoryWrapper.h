@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef ACCOUNTFACTORYWRAPPER_H
@@ -25,7 +25,7 @@
 #include <QModelIndex>
 
 class QAbstractButton;
-namespace Tomahawk {
+namespace Hatchet {
 namespace Accounts {
     class AccountFactory;
 class Account;
@@ -43,20 +43,20 @@ public:
         AccountRole = Qt::UserRole + 140
     };
 
-    explicit AccountFactoryWrapper( Tomahawk::Accounts::AccountFactory* factory, QWidget* parent = 0 );
+    explicit AccountFactoryWrapper( Hatchet::Accounts::AccountFactory* factory, QWidget* parent = 0 );
     virtual ~AccountFactoryWrapper() {}
 
 public slots:
-    void openAccountConfig( Tomahawk::Accounts::Account* );
-    void removeAccount( Tomahawk::Accounts::Account* );
-    void accountCheckedOrUnchecked( const QModelIndex& , Tomahawk::Accounts::Account* , Qt::CheckState );
+    void openAccountConfig( Hatchet::Accounts::Account* );
+    void removeAccount( Hatchet::Accounts::Account* );
+    void accountCheckedOrUnchecked( const QModelIndex& , Hatchet::Accounts::Account* , Qt::CheckState );
 
 private slots:
     void buttonClicked( QAbstractButton* );
     void load();
 
 private:
-    Tomahawk::Accounts::AccountFactory* m_factory;
+    Hatchet::Accounts::AccountFactory* m_factory;
     Ui_AccountFactoryWrapper* m_ui;
     QPushButton* m_addButton;
 };

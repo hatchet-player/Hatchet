@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2012, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef PLAYLISTINTERFACE_H
@@ -26,7 +26,7 @@
 #include "Typedefs.h"
 #include "DllMacro.h"
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 class DLLEXPORT PlaylistInterface : public QObject
@@ -39,32 +39,32 @@ public:
 
     const QString id() const { return m_id; }
 
-    virtual QList< Tomahawk::query_ptr > tracks() const = 0;
+    virtual QList< Hatchet::query_ptr > tracks() const = 0;
     bool isFinished() const { return m_finished; }
     bool hasFirstPlayableTrack() const { return m_foundFirstTrack; }
 
     virtual int trackCount() const = 0;
 
-    virtual Tomahawk::result_ptr currentItem() const = 0;
+    virtual Hatchet::result_ptr currentItem() const = 0;
     virtual void setCurrentIndex( qint64 index );
 
     virtual bool hasNextResult() const;
     virtual bool hasPreviousResult() const;
-    virtual Tomahawk::result_ptr nextResult() const;
-    virtual Tomahawk::result_ptr previousResult() const;
+    virtual Hatchet::result_ptr nextResult() const;
+    virtual Hatchet::result_ptr previousResult() const;
 
     virtual qint64 siblingIndex( int itemsAway, qint64 rootIndex = -1 ) const = 0;
     virtual qint64 siblingResultIndex( int itemsAway, qint64 rootIndex = -1 ) const;
-    virtual Tomahawk::result_ptr siblingResult( int itemsAway, qint64 rootIndex = -1 ) const;
-    virtual Tomahawk::result_ptr setSiblingResult( int itemsAway, qint64 rootIndex = -1 );
+    virtual Hatchet::result_ptr siblingResult( int itemsAway, qint64 rootIndex = -1 ) const;
+    virtual Hatchet::result_ptr setSiblingResult( int itemsAway, qint64 rootIndex = -1 );
 
-    virtual Tomahawk::result_ptr resultAt( qint64 index ) const = 0;
-    virtual Tomahawk::query_ptr queryAt( qint64 index ) const = 0;
-    virtual qint64 indexOfResult( const Tomahawk::result_ptr& result ) const = 0;
-    virtual qint64 indexOfQuery( const Tomahawk::query_ptr& query ) const = 0;
+    virtual Hatchet::result_ptr resultAt( qint64 index ) const = 0;
+    virtual Hatchet::query_ptr queryAt( qint64 index ) const = 0;
+    virtual qint64 indexOfResult( const Hatchet::result_ptr& result ) const = 0;
+    virtual qint64 indexOfQuery( const Hatchet::query_ptr& query ) const = 0;
 
-    virtual int posOfResult( const Tomahawk::result_ptr& result ) const;
-    virtual int posOfQuery( const Tomahawk::query_ptr& query ) const;
+    virtual int posOfResult( const Hatchet::result_ptr& result ) const;
+    virtual int posOfQuery( const Hatchet::query_ptr& query ) const;
 
     virtual PlaylistModes::RepeatMode repeatMode() const = 0;
     virtual bool shuffled() const = 0;
@@ -87,7 +87,7 @@ public:
     //TODO: Get rid of the next two functions once all playlsitinterfaces are factored out
     // Some playlist interfaces can wrap other interfaces. When checking for top-level
     // equality (say, to compare the currently playing interface) this might be needed
-    virtual bool hasChildInterface( const Tomahawk::playlistinterface_ptr& ) { return false; }
+    virtual bool hasChildInterface( const Hatchet::playlistinterface_ptr& ) { return false; }
 
 public slots:
     virtual void setRepeatMode( PlaylistModes::RepeatMode mode ) = 0;
@@ -95,9 +95,9 @@ public slots:
 
 signals:
     void itemCountChanged( unsigned int tracks );
-    void repeatModeChanged( Tomahawk::PlaylistModes::RepeatMode mode );
+    void repeatModeChanged( Hatchet::PlaylistModes::RepeatMode mode );
     void shuffleModeChanged( bool enabled );
-    void latchModeChanged( Tomahawk::PlaylistModes::LatchMode mode );
+    void latchModeChanged( Hatchet::PlaylistModes::LatchMode mode );
 
     void previousTrackAvailable( bool available );
     void nextTrackAvailable( bool available );
@@ -113,7 +113,7 @@ protected slots:
     void onQueryResolved();
 
 protected:
-    virtual QList<Tomahawk::query_ptr> filterTracks( const QList<Tomahawk::query_ptr>& queries );
+    virtual QList<Hatchet::query_ptr> filterTracks( const QList<Hatchet::query_ptr>& queries );
 
     PlaylistModes::LatchMode m_latchMode;
     mutable bool m_prevAvail;
@@ -132,6 +132,6 @@ private:
 
 }
 
-Q_DECLARE_METATYPE( Tomahawk::playlistinterface_ptr )
+Q_DECLARE_METATYPE( Hatchet::playlistinterface_ptr )
 
 #endif // PLAYLISTINTERFACE_H

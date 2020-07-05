@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DynamicPlaylist_p.h"
@@ -37,10 +37,10 @@
 #include "SourceList.h"
 
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
-DynamicPlaylist::DynamicPlaylist( const Tomahawk::source_ptr& author, const QString& type )
+DynamicPlaylist::DynamicPlaylist( const Hatchet::source_ptr& author, const QString& type )
     : Playlist( new DynamicPlaylistPrivate( this, author ) )
 {
     Q_D( DynamicPlaylist );
@@ -55,7 +55,7 @@ DynamicPlaylist::~DynamicPlaylist()
 
 
 // Called by loadAllPlaylists command
-DynamicPlaylist::DynamicPlaylist ( const Tomahawk::source_ptr& src,
+DynamicPlaylist::DynamicPlaylist ( const Hatchet::source_ptr& src,
                                    const QString& currentrevision,
                                    const QString& title,
                                    const QString& info,
@@ -76,7 +76,7 @@ DynamicPlaylist::DynamicPlaylist ( const Tomahawk::source_ptr& src,
 
 
 // called when a new playlist is created (no currentrevision, new guid)
-DynamicPlaylist::DynamicPlaylist( const Tomahawk::source_ptr& author,
+DynamicPlaylist::DynamicPlaylist( const Hatchet::source_ptr& author,
                                   const QString& guid,
                                   const QString& title,
                                   const QString& info,
@@ -110,7 +110,7 @@ DynamicPlaylist::mode() const
 
 
 void
-DynamicPlaylist::setGenerator( const Tomahawk::geninterface_ptr& gen_ptr )
+DynamicPlaylist::setGenerator( const Hatchet::geninterface_ptr& gen_ptr )
 {
     Q_D( DynamicPlaylist );
     d->generator = gen_ptr;
@@ -138,7 +138,7 @@ DynamicPlaylist::get( const QString& guid )
 {
     dynplaylist_ptr p;
 
-    foreach( const Tomahawk::source_ptr& source, SourceList::instance()->sources() )
+    foreach( const Hatchet::source_ptr& source, SourceList::instance()->sources() )
     {
         p = source->dbCollection()->autoPlaylist( guid );
         if ( !p )
@@ -153,7 +153,7 @@ DynamicPlaylist::get( const QString& guid )
 
 
 dynplaylist_ptr
-DynamicPlaylist::create( const Tomahawk::source_ptr& author,
+DynamicPlaylist::create( const Hatchet::source_ptr& author,
                          const QString& guid,
                          const QString& title,
                          const QString& info,
@@ -164,12 +164,12 @@ DynamicPlaylist::create( const Tomahawk::source_ptr& author,
                          bool autoLoad
                        )
 {
-    dynplaylist_ptr dynplaylist = Tomahawk::dynplaylist_ptr( new DynamicPlaylist( author, guid, title, info, creator, type, mode, shared, autoLoad ), &QObject::deleteLater );
+    dynplaylist_ptr dynplaylist = Hatchet::dynplaylist_ptr( new DynamicPlaylist( author, guid, title, info, creator, type, mode, shared, autoLoad ), &QObject::deleteLater );
     dynplaylist->setWeakSelf( dynplaylist.toWeakRef() );
 
     DatabaseCommand_CreateDynamicPlaylist* cmd = new DatabaseCommand_CreateDynamicPlaylist( author, dynplaylist, autoLoad );
     connect( cmd, SIGNAL(finished()), dynplaylist.data(), SIGNAL(created()) );
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr(cmd) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr(cmd) );
     if ( autoLoad )
         dynplaylist->reportCreated( dynplaylist );
 
@@ -254,7 +254,7 @@ DynamicPlaylist::createNewRevision( const QString& newrev,
     else
     {
         d->queuedSetPlaylistRevision = true;
-        Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+        Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
     }
 }
 
@@ -301,7 +301,7 @@ DynamicPlaylist::createNewRevision( const QString& newrev,
     else
     {
         d->queuedSetPlaylistRevision = true;
-        Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+        Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
     }
 }
 
@@ -336,7 +336,7 @@ DynamicPlaylist::loadRevision( const QString& rev )
                                     QString,
                                     QList< QVariantMap >,
                                     bool,
-                                    QMap< QString, Tomahawk::plentry_ptr >,
+                                    QMap< QString, Hatchet::plentry_ptr >,
                                     bool ) ),
                  SLOT( setRevision( QString,
                                     QList< QString >,
@@ -344,19 +344,19 @@ DynamicPlaylist::loadRevision( const QString& rev )
                                     QString,
                                     QList< QVariantMap >,
                                     bool,
-                                    QMap< QString, Tomahawk::plentry_ptr >,
+                                    QMap< QString, Hatchet::plentry_ptr >,
                                     bool ) ) );
 
     }
     else
         Q_ASSERT( false );
 
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 }
 
 
 void
-DynamicPlaylist::reportCreated( const Tomahawk::dynplaylist_ptr& self )
+DynamicPlaylist::reportCreated( const Hatchet::dynplaylist_ptr& self )
 {
 //    qDebug() << Q_FUNC_INFO;
     Q_ASSERT( self.data() == this );
@@ -373,7 +373,7 @@ DynamicPlaylist::reportCreated( const Tomahawk::dynplaylist_ptr& self )
 
 
 void
-DynamicPlaylist::reportDeleted( const Tomahawk::dynplaylist_ptr& self )
+DynamicPlaylist::reportDeleted( const Hatchet::dynplaylist_ptr& self )
 {
 //    qDebug() << Q_FUNC_INFO;
     Q_ASSERT( self.data() == this );
@@ -401,7 +401,7 @@ DynamicPlaylist::addEntries( const QList< query_ptr >& queries )
 
 
 void
-DynamicPlaylist::addEntry( const Tomahawk::query_ptr& query )
+DynamicPlaylist::addEntry( const Hatchet::query_ptr& query )
 {
     QList<query_ptr> queries;
     queries << query;
@@ -431,9 +431,9 @@ DynamicPlaylist::setRevision( const QString& rev,
                                    Q_ARG( QList<QString> , neworderedguids ),
                                    Q_ARG( QList<QString> , oldorderedguids ),
                                    Q_ARG( QString , type ),
-                                   QGenericArgument( "QList< Tomahawk::dyncontrol_ptr > " , (const void*)&controls ),
+                                   QGenericArgument( "QList< Hatchet::dyncontrol_ptr > " , (const void*)&controls ),
                                    Q_ARG( bool, is_newest_rev ),
-                                   QGenericArgument( "QMap< QString,Tomahawk::plentry_ptr > " , (const void*)&addedmap ),
+                                   QGenericArgument( "QMap< QString,Hatchet::plentry_ptr > " , (const void*)&addedmap ),
                                    Q_ARG( bool, applied ) );
         return;
     }
@@ -468,7 +468,7 @@ DynamicPlaylist::setRevision( const QString& rev,
                               const QString& type,
                               const QList< QVariantMap>& controlsV,
                               bool is_newest_rev,
-                              const QMap< QString, Tomahawk::plentry_ptr >& addedmap,
+                              const QMap< QString, Hatchet::plentry_ptr >& addedmap,
                               bool applied )
 {
     if ( QThread::currentThread() != thread() )
@@ -482,7 +482,7 @@ DynamicPlaylist::setRevision( const QString& rev,
                                    Q_ARG( QString , type ),
                                    QGenericArgument( "QList< QVariantMap > " , (const void*)&controlsV ),
                                    Q_ARG( bool, is_newest_rev ),
-                                   QGenericArgument( "QMap< QString,Tomahawk::plentry_ptr > " , (const void*)&addedmap ),
+                                   QGenericArgument( "QMap< QString,Hatchet::plentry_ptr > " , (const void*)&addedmap ),
                                    Q_ARG( bool, applied ) );
         return;
     }
@@ -508,7 +508,7 @@ DynamicPlaylist::setRevision( const QString& rev,
                                    Q_ARG( QString, rev ),
                                    Q_ARG( bool, is_newest_rev ),
                                    Q_ARG( QString, type ),
-                                   QGenericArgument( "QList< Tomahawk::dyncontrol_ptr >" , (const void*)&controls ),
+                                   QGenericArgument( "QList< Hatchet::dyncontrol_ptr >" , (const void*)&controls ),
                                    Q_ARG( bool, applied ) );
         return;
     }
@@ -546,7 +546,7 @@ DynamicPlaylist::removeFromDatabase()
 
     emit aboutToBeDeleted( d->weakSelf.toStrongRef() );
     DatabaseCommand_DeletePlaylist* cmd = new DatabaseCommand_DeleteDynamicPlaylist( author(), guid() ) ;
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 }
 
 
@@ -585,7 +585,7 @@ DynamicPlaylist::variantsToControl( const QList< QVariantMap >& controlsV )
 //        qDebug() << "Creating control with data:" << controlV;
         if ( control )
         {
-            TomahawkUtils::qvariant2qobject( controlV, control.data() );
+            HatchetUtils::qvariant2qobject( controlV, control.data() );
             realControls << control;
         }
     }

@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "QueryLabel.h"
@@ -22,8 +22,8 @@
 #include "Album.h"
 #include "Query.h"
 #include "ContextMenu.h"
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 #include "ViewManager.h"
 #include "Source.h"
@@ -36,7 +36,7 @@
 #include <QDrag>
 #include <QMimeData>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 QueryLabel::QueryLabel( QWidget* parent, Qt::WindowFlags flags )
@@ -55,7 +55,7 @@ QueryLabel::QueryLabel( DisplayType type, QWidget* parent, Qt::WindowFlags flags
 }
 
 
-QueryLabel::QueryLabel( const Tomahawk::result_ptr& result, DisplayType type, QWidget* parent, Qt::WindowFlags flags )
+QueryLabel::QueryLabel( const Hatchet::result_ptr& result, DisplayType type, QWidget* parent, Qt::WindowFlags flags )
     : QLabel( parent, flags )
     , m_type( type )
     , m_result( result )
@@ -64,7 +64,7 @@ QueryLabel::QueryLabel( const Tomahawk::result_ptr& result, DisplayType type, QW
 }
 
 
-QueryLabel::QueryLabel( const Tomahawk::query_ptr& query, DisplayType type, QWidget* parent, Qt::WindowFlags flags )
+QueryLabel::QueryLabel( const Hatchet::query_ptr& query, DisplayType type, QWidget* parent, Qt::WindowFlags flags )
     : QLabel( parent, flags )
     , m_type( type )
     , m_query( query )
@@ -158,7 +158,7 @@ QueryLabel::onResultChanged()
 
 
 void
-QueryLabel::setResult( const Tomahawk::result_ptr& result )
+QueryLabel::setResult( const Hatchet::result_ptr& result )
 {
     if ( !result )
         return;
@@ -175,7 +175,7 @@ QueryLabel::setResult( const Tomahawk::result_ptr& result )
 
 
 void
-QueryLabel::setQuery( const Tomahawk::query_ptr& query )
+QueryLabel::setQuery( const Hatchet::query_ptr& query )
 {
     if ( !query )
         return;
@@ -420,8 +420,8 @@ QueryLabel::startDrag()
                 }
 
                 dataStream << artist()->name();
-                mimeData->setData( "application/tomahawk.metadata.artist", data );
-                drag->setPixmap( TomahawkUtils::createDragPixmap( TomahawkUtils::MediaTypeArtist ) );
+                mimeData->setData( "application/hatchet.metadata.artist", data );
+                drag->setPixmap( HatchetUtils::createDragPixmap( HatchetUtils::MediaTypeArtist ) );
                 break;
             }
             case Album:
@@ -434,8 +434,8 @@ QueryLabel::startDrag()
 
                 dataStream << artist()->name();
                 dataStream << album()->name();
-                mimeData->setData( "application/tomahawk.metadata.album", data );
-                drag->setPixmap( TomahawkUtils::createDragPixmap( TomahawkUtils::MediaTypeAlbum ) );
+                mimeData->setData( "application/hatchet.metadata.album", data );
+                drag->setPixmap( HatchetUtils::createDragPixmap( HatchetUtils::MediaTypeAlbum ) );
                 break;
             }
 
@@ -448,8 +448,8 @@ QueryLabel::startDrag()
                 }
 
                 dataStream << qlonglong( &m_query );
-                mimeData->setData( "application/tomahawk.query.list", data );
-                drag->setPixmap( TomahawkUtils::createDragPixmap( TomahawkUtils::MediaTypeTrack ) );
+                mimeData->setData( "application/hatchet.query.list", data );
+                drag->setPixmap( HatchetUtils::createDragPixmap( HatchetUtils::MediaTypeTrack ) );
                 break;
             }
     }
@@ -477,7 +477,7 @@ QueryLabel::setType( DisplayType type )
 }
 
 
-Tomahawk::artist_ptr
+Hatchet::artist_ptr
 QueryLabel::artist() const
 {
     if ( m_artist )
@@ -493,7 +493,7 @@ QueryLabel::artist() const
 }
 
 
-Tomahawk::album_ptr
+Hatchet::album_ptr
 QueryLabel::album() const
 {
     if ( m_album )

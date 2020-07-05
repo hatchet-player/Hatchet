@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2011, Hugo Lindström <hugolm84@gmail.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef SpotifyAccount_H
@@ -24,7 +24,7 @@
 #include "SourceList.h"
 #include "AtticaManager.h"
 #include "Playlist.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/SmartPointerList.h"
 #include "DllMacro.h"
 
@@ -33,7 +33,7 @@
 //class SpotifyPlaylistUpdater;
 class QTimer;
 
-namespace Tomahawk {
+namespace Hatchet {
 
 class SpotifyParser;
 class ScriptResolver;
@@ -98,12 +98,12 @@ public:
     virtual void deauthenticate();
 
     virtual QWidget* aclWidget() { return 0; }
-    virtual Tomahawk::InfoSystem::InfoPluginPtr infoPlugin();
+    virtual Hatchet::InfoSystem::InfoPluginPtr infoPlugin();
     virtual SipPlugin* sipPlugin( bool ) { return 0; }
     virtual bool preventEnabling() const { return m_preventEnabling; }
 
 //    bool hasPlaylist( const QString& plId );
-//    Tomahawk::playlist_ptr playlistForURI( const QString& plId );
+//    Hatchet::playlist_ptr playlistForURI( const QString& plId );
 //    void registerUpdaterForPlaylist( const QString& plId, SpotifyPlaylistUpdater* updater );
     void registerPlaylistInfo( const QString& name, const QString& plid, const QString &revid, const bool sync, const bool subscribed , const bool owner = false );
     void registerPlaylistInfo( SpotifyPlaylistInfo* info );
@@ -121,7 +121,7 @@ public:
 public slots:
     QString sendMessage( const QVariantMap& msg, QObject* receiver = 0, const QString& slot = QString(), const QVariant& extraData = QVariant() );
 
-    void aboutToShow( QAction* action, const Tomahawk::playlist_ptr& playlist );
+    void aboutToShow( QAction* action, const Hatchet::playlist_ptr& playlist );
 //    void syncActionTriggered( QAction* action );
 //    void subscribeActionTriggered( QAction* action );
     void atticaLoaded( Attica::Content::List );
@@ -185,14 +185,14 @@ private:
 
     SmartPointerList< QAction > m_customActions;
 //    friend class ::SpotifyPlaylistUpdater;
-    friend class Tomahawk::SpotifyParser;
+    friend class Hatchet::SpotifyParser;
 };
 
 }
 
 }
 
-Q_DECLARE_METATYPE( Tomahawk::Accounts::SpotifyPlaylistInfo* )
+Q_DECLARE_METATYPE( Hatchet::Accounts::SpotifyPlaylistInfo* )
 Q_DECLARE_METATYPE( QAction* )
 
 #endif // SpotifyAccount_H

@@ -1,28 +1,28 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOMAHAWK_DATABASECOMMAND_TRENDINGTRACKS_H
-#define TOMAHAWK_DATABASECOMMAND_TRENDINGTRACKS_H
+#ifndef HATCHET_DATABASECOMMAND_TRENDINGTRACKS_H
+#define HATCHET_DATABASECOMMAND_TRENDINGTRACKS_H
 
 #include "Track.h"
 #include "database/DatabaseCommand.h"
 
-namespace Tomahawk {
+namespace Hatchet {
 
 class DatabaseCommand_TrendingTracksPrivate;
 
@@ -40,7 +40,7 @@ class DatabaseCommand_TrendingTracksPrivate;
  * p := active peers (with at least one play) in the last week
  * trending(track) = (w_1(t) / w_2(t)) * (1 - p / (4 * min(w_1(t), w_2(t))))
  */
-class DLLEXPORT DatabaseCommand_TrendingTracks : public Tomahawk::DatabaseCommand
+class DLLEXPORT DatabaseCommand_TrendingTracks : public Hatchet::DatabaseCommand
 {
     Q_OBJECT
 public:
@@ -55,12 +55,12 @@ public:
     void setLimit( unsigned int amount );
 
 signals:
-    void done( const QList<QPair< double, Tomahawk::track_ptr > >& tracks );
+    void done( const QList<QPair< double, Hatchet::track_ptr > >& tracks );
 
 private:
     Q_DECLARE_PRIVATE( DatabaseCommand_TrendingTracks )
 };
 
-} // namespace Tomahawk
+} // namespace Hatchet
 
-#endif // TOMAHAWK_DATABASECOMMAND_TRENDINGTRACKS_H
+#endif // HATCHET_DATABASECOMMAND_TRENDINGTRACKS_H

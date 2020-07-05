@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DatabaseCommand_SetDynamicPlaylistRevision.h"
@@ -27,14 +27,14 @@
 
 #include "DatabaseImpl.h"
 #include "Source.h"
-#include "TomahawkSqlQuery.h"
+#include "HatchetSqlQuery.h"
 
 #include <QSqlQuery>
 
-namespace Tomahawk
+namespace Hatchet
 {
 
-DatabaseCommand_SetDynamicPlaylistRevision::DatabaseCommand_SetDynamicPlaylistRevision( const Tomahawk::source_ptr& s,
+DatabaseCommand_SetDynamicPlaylistRevision::DatabaseCommand_SetDynamicPlaylistRevision( const Hatchet::source_ptr& s,
                                                                                 const QString& playlistguid,
                                                                                 const QString& newrev,
                                                                                 const QString& oldrev,
@@ -54,7 +54,7 @@ DatabaseCommand_SetDynamicPlaylistRevision::DatabaseCommand_SetDynamicPlaylistRe
 }
 
 
-DatabaseCommand_SetDynamicPlaylistRevision::DatabaseCommand_SetDynamicPlaylistRevision( const Tomahawk::source_ptr& s,
+DatabaseCommand_SetDynamicPlaylistRevision::DatabaseCommand_SetDynamicPlaylistRevision( const Hatchet::source_ptr& s,
                                                                                 const QString& playlistguid,
                                                                                 const QString& newrev,
                                                                                 const QString& oldrev,
@@ -81,7 +81,7 @@ DatabaseCommand_SetDynamicPlaylistRevision::controlsV()
     {
         foreach ( const dyncontrol_ptr& control, m_controls )
         {
-            m_controlsV << TomahawkUtils::qobject2qvariant( control.data() );
+            m_controlsV << HatchetUtils::qobject2qvariant( control.data() );
         }
     }
 
@@ -195,9 +195,9 @@ DatabaseCommand_SetDynamicPlaylistRevision::exec( DatabaseImpl* lib )
         }
     }
 
-    const QByteArray newcontrols_data = TomahawkUtils::toJson( newcontrols );
+    const QByteArray newcontrols_data = HatchetUtils::toJson( newcontrols );
 
-    TomahawkSqlQuery query = lib->newquery();
+    HatchetSqlQuery query = lib->newquery();
     QString sql = "INSERT INTO dynamic_playlist_revision (guid, controls, plmode, pltype) "
                   "VALUES(?, ?, ?, ?)";
 
@@ -210,13 +210,13 @@ DatabaseCommand_SetDynamicPlaylistRevision::exec( DatabaseImpl* lib )
 
     // delete all the old controls, replace with new onws
     qDebug() << "Deleting controls with playlist id" << m_playlistguid;
-    TomahawkSqlQuery delQuery = lib->newquery();
+    HatchetSqlQuery delQuery = lib->newquery();
     delQuery.prepare( "DELETE FROM dynamic_playlist_controls WHERE playlist = ?" );
     delQuery.addBindValue( m_playlistguid );
     if ( !delQuery.exec() )
         tLog() << "Failed to delete controls from dynamic playlist controls table";
 
-    TomahawkSqlQuery controlsQuery = lib->newquery();
+    HatchetSqlQuery controlsQuery = lib->newquery();
     controlsQuery.prepare( "INSERT INTO dynamic_playlist_controls( id, playlist, selectedType, match, input ) "
                             "VALUES( ?, ?, ?, ?, ? )" );
     if ( m_controlsV.isEmpty() && !m_controls.isEmpty() )
@@ -253,7 +253,7 @@ DatabaseCommand_SetDynamicPlaylistRevision::exec( DatabaseImpl* lib )
     {
         tLog() << "updating dynamic playlist, optimistic locking okay";
 
-        TomahawkSqlQuery query2 = lib->newquery();
+        HatchetSqlQuery query2 = lib->newquery();
         query2.prepare( "UPDATE dynamic_playlist SET pltype = ?, plmode = ? WHERE guid = ?" );
         query2.bindValue( 0, m_type );
         query2.bindValue( 1, m_mode );

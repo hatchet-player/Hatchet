@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2013, Teo Mrnjavac <teo@kde.org>
  *   Copyright 2013, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "Track_p.h"
@@ -40,7 +40,7 @@
 #include <QCoreApplication>
 
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 QHash< QString, track_wptr > Track::s_tracksByName = QHash< QString, track_wptr >();
 
@@ -266,7 +266,7 @@ Track::startPlaying()
 {
     DatabaseCommand_LogPlayback* cmd = new DatabaseCommand_LogPlayback( weakRef().toStrongRef(),
                                                                         DatabaseCommand_LogPlayback::Started );
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 
     markAsListened();
 }
@@ -278,7 +278,7 @@ Track::finishPlaying( int timeElapsed )
     DatabaseCommand_LogPlayback* cmd = new DatabaseCommand_LogPlayback( weakRef().toStrongRef(),
                                                                         DatabaseCommand_LogPlayback::Finished,
                                                                         timeElapsed );
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 }
 
 
@@ -289,11 +289,11 @@ Track::markAsListened()
     if ( !isListened() )
     {
         DatabaseCommand_ModifyInboxEntry* cmd = new DatabaseCommand_ModifyInboxEntry( toQuery(), false );
-        Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+        Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 
         // The dbcmd does this in the DB, but let's update the TrackData ASAP
-        QList< Tomahawk::SocialAction > actions = allSocialActions();
-        for ( QList< Tomahawk::SocialAction >::iterator it = actions.begin();
+        QList< Hatchet::SocialAction > actions = allSocialActions();
+        for ( QList< Hatchet::SocialAction >::iterator it = actions.begin();
               it != actions.end(); ++it )
         {
             if ( it->action == "Inbox" )
@@ -312,7 +312,7 @@ bool
 Track::isListened() const
 {
     bool isUnlistened = false;
-    foreach ( Tomahawk::SocialAction action, allSocialActions() )
+    foreach ( Hatchet::SocialAction action, allSocialActions() )
     {
         if ( action.action == "Inbox" && action.value.toBool() == true )
         {
@@ -342,7 +342,7 @@ Track::setAllSocialActions( const QList< SocialAction >& socialActions )
 
 
 bool
-Track::equals( const Tomahawk::track_ptr& other, bool ignoreCase ) const
+Track::equals( const Hatchet::track_ptr& other, bool ignoreCase ) const
 {
     if ( other.isNull() )
         return false;
@@ -387,7 +387,7 @@ Track::toQuery()
     Q_D( Track );
     if ( d->query.isNull() )
     {
-        query_ptr query = Tomahawk::Query::get( weakRef().toStrongRef() );
+        query_ptr query = Hatchet::Query::get( weakRef().toStrongRef() );
         if ( !query )
             return query_ptr();
 
@@ -423,8 +423,8 @@ Track::loadStats()
 }
 
 
-QList< Tomahawk::PlaybackLog >
-Track::playbackHistory( const Tomahawk::source_ptr& source ) const
+QList< Hatchet::PlaybackLog >
+Track::playbackHistory( const Hatchet::source_ptr& source ) const
 {
     Q_D( const Track );
     return d->trackData->playbackHistory( source );
@@ -497,19 +497,19 @@ Track::setLoved( bool loved, bool postToInfoSystem )
     if ( postToInfoSystem )
     {
         QVariantMap loveInfo;
-        Tomahawk::InfoSystem::InfoStringHash trackInfo;
+        Hatchet::InfoSystem::InfoStringHash trackInfo;
         trackInfo["title"] = track();
         trackInfo["artist"] = artist();
         trackInfo["album"] = album();
 
-        loveInfo[ "trackinfo" ] = QVariant::fromValue< Tomahawk::InfoSystem::InfoStringHash >( trackInfo );
+        loveInfo[ "trackinfo" ] = QVariant::fromValue< Hatchet::InfoSystem::InfoStringHash >( trackInfo );
 
-        Tomahawk::InfoSystem::InfoPushData pushData ( d->trackData->id(),
-                                                    ( loved ? Tomahawk::InfoSystem::InfoLove : Tomahawk::InfoSystem::InfoUnLove ),
+        Hatchet::InfoSystem::InfoPushData pushData ( d->trackData->id(),
+                                                    ( loved ? Hatchet::InfoSystem::InfoLove : Hatchet::InfoSystem::InfoUnLove ),
                                                     loveInfo,
-                                                    Tomahawk::InfoSystem::PushShortUrlFlag );
+                                                    Hatchet::InfoSystem::PushShortUrlFlag );
 
-        Tomahawk::InfoSystem::InfoSystem::instance()->pushInfo( pushData );
+        Hatchet::InfoSystem::InfoSystem::instance()->pushInfo( pushData );
     }
 }
 
@@ -518,11 +518,11 @@ QString
 Track::socialActionDescription( const QString& action, DescriptionMode mode ) const
 {
     QString desc;
-    QList< Tomahawk::SocialAction > socialActions = allSocialActions();
+    QList< Hatchet::SocialAction > socialActions = allSocialActions();
 
     QStringList actionSources;
     int loveTotal = 0;
-    foreach ( const Tomahawk::SocialAction& sa, socialActions )
+    foreach ( const Hatchet::SocialAction& sa, socialActions )
     {
         if ( sa.action == action )
         {
@@ -536,7 +536,7 @@ Track::socialActionDescription( const QString& action, DescriptionMode mode ) co
     QDateTime earliestTimestamp = QDateTime::currentDateTime();
     actionSources.clear();
     int loveCounter = 0;
-    foreach ( const Tomahawk::SocialAction& sa, socialActions )
+    foreach ( const Hatchet::SocialAction& sa, socialActions )
     {
         if ( sa.action == action )
         {
@@ -582,14 +582,14 @@ Track::socialActionDescription( const QString& action, DescriptionMode mode ) co
             desc += " " + tr( "loved this track" );
         else if ( action == "Inbox" )
             desc += " " + tr( "sent you this track %1" )
-                    .arg( TomahawkUtils::ageToString( earliestTimestamp, true ) );
+                    .arg( HatchetUtils::ageToString( earliestTimestamp, true ) );
     }
 
     return desc;
 }
 
 
-QList< Tomahawk::SocialAction >
+QList< Hatchet::SocialAction >
 Track::socialActions( const QString& actionName, const QVariant& value, bool filterDupeSourceNames )
 {
     Q_D( Track );
@@ -687,7 +687,7 @@ Track::coverLoaded() const
 }
 
 
-QList<Tomahawk::query_ptr>
+QList<Hatchet::query_ptr>
 Track::similarTracks() const
 {
     Q_D( const Track );
@@ -784,7 +784,7 @@ Track::discnumber() const
 
 
 void
-Track::share( const Tomahawk::source_ptr& source )
+Track::share( const Hatchet::source_ptr& source )
 {
     Q_D( Track );
     d->trackData->share( source );

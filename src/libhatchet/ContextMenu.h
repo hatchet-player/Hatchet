@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef CONTEXTMENU_H
@@ -27,7 +27,7 @@
 #include "Typedefs.h"
 #include "DllMacro.h"
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 class DLLEXPORT ContextMenu : public QMenu
@@ -61,16 +61,16 @@ public:
     int supportedActions() const { return m_supportedActions; }
     void setSupportedActions( int actions ) { m_supportedActions = actions; }
 
-    void setPlaylistInterface( const Tomahawk::playlistinterface_ptr& plInterface );
+    void setPlaylistInterface( const Hatchet::playlistinterface_ptr& plInterface );
 
-    void setQuery( const Tomahawk::query_ptr& query );
-    void setQueries( const QList<Tomahawk::query_ptr>& queries );
+    void setQuery( const Hatchet::query_ptr& query );
+    void setQueries( const QList<Hatchet::query_ptr>& queries );
 
-    void setArtist( const Tomahawk::artist_ptr& artist );
-    void setArtists( const QList<Tomahawk::artist_ptr>& artists );
+    void setArtist( const Hatchet::artist_ptr& artist );
+    void setArtists( const QList<Hatchet::artist_ptr>& artists );
 
-    void setAlbum( const Tomahawk::album_ptr& album );
-    void setAlbums( const QList<Tomahawk::album_ptr>& albums );
+    void setAlbum( const Hatchet::album_ptr& album );
+    void setAlbums( const QList<Hatchet::album_ptr>& albums );
 
     void clear();
 
@@ -97,13 +97,13 @@ private:
 
     QAction* m_loveAction;
 
-    QList< Tomahawk::playlist_ptr > m_playlists;
-    QList< Tomahawk::query_ptr > m_queries;
-    QList< Tomahawk::artist_ptr > m_artists;
-    QList< Tomahawk::album_ptr > m_albums;
-    QList< Tomahawk::source_ptr > m_sources;
+    QList< Hatchet::playlist_ptr > m_playlists;
+    QList< Hatchet::query_ptr > m_queries;
+    QList< Hatchet::artist_ptr > m_artists;
+    QList< Hatchet::album_ptr > m_albums;
+    QList< Hatchet::source_ptr > m_sources;
 
-    Tomahawk::playlistinterface_ptr m_interface;
+    Hatchet::playlistinterface_ptr m_interface;
 };
 
 }; // ns

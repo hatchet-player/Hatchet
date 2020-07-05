@@ -40,21 +40,21 @@ if( APPLE )
 
 # Use two different sparkle update tracks for debug and release
 # We have to change the URL in the Info.plist file :-/
-  set(TOMAHAWK_SPARKLE_UPDATE_URL "http://download.tomahawk-player.org/sparkle/update.php")
+  set(HATCHET_SPARKLE_UPDATE_URL "http://download.hatchet-player.org/sparkle/update.php")
 
 # Disable non-release sparkle for now. We haven't used it yet.
 #  IF( NOT CMAKE_BUILD_TYPE STREQUAL "Release" )
-#      set(TOMAHAWK_SPARKLE_UPDATE_URL "http://download.tomahawk-player.org/sparkle-debug")
+#      set(HATCHET_SPARKLE_UPDATE_URL "http://download.hatchet-player.org/sparkle-debug")
 #  ENDIF()
 
   configure_file(${CMAKE_SOURCE_DIR}/admin/mac/Info.plist ${CMAKE_BINARY_DIR}/Info.plist)
 
 
   FILE(COPY ${CMAKE_SOURCE_DIR}/admin/mac/sparkle_pub.pem
-    DESTINATION "${CMAKE_BINARY_DIR}/${TOMAHAWK_APPLICATION_NAME}.app/Contents/Resources")
+    DESTINATION "${CMAKE_BINARY_DIR}/${HATCHET_APPLICATION_NAME}.app/Contents/Resources")
 
-  FILE(COPY /usr/bin/SetFile DESTINATION "${CMAKE_BINARY_DIR}/${TOMAHAWK_APPLICATION_NAME}.app/Contents/MacOS")
-  FILE(COPY /usr/bin/GetFileInfo DESTINATION "${CMAKE_BINARY_DIR}/${TOMAHAWK_APPLICATION_NAME}.app/Contents/MacOS")
+  FILE(COPY /usr/bin/SetFile DESTINATION "${CMAKE_BINARY_DIR}/${HATCHET_APPLICATION_NAME}.app/Contents/MacOS")
+  FILE(COPY /usr/bin/GetFileInfo DESTINATION "${CMAKE_BINARY_DIR}/${HATCHET_APPLICATION_NAME}.app/Contents/MacOS")
 
 
 endif (APPLE)

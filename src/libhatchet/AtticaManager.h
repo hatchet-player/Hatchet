@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef ATTICAMANAGER_H
@@ -31,7 +31,7 @@
 #include <attica/providermanager.h>
 #include <attica/content.h>
 
-namespace Tomahawk {
+namespace Hatchet {
 namespace Accounts {
 class AtticaResolverAccount;
 }
@@ -116,14 +116,14 @@ public:
       as well. For example the last.fm & spotify accounts.
       */
     bool hasCustomAccountForAttica( const QString& id ) const;
-    Tomahawk::Accounts::Account* customAccountForAttica( const QString& id ) const;
-    void registerCustomAccount( const QString& atticaId, Tomahawk::Accounts::Account* account );
+    Hatchet::Accounts::Account* customAccountForAttica( const QString& id ) const;
+    void registerCustomAccount( const QString& atticaId, Hatchet::Accounts::Account* account );
 
     AtticaManager::Resolver resolverData( const QString& atticaId ) const;
 
 public slots:
     void installResolver( const Attica::Content& resolver, bool autoCreateAccount = true );
-    void installResolverWithHandler( const Attica::Content& resolver, Tomahawk::Accounts::AtticaResolverAccount* handler );
+    void installResolverWithHandler( const Attica::Content& resolver, Hatchet::Accounts::AtticaResolverAccount* handler );
 
     void upgradeResolver( const Attica::Content& resolver );
 
@@ -157,7 +157,7 @@ private slots:
 
 private:
     void doResolverRemove( const QString& id ) const;
-    void doInstallResolver(  const Attica::Content& resolver, bool autoCreate, Tomahawk::Accounts::AtticaResolverAccount* handler );
+    void doInstallResolver(  const Attica::Content& resolver, bool autoCreate, Hatchet::Accounts::AtticaResolverAccount* handler );
     void fetchMissingIcons();
     QString hostname() const;
 
@@ -168,14 +168,14 @@ private:
     StateHash m_resolverStates;
 
     int m_resolverJobsLoaded;
-    QMap< QString, Tomahawk::Accounts::Account* > m_customAccounts;
+    QMap< QString, Hatchet::Accounts::Account* > m_customAccounts;
 
     static AtticaManager* s_instance;
 
     friend class ::BinaryInstallerHelper;
 };
 
-class DLLEXPORT CustomAtticaAccount : public Tomahawk::Accounts::Account
+class DLLEXPORT CustomAtticaAccount : public Hatchet::Accounts::Account
 {
     Q_OBJECT
 public:
@@ -185,7 +185,7 @@ public:
 
 protected:
     // No, you can't.
-    CustomAtticaAccount( const QString& id ) : Tomahawk::Accounts::Account( id ) {}
+    CustomAtticaAccount( const QString& id ) : Hatchet::Accounts::Account( id ) {}
 };
 
 Q_DECLARE_METATYPE( Attica::Content );

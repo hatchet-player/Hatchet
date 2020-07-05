@@ -1,29 +1,29 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOMAHAWK_INFOSYSTEM_H
-#define TOMAHAWK_INFOSYSTEM_H
+#ifndef HATCHET_INFOSYSTEM_H
+#define HATCHET_INFOSYSTEM_H
 
 #include "DllMacro.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "Typedefs.h"
-#include "TomahawkPlugin.h"
+#include "HatchetPlugin.h"
 
 #include <QCryptographicHash>
 #include <QMap>
@@ -37,7 +37,7 @@
 class QNetworkAccessManager;
 class DiagnosticsDialog;
 
-namespace Tomahawk {
+namespace Hatchet {
 
 namespace InfoSystem {
 
@@ -54,7 +54,7 @@ struct DLLEXPORT InfoRequestData {
     quint64 requestId;
     quint64 internalId; //do not assign to this; it may get overwritten by the InfoSystem
     QString caller;
-    Tomahawk::InfoSystem::InfoType type;
+    Hatchet::InfoSystem::InfoType type;
     QVariant input;
     QVariantMap customData;
     uint timeoutMillis;
@@ -62,7 +62,7 @@ struct DLLEXPORT InfoRequestData {
 
     InfoRequestData();
 
-    InfoRequestData( const quint64 rId, const QString& callr, const Tomahawk::InfoSystem::InfoType typ, const QVariant& inputvar, const QVariantMap& custom );
+    InfoRequestData( const quint64 rId, const QString& callr, const Hatchet::InfoSystem::InfoType typ, const QVariant& inputvar, const QVariantMap& custom );
 
 private:
     void init( const QString& callr, const InfoType typ, const QVariant& inputvar, const QVariantMap& custom);
@@ -78,18 +78,18 @@ struct InfoPushData {
 
     InfoPushData()
         : caller( QString() )
-        , type( Tomahawk::InfoSystem::InfoNoInfo )
+        , type( Hatchet::InfoSystem::InfoNoInfo )
         , input( QVariant() )
-        , pushFlags( Tomahawk::InfoSystem::PushNoFlag )
-        , infoPair( Tomahawk::InfoSystem::PushInfoPair( QVariantMap(), QVariant() ) )
+        , pushFlags( Hatchet::InfoSystem::PushNoFlag )
+        , infoPair( Hatchet::InfoSystem::PushInfoPair( QVariantMap(), QVariant() ) )
         {}
 
-    InfoPushData( const QString& callr, const Tomahawk::InfoSystem::InfoType typ, const QVariant& inputvar, const Tomahawk::InfoSystem::PushInfoFlags pflags )
+    InfoPushData( const QString& callr, const Hatchet::InfoSystem::InfoType typ, const QVariant& inputvar, const Hatchet::InfoSystem::PushInfoFlags pflags )
         : caller( callr )
         , type( typ )
         , input( inputvar )
         , pushFlags( pflags )
-        , infoPair( Tomahawk::InfoSystem::PushInfoPair( QVariantMap(), QVariant() ) )
+        , infoPair( Hatchet::InfoSystem::PushInfoPair( QVariantMap(), QVariant() ) )
         {}
 
 };
@@ -115,10 +115,10 @@ public:
     QSet< InfoType > supportedPushTypes() const { return m_supportedPushTypes; }
 
 signals:
-    void getCachedInfo( Tomahawk::InfoSystem::InfoStringHash criteria, qint64 newMaxAge, Tomahawk::InfoSystem::InfoRequestData requestData );
-    void info( Tomahawk::InfoSystem::InfoRequestData requestData, QVariant output );
+    void getCachedInfo( Hatchet::InfoSystem::InfoStringHash criteria, qint64 newMaxAge, Hatchet::InfoSystem::InfoRequestData requestData );
+    void info( Hatchet::InfoSystem::InfoRequestData requestData, QVariant output );
 
-    void updateCache( Tomahawk::InfoSystem::InfoStringHash criteria, qint64 maxAge, Tomahawk::InfoSystem::InfoType type, QVariant output );
+    void updateCache( Hatchet::InfoSystem::InfoStringHash criteria, qint64 maxAge, Hatchet::InfoSystem::InfoType type, QVariant output );
 
 protected slots:
 
@@ -129,9 +129,9 @@ protected slots:
      **/
     virtual void init() = 0;
 
-    virtual void getInfo( Tomahawk::InfoSystem::InfoRequestData requestData ) = 0;
-    virtual void pushInfo( Tomahawk::InfoSystem::InfoPushData pushData ) = 0;
-    virtual void notInCacheSlot( Tomahawk::InfoSystem::InfoStringHash criteria, Tomahawk::InfoSystem::InfoRequestData requestData ) = 0;
+    virtual void getInfo( Hatchet::InfoSystem::InfoRequestData requestData ) = 0;
+    virtual void pushInfo( Hatchet::InfoSystem::InfoPushData pushData ) = 0;
+    virtual void notInCacheSlot( Hatchet::InfoSystem::InfoStringHash criteria, Hatchet::InfoSystem::InfoRequestData requestData ) = 0;
 
 protected:
     InfoType m_type;
@@ -203,22 +203,22 @@ public:
     QPointer< QThread > workerThread() const;
 
 public slots:
-    void addInfoPlugin( Tomahawk::InfoSystem::InfoPluginPtr plugin );
-    void removeInfoPlugin( Tomahawk::InfoSystem::InfoPluginPtr plugin );
+    void addInfoPlugin( Hatchet::InfoSystem::InfoPluginPtr plugin );
+    void removeInfoPlugin( Hatchet::InfoSystem::InfoPluginPtr plugin );
 
 signals:
-    void info( Tomahawk::InfoSystem::InfoRequestData requestData, QVariant output );
+    void info( Hatchet::InfoSystem::InfoRequestData requestData, QVariant output );
     void finished( QString target );
-    void finished( QString target, Tomahawk::InfoSystem::InfoType type );
+    void finished( QString target, Hatchet::InfoSystem::InfoType type );
     void ready();
 
-    void updatedSupportedGetTypes( Tomahawk::InfoSystem::InfoTypeSet supportedTypes );
-    void updatedSupportedPushTypes( Tomahawk::InfoSystem::InfoTypeSet supportedTypes );
+    void updatedSupportedGetTypes( Hatchet::InfoSystem::InfoTypeSet supportedTypes );
+    void updatedSupportedPushTypes( Hatchet::InfoSystem::InfoTypeSet supportedTypes );
 
 private slots:
     void init();
-    void receiveUpdatedSupportedGetTypes( Tomahawk::InfoSystem::InfoTypeSet supportedTypes );
-    void receiveUpdatedSupportedPushTypes( Tomahawk::InfoSystem::InfoTypeSet supportedTypes );
+    void receiveUpdatedSupportedGetTypes( Hatchet::InfoSystem::InfoTypeSet supportedTypes );
+    void receiveUpdatedSupportedPushTypes( Hatchet::InfoSystem::InfoTypeSet supportedTypes );
 
 private:
     bool m_inited;
@@ -236,7 +236,7 @@ private:
 }
 
 
-inline uint qHash( Tomahawk::InfoSystem::InfoStringHash hash )
+inline uint qHash( Hatchet::InfoSystem::InfoStringHash hash )
 {
     QCryptographicHash md5( QCryptographicHash::Md5 );
     QStringList keys = hash.keys();
@@ -257,17 +257,17 @@ inline uint qHash( Tomahawk::InfoSystem::InfoStringHash hash )
     return returnval;
 }
 
-Q_DECLARE_METATYPE( Tomahawk::InfoSystem::InfoRequestData )
-Q_DECLARE_METATYPE( Tomahawk::InfoSystem::InfoPushData )
-Q_DECLARE_METATYPE( Tomahawk::InfoSystem::InfoStringHash )
-Q_DECLARE_METATYPE( Tomahawk::InfoSystem::PushInfoPair )
-Q_DECLARE_METATYPE( Tomahawk::InfoSystem::PushInfoFlags )
-Q_DECLARE_METATYPE( Tomahawk::InfoSystem::InfoType )
-Q_DECLARE_METATYPE( QList< Tomahawk::InfoSystem::InfoStringHash > )
-Q_DECLARE_METATYPE( Tomahawk::InfoSystem::InfoPluginPtr )
-Q_DECLARE_METATYPE( Tomahawk::InfoSystem::InfoPlugin* )
-Q_DECLARE_METATYPE( Tomahawk::InfoSystem::InfoTypeSet )
+Q_DECLARE_METATYPE( Hatchet::InfoSystem::InfoRequestData )
+Q_DECLARE_METATYPE( Hatchet::InfoSystem::InfoPushData )
+Q_DECLARE_METATYPE( Hatchet::InfoSystem::InfoStringHash )
+Q_DECLARE_METATYPE( Hatchet::InfoSystem::PushInfoPair )
+Q_DECLARE_METATYPE( Hatchet::InfoSystem::PushInfoFlags )
+Q_DECLARE_METATYPE( Hatchet::InfoSystem::InfoType )
+Q_DECLARE_METATYPE( QList< Hatchet::InfoSystem::InfoStringHash > )
+Q_DECLARE_METATYPE( Hatchet::InfoSystem::InfoPluginPtr )
+Q_DECLARE_METATYPE( Hatchet::InfoSystem::InfoPlugin* )
+Q_DECLARE_METATYPE( Hatchet::InfoSystem::InfoTypeSet )
 
-Q_DECLARE_INTERFACE( Tomahawk::InfoSystem::InfoPlugin, "tomahawk.InfoPlugin/1.0" )
+Q_DECLARE_INTERFACE( Hatchet::InfoSystem::InfoPlugin, "hatchet.InfoPlugin/1.0" )
 
-#endif // TOMAHAWK_INFOSYSTEM_H
+#endif // HATCHET_INFOSYSTEM_H

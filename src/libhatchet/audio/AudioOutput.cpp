@@ -1,32 +1,32 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *   Copyright 2014,      Adrien Aubry <dridri85@gmail.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "AudioEngine.h"
 #include "AudioOutput.h"
 #include "HatchetVersion.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 
 #include "audio/MediaStream.h"
 #include "utils/Logger.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 
 #include <QApplication>
 #include <QVarLengthArray>
@@ -94,7 +94,7 @@ AudioOutput::AudioOutput( QObject* parent )
         //"--clock-jitter=1",
         "--no-xlib"
     };
-    TomahawkSettings* s = TomahawkSettings::instance();
+    HatchetSettings* s = HatchetSettings::instance();
     //Save a list of Latin1 byte arrays for additional args
     auto additionalVlcArgs = s->vlcArguments().split(",");
     QVector<QByteArray> additionalArgsChar;
@@ -114,12 +114,12 @@ AudioOutput::AudioOutput( QObject* parent )
         tDebug() << Q_FUNC_INFO << "libVLC: could not initialize";
         //FIXME PANIC, abort
     }
-    libvlc_set_user_agent( m_vlcInstance, TOMAHAWK_APPLICATION_NAME,
-                           TOMAHAWK_APPLICATION_NAME "/" TOMAHAWK_VERSION );
-    // FIXME: icon is named tomahawk, so we need the lowercase application name
+    libvlc_set_user_agent( m_vlcInstance, HATCHET_APPLICATION_NAME,
+                           HATCHET_APPLICATION_NAME "/" HATCHET_VERSION );
+    // FIXME: icon is named hatchet, so we need the lowercase application name
 #if (LIBVLC_VERSION_INT >= LIBVLC_VERSION(2, 1, 0, 0))
-    libvlc_set_app_id( m_vlcInstance, TOMAHAWK_APPLICATION_PACKAGE_NAME,
-                       TOMAHAWK_VERSION, TOMAHAWK_TARGET_NAME );
+    libvlc_set_app_id( m_vlcInstance, HATCHET_APPLICATION_PACKAGE_NAME,
+                       HATCHET_VERSION, HATCHET_TARGET_NAME );
 #endif
 
     m_vlcPlayer = libvlc_media_player_new( m_vlcInstance );

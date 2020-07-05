@@ -1,28 +1,28 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2015,      Dominik Schmidt <domme@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef RESULT_H
 #define RESULT_H
 
 #include "DownloadJob.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "Typedefs.h"
 
 #include "DllMacro.h"
@@ -35,7 +35,7 @@
 
 class MetadataEditor;
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 class Resolver;
@@ -51,8 +51,8 @@ public:
      * Get a Result instance for an URL if it is cached, otherwise create a new
      * instance using the supplied Track object.
      */
-    static Tomahawk::result_ptr get( const QString& url,
-                                     const Tomahawk::track_ptr& track );
+    static Hatchet::result_ptr get( const QString& url,
+                                     const Hatchet::track_ptr& track );
 
     /**
      * Get a Result instance for an URL if it is already cached.
@@ -63,27 +63,27 @@ public:
      * @param url Unique result identifier
      * @return nullptr if the Result is not yet cached
      */
-    static Tomahawk::result_ptr getCached( const QString& url );
+    static Hatchet::result_ptr getCached( const QString& url );
 
     virtual ~Result();
 
-    QWeakPointer< Tomahawk::Result > weakRef();
-    void setWeakRef( QWeakPointer< Tomahawk::Result > weakRef );
+    QWeakPointer< Hatchet::Result > weakRef();
+    void setWeakRef( QWeakPointer< Hatchet::Result > weakRef );
 
     QVariant toVariant() const;
     QString toString() const;
-    Tomahawk::query_ptr toQuery();
+    Hatchet::query_ptr toQuery();
 
     /**
      * Associate the used collection for this result.
      *
      * @param emitOnlineEvents disableing this will not emit statusChanged anymore thus the query will not update (use with care!, only when this is the sole result)
      */
-    void setResolvedByCollection( const Tomahawk::collection_ptr& collection, bool emitOnlineEvents = true );
+    void setResolvedByCollection( const Hatchet::collection_ptr& collection, bool emitOnlineEvents = true );
     collection_ptr resolvedByCollection() const;
 
-    QPointer< Tomahawk::Resolver > resolvedByResolver() const;
-    void setResolvedByResolver( Tomahawk::Resolver* resolver );
+    QPointer< Hatchet::Resolver > resolvedByResolver() const;
+    void setResolvedByResolver( Hatchet::Resolver* resolver );
 
     /**
      *  TODO: Make this a smart pointer
@@ -113,7 +113,7 @@ public:
     QString purchaseUrl() const;
     QString linkUrl() const;
 
-    QPixmap sourceIcon( TomahawkUtils::ImageMode style, const QSize& desiredSize = QSize() ) const;
+    QPixmap sourceIcon( HatchetUtils::ImageMode style, const QSize& desiredSize = QSize() ) const;
 
     unsigned int bitrate() const;
     unsigned int size() const;
@@ -156,7 +156,7 @@ private slots:
     void onOffline();
     void onOnline();
 
-    void onResolverRemoved( Tomahawk::Resolver* resolver );
+    void onResolverRemoved( Hatchet::Resolver* resolver );
     void doneEditing();
 
     void onDownloadJobStateChanged( DownloadJob::TrackState newState, DownloadJob::TrackState oldState );
@@ -165,14 +165,14 @@ private slots:
 
 private:
     // private constructor
-    explicit Result( const QString& url, const Tomahawk::track_ptr& track );
+    explicit Result( const QString& url, const Hatchet::track_ptr& track );
     explicit Result();
 
     mutable QMutex m_mutex;
 
     mutable RID m_rid;
     collection_wptr m_collection;
-    QPointer< Tomahawk::Resolver > m_resolver;
+    QPointer< Hatchet::Resolver > m_resolver;
 
     QString m_url;
     bool m_isPreview;
@@ -192,11 +192,11 @@ private:
 
     track_ptr m_track;
     query_wptr m_query;
-    QWeakPointer< Tomahawk::Result > m_ownRef;
+    QWeakPointer< Hatchet::Result > m_ownRef;
 };
 
 } //ns
 
-Q_DECLARE_METATYPE( Tomahawk::result_ptr )
+Q_DECLARE_METATYPE( Hatchet::result_ptr )
 
 #endif // RESULT_H

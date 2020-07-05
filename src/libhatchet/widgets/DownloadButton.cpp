@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2016, Dominik Schmidt <domme@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DownloadButton.h"
@@ -23,7 +23,7 @@
 #include "Album.h"
 #include "Result.h"
 #include "DownloadManager.h"
-#include "utils/TomahawkStyle.h"
+#include "utils/HatchetStyle.h"
 #include "utils/WebPopup.h"
 #include "utils/Logger.h"
 
@@ -32,10 +32,10 @@
 #include <QAbstractItemView>
 #include <QDesktopServices>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
-DownloadButton::DownloadButton( const Tomahawk::query_ptr& query, QWidget* parent, QAbstractItemView* view, const QModelIndex& index )
+DownloadButton::DownloadButton( const Hatchet::query_ptr& query, QWidget* parent, QAbstractItemView* view, const QModelIndex& index )
     : DropDownButton( parent )
     , m_view( view )
     , m_index( index )
@@ -86,7 +86,7 @@ DownloadButton::setQuery( const query_ptr& query )
     if ( query.isNull() )
         return;
 
-    Tomahawk::result_ptr result = query->numResults( true ) ? query->results().first() : Tomahawk::result_ptr();
+    Hatchet::result_ptr result = query->numResults( true ) ? query->results().first() : Hatchet::result_ptr();
     if ( result.isNull() )
         return;
 
@@ -105,7 +105,7 @@ DownloadButton::addDownloadJob()
     if ( m_query.isNull() )
         return;
 
-    Tomahawk::result_ptr result = m_query->numResults( true ) ? m_query->results().first() : Tomahawk::result_ptr();
+    Hatchet::result_ptr result = m_query->numResults( true ) ? m_query->results().first() : Hatchet::result_ptr();
     if ( result.isNull() )
         return;
 
@@ -148,12 +148,12 @@ DownloadButton::paintEvent( QPaintEvent* event )
 
 
 bool
-DownloadButton::drawPrimitive( QPainter* painter, const QRect& rect, const Tomahawk::query_ptr& query, bool hovering )
+DownloadButton::drawPrimitive( QPainter* painter, const QRect& rect, const Hatchet::query_ptr& query, bool hovering )
 {
     if ( query.isNull() )
         return false;
 
-    Tomahawk::result_ptr result = query->numResults( true ) ? query->results().first() : Tomahawk::result_ptr();
+    Hatchet::result_ptr result = query->numResults( true ) ? query->results().first() : Hatchet::result_ptr();
     if ( result.isNull() )
         return false;
 
@@ -161,11 +161,11 @@ DownloadButton::drawPrimitive( QPainter* painter, const QRect& rect, const Tomah
     {
         // if downloadJob exists and is not finished, paint a progress bar
         painter->save();
-        painter->setPen( TomahawkStyle::PLAYLIST_PROGRESS_FOREGROUND.darker() );
-        painter->setBrush( TomahawkStyle::PLAYLIST_PROGRESS_BACKGROUND );
+        painter->setPen( HatchetStyle::PLAYLIST_PROGRESS_FOREGROUND.darker() );
+        painter->setBrush( HatchetStyle::PLAYLIST_PROGRESS_BACKGROUND );
         painter->drawRect( rect.adjusted( 2, 2, -2, -2 ) );
-        painter->setPen( TomahawkStyle::PLAYLIST_PROGRESS_FOREGROUND );
-        painter->setBrush( TomahawkStyle::PLAYLIST_PROGRESS_FOREGROUND );
+        painter->setPen( HatchetStyle::PLAYLIST_PROGRESS_FOREGROUND );
+        painter->setBrush( HatchetStyle::PLAYLIST_PROGRESS_FOREGROUND );
         QRect fillp = rect.adjusted( 3, 3, -3, -3 );
         fillp.setWidth( float(fillp.width()) * ( float( result->downloadJob()->progressPercentage() ) / 100.0 ) );
         painter->drawRect( fillp );
@@ -231,7 +231,7 @@ DownloadButton::handleEditorEvent(QEvent* event , QAbstractItemView* view, Playa
 
 
 bool
-DownloadButton::handleClickPreDownload( const Tomahawk::query_ptr& query )
+DownloadButton::handleClickPreDownload( const Hatchet::query_ptr& query )
 {
     // view in folder
     if ( !DownloadManager::instance()->localUrlForDownload( query ).isEmpty() )
@@ -241,7 +241,7 @@ DownloadButton::handleClickPreDownload( const Tomahawk::query_ptr& query )
     }
 
     // download in progress
-    Tomahawk::result_ptr result = query->numResults( true ) ? query->results().first() : Tomahawk::result_ptr();
+    Hatchet::result_ptr result = query->numResults( true ) ? query->results().first() : Hatchet::result_ptr();
     if ( result && result->downloadJob() && result->downloadJob()->state() != DownloadJob::Finished )
     {
         // do nothing, handled
@@ -253,10 +253,10 @@ DownloadButton::handleClickPreDownload( const Tomahawk::query_ptr& query )
 
 
 bool
-DownloadButton::handleClickPostDownload( const Tomahawk::query_ptr& query )
+DownloadButton::handleClickPostDownload( const Hatchet::query_ptr& query )
 {
     // handle buy click
-    Tomahawk::result_ptr result = query->numResults( true ) ? query->results().first() : Tomahawk::result_ptr();
+    Hatchet::result_ptr result = query->numResults( true ) ? query->results().first() : Hatchet::result_ptr();
     if ( result && !result->purchaseUrl().isEmpty() )
     {
         WebPopup* popup = new WebPopup( result->purchaseUrl(), QSize( 400, 800 ) );
@@ -271,7 +271,7 @@ DownloadButton::handleClickPostDownload( const Tomahawk::query_ptr& query )
 QWidget*
 DownloadButton::handleCreateEditor( QWidget* parent, const query_ptr& query, QAbstractItemView* view, const QModelIndex& index )
 {
-    Tomahawk::result_ptr result = query->numResults( true ) ? query->results().first() : Tomahawk::result_ptr();
+    Hatchet::result_ptr result = query->numResults( true ) ? query->results().first() : Hatchet::result_ptr();
     if ( result && !result->downloadFormats().isEmpty() && !result->downloadJob() )
     {
         return new DownloadButton( query, parent, view, index );

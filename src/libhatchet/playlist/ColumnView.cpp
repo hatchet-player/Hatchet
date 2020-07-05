@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2014,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ColumnView.h"
@@ -24,7 +24,7 @@
 #include "widgets/OverlayWidget.h"
 
 #include "ContextMenu.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "ViewHeader.h"
 #include "ColumnItemDelegate.h"
 #include "ColumnViewPreviewWidget.h"
@@ -32,7 +32,7 @@
 #include "PlayableItem.h"
 #include "Source.h"
 #include "ViewManager.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 
 #include <QHeaderView>
@@ -44,7 +44,7 @@
 
 #define SCROLL_TIMEOUT 280
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 ColumnView::ColumnView( QWidget* parent )
@@ -337,12 +337,12 @@ ColumnView::startDrag( Qt::DropActions supportedActions )
     drag->setMimeData( data );
 
     QPixmap p;
-    if ( data->hasFormat( "application/tomahawk.metadata.artist" ) )
-        p = TomahawkUtils::createDragPixmap( TomahawkUtils::MediaTypeArtist, indexes.count() );
-    else if ( data->hasFormat( "application/tomahawk.metadata.album" ) )
-        p = TomahawkUtils::createDragPixmap( TomahawkUtils::MediaTypeAlbum, indexes.count() );
+    if ( data->hasFormat( "application/hatchet.metadata.artist" ) )
+        p = HatchetUtils::createDragPixmap( HatchetUtils::MediaTypeArtist, indexes.count() );
+    else if ( data->hasFormat( "application/hatchet.metadata.album" ) )
+        p = HatchetUtils::createDragPixmap( HatchetUtils::MediaTypeAlbum, indexes.count() );
     else
-        p = TomahawkUtils::createDragPixmap( TomahawkUtils::MediaTypeTrack, indexes.count() );
+        p = HatchetUtils::createDragPixmap( HatchetUtils::MediaTypeTrack, indexes.count() );
 
     drag->setPixmap( p );
     drag->setHotSpot( QPoint( -20, -20 ) );

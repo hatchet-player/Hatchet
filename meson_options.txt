@@ -1,4 +1,4 @@
-# tomahawk project build options
+# Hatchet project build options
 #============================================================================
 
 
@@ -26,19 +26,19 @@ option(
     'with_tools',
     type : 'boolean',
     value : 'true',
-    description : 'Build tomahawk tools')
+    description : 'Build hatchet tools')
 
 option(
     'with_tests',
     type : 'boolean',
     value : 'false',
-    description : 'Build tomahawk with tests')
+    description : 'Build hatchet with tests')
 
 option(
     'with_gui',
     type : 'boolean',
     value : 'true',
-    description : 'Build tomahawk with tests')
+    description : 'Build hatchet with tests')
 
 
 # link args
@@ -154,29 +154,29 @@ option(
     'with_crashreporter',
     type : 'boolean',
     value : 'true',
-    description : 'Build tomahawk with qt5 crash reporter')
+    description : 'Build hatchet with qt5 crash reporter')
 
 option(
     'with_echonest',
     type : 'boolean',
     value : 'true',
-    description : 'Build tomahawk with echonest')
+    description : 'Build hatchet with echonest')
 
 option(
     'with_taglib',
     type : 'boolean',
     value : 'true',
-    description : 'Build tomahawk with taglib')
+    description : 'Build hatchet with taglib')
 
 option(
     'with_liblastfm',
     type : 'boolean',
     value : 'true',
-    description : 'Build tomahawk with liblastfm')
+    description : 'Build hatchet with liblastfm')
 
 option(
     'with_telepathy',
     type : 'boolean',
     value : 'true',
-    description : 'Build tomahawk with Telepathy-Qt')
+    description : 'Build hatchet with Telepathy-Qt')
     

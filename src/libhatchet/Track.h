@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *   Copyright 2013,      Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #pragma once
@@ -31,7 +31,7 @@
 #include <QVariant>
 
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 class DatabaseCommand_LoadInboxEntries;
@@ -62,11 +62,11 @@ public:
     // void setDiscNumber( unsigned int discnumber ) { m_discnumber = discnumber; }
     // void setComposer( const QString& composer ) { m_composer = composer; updateSortNames(); }
 
-    bool equals( const Tomahawk::track_ptr& other, bool ignoreCase = false ) const;
+    bool equals( const Hatchet::track_ptr& other, bool ignoreCase = false ) const;
 
     QVariant toVariant() const;
     QString toString() const;
-    Tomahawk::query_ptr toQuery();
+    Hatchet::query_ptr toQuery();
 
     const QString& composerSortname() const;
     const QString& albumSortname() const;
@@ -83,10 +83,10 @@ public:
     unsigned int albumpos() const;
     unsigned int discnumber() const;
 
-    Tomahawk::artist_ptr artistPtr() const;
-    Tomahawk::artist_ptr albumArtistPtr() const;
-    Tomahawk::album_ptr albumPtr() const;
-    Tomahawk::artist_ptr composerPtr() const;
+    Hatchet::artist_ptr artistPtr() const;
+    Hatchet::artist_ptr albumArtistPtr() const;
+    Hatchet::album_ptr albumPtr() const;
+    Hatchet::artist_ptr composerPtr() const;
 
     QPixmap cover( const QSize& size, bool forceLoad = true ) const;
     bool coverLoaded() const;
@@ -94,31 +94,31 @@ public:
     void setLoved( bool loved, bool postToInfoSystem = true );
     bool loved();
 
-    void share( const Tomahawk::source_ptr& source );
+    void share( const Hatchet::source_ptr& source );
 
     void loadAttributes();
     QVariantMap attributes() const;
     void setAttributes( const QVariantMap& map );
 
     void loadStats();
-    QList< Tomahawk::PlaybackLog > playbackHistory( const Tomahawk::source_ptr& source = Tomahawk::source_ptr() ) const;
-    unsigned int playbackCount( const Tomahawk::source_ptr& source = Tomahawk::source_ptr() );
+    QList< Hatchet::PlaybackLog > playbackHistory( const Hatchet::source_ptr& source = Hatchet::source_ptr() ) const;
+    unsigned int playbackCount( const Hatchet::source_ptr& source = Hatchet::source_ptr() );
 
     unsigned int chartPosition() const;
     unsigned int chartCount() const;
 
     void loadSocialActions( bool force = false );
-    QList< Tomahawk::SocialAction > allSocialActions() const;
-    QList< Tomahawk::SocialAction > socialActions( const QString& actionName, const QVariant& value = QVariant(), bool filterDupeSourceNames = false );
+    QList< Hatchet::SocialAction > allSocialActions() const;
+    QList< Hatchet::SocialAction > socialActions( const QString& actionName, const QVariant& value = QVariant(), bool filterDupeSourceNames = false );
     QString socialActionDescription( const QString& actionName, DescriptionMode mode ) const;
 
-    QList<Tomahawk::query_ptr> similarTracks() const;
+    QList<Hatchet::query_ptr> similarTracks() const;
     QStringList lyrics() const;
 
     unsigned int trackId() const;
 
-    QWeakPointer< Tomahawk::Track > weakRef();
-    void setWeakRef( QWeakPointer< Tomahawk::Track > weakRef );
+    QWeakPointer< Hatchet::Track > weakRef();
+    void setWeakRef( QWeakPointer< Hatchet::Track > weakRef );
 
     void startPlaying();
     void finishPlaying( int timeElapsed );
@@ -156,8 +156,8 @@ private:
     static QHash< QString, track_wptr > s_tracksByName;
 };
 
-} // namespace Tomahawk
+} // namespace Hatchet
 
-Q_DECLARE_METATYPE( Tomahawk::track_ptr )
+Q_DECLARE_METATYPE( Hatchet::track_ptr )
 
 #endif // TRACK_H

@@ -41,9 +41,9 @@ ImageRegistry::ImageRegistry()
 
 
 QIcon
-ImageRegistry::icon( const QString& image, TomahawkUtils::ImageMode mode )
+ImageRegistry::icon( const QString& image, HatchetUtils::ImageMode mode )
 {
-    return pixmap( image, TomahawkUtils::defaultIconSize(), mode );
+    return pixmap( image, HatchetUtils::defaultIconSize(), mode );
 }
 
 
@@ -55,7 +55,7 @@ ImageRegistry::cacheKey( const QSize& size, float opacity, QColor tint )
 
 
 QPixmap
-ImageRegistry::pixmap( const QString& image, const QSize& size, TomahawkUtils::ImageMode mode, float opacity, QColor tint )
+ImageRegistry::pixmap( const QString& image, const QSize& size, HatchetUtils::ImageMode mode, float opacity, QColor tint )
 {
     if ( size.width() < 0 || size.height() < 0 )
     {
@@ -96,7 +96,7 @@ ImageRegistry::pixmap( const QString& image, const QSize& size, TomahawkUtils::I
         pixPainter.end();
 
         if ( tint.alpha() > 0 )
-            p = TomahawkUtils::tinted( p, tint );
+            p = HatchetUtils::tinted( p, tint );
 
         pixmap = p;
     }
@@ -107,8 +107,8 @@ ImageRegistry::pixmap( const QString& image, const QSize& size, TomahawkUtils::I
     {
         switch ( mode )
         {
-            case TomahawkUtils::RoundedCorners:
-                pixmap = TomahawkUtils::createRoundedImage( pixmap, size );
+            case HatchetUtils::RoundedCorners:
+                pixmap = HatchetUtils::createRoundedImage( pixmap, size );
                 break;
 
             default:
@@ -137,7 +137,7 @@ ImageRegistry::pixmap( const QString& image, const QSize& size, TomahawkUtils::I
 
 
 void
-ImageRegistry::putInCache( const QString& image, const QSize& size, TomahawkUtils::ImageMode mode, float opacity, const QPixmap& pixmap, QColor tint )
+ImageRegistry::putInCache( const QString& image, const QSize& size, HatchetUtils::ImageMode mode, float opacity, const QPixmap& pixmap, QColor tint )
 {
     tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "Adding to image cache:" << image << size << mode;
 

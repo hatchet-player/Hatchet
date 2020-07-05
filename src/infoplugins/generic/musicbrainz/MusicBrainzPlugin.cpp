@@ -1,25 +1,25 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "MusicBrainzPlugin.h"
 
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
 #include "utils/NetworkAccessManager.h"
 #include "HatchetVersion.h"
@@ -27,14 +27,14 @@
 #include <QNetworkReply>
 #include <QDomDocument>
 
-using namespace Tomahawk::InfoSystem;
+using namespace Hatchet::InfoSystem;
 
 
 MusicBrainzPlugin::MusicBrainzPlugin()
     : InfoPlugin()
 {
     qDebug() << Q_FUNC_INFO;
-    m_supportedGetTypes << Tomahawk::InfoSystem::InfoArtistReleases << Tomahawk::InfoSystem::InfoAlbumSongs;
+    m_supportedGetTypes << Hatchet::InfoSystem::InfoArtistReleases << Hatchet::InfoSystem::InfoAlbumSongs;
 }
 
 
@@ -45,14 +45,14 @@ MusicBrainzPlugin::~MusicBrainzPlugin()
 
 
 void
-MusicBrainzPlugin::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
+MusicBrainzPlugin::getInfo( Hatchet::InfoSystem::InfoRequestData requestData )
 {
-    if ( !requestData.input.canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !requestData.input.canConvert< Hatchet::InfoSystem::InfoStringHash >() )
     {
         emit info( requestData, QVariant() );
         return;
     }
-    InfoStringHash hash = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+    InfoStringHash hash = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
     if ( !hash.contains( "artist" ) )
     {
         emit info( requestData, QVariant() );
@@ -63,7 +63,7 @@ MusicBrainzPlugin::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
     {
         case InfoArtistReleases:
         {
-            Tomahawk::InfoSystem::InfoStringHash criteria;
+            Hatchet::InfoSystem::InfoStringHash criteria;
             criteria["artist"] = hash["artist"];
 
             emit getCachedInfo( criteria, Q_INT64_C(2419200000), requestData );
@@ -72,7 +72,7 @@ MusicBrainzPlugin::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
 
         case InfoAlbumSongs:
         {
-            Tomahawk::InfoSystem::InfoStringHash criteria;
+            Hatchet::InfoSystem::InfoStringHash criteria;
             criteria["artist"] = hash["artist"];
             criteria["album"] = hash["album"];
 
@@ -93,9 +93,9 @@ QNetworkReply*
 MusicBrainzPlugin::getUrl(QUrl url, QVariant requestData)
 {
     QNetworkRequest request =  QNetworkRequest( url );
-    QByteArray userAgent = TomahawkUtils::userAgentString( TOMAHAWK_APPLICATION_NAME, TOMAHAWK_VERSION ).toUtf8();
+    QByteArray userAgent = HatchetUtils::userAgentString( HATCHET_APPLICATION_NAME, HATCHET_VERSION ).toUtf8();
     request.setRawHeader( "User-Agent", userAgent );
-    QNetworkReply* reply = Tomahawk::Utils::nam()->get( request );
+    QNetworkReply* reply = Hatchet::Utils::nam()->get( request );
     reply->setProperty( "requestData", requestData );
     return reply;
 }
@@ -118,11 +118,11 @@ MusicBrainzPlugin::notInCacheSlot( InfoStringHash criteria, InfoRequestData requ
             QString requestString( "http://musicbrainz.org/ws/2/release-group" );
             QUrl url( requestString );
 
-            TomahawkUtils::urlAddQueryItem( url, "query", querySt );
-            TomahawkUtils::urlAddQueryItem( url, "limit", "100" );
+            HatchetUtils::urlAddQueryItem( url, "query", querySt );
+            HatchetUtils::urlAddQueryItem( url, "limit", "100" );
 
             tDebug() << Q_FUNC_INFO << url.toString();
-            QNetworkReply* reply = getUrl( url, QVariant::fromValue< Tomahawk::InfoSystem::InfoRequestData >( requestData ) );
+            QNetworkReply* reply = getUrl( url, QVariant::fromValue< Hatchet::InfoSystem::InfoRequestData >( requestData ) );
 
             connect( reply, SIGNAL( finished() ), SLOT( gotReleaseGroupsSlot() ) );
 
@@ -137,11 +137,11 @@ MusicBrainzPlugin::notInCacheSlot( InfoStringHash criteria, InfoRequestData requ
             QString requestString( "http://musicbrainz.org/ws/2/release" );
             QUrl url( requestString );
 
-            TomahawkUtils::urlAddQueryItem( url, "query", querySt );
-            TomahawkUtils::urlAddQueryItem( url, "limit", "100" );
+            HatchetUtils::urlAddQueryItem( url, "query", querySt );
+            HatchetUtils::urlAddQueryItem( url, "limit", "100" );
 
             tDebug() << Q_FUNC_INFO << url.toString();
-            QNetworkReply* reply = getUrl( url, QVariant::fromValue< Tomahawk::InfoSystem::InfoRequestData >( requestData ) );
+            QNetworkReply* reply = getUrl( url, QVariant::fromValue< Hatchet::InfoSystem::InfoRequestData >( requestData ) );
 
             connect( reply, SIGNAL( finished() ), SLOT( gotReleasesSlot() ) );
 
@@ -170,13 +170,13 @@ MusicBrainzPlugin::gotReleaseGroupsSlot()
     QDomNodeList releaseGroupsNL = doc.elementsByTagName( "release-group" );
     if ( releaseGroupsNL.isEmpty() )
     {
-        emit info( oldReply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >(), QVariant() );
+        emit info( oldReply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >(), QVariant() );
         tDebug() << Q_FUNC_INFO << doc.toString();
         return;
     }
 
-    Tomahawk::InfoSystem::InfoRequestData requestData = oldReply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
-    InfoStringHash hash = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+    Hatchet::InfoSystem::InfoRequestData requestData = oldReply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
+    InfoStringHash hash = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
     switch ( requestData.type )
     {
         case InfoArtistReleases:
@@ -200,8 +200,8 @@ MusicBrainzPlugin::gotReleaseGroupsSlot()
             returnedData["albums"] = albums;
             emit info( requestData, returnedData );
 
-            Tomahawk::InfoSystem::InfoStringHash origData = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash>();
-            Tomahawk::InfoSystem::InfoStringHash criteria;
+            Hatchet::InfoSystem::InfoStringHash origData = requestData.input.value< Hatchet::InfoSystem::InfoStringHash>();
+            Hatchet::InfoSystem::InfoStringHash criteria;
             criteria["artist"] = origData["artist"];
             emit updateCache( criteria, Q_INT64_C(0), requestData.type, returnedData );
             break;
@@ -229,12 +229,12 @@ MusicBrainzPlugin::gotReleasesSlot()
     QDomNodeList releasesNL = doc.elementsByTagName( "release" );
     if ( releasesNL.isEmpty() )
     {
-        emit info( oldReply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >(), QVariant() );
+        emit info( oldReply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >(), QVariant() );
         tDebug() << Q_FUNC_INFO << doc.toString();
         return;
     }
 
-    Tomahawk::InfoSystem::InfoRequestData requestData = oldReply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
+    Hatchet::InfoSystem::InfoRequestData requestData = oldReply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
     switch ( requestData.type )
     {
         case InfoAlbumSongs:
@@ -244,7 +244,7 @@ MusicBrainzPlugin::gotReleasesSlot()
 
             QString requestString = QString( "http://musicbrainz.org/ws/2/release/%1" ).arg( release_id );
             QUrl url( requestString );
-            TomahawkUtils::urlAddQueryItem( url, "inc", "recordings" );
+            HatchetUtils::urlAddQueryItem( url, "inc", "recordings" );
             tDebug() << Q_FUNC_INFO << url.toString();
 
             QNetworkReply* newReply = getUrl( url, oldReply->property( "requestData" ) );
@@ -277,7 +277,7 @@ MusicBrainzPlugin::gotRecordingsSlot()
     QDomNodeList mediumList = doc.elementsByTagName( "medium-list" );
     if ( mediumList.isEmpty() )
     {
-        emit info( reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >(), QVariant() );
+        emit info( reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >(), QVariant() );
         tDebug() << Q_FUNC_INFO << doc.toString();
         return;
     }
@@ -294,17 +294,17 @@ MusicBrainzPlugin::gotRecordingsSlot()
         }
     }
 
-    Tomahawk::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
+    Hatchet::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
     QVariantMap returnedData;
     returnedData["tracks"] = tracksSL;
     emit info( requestData, returnedData );
 
-    Tomahawk::InfoSystem::InfoStringHash origData = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash>();
-    Tomahawk::InfoSystem::InfoStringHash criteria;
+    Hatchet::InfoSystem::InfoStringHash origData = requestData.input.value< Hatchet::InfoSystem::InfoStringHash>();
+    Hatchet::InfoSystem::InfoStringHash criteria;
     criteria["artist"] = origData["artist"];
     criteria["album"] = origData["album"];
     emit updateCache( criteria, Q_INT64_C(0), requestData.type, returnedData );
 }
 
-Q_EXPORT_PLUGIN2( Tomahawk::InfoSystem::InfoPlugin, Tomahawk::InfoSystem::MusicBrainzPlugin )
+Q_EXPORT_PLUGIN2( Hatchet::InfoSystem::InfoPlugin, Hatchet::InfoSystem::MusicBrainzPlugin )
 

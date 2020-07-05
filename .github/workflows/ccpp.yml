@@ -6,7 +6,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: tomahawkmusicplayer/ubuntu:latest
+      image: hatchetmusicplayer/ubuntu:latest
       env:
         MIX_ENV: test
     steps:

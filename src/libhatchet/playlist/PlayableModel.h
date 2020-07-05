@@ -1,22 +1,22 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2011       Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013,      Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #pragma once
@@ -111,9 +111,9 @@ public:
     virtual QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const;
     virtual QVariant headerData( int section, Qt::Orientation orientation, int role ) const;
 
-    virtual QVariant artistData( const Tomahawk::artist_ptr& artist, int role = Qt::DisplayRole ) const;
-    virtual QVariant albumData( const Tomahawk::album_ptr& album, int role = Qt::DisplayRole ) const;
-    virtual QVariant queryData( const Tomahawk::query_ptr&, int column, int role = Qt::DisplayRole ) const;
+    virtual QVariant artistData( const Hatchet::artist_ptr& artist, int role = Qt::DisplayRole ) const;
+    virtual QVariant albumData( const Hatchet::album_ptr& album, int role = Qt::DisplayRole ) const;
+    virtual QVariant queryData( const Hatchet::query_ptr&, int column, int role = Qt::DisplayRole ) const;
 
     virtual QMimeData* mimeData( const QModelIndexList& indexes ) const;
     virtual QStringList mimeTypes() const;
@@ -121,26 +121,26 @@ public:
     virtual Qt::ItemFlags flags( const QModelIndex& index ) const;
 
     virtual QPersistentModelIndex currentItem();
-    virtual Tomahawk::QID currentItemUuid();
+    virtual Hatchet::QID currentItemUuid();
 
-    virtual Tomahawk::PlaylistModes::RepeatMode repeatMode() const;
+    virtual Hatchet::PlaylistModes::RepeatMode repeatMode() const;
     virtual bool shuffled() const { return false; }
 
     virtual void ensureResolved( const QModelIndex& parent = QModelIndex() );
 
     virtual PlayableItem* itemFromIndex( const QModelIndex& index ) const;
-    virtual PlayableItem* itemFromQuery( const Tomahawk::query_ptr& query, const QModelIndex& parent = QModelIndex() ) const;
-    virtual PlayableItem* itemFromResult( const Tomahawk::result_ptr& result, const QModelIndex& parent = QModelIndex() ) const;
-    virtual QModelIndex indexFromSource( const Tomahawk::source_ptr& source ) const;
+    virtual PlayableItem* itemFromQuery( const Hatchet::query_ptr& query, const QModelIndex& parent = QModelIndex() ) const;
+    virtual PlayableItem* itemFromResult( const Hatchet::result_ptr& result, const QModelIndex& parent = QModelIndex() ) const;
+    virtual QModelIndex indexFromSource( const Hatchet::source_ptr& source ) const;
 
     /// Returns a flat list of all tracks in this model
-    QList< Tomahawk::query_ptr > queries() const;
+    QList< Hatchet::query_ptr > queries() const;
 
     void startLoading();
     void finishLoading();
 
 signals:
-    void repeatModeChanged( Tomahawk::PlaylistModes::RepeatMode mode );
+    void repeatModeChanged( Hatchet::PlaylistModes::RepeatMode mode );
     void shuffleModeChanged( bool enabled );
 
     void itemCountChanged( unsigned int items );
@@ -162,24 +162,24 @@ public slots:
 
     virtual void clear();
 
-    virtual void appendTracks( const QList< Tomahawk::track_ptr >& tracks, const QList< Tomahawk::PlaybackLog >& logs = QList< Tomahawk::PlaybackLog >() );
-    virtual void appendQueries( const QList< Tomahawk::query_ptr >& queries );
-    virtual void appendArtists( const QList< Tomahawk::artist_ptr >& artists );
-    virtual void appendAlbums( const QList< Tomahawk::album_ptr >& albums );
-    virtual void appendAlbums( const Tomahawk::collection_ptr& collection );
-    virtual void appendQuery( const Tomahawk::query_ptr& query );
-    virtual void appendArtist( const Tomahawk::artist_ptr& artist );
-    virtual void appendAlbum( const Tomahawk::album_ptr& album );
-    virtual void appendTracks( const Tomahawk::collection_ptr& collection );
+    virtual void appendTracks( const QList< Hatchet::track_ptr >& tracks, const QList< Hatchet::PlaybackLog >& logs = QList< Hatchet::PlaybackLog >() );
+    virtual void appendQueries( const QList< Hatchet::query_ptr >& queries );
+    virtual void appendArtists( const QList< Hatchet::artist_ptr >& artists );
+    virtual void appendAlbums( const QList< Hatchet::album_ptr >& albums );
+    virtual void appendAlbums( const Hatchet::collection_ptr& collection );
+    virtual void appendQuery( const Hatchet::query_ptr& query );
+    virtual void appendArtist( const Hatchet::artist_ptr& artist );
+    virtual void appendAlbum( const Hatchet::album_ptr& album );
+    virtual void appendTracks( const Hatchet::collection_ptr& collection );
 
-    virtual void insertQueries( const QList< Tomahawk::query_ptr >& queries, int row = 0, const QList< Tomahawk::PlaybackLog >& logs = QList< Tomahawk::PlaybackLog >(), const QModelIndex& parent = QModelIndex() );
-    virtual void insertArtists( const QList< Tomahawk::artist_ptr >& artists, int row = 0 );
-    virtual void insertAlbums( const QList< Tomahawk::album_ptr >& albums, int row = 0 );
-    virtual void insertAlbums( const Tomahawk::collection_ptr& collection, int row = 0 );
-    virtual void insertQuery( const Tomahawk::query_ptr& query, int row = 0, const Tomahawk::PlaybackLog& log = Tomahawk::PlaybackLog(), const QModelIndex& parent = QModelIndex() );
-    virtual void insertArtist( const Tomahawk::artist_ptr& artist, int row = 0 );
-    virtual void insertAlbum( const Tomahawk::album_ptr& album, int row = 0 );
-    virtual void insertTracks( const Tomahawk::collection_ptr& collection, int row = 0 );
+    virtual void insertQueries( const QList< Hatchet::query_ptr >& queries, int row = 0, const QList< Hatchet::PlaybackLog >& logs = QList< Hatchet::PlaybackLog >(), const QModelIndex& parent = QModelIndex() );
+    virtual void insertArtists( const QList< Hatchet::artist_ptr >& artists, int row = 0 );
+    virtual void insertAlbums( const QList< Hatchet::album_ptr >& albums, int row = 0 );
+    virtual void insertAlbums( const Hatchet::collection_ptr& collection, int row = 0 );
+    virtual void insertQuery( const Hatchet::query_ptr& query, int row = 0, const Hatchet::PlaybackLog& log = Hatchet::PlaybackLog(), const QModelIndex& parent = QModelIndex() );
+    virtual void insertArtist( const Hatchet::artist_ptr& artist, int row = 0 );
+    virtual void insertAlbum( const Hatchet::album_ptr& album, int row = 0 );
+    virtual void insertTracks( const Hatchet::collection_ptr& collection, int row = 0 );
 
     virtual bool removeRows( int row, int count, const QModelIndex& parent = QModelIndex() );
     virtual void remove( int row, bool moreToCome = false, const QModelIndex& parent = QModelIndex() );
@@ -187,7 +187,7 @@ public slots:
     virtual void removeIndexes( const QList<QModelIndex>& indexes );
     virtual void removeIndexes( const QList<QPersistentModelIndex>& indexes );
 
-    virtual void setRepeatMode( Tomahawk::PlaylistModes::RepeatMode /*mode*/ ) {}
+    virtual void setRepeatMode( Hatchet::PlaylistModes::RepeatMode /*mode*/ ) {}
     virtual void setShuffled( bool /*shuffled*/ ) {}
 
 protected:
@@ -203,13 +203,13 @@ private slots:
     void onQueryBecamePlayable( bool playable );
     void onQueryResolved( bool hasResults );
 
-    void onPlaybackStarted( const Tomahawk::result_ptr result );
+    void onPlaybackStarted( const Hatchet::result_ptr result );
     void onPlaybackStopped();
 
 private:
     void init();
     template <typename T>
-    void insertInternal( const QList< T >& items, int row, const QList< Tomahawk::PlaybackLog >& logs = QList< Tomahawk::PlaybackLog >(), const QModelIndex& parent = QModelIndex() );
+    void insertInternal( const QList< T >& items, int row, const QList< Hatchet::PlaybackLog >& logs = QList< Hatchet::PlaybackLog >(), const QModelIndex& parent = QModelIndex() );
 
     QString scoreText( float score ) const;
     Qt::Alignment columnAlignment( int column ) const;

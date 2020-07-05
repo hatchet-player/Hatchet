@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Leo Franchi            <lfranchi@kde.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DatabaseCollection.h"
@@ -33,7 +33,7 @@
 
 #include "PlaylistEntry.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 DatabaseCollection::DatabaseCollection( const source_ptr& src, QObject* parent )
@@ -62,10 +62,10 @@ DatabaseCollection::loadPlaylists()
 {
     DatabaseCommand_LoadAllPlaylists* cmd = new DatabaseCommand_LoadAllPlaylists( source() );
 
-    connect( cmd,  SIGNAL( done( const QList<Tomahawk::playlist_ptr>& ) ),
-                     SLOT( setPlaylists( const QList<Tomahawk::playlist_ptr>& ) ) );
+    connect( cmd,  SIGNAL( done( const QList<Hatchet::playlist_ptr>& ) ),
+                     SLOT( setPlaylists( const QList<Hatchet::playlist_ptr>& ) ) );
 
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 }
 
 
@@ -74,10 +74,10 @@ DatabaseCollection::loadAutoPlaylists()
 {
     DatabaseCommand_LoadAllAutoPlaylists* cmd = new DatabaseCommand_LoadAllAutoPlaylists( source() );
 
-    connect( cmd, SIGNAL( autoPlaylistLoaded( Tomahawk::source_ptr, QVariantList ) ),
-                    SLOT( autoPlaylistCreated( const Tomahawk::source_ptr&, const QVariantList& ) ) );
+    connect( cmd, SIGNAL( autoPlaylistLoaded( Hatchet::source_ptr, QVariantList ) ),
+                    SLOT( autoPlaylistCreated( const Hatchet::source_ptr&, const QVariantList& ) ) );
 
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 }
 
 
@@ -86,10 +86,10 @@ DatabaseCollection::loadStations()
 {
     DatabaseCommand_LoadAllStations* cmd = new DatabaseCommand_LoadAllStations( source() );
 
-    connect( cmd, SIGNAL( stationLoaded( Tomahawk::source_ptr, QVariantList ) ),
-             SLOT( stationCreated( const Tomahawk::source_ptr&, const QVariantList& ) ) );
+    connect( cmd, SIGNAL( stationLoaded( Hatchet::source_ptr, QVariantList ) ),
+             SLOT( stationCreated( const Hatchet::source_ptr&, const QVariantList& ) ) );
 
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 }
 
 
@@ -99,7 +99,7 @@ DatabaseCollection::addTracks( const QList<QVariant>& newitems )
     qDebug() << Q_FUNC_INFO << newitems.length();
     DatabaseCommand_AddFiles* cmd = new DatabaseCommand_AddFiles( newitems, source() );
 
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 }
 
 
@@ -109,11 +109,11 @@ DatabaseCollection::removeTracks( const QDir& dir )
     qDebug() << Q_FUNC_INFO << dir;
     DatabaseCommand_DeleteFiles* cmd = new DatabaseCommand_DeleteFiles( dir, source() );
 
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 }
 
 
-QList< Tomahawk::playlist_ptr >
+QList< Hatchet::playlist_ptr >
 DatabaseCollection::playlists()
 {
     if ( Collection::playlists().isEmpty() )
@@ -155,39 +155,39 @@ DatabaseCollection::stations()
 }
 
 
-Tomahawk::ArtistsRequest*
+Hatchet::ArtistsRequest*
 DatabaseCollection::requestArtists()
 {
     //FIXME: assuming there's only one dbcollection per source, and that this is the one
-    Tomahawk::collection_ptr thisCollection = source()->dbCollection();
+    Hatchet::collection_ptr thisCollection = source()->dbCollection();
     if ( thisCollection->name() != this->name() )
         return 0;
 
-    Tomahawk::ArtistsRequest* cmd = new DatabaseCommand_AllArtists( thisCollection );
+    Hatchet::ArtistsRequest* cmd = new DatabaseCommand_AllArtists( thisCollection );
 
     return cmd;
 }
 
 
-Tomahawk::AlbumsRequest*
-DatabaseCollection::requestAlbums( const Tomahawk::artist_ptr& artist )
+Hatchet::AlbumsRequest*
+DatabaseCollection::requestAlbums( const Hatchet::artist_ptr& artist )
 {
     //FIXME: assuming there's only one dbcollection per source, and that this is the one
-    Tomahawk::collection_ptr thisCollection = source()->dbCollection();
+    Hatchet::collection_ptr thisCollection = source()->dbCollection();
     if ( thisCollection->name() != this->name() )
         return 0;
 
-    Tomahawk::AlbumsRequest* cmd = new DatabaseCommand_AllAlbums( thisCollection, artist );
+    Hatchet::AlbumsRequest* cmd = new DatabaseCommand_AllAlbums( thisCollection, artist );
 
     return cmd;
 }
 
 
-Tomahawk::TracksRequest*
-DatabaseCollection::requestTracks( const Tomahawk::album_ptr& album )
+Hatchet::TracksRequest*
+DatabaseCollection::requestTracks( const Hatchet::album_ptr& album )
 {
     //FIXME: assuming there's only one dbcollection per source, and that this is the one
-    Tomahawk::collection_ptr thisCollection = source()->dbCollection();
+    Hatchet::collection_ptr thisCollection = source()->dbCollection();
     if ( thisCollection->name() != this->name() )
         return 0;
 
@@ -213,7 +213,7 @@ DatabaseCollection::trackCount() const
 QPixmap
 DatabaseCollection::icon( const QSize& size ) const
 {
-    return source()->avatar( TomahawkUtils::RoundedCorners, size, true );
+    return source()->avatar( HatchetUtils::RoundedCorners, size, true );
 }
 
 
@@ -281,7 +281,7 @@ DatabaseCollection::weight() const
 
 
 void
-DatabaseCollection::resolve( const Tomahawk::query_ptr& query )
+DatabaseCollection::resolve( const Hatchet::query_ptr& query )
 {
     Q_UNUSED( query );
     Q_ASSERT(false);

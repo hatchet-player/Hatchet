@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "PlaylistEntry_p.h"
@@ -25,7 +25,7 @@
 #include "Result.h"
 #include "Source.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 PlaylistEntry::PlaylistEntry()
@@ -48,7 +48,7 @@ PlaylistEntry::setQueryVariant( const QVariant& v )
     QString album = m.value( "album" ).toString();
     QString track = m.value( "track" ).toString();
 
-    setQuery( Tomahawk::Query::get( artist, track, album ) );
+    setQuery( Hatchet::Query::get( artist, track, album ) );
 }
 
 
@@ -69,7 +69,7 @@ PlaylistEntry::queryVariant() const
 
 
 void
-PlaylistEntry::setQuery( const Tomahawk::query_ptr& q )
+PlaylistEntry::setQuery( const Hatchet::query_ptr& q )
 {
     Q_D( PlaylistEntry );
     d->query = q;
@@ -78,7 +78,7 @@ PlaylistEntry::setQuery( const Tomahawk::query_ptr& q )
 }
 
 
-const Tomahawk::query_ptr&
+const Hatchet::query_ptr&
 PlaylistEntry::query() const
 {
     Q_D( const PlaylistEntry );
@@ -138,7 +138,7 @@ PlaylistEntry::hintFromQuery() const
 
     if ( foundResult.startsWith( "file://" ) ||
         foundResult.startsWith( "servent://" ) || // Save resulthints for local files and peers automatically
-        ( TomahawkUtils::whitelistedHttpResultHint( foundResult ) && d->query->saveHTTPResultHint() ) )
+        ( HatchetUtils::whitelistedHttpResultHint( foundResult ) && d->query->saveHTTPResultHint() ) )
     {
         resultHint = foundResult;
     }

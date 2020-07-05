@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "AlbumModel.h"
@@ -28,10 +28,10 @@
 #include "Source.h"
 #include "SourceList.h"
 #include "database/Database.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 AlbumModel::AlbumModel( QObject* parent )
@@ -53,18 +53,18 @@ AlbumModel::addCollection( const collection_ptr& collection, bool overwrite )
     m_overwriteOnAdd = overwrite;
     m_collection = collection;
 
-    connect( cmd, SIGNAL( albums( QList<Tomahawk::album_ptr>, QVariant ) ),
-                    SLOT( addAlbums( QList<Tomahawk::album_ptr> ) ) );
+    connect( cmd, SIGNAL( albums( QList<Hatchet::album_ptr>, QVariant ) ),
+                    SLOT( addAlbums( QList<Hatchet::album_ptr> ) ) );
 
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 
     setTitle( tr( "All albums from %1" ).arg( collection->prettyName() ) );
 
     if ( collection.isNull() )
     {
-        connect( SourceList::instance(), SIGNAL( sourceAdded( Tomahawk::source_ptr ) ), SLOT( onSourceAdded( Tomahawk::source_ptr ) ), Qt::UniqueConnection );
+        connect( SourceList::instance(), SIGNAL( sourceAdded( Hatchet::source_ptr ) ), SLOT( onSourceAdded( Hatchet::source_ptr ) ), Qt::UniqueConnection );
 
-        QList<Tomahawk::source_ptr> sources = SourceList::instance()->sources();
+        QList<Hatchet::source_ptr> sources = SourceList::instance()->sources();
         foreach ( const source_ptr& source, sources )
         {
             connect( source->dbCollection().data(), SIGNAL( changed() ), SLOT( onCollectionChanged() ), Qt::UniqueConnection );
@@ -89,10 +89,10 @@ AlbumModel::addFilteredCollection( const collection_ptr& collection, unsigned in
     m_overwriteOnAdd = overwrite;
     m_collection = collection;
 
-    connect( cmd, SIGNAL( albums( QList<Tomahawk::album_ptr>, QVariant ) ),
-                    SLOT( addAlbums( QList<Tomahawk::album_ptr> ) ) );
+    connect( cmd, SIGNAL( albums( QList<Hatchet::album_ptr>, QVariant ) ),
+                    SLOT( addAlbums( QList<Hatchet::album_ptr> ) ) );
 
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 
     if ( !collection.isNull() )
         setTitle( tr( "All albums from %1" ).arg( collection->prettyName() ) );
@@ -104,14 +104,14 @@ AlbumModel::addFilteredCollection( const collection_ptr& collection, unsigned in
 
 
 void
-AlbumModel::addAlbums( const QList<Tomahawk::album_ptr>& albums )
+AlbumModel::addAlbums( const QList<Hatchet::album_ptr>& albums )
 {
     emit loadingFinished();
 
     if ( m_overwriteOnAdd )
         clear();
 
-    QList<Tomahawk::album_ptr> trimmedAlbums;
+    QList<Hatchet::album_ptr> trimmedAlbums;
     foreach ( const album_ptr& album, albums )
     {
         if ( !album.isNull() && !album->name().isEmpty() )
@@ -149,14 +149,14 @@ AlbumModel::addAlbums( const QList<Tomahawk::album_ptr>& albums )
 
 
 void
-AlbumModel::addArtists( const QList<Tomahawk::artist_ptr>& artists )
+AlbumModel::addArtists( const QList<Hatchet::artist_ptr>& artists )
 {
     emit loadingFinished();
 
     if ( m_overwriteOnAdd )
         clear();
 
-    QList<Tomahawk::artist_ptr> trimmedArtists;
+    QList<Hatchet::artist_ptr> trimmedArtists;
     foreach ( const artist_ptr& artist, artists )
     {
         if ( !artist.isNull() && !artist->name().isEmpty() )
@@ -194,7 +194,7 @@ AlbumModel::addArtists( const QList<Tomahawk::artist_ptr>& artists )
 
 
 void
-AlbumModel::addQueries( const QList<Tomahawk::query_ptr>& queries )
+AlbumModel::addQueries( const QList<Hatchet::query_ptr>& queries )
 {
     emit loadingFinished();
 
@@ -222,7 +222,7 @@ AlbumModel::addQueries( const QList<Tomahawk::query_ptr>& queries )
 
 
 void
-AlbumModel::onSourceAdded( const Tomahawk::source_ptr& source )
+AlbumModel::onSourceAdded( const Hatchet::source_ptr& source )
 {
     connect( source->dbCollection().data(), SIGNAL( changed() ), SLOT( onCollectionChanged() ), Qt::UniqueConnection );
 }

@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2012       Leo Franchi            <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "SearchViewPage.h"
@@ -30,15 +30,15 @@
 #include "playlist/PlaylistModel.h"
 #include "playlist/GridItemDelegate.h"
 #include "utils/AnimatedSpinner.h"
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 #include "widgets/BasicHeader.h"
 
 #include <QPushButton>
 #include <QScrollArea>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 SearchWidget::SearchWidget( const QString& search, QWidget* parent )
@@ -56,7 +56,7 @@ SearchWidget::SearchWidget( const QString& search, QWidget* parent )
         ui->artists->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
         ui->artists->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
         ui->artists->setWrapping( false );
-        ui->artists->setItemWidth( TomahawkUtils::DpiScaler::scaledX( this, 140 ) );
+        ui->artists->setItemWidth( HatchetUtils::DpiScaler::scaledX( this, 140 ) );
         ui->artists->setFixedHeight( ui->artists->itemSize().height() + ui->artists->spacing() * 2 );
 
         m_artistsModel = new PlayableModel( ui->artists );
@@ -64,9 +64,9 @@ SearchWidget::SearchWidget( const QString& search, QWidget* parent )
         ui->artists->proxyModel()->sort( -1 );
         ui->artists->setEmptyTip( tr( "Sorry, we could not find any artists!" ) );
 
-        TomahawkStyle::stylePageFrame( ui->artists );
-        TomahawkStyle::stylePageFrame( ui->artistFrame );
-        TomahawkStyle::styleScrollBar( ui->artists->verticalScrollBar() );
+        HatchetStyle::stylePageFrame( ui->artists );
+        HatchetStyle::stylePageFrame( ui->artistFrame );
+        HatchetStyle::styleScrollBar( ui->artists->verticalScrollBar() );
     }
 
     {
@@ -75,7 +75,7 @@ SearchWidget::SearchWidget( const QString& search, QWidget* parent )
         ui->albums->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
         ui->albums->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
         ui->albums->setWrapping( false );
-        ui->albums->setItemWidth( TomahawkUtils::DpiScaler::scaledX( this, 140 ) );
+        ui->albums->setItemWidth( HatchetUtils::DpiScaler::scaledX( this, 140 ) );
 //        ui->albums->proxyModel()->setHideDupeItems( true );
         ui->albums->delegate()->setWordWrapping( true );
         ui->albums->setFixedHeight( ui->albums->itemSize().height() + ui->albums->spacing() * 2 );
@@ -85,10 +85,10 @@ SearchWidget::SearchWidget( const QString& search, QWidget* parent )
         ui->albums->proxyModel()->sort( -1 );
         ui->albums->setEmptyTip( tr( "Sorry, we could not find any albums!" ) );
 
-        ui->albums->setStyleSheet( QString( "QListView { background-color: %1; }" ).arg( TomahawkStyle::PAGE_BACKGROUND.name() ) );
-        TomahawkStyle::stylePageFrame( ui->albumFrame );
-        TomahawkStyle::styleScrollBar( ui->albums->verticalScrollBar() );
-        TomahawkStyle::styleScrollBar( ui->albums->horizontalScrollBar() );
+        ui->albums->setStyleSheet( QString( "QListView { background-color: %1; }" ).arg( HatchetStyle::PAGE_BACKGROUND.name() ) );
+        HatchetStyle::stylePageFrame( ui->albumFrame );
+        HatchetStyle::styleScrollBar( ui->albums->verticalScrollBar() );
+        HatchetStyle::styleScrollBar( ui->albums->horizontalScrollBar() );
     }
 
     {
@@ -97,7 +97,7 @@ SearchWidget::SearchWidget( const QString& search, QWidget* parent )
         ui->tracks->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
         ui->tracks->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
         ui->tracks->setWrapping( false );
-        ui->tracks->setItemWidth( TomahawkUtils::DpiScaler::scaledX( this, 140 ) );
+        ui->tracks->setItemWidth( HatchetUtils::DpiScaler::scaledX( this, 140 ) );
 //        ui->tracks->proxyModel()->setHideDupeItems( true );
         ui->tracks->delegate()->setWordWrapping( true );
         ui->tracks->delegate()->setShowBuyButtons( true );
@@ -108,14 +108,14 @@ SearchWidget::SearchWidget( const QString& search, QWidget* parent )
         ui->tracks->proxyModel()->sort( -1 );
         ui->tracks->setEmptyTip( tr( "Sorry, we could not find any songs!" ) );
 
-        ui->tracks->setStyleSheet( QString( "QListView { background-color: %1; }" ).arg( TomahawkStyle::PAGE_BACKGROUND.name() ) );
-        TomahawkStyle::stylePageFrame( ui->trackFrame );
+        ui->tracks->setStyleSheet( QString( "QListView { background-color: %1; }" ).arg( HatchetStyle::PAGE_BACKGROUND.name() ) );
+        HatchetStyle::stylePageFrame( ui->trackFrame );
     }
 
     {
         QFont f = ui->topHitsMoreLabel->font();
         f.setWeight( QFont::Light );
-        f.setPointSize( TomahawkUtils::defaultFontSize() + 1 );
+        f.setPointSize( HatchetUtils::defaultFontSize() + 1 );
         ui->topHitsMoreLabel->setFont( f );
         ui->artistsMoreLabel->setFont( f );
         ui->albumsMoreLabel->setFont( f );
@@ -134,7 +134,7 @@ SearchWidget::SearchWidget( const QString& search, QWidget* parent )
         area->setWidget( widget );
 
         QPalette pal = palette();
-        pal.setBrush( backgroundRole(), TomahawkStyle::PAGE_BACKGROUND );
+        pal.setBrush( backgroundRole(), HatchetStyle::PAGE_BACKGROUND );
         area->setPalette( pal );
         area->setAutoFillBackground( true );
         area->setFrameShape( QFrame::NoFrame );
@@ -161,12 +161,12 @@ SearchWidget::SearchWidget( const QString& search, QWidget* parent )
 
         QWidget* vbox = new QWidget;
         QPalette pal = vbox->palette();
-        pal.setBrush( vbox->backgroundRole(), TomahawkStyle::PAGE_BACKGROUND );
+        pal.setBrush( vbox->backgroundRole(), HatchetStyle::PAGE_BACKGROUND );
         vbox->setPalette( pal );
         vbox->setAutoFillBackground( true );
 
         QVBoxLayout* vboxl = new QVBoxLayout;
-        TomahawkUtils::unmarginLayout( vboxl );
+        HatchetUtils::unmarginLayout( vboxl );
         vboxl->setContentsMargins( 32, 32, 32, 32 );
         vboxl->setSpacing( 8 );
         vbox->setLayout( vboxl );
@@ -191,12 +191,12 @@ SearchWidget::SearchWidget( const QString& search, QWidget* parent )
 
         QWidget* vbox = new QWidget;
         QPalette pal = vbox->palette();
-        pal.setBrush( vbox->backgroundRole(), TomahawkStyle::PAGE_BACKGROUND );
+        pal.setBrush( vbox->backgroundRole(), HatchetStyle::PAGE_BACKGROUND );
         vbox->setPalette( pal );
         vbox->setAutoFillBackground( true );
 
         QVBoxLayout* vboxl = new QVBoxLayout;
-        TomahawkUtils::unmarginLayout( vboxl );
+        HatchetUtils::unmarginLayout( vboxl );
         vboxl->setContentsMargins( 32, 32, 32, 32 );
         vboxl->setSpacing( 8 );
         vbox->setLayout( vboxl );
@@ -216,7 +216,7 @@ SearchWidget::SearchWidget( const QString& search, QWidget* parent )
         layout->addWidget( headerWidget );
         layout->addWidget( m_stackedWidget );
         setLayout( layout );
-        TomahawkUtils::unmarginLayout( layout );
+        HatchetUtils::unmarginLayout( layout );
     }
 
     MetaPlaylistInterface* mpl = new MetaPlaylistInterface();
@@ -231,13 +231,13 @@ SearchWidget::SearchWidget( const QString& search, QWidget* parent )
     m_albumsModel->startLoading();
     m_resultsModel->startLoading();
 
-    m_query = Tomahawk::Query::get( search, uuid() );
-    connect( m_query.data(), SIGNAL( artistsAdded( QList<Tomahawk::artist_ptr> ) ), SLOT( onArtistsFound( QList<Tomahawk::artist_ptr> ) ) );
-    connect( m_query.data(), SIGNAL( albumsAdded( QList<Tomahawk::album_ptr> ) ), SLOT( onAlbumsFound( QList<Tomahawk::album_ptr> ) ) );
-    connect( m_query.data(), SIGNAL( resultsAdded( QList<Tomahawk::result_ptr> ) ), SLOT( onResultsFound( QList<Tomahawk::result_ptr> ) ) );
+    m_query = Hatchet::Query::get( search, uuid() );
+    connect( m_query.data(), SIGNAL( artistsAdded( QList<Hatchet::artist_ptr> ) ), SLOT( onArtistsFound( QList<Hatchet::artist_ptr> ) ) );
+    connect( m_query.data(), SIGNAL( albumsAdded( QList<Hatchet::album_ptr> ) ), SLOT( onAlbumsFound( QList<Hatchet::album_ptr> ) ) );
+    connect( m_query.data(), SIGNAL( resultsAdded( QList<Hatchet::result_ptr> ) ), SLOT( onResultsFound( QList<Hatchet::result_ptr> ) ) );
     connect( m_query.data(), SIGNAL( resolvingFinished( bool ) ), SLOT( onQueryFinished() ) );
 
-    TomahawkUtils::fixMargins( this );
+    HatchetUtils::fixMargins( this );
 }
 
 
@@ -265,7 +265,7 @@ SearchWidget::changeEvent( QEvent* e )
 }
 
 
-Tomahawk::playlistinterface_ptr
+Hatchet::playlistinterface_ptr
 SearchWidget::playlistInterface() const
 {
     return m_plInterface;
@@ -289,27 +289,27 @@ SearchWidget::jumpToCurrentTrack()
 
 
 void
-SearchWidget::onResultsFound( const QList<Tomahawk::result_ptr>& results )
+SearchWidget::onResultsFound( const QList<Hatchet::result_ptr>& results )
 {
     tDebug() << Q_FUNC_INFO;
 
-    QList<Tomahawk::artist_ptr> artists;
-    QList<Tomahawk::album_ptr> albums;
-    QList<Tomahawk::query_ptr> queries;
+    QList<Hatchet::artist_ptr> artists;
+    QList<Hatchet::album_ptr> albums;
+    QList<Hatchet::query_ptr> queries;
 
-    foreach( const Tomahawk::result_ptr& result, results )
+    foreach( const Hatchet::result_ptr& result, results )
     {
         if ( !result->resolvedByCollection().isNull() && !result->isOnline() )
             continue;
 
-        QList< Tomahawk::result_ptr > rl;
+        QList< Hatchet::result_ptr > rl;
         rl << result;
 
-        Tomahawk::query_ptr query = result->toQuery();
+        Hatchet::query_ptr query = result->toQuery();
         query->disallowReresolve();
 
         bool found = false;
-        foreach ( const Tomahawk::query_ptr& q, m_results.keys() )
+        foreach ( const Hatchet::query_ptr& q, m_results.keys() )
         {
             if ( q->equals( query, true, true ) )
             {
@@ -362,20 +362,20 @@ SearchWidget::onResultsFound( const QList<Tomahawk::result_ptr>& results )
 
 
 void
-SearchWidget::onAlbumsFound( const QList<Tomahawk::album_ptr>& albums )
+SearchWidget::onAlbumsFound( const QList<Hatchet::album_ptr>& albums )
 {
     tDebug() << Q_FUNC_INFO;
 
-    foreach ( const Tomahawk::album_ptr& album, albums )
+    foreach ( const Hatchet::album_ptr& album, albums )
     {
         if ( m_albums.contains( album ) )
             continue;
 
-        int distance = TomahawkUtils::levenshtein( m_search, album->name() );
+        int distance = HatchetUtils::levenshtein( m_search, album->name() );
         int maxlen = qMax( m_search.length(), album->name().length() );
         float scoreAlbum = (float)( maxlen - distance ) / maxlen;
 
-        distance = TomahawkUtils::levenshtein( m_search, album->artist()->name() );
+        distance = HatchetUtils::levenshtein( m_search, album->artist()->name() );
         maxlen = qMax( m_search.length(), album->artist()->name().length() );
         float scoreArtist = (float)( maxlen - distance ) / maxlen;
 
@@ -392,16 +392,16 @@ SearchWidget::onAlbumsFound( const QList<Tomahawk::album_ptr>& albums )
 
 
 void
-SearchWidget::onArtistsFound( const QList<Tomahawk::artist_ptr>& artists )
+SearchWidget::onArtistsFound( const QList<Hatchet::artist_ptr>& artists )
 {
     tDebug() << Q_FUNC_INFO;
 
-    foreach ( const Tomahawk::artist_ptr& artist, artists )
+    foreach ( const Hatchet::artist_ptr& artist, artists )
     {
         if ( m_artists.contains( artist ) )
             continue;
 
-        int distance = TomahawkUtils::levenshtein( m_search, artist->name() );
+        int distance = HatchetUtils::levenshtein( m_search, artist->name() );
         int maxlen = qMax( m_search.length(), artist->name().length() );
         float score = (float)( maxlen - distance ) / maxlen;
 
@@ -435,7 +435,7 @@ SearchWidget::updateArtists()
 {
     tDebug() << Q_FUNC_INFO;
 
-    QList< Tomahawk::artist_ptr > sortedArtists;
+    QList< Hatchet::artist_ptr > sortedArtists;
     QList< artist_ptr > artists = m_artists.keys();
     QList< float > floats = m_artists.values();
 
@@ -465,7 +465,7 @@ SearchWidget::updateAlbums()
 {
     tDebug() << Q_FUNC_INFO;
 
-    QList< Tomahawk::album_ptr > sortedAlbums;
+    QList< Hatchet::album_ptr > sortedAlbums;
     QList< album_ptr > albums = m_albums.keys();
     QList< float > floats = m_albums.values();
 
@@ -493,7 +493,7 @@ SearchWidget::updateAlbums()
 QPixmap
 SearchWidget::pixmap() const
 {
-    return TomahawkUtils::defaultPixmap( TomahawkUtils::Search );
+    return HatchetUtils::defaultPixmap( HatchetUtils::Search );
 }
 
 

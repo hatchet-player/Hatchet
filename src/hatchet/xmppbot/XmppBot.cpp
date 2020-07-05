@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "XmppBot.h"
@@ -22,7 +22,7 @@
 #include "infosystem/InfoSystem.h"
 #include "Album.h"
 #include "Typedefs.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 
 #include "audio/AudioEngine.h"
 
@@ -36,7 +36,7 @@
 #include "utils/Logger.h"
 
 using namespace gloox;
-using namespace Tomahawk::InfoSystem;
+using namespace Hatchet::InfoSystem;
 
 static QString s_botInfoIdentifier = QString( "XMPPBot" );
 
@@ -46,7 +46,7 @@ XMPPBot::XMPPBot(QObject *parent)
     , m_currReturnMessage("\n")
 {
     qDebug() << Q_FUNC_INFO;
-    TomahawkSettings *settings = TomahawkSettings::instance();
+    HatchetSettings *settings = HatchetSettings::instance();
     QString server = settings->xmppBotServer();
     QString jidstring = settings->xmppBotJid();
     QString password = settings->xmppBotPassword();
@@ -55,7 +55,7 @@ XMPPBot::XMPPBot(QObject *parent)
         return;
 
     JID jid(jidstring.toStdString());
-    jid.setResource( QString( "tomahawkbot%1" ).arg( qrand() ).toStdString() );
+    jid.setResource( QString( "hatchetbot%1" ).arg( qrand() ).toStdString() );
 
     m_client = new XMPPBotClient(this, jid, password.toStdString(), port);
     if (!server.isEmpty())
@@ -64,14 +64,14 @@ XMPPBot::XMPPBot(QObject *parent)
     m_client.data()->registerConnectionListener(this);
     m_client.data()->registerSubscriptionHandler(this);
     m_client.data()->registerMessageHandler(this);
-    m_client.data()->setPresence(Presence::Available, 1, "Tomahawkbot available");
+    m_client.data()->setPresence(Presence::Available, 1, "Hatchetbot available");
 
-    connect(AudioEngine::instance(), SIGNAL(started(const Tomahawk::result_ptr )),
-            SLOT(newTrackSlot(const Tomahawk::result_ptr )));
+    connect(AudioEngine::instance(), SIGNAL(started(const Hatchet::result_ptr )),
+            SLOT(newTrackSlot(const Hatchet::result_ptr )));
 
     connect(InfoSystem::instance(),
-        SIGNAL(info(QString, Tomahawk::InfoSystem::InfoType, QVariant, QVariant, QVariantMap)),
-        SLOT(infoReturnedSlot(QString, Tomahawk::InfoSystem::InfoType, QVariant, QVariant, QVariantMap)));
+        SIGNAL(info(QString, Hatchet::InfoSystem::InfoType, QVariant, QVariant, QVariantMap)),
+        SLOT(infoReturnedSlot(QString, Hatchet::InfoSystem::InfoType, QVariant, QVariant, QVariantMap)));
 
     connect(InfoSystem::instance(), SIGNAL(finished(QString)), SLOT(infoFinishedSlot(QString)));
 
@@ -89,7 +89,7 @@ XMPPBot::~XMPPBot()
         m_client.data()->gloox::Client::disconnect();
 }
 
-void XMPPBot::newTrackSlot(const Tomahawk::result_ptr &track)
+void XMPPBot::newTrackSlot(const Hatchet::result_ptr &track)
 {
     m_currTrack = track;
     if (!track)
@@ -162,12 +162,12 @@ void XMPPBot::handleMessage(const Message& msg, MessageSession* session)
         if ( tokens.count() < 2 )
             AudioEngine::instance()->play();
 
-        Tomahawk::query_ptr q = Tomahawk::Query::get( tokens.first().trimmed(), tokens.last().trimmed(), QString() );
+        Hatchet::query_ptr q = Hatchet::Query::get( tokens.first().trimmed(), tokens.last().trimmed(), QString() );
         if ( q.isNull() )
             return;
 
-        connect( q.data(), SIGNAL( resultsAdded( QList<Tomahawk::result_ptr> ) ),
-                             SLOT( onResultsAdded( QList<Tomahawk::result_ptr> ) ) );
+        connect( q.data(), SIGNAL( resultsAdded( QList<Hatchet::result_ptr> ) ),
+                             SLOT( onResultsAdded( QList<Hatchet::result_ptr> ) ) );
 
         return;
     }
@@ -246,7 +246,7 @@ void XMPPBot::handleMessage(const Message& msg, MessageSession* session)
     InfoSystem::instance()->getInfo(s_botInfoIdentifier, infoMap, hash);
 }
 
-void XMPPBot::infoReturnedSlot(QString caller, Tomahawk::InfoSystem::InfoType type, QVariant input, QVariant output, QVariantMap customData)
+void XMPPBot::infoReturnedSlot(QString caller, Hatchet::InfoSystem::InfoType type, QVariant input, QVariant output, QVariantMap customData)
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -281,14 +281,14 @@ void XMPPBot::infoReturnedSlot(QString caller, Tomahawk::InfoSystem::InfoType ty
         case InfoArtistBiography:
         {
             qDebug() << "Artist bio requested";
-            if (!output.canConvert<Tomahawk::InfoSystem::InfoGenericMap>() ||
+            if (!output.canConvert<Hatchet::InfoSystem::InfoGenericMap>() ||
                 !input.canConvert<QString>()
                )
             {
                 qDebug() << "Variants failed to be valid";
                 break;
             }
-            InfoGenericMap bmap = output.value<Tomahawk::InfoSystem::InfoGenericMap>();
+            InfoGenericMap bmap = output.value<Hatchet::InfoSystem::InfoGenericMap>();
             QString artist = input.toString();
             m_currReturnMessage += QString("\nBiographies for %1\n").arg(artist);
             Q_FOREACH(QString source, bmap.keys())
@@ -303,14 +303,14 @@ void XMPPBot::infoReturnedSlot(QString caller, Tomahawk::InfoSystem::InfoType ty
         case InfoArtistTerms:
         {
             qDebug() << "Artist terms requested";
-            if (!output.canConvert<Tomahawk::InfoSystem::InfoGenericMap>() ||
+            if (!output.canConvert<Hatchet::InfoSystem::InfoGenericMap>() ||
                 !input.canConvert<QString>()
                )
             {
                 qDebug() << "Variants failed to be valid";
                 break;
             }
-            InfoGenericMap tmap = output.value<Tomahawk::InfoSystem::InfoGenericMap>();
+            InfoGenericMap tmap = output.value<Hatchet::InfoSystem::InfoGenericMap>();
             QString artist = input.toString();
             m_currReturnMessage += tr("\nTerms for %1:\n").arg(artist);
             if (tmap.isEmpty())
@@ -416,7 +416,7 @@ void XMPPBot::infoFinishedSlot(QString caller)
 }
 
 
-void XMPPBot::onResultsAdded( const QList<Tomahawk::result_ptr>& result )
+void XMPPBot::onResultsAdded( const QList<Hatchet::result_ptr>& result )
 {
     AudioEngine::instance()->playItem( 0, result.first() );
 }

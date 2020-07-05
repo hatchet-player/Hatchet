@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "AccountManager.h"
@@ -32,7 +32,7 @@
 #include "config.h"
 #include "ResolverAccount.h"
 #include "SourceList.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "LocalConfigStorage.h"
 
 #include <QCoreApplication>
@@ -40,7 +40,7 @@
 #include <QTimer>
 
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 namespace Accounts
@@ -79,14 +79,14 @@ AccountManager::~AccountManager()
 void
 AccountManager::init()
 {
-    if ( Tomahawk::InfoSystem::InfoSystem::instance()->workerThread().isNull() )
+    if ( Hatchet::InfoSystem::InfoSystem::instance()->workerThread().isNull() )
     {
         //We need the info system worker to be alive so that we can move info plugins into its thread
         QTimer::singleShot( 0, this, SLOT( init() ) );
         return;
     }
 
-    connect( TomahawkSettings::instance(), SIGNAL( changed() ), SLOT( onSettingsChanged() ) );
+    connect( HatchetSettings::instance(), SIGNAL( changed() ), SLOT( onSettingsChanged() ) );
 
     loadPluginFactories();
 
@@ -95,14 +95,14 @@ AccountManager::init()
     m_accountFactories[ f->factoryId() ] = f;
     registerAccountFactoryForFilesystem( f );
 
-    emit readyForFactories(); //Notifies TomahawkApp to load the remaining AccountFactories, then Accounts from config
+    emit readyForFactories(); //Notifies HatchetApp to load the remaining AccountFactories, then Accounts from config
 }
 
 
 void
 AccountManager::loadPluginFactories()
 {
-    QHash< QString, QObject* > plugins = Tomahawk::Utils::PluginLoader( "account" ).loadPlugins();
+    QHash< QString, QObject* > plugins = Hatchet::Utils::PluginLoader( "account" ).loadPlugins();
     foreach ( QObject* plugin, plugins.values() )
     {
         AccountFactory* accountfactory = qobject_cast<AccountFactory*>( plugin );
@@ -241,7 +241,7 @@ AccountManager::loadFromConfig()
     ConfigStorage* localCS = new LocalConfigStorage( this );
     m_configStorageById.insert( localCS->id(), localCS );
 
-    QList< QObject* > configStoragePlugins = Tomahawk::Utils::PluginLoader( "configstorage" ).loadPlugins().values();
+    QList< QObject* > configStoragePlugins = Hatchet::Utils::PluginLoader( "configstorage" ).loadPlugins().values();
     foreach( QObject* plugin, configStoragePlugins )
     {
         ConfigStorage* cs = qobject_cast< ConfigStorage* >( plugin );
@@ -313,7 +313,7 @@ AccountManager::finishLoadingFromConfig( const QString& csid )
         }
     }
     m_readyForSip = true;
-    emit readyForSip(); //we have to yield to TomahawkApp because we don't know if Servent is ready
+    emit readyForSip(); //we have to yield to HatchetApp because we don't know if Servent is ready
 }
 
 
@@ -390,7 +390,7 @@ AccountManager::removeAccount( Account* account )
     if ( raccount )
         raccount->removeBundle();
 
-    TomahawkSettings::instance()->removeAccount( account->accountId() );
+    HatchetSettings::instance()->removeAccount( account->accountId() );
 
     account->removeFromConfig();
     account->deleteLater();
@@ -476,7 +476,7 @@ AccountManager::localConfigStorage()
 Account*
 AccountManager::accountByFriendlyName( const QString& friendlyName ) const
 {
-    foreach( Tomahawk::Accounts::Account* curAccount, m_accounts )
+    foreach( Hatchet::Accounts::Account* curAccount, m_accounts )
     {
         // GAH, friendlyname is uservisible and no id ... :-/
         if ( curAccount->accountFriendlyName() == friendlyName )
@@ -493,7 +493,7 @@ void
 AccountManager::hookupAccount( Account* account ) const
 {
     connect( account, SIGNAL( error( int, QString ) ), SLOT( onError( int, QString ) ), Qt::UniqueConnection );
-    connect( account, SIGNAL( connectionStateChanged( Tomahawk::Accounts::Account::ConnectionState ) ), SLOT( onStateChanged( Tomahawk::Accounts::Account::ConnectionState ) ), Qt::UniqueConnection );
+    connect( account, SIGNAL( connectionStateChanged( Hatchet::Accounts::Account::ConnectionState ) ), SLOT( onStateChanged( Hatchet::Accounts::Account::ConnectionState ) ), Qt::UniqueConnection );
 }
 
 
@@ -526,7 +526,7 @@ AccountManager::onError( int code, const QString& msg )
     if ( code == Account::AuthError )
     {
         statusMessage = new SipStatusMessage( SipStatusMessage::SipLoginFailure, account->accountFriendlyName() );
-        if ( !TomahawkUtils::headless() )
+        if ( !HatchetUtils::headless() )
         {
             JobStatusView::instance()->model()->addJob( statusMessage );
         }
@@ -534,7 +534,7 @@ AccountManager::onError( int code, const QString& msg )
     else
     {
         QTimer::singleShot( 10000, account, SLOT( authenticate() ) );
-        if ( !TomahawkUtils::headless() )
+        if ( !HatchetUtils::headless() )
         {
             statusMessage = new SipStatusMessage(SipStatusMessage::SipConnectionFailure, account->accountFriendlyName(), msg );
             JobStatusView::instance()->model()->addJob( statusMessage );

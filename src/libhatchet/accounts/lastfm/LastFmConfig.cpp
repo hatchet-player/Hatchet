@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2012, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "LastFmConfig.h"
@@ -24,7 +24,7 @@
 #include "database/DatabaseCommand_LogPlayback.h"
 #include <database/DatabaseCommand_LoadSocialActions.h>
 #include <database/DatabaseCommand_SocialAction.h>
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
 #include "utils/Closure.h"
 #include "utils/NetworkAccessManager.h"
@@ -34,7 +34,7 @@
 #include <lastfm5/XmlQuery.h>
 #include <lastfm5/Track.h>
 
-using namespace Tomahawk::Accounts;
+using namespace Hatchet::Accounts;
 
 
 LastFmConfig::LastFmConfig( LastFmAccount* account )
@@ -91,7 +91,7 @@ LastFmConfig::testLogin()
     m_ui->testLogin->setEnabled( false );
     m_ui->testLogin->setText( tr( "Testing..." ) );
 
-    QString authToken = TomahawkUtils::md5( ( m_ui->username->text().toLower() + TomahawkUtils::md5( m_ui->password->text().toUtf8() ) ).toUtf8() );
+    QString authToken = HatchetUtils::md5( ( m_ui->username->text().toLower() + HatchetUtils::md5( m_ui->password->text().toUtf8() ) ).toUtf8() );
 
     // now authenticate w/ last.fm and get our session key
     QMap<QString, QString> query;
@@ -100,7 +100,7 @@ LastFmConfig::testLogin()
     query[ "authToken" ] = authToken;
 
     // ensure they have up-to-date settings
-    lastfm::setNetworkAccessManager( Tomahawk::Utils::nam() );
+    lastfm::setNetworkAccessManager( Hatchet::Utils::nam() );
 
     QNetworkReply* authJob = lastfm::ws::post( query );
 
@@ -151,14 +151,14 @@ LastFmConfig::onHistoryLoaded()
         foreach ( lastfm::XmlQuery e, lfm.children( "track" ) )
         {
 //            tDebug() << "Found:" << e.children( "artist" ).first()["name"].text() << e["name"].text() << e["date"].attribute( "uts" ).toUInt();
-            Tomahawk::track_ptr track = Tomahawk::Track::get( e.children( "artist" ).first()["name"].text(), e["name"].text(), QString() );
+            Hatchet::track_ptr track = Hatchet::Track::get( e.children( "artist" ).first()["name"].text(), e["name"].text(), QString() );
             if ( !track )
                 continue;
 
             m_lastTimeStamp = e["date"].attribute( "uts" ).toUInt();
 
             DatabaseCommand_LogPlayback* cmd = new DatabaseCommand_LogPlayback( track, DatabaseCommand_LogPlayback::Finished, 0, m_lastTimeStamp );
-            Database::instance()->enqueue( Tomahawk::dbcmd_ptr(cmd) );
+            Database::instance()->enqueue( Hatchet::dbcmd_ptr(cmd) );
         }
 
         if ( !lfm.children( "recenttracks" ).isEmpty() )
@@ -266,7 +266,7 @@ LastFmConfig::syncLovedTracks( uint page )
     DatabaseCommand_LoadSocialActions* cmd = new DatabaseCommand_LoadSocialActions( "Love", SourceList::instance()->getLocal() );
     connect( cmd, SIGNAL( done( DatabaseCommand_LoadSocialActions::TrackActions ) ), this, SLOT( localLovedLoaded( DatabaseCommand_LoadSocialActions::TrackActions ) ) );
 
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 }
 
 
@@ -296,7 +296,7 @@ LastFmConfig::onLovedFinished( QNetworkReply* reply )
             foreach ( lastfm::XmlQuery e, loved.children( "track" ) )
             {
                 tDebug() << "Found:" << e.children( "artist" ).first()["name"].text() << e["name"].text() << e["date"].attribute( "uts" ).toUInt();
-                Tomahawk::track_ptr track = Tomahawk::Track::get( e.children( "artist" ).first()["name"].text(), e["name"].text(), QString() );
+                Hatchet::track_ptr track = Hatchet::Track::get( e.children( "artist" ).first()["name"].text(), e["name"].text(), QString() );
                 if ( track.isNull() )
                     continue;
 
@@ -335,7 +335,7 @@ LastFmConfig::onLovedFinished( QNetworkReply* reply )
 
 
 bool
-trackEquality( const Tomahawk::track_ptr first, const Tomahawk::track_ptr& second )
+trackEquality( const Hatchet::track_ptr first, const Hatchet::track_ptr& second )
 {
     qDebug() << "Comparing:" << first->track() << second->track();
     qDebug() << "==========" << first->artist() << second->artist();
@@ -357,15 +357,15 @@ LastFmConfig::localLovedLoaded( DatabaseCommand_LoadSocialActions::TrackActions 
 void
 LastFmConfig::syncLoved()
 {
-    QSet< Tomahawk::track_ptr > localToLove, lastFmToLove, lastFmToUnlove;
+    QSet< Hatchet::track_ptr > localToLove, lastFmToLove, lastFmToUnlove;
 
-    const QSet< Tomahawk::track_ptr > myLoved = m_localLoved.keys().toSet();
+    const QSet< Hatchet::track_ptr > myLoved = m_localLoved.keys().toSet();
 
     m_ui->progressBar->setValue( m_ui->progressBar->value() + 1 );
 
-    foreach ( const Tomahawk::track_ptr& lastfmLoved, m_lastfmLoved )
+    foreach ( const Hatchet::track_ptr& lastfmLoved, m_lastfmLoved )
     {
-        QSet< Tomahawk::track_ptr >::const_iterator iter = std::find_if(
+        QSet< Hatchet::track_ptr >::const_iterator iter = std::find_if(
                     myLoved.begin(), myLoved.end(),
                     std::bind( &trackEquality, std::placeholders::_1,
                                lastfmLoved ) );
@@ -376,10 +376,10 @@ LastFmConfig::syncLoved()
         }
     }
 
-    foreach ( const Tomahawk::track_ptr& localLoved, myLoved )
+    foreach ( const Hatchet::track_ptr& localLoved, myLoved )
     {
         qDebug() << "CHECKING FOR LOCAL LOVED ON LAST.FM TOO:" << m_localLoved[ localLoved ].value.toString() << localLoved->track() << localLoved->artist();
-        QSet< Tomahawk::track_ptr >::const_iterator iter = std::find_if(
+        QSet< Hatchet::track_ptr >::const_iterator iter = std::find_if(
                     m_lastfmLoved.begin(), m_lastfmLoved.end(),
                     std::bind( &trackEquality, std::placeholders::_1,
                                localLoved ) );
@@ -397,7 +397,7 @@ LastFmConfig::syncLoved()
         }
     }
 
-    foreach ( const Tomahawk::track_ptr& track, localToLove )
+    foreach ( const Hatchet::track_ptr& track, localToLove )
     {
         // Don't use the infosystem as we don't want to tweet a few hundred times :)
         track->setLoved( true, false );
@@ -405,7 +405,7 @@ LastFmConfig::syncLoved()
 
     lastFmToLove.unite( lastFmToUnlove );
 
-    foreach ( const Tomahawk::track_ptr& track, lastFmToLove )
+    foreach ( const Hatchet::track_ptr& track, lastFmToLove )
     {
         lastfm::MutableTrack lfmTrack;
         lfmTrack.stamp();

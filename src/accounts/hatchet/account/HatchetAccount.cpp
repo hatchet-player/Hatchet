@@ -1,13 +1,13 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2012 Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
@@ -35,7 +35,7 @@
 #include <QUrl>
 #include <QUuid>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 using namespace Accounts;
 
 static QPixmap* s_icon = 0;
@@ -147,8 +147,8 @@ HatchetAccount::authenticate()
 void
 HatchetAccount::deauthenticate()
 {
-    if ( !m_tomahawkSipPlugin.isNull() )
-        m_tomahawkSipPlugin->disconnectPlugin();
+    if ( !m_hatchetSipPlugin.isNull() )
+        m_hatchetSipPlugin->disconnectPlugin();
     emit deauthenticated();
 }
 
@@ -172,17 +172,17 @@ HatchetAccount::connectionState() const
 SipPlugin*
 HatchetAccount::sipPlugin( bool create )
 {
-    if ( m_tomahawkSipPlugin.isNull() )
+    if ( m_hatchetSipPlugin.isNull() )
     {
         if ( !create )
             return 0;
 
         tLog() << Q_FUNC_INFO;
-        m_tomahawkSipPlugin = QPointer< HatchetSipPlugin >( new HatchetSipPlugin( this ) );
+        m_hatchetSipPlugin = QPointer< HatchetSipPlugin >( new HatchetSipPlugin( this ) );
 
-        return m_tomahawkSipPlugin.data();
+        return m_hatchetSipPlugin.data();
     }
-    return m_tomahawkSipPlugin.data();
+    return m_hatchetSipPlugin.data();
 }
 
 
@@ -250,7 +250,7 @@ HatchetAccount::loginWithPassword( const QString& username, const QString& passw
     //if ( username.isEmpty() || password.isEmpty() || !m_publicKey )
     if ( username.isEmpty() || password.isEmpty() )
     {
-        tLog() << "No tomahawk account username or pw or public key, not logging in";
+        tLog() << "No hatchet account username or pw or public key, not logging in";
         return;
     }
 
@@ -273,7 +273,7 @@ HatchetAccount::loginWithPassword( const QString& username, const QString& passw
 
     QByteArray data = TomahawkUtils::encodedQuery( params );
 
-    QNetworkReply* reply = Tomahawk::Utils::nam()->post( req, data );
+    QNetworkReply* reply = Hatchet::Utils::nam()->post( req, data );
 
     NewClosure( reply, SIGNAL( finished() ), this, SLOT( onPasswordLoginFinished( QNetworkReply*, const QString& ) ), reply, username );
 }
@@ -322,14 +322,14 @@ HatchetAccount::fetchAccessToken( const QString& type )
         TomahawkUtils::urlAddQueryItem( params, "grant_type", "refresh_token" );
         TomahawkUtils::urlAddQueryItem( params, "refresh_token", refreshToken() );
         QByteArray data = TomahawkUtils::encodedQuery( params );
-        reply = Tomahawk::Utils::nam()->post( req, data );
+        reply = Hatchet::Utils::nam()->post( req, data );
         reply->setProperty( "originalType", type );
     }
     else
     {
         tLog() << "Fetching token of type" << type;
         req.setRawHeader( "Authorization", QString( mandellaTokenType() + " " + mandellaAccessToken()).toUtf8() );
-        reply = Tomahawk::Utils::nam()->get( req );
+        reply = Hatchet::Utils::nam()->get( req );
     } 
 
     NewClosure( reply, SIGNAL( finished() ), this, SLOT( onFetchAccessTokenFinished( QNetworkReply*, const QString& ) ), reply, type );
@@ -546,7 +546,7 @@ HatchetAccount::parseReply( QNetworkReply* reply, bool& okRet ) const
 
     if ( statusCode >= 400 )
     {
-        tDebug() << "Error from tomahawk server response, or in parsing from json:" << resp.value( "error" ).toString() << resp;
+        tDebug() << "Error from hatchet server response, or in parsing from json:" << resp.value( "error" ).toString() << resp;
     }
 
     tDebug() << Q_FUNC_INFO << "Got keys" << resp.keys();
@@ -555,4 +555,4 @@ HatchetAccount::parseReply( QNetworkReply* reply, bool& okRet ) const
     return resp;
 }
 
-Q_EXPORT_PLUGIN2( Tomahawk::Accounts::AccountFactory, Tomahawk::Accounts::HatchetAccountFactory )
+Q_EXPORT_PLUGIN2( Hatchet::Accounts::AccountFactory, Hatchet::Accounts::HatchetAccountFactory )

@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "AccountFactoryWrapper.h"
@@ -26,7 +26,7 @@
 #include "ui_AccountFactoryWrapper.h"
 #include "Source.h"
 
-using namespace Tomahawk::Accounts;
+using namespace Hatchet::Accounts;
 AccountFactoryWrapper::AccountFactoryWrapper( AccountFactory* factory, QWidget* parent )
     : QDialog( parent, Qt::Sheet )
     , m_factory( factory )
@@ -44,9 +44,9 @@ AccountFactoryWrapper::AccountFactoryWrapper( AccountFactory* factory, QWidget* 
     AccountFactoryWrapperDelegate* del = new AccountFactoryWrapperDelegate( m_ui->accountsList );
     m_ui->accountsList->setItemDelegate( del );
 
-    connect( del, SIGNAL( openConfig( Tomahawk::Accounts::Account* ) ), this, SLOT( openAccountConfig( Tomahawk::Accounts::Account* ) ) );
-    connect( del, SIGNAL( removeAccount( Tomahawk::Accounts::Account* ) ), this, SLOT( removeAccount( Tomahawk::Accounts::Account* ) ) );
-    connect( del, SIGNAL( checkOrUncheck( QModelIndex, Tomahawk::Accounts::Account* , Qt::CheckState ) ), this, SLOT( accountCheckedOrUnchecked( QModelIndex ,Tomahawk::Accounts::Account* ,Qt::CheckState ) ) );
+    connect( del, SIGNAL( openConfig( Hatchet::Accounts::Account* ) ), this, SLOT( openAccountConfig( Hatchet::Accounts::Account* ) ) );
+    connect( del, SIGNAL( removeAccount( Hatchet::Accounts::Account* ) ), this, SLOT( removeAccount( Hatchet::Accounts::Account* ) ) );
+    connect( del, SIGNAL( checkOrUncheck( QModelIndex, Hatchet::Accounts::Account* , Qt::CheckState ) ), this, SLOT( accountCheckedOrUnchecked( QModelIndex ,Hatchet::Accounts::Account* ,Qt::CheckState ) ) );
     load();
 
     connect( m_ui->buttonBox, SIGNAL( rejected() ), this, SLOT( reject() ) );
@@ -54,8 +54,8 @@ AccountFactoryWrapper::AccountFactoryWrapper( AccountFactory* factory, QWidget* 
     connect( m_ui->buttonBox, SIGNAL( clicked( QAbstractButton*) ), this, SLOT( buttonClicked( QAbstractButton* ) ) );
 
 
-    connect ( AccountManager::instance(), SIGNAL( added( Tomahawk::Accounts::Account* ) ), this, SLOT( load() ) );
-    connect ( AccountManager::instance(), SIGNAL( removed( Tomahawk::Accounts::Account* ) ), this, SLOT( load() ) );
+    connect ( AccountManager::instance(), SIGNAL( added( Hatchet::Accounts::Account* ) ), this, SLOT( load() ) );
+    connect ( AccountManager::instance(), SIGNAL( removed( Hatchet::Accounts::Account* ) ), this, SLOT( load() ) );
 
 #ifdef Q_OS_MAC
     setContentsMargins( 0, 0, 0, 0 );
@@ -94,12 +94,12 @@ AccountFactoryWrapper::load()
 void
 AccountFactoryWrapper::openAccountConfig( Account* account )
 {
-    TomahawkUtils::openAccountConfig( account, this, false );
+    HatchetUtils::openAccountConfig( account, this, false );
 }
 
 
 void
-AccountFactoryWrapper::removeAccount( Tomahawk::Accounts::Account* acct )
+AccountFactoryWrapper::removeAccount( Hatchet::Accounts::Account* acct )
 {
     AccountManager::instance()->removeAccount( acct );
 
@@ -130,7 +130,7 @@ AccountFactoryWrapper::buttonClicked( QAbstractButton* button )
 {
     if ( button == m_addButton )
     {
-        TomahawkUtils::createAccountFromFactory( m_factory, this );
+        HatchetUtils::createAccountFromFactory( m_factory, this );
     }
     else
         reject();

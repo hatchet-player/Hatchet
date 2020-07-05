@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "playlist/dynamic/DynamicModel.h"
@@ -28,7 +28,7 @@
 
 #include "utils/Logger.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 DynamicModel::DynamicModel( QObject* parent )
@@ -52,13 +52,13 @@ DynamicModel::~DynamicModel()
 
 
 void
-DynamicModel::loadPlaylist( const Tomahawk::dynplaylist_ptr& playlist, bool loadEntries )
+DynamicModel::loadPlaylist( const Hatchet::dynplaylist_ptr& playlist, bool loadEntries )
 {
     Q_UNUSED( loadEntries );
 
     if ( !m_playlist.isNull() )
     {
-        disconnect( m_playlist->generator().data(), SIGNAL( nextTrackGenerated( Tomahawk::query_ptr ) ), this, SLOT( newTrackGenerated( Tomahawk::query_ptr ) ) );
+        disconnect( m_playlist->generator().data(), SIGNAL( nextTrackGenerated( Hatchet::query_ptr ) ), this, SLOT( newTrackGenerated( Hatchet::query_ptr ) ) );
     }
     const int oldCount = rowCount( QModelIndex() );
 
@@ -68,7 +68,7 @@ DynamicModel::loadPlaylist( const Tomahawk::dynplaylist_ptr& playlist, bool load
     if ( m_playlist->mode() == OnDemand )
         setFilterUnresolvable( true );
 
-    connect( m_playlist->generator().data(), SIGNAL( nextTrackGenerated( Tomahawk::query_ptr ) ), this, SLOT( newTrackGenerated( Tomahawk::query_ptr ) ) );
+    connect( m_playlist->generator().data(), SIGNAL( nextTrackGenerated( Hatchet::query_ptr ) ), this, SLOT( newTrackGenerated( Hatchet::query_ptr ) ) );
     PlaylistModel::loadPlaylist( m_playlist, m_playlist->mode() == Static );
 
     if ( m_playlist->mode() == OnDemand && oldCount != rowCount( QModelIndex() ) )
@@ -89,7 +89,7 @@ DynamicModel::description() const
 void
 DynamicModel::startOnDemand()
 {
-    connect( AudioEngine::instance(), SIGNAL( loading( Tomahawk::result_ptr ) ), this, SLOT( newTrackLoading() ) );
+    connect( AudioEngine::instance(), SIGNAL( loading( Hatchet::result_ptr ) ), this, SLOT( newTrackLoading() ) );
 
     m_playlist->generator()->startOnDemand();
 
@@ -98,7 +98,7 @@ DynamicModel::startOnDemand()
 
 
 void
-DynamicModel::newTrackGenerated( const Tomahawk::query_ptr& query )
+DynamicModel::newTrackGenerated( const Hatchet::query_ptr& query )
 {
     if ( m_onDemandRunning )
     {
@@ -134,7 +134,7 @@ DynamicModel::stopOnDemand( bool stopPlaying )
     if ( stopPlaying )
         AudioEngine::instance()->stop();
 
-    disconnect( AudioEngine::instance(), SIGNAL( loading( Tomahawk::result_ptr ) ), this, SLOT( newTrackLoading() ) );
+    disconnect( AudioEngine::instance(), SIGNAL( loading( Hatchet::result_ptr ) ), this, SLOT( newTrackLoading() ) );
 }
 
 

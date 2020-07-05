@@ -1,25 +1,25 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Hugo Lindström <hugolm84@gmail.com>
  *   Copyright 2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "M3uLoader.h"
 #include "utils/Logger.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "Query.h"
 #include "SourceList.h"
 #include "Playlist.h"
@@ -32,7 +32,7 @@
 #include <taglib/fileref.h>
 #include <taglib/tag.h>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 M3uLoader::M3uLoader( const QStringList& urls, bool createNewPlaylist, QObject* parent )
@@ -94,7 +94,7 @@ M3uLoader::getTags( const QFileInfo& info )
     else
     {
         qDebug() << Q_FUNC_INFO << artist << track << album;
-        Tomahawk::query_ptr q = Tomahawk::Query::get( artist, track, album, uuid(), !m_createNewPlaylist );
+        Hatchet::query_ptr q = Hatchet::Query::get( artist, track, album, uuid(), !m_createNewPlaylist );
         if ( !q.isNull() )
         {
             q->setResultHint( "file://" + info.absoluteFilePath() );
@@ -186,7 +186,7 @@ M3uLoader::parseM3u( const QString& fileLink )
                                         false,
                                         m_tracks );
 
-        connect( m_playlist.data(), SIGNAL( revisionLoaded( Tomahawk::PlaylistRevision ) ), this, SLOT( playlistCreated() ) );
+        connect( m_playlist.data(), SIGNAL( revisionLoaded( Hatchet::PlaylistRevision ) ), this, SLOT( playlistCreated() ) );
     }
     else
         emit tracks( m_tracks );

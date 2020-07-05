@@ -1,4 +1,4 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Dominik Schmidt <dev@dominik-schmidt.de>
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
@@ -6,31 +6,31 @@
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "XmppSip.h"
 
 
-#include "TomahawkXmppMessage.h"
-#include "TomahawkXmppMessageFactory.h"
+#include "HatchetXmppMessage.h"
+#include "HatchetXmppMessageFactory.h"
 
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
 #include "accounts/AccountManager.h"
-#include "TomahawkSettings.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "HatchetSettings.h"
+#include "utils/HatchetUtilsGui.h"
 #include "sip/PeerInfo.h"
 #include "utils/NetworkProxyFactory.h"
 
@@ -56,14 +56,14 @@
 #include <QLineEdit>
 #include <QMessageBox>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 using namespace Accounts;
 
 // instead of simply copying this function for another thirdparty lib
 // please make it a meta-function or a macro and put it in Logger.h. kthxbbq
 #define JREEN_LOG_INFIX "Jreen"
-#define TOMAHAWK_FEATURE QLatin1String( "tomahawk:sip:v1" )
-#define TOMAHAWK_CAP_NODE_NAME QLatin1String( "http://tomahawk-player.org/" )
+#define HATCHET_FEATURE QLatin1String( "hatchet:sip:v1" )
+#define HATCHET_CAP_NODE_NAME QLatin1String( "http://hatchet-player.org/" )
 
 
 XmppSipPlugin::XmppSipPlugin( Account* account )
@@ -86,8 +86,8 @@ XmppSipPlugin::XmppSipPlugin( Account* account )
     m_client = new Jreen::Client( jid, m_currentPassword );
     setupClientHelper();
 
-    m_client->registerPayload( new TomahawkXmppMessageFactory );
-    m_currentResource = QString( "tomahawk%1" ).arg( QString::number( qrand() % 10000 ) );
+    m_client->registerPayload( new HatchetXmppMessageFactory );
+    m_currentResource = QString( "hatchet%1" ).arg( QString::number( qrand() % 10000 ) );
     m_client->setResource( m_currentResource );
 
     // instantiate XmlConsole
@@ -107,13 +107,13 @@ XmppSipPlugin::XmppSipPlugin( Account* account )
     m_avatarManager = new AvatarManager( m_client );
 
     // setup disco
-    m_client->disco()->setSoftwareVersion( "Tomahawk Player", TOMAHAWK_VERSION, TOMAHAWK_SYSTEM );
-    m_client->disco()->addIdentity( Jreen::Disco::Identity( "client", "type", "tomahawk", "en" ) );
-    m_client->disco()->addFeature( TOMAHAWK_FEATURE );
+    m_client->disco()->setSoftwareVersion( "Hatchet Player", HATCHET_VERSION, HATCHET_SYSTEM );
+    m_client->disco()->addIdentity( Jreen::Disco::Identity( "client", "type", "hatchet", "en" ) );
+    m_client->disco()->addFeature( HATCHET_FEATURE );
 
     // setup caps node
     Jreen::Capabilities::Ptr caps = m_client->presence().payload<Jreen::Capabilities>();
-    caps->setNode( TOMAHAWK_CAP_NODE_NAME );
+    caps->setNode( HATCHET_CAP_NODE_NAME );
 
     // print connection parameters
     qDebug() << "Our JID set to:" << m_client->jid().full();
@@ -168,7 +168,7 @@ InfoSystem::InfoPluginPtr
 XmppSipPlugin::infoPlugin()
 {
     if ( m_infoPlugin.isNull() )
-        m_infoPlugin = QSharedPointer< Tomahawk::InfoSystem::XmppInfoPlugin >( new Tomahawk::InfoSystem::XmppInfoPlugin( this ) );
+        m_infoPlugin = QSharedPointer< Hatchet::InfoSystem::XmppInfoPlugin >( new Hatchet::InfoSystem::XmppInfoPlugin( this ) );
 
     return m_infoPlugin;
 }
@@ -229,7 +229,7 @@ XmppSipPlugin::disconnectPlugin()
 
     m_peers.clear();
 
-    publishTune( QUrl(), Tomahawk::InfoSystem::InfoStringHash() );
+    publishTune( QUrl(), Hatchet::InfoSystem::InfoStringHash() );
 
     m_state = Account::Disconnecting;
     emit stateChanged( m_state );
@@ -252,21 +252,21 @@ XmppSipPlugin::onConnect()
     }
 
     // set presence to least valid value
-    m_client->setPresence( Jreen::Presence::XA, "Got Tomahawk? http://gettomahawk.com", -127 );
+    m_client->setPresence( Jreen::Presence::XA, "Got Hatchet? http://gethatchet.com", -127 );
     m_client->setPingInterval( 1000 );
     m_roster->load();
 
     // load XmppInfoPlugin
-    if ( infoPlugin() && Tomahawk::InfoSystem::InfoSystem::instance()->workerThread() )
+    if ( infoPlugin() && Hatchet::InfoSystem::InfoSystem::instance()->workerThread() )
     {
-        infoPlugin()->moveToThread( Tomahawk::InfoSystem::InfoSystem::instance()->workerThread().data() );
-        Tomahawk::InfoSystem::InfoSystem::instance()->addInfoPlugin( infoPlugin() );
+        infoPlugin()->moveToThread( Hatchet::InfoSystem::InfoSystem::instance()->workerThread().data() );
+        Hatchet::InfoSystem::InfoSystem::instance()->addInfoPlugin( infoPlugin() );
     }
 
     //FIXME: this implementation is totally broken atm, so it's disabled to avoid harm :P
     // join MUC with bare jid as nickname
     //TODO: make the room a list of rooms and make that configurable
-    // QString mucNickname = QString( "tomahawk@conference.qutim.org/" ).append( QString( m_client->jid().bare() ).replace( "@", "-" ) );
+    // QString mucNickname = QString( "hatchet@conference.qutim.org/" ).append( QString( m_client->jid().bare() ).replace( "@", "-" ) );
     //m_room = new Jreen::MUCRoom(m_client, Jreen::JID( mucNickname ) );
     //m_room->setHistorySeconds(0);
     //m_room->join();
@@ -332,7 +332,7 @@ XmppSipPlugin::onDisconnect( Jreen::Client::DisconnectReason reason )
 
     if ( !m_infoPlugin.isNull() )
     {
-        Tomahawk::InfoSystem::InfoSystem::instance()->removeInfoPlugin( infoPlugin() );
+        Hatchet::InfoSystem::InfoSystem::instance()->removeInfoPlugin( infoPlugin() );
     }
 }
 
@@ -406,14 +406,14 @@ XmppSipPlugin::errorMessage( Jreen::Client::DisconnectReason reason )
 
 
 void
-XmppSipPlugin::sendSipInfos( const Tomahawk::peerinfo_ptr& receiver, const QList<SipInfo>& info )
+XmppSipPlugin::sendSipInfos( const Hatchet::peerinfo_ptr& receiver, const QList<SipInfo>& info )
 {
     tDebug( LOGVERBOSE ) << Q_FUNC_INFO << receiver << info;
 
     if ( !m_client )
         return;
 
-    TomahawkXmppMessage* sipMessage = new TomahawkXmppMessage( info );
+    HatchetXmppMessage* sipMessage = new HatchetXmppMessage( info );
     tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "Send sip messsage to" << receiver;
     Jreen::IQ iq( Jreen::IQ::Set, receiver->id() );
     iq.addExtension( sipMessage );
@@ -431,11 +431,11 @@ XmppSipPlugin::sendSipInfos( const Tomahawk::peerinfo_ptr& receiver, const QList
 bool
 XmppSipPlugin::addContact( const QString& jid, AddContactOptions options, const QString& msg )
 {
-    // Add contact to the Tomahawk group on the roster
+    // Add contact to the Hatchet group on the roster
     QStringList jidParts = jid.split( '@' );
     if ( jidParts.count() == 2 && !jidParts[0].trimmed().isEmpty() && !jidParts[1].trimmed().isEmpty() )
     {
-        m_roster->subscribe( jid, msg, jid, QStringList() << "Tomahawk" );
+        m_roster->subscribe( jid, msg, jid, QStringList() << "Hatchet" );
 
         if ( options & SendInvite )
         {
@@ -457,7 +457,7 @@ void
 XmppSipPlugin::showAddFriendDialog()
 {
     bool ok;
-    QString id = QInputDialog::getText( TomahawkUtils::tomahawkWindow(), tr( "Add Friend" ),
+    QString id = QInputDialog::getText( HatchetUtils::hatchetWindow(), tr( "Add Friend" ),
                                         tr( "Enter Xmpp ID:" ), QLineEdit::Normal, "", &ok ).trimmed();
 
     if ( !ok )
@@ -490,11 +490,11 @@ XmppSipPlugin::publishTune( const QUrl& url, const InfoSystem::InfoStringHash& t
     tune->setLength( trackInfo.value( "duration" ).toInt() );
     tune->setTrack( trackInfo.value( "albumpos" ) );
 
-    //TODO: provide a rating once available in Tomahawk
+    //TODO: provide a rating once available in Hatchet
     tune->setRating( 10 );
 
     //TODO: it would be nice to set Spotify, Dilandau etc here, but not the jabber ids of friends
-    tune->setSource( "Tomahawk" );
+    tune->setSource( "Hatchet" );
 
     tune->setUri( url );
     tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "Setting URI of" << tune->uri().toString();
@@ -583,7 +583,7 @@ XmppSipPlugin::configurationChanged()
 void
 XmppSipPlugin::setupClientHelper()
 {
-    m_client->setProxyFactory( Tomahawk::Utils::proxyFactory( true ) );
+    m_client->setProxyFactory( Hatchet::Utils::proxyFactory( true ) );
     Jreen::JID jid = Jreen::JID( m_currentUsername );
     m_client->setJID( jid );
     m_client->setPassword( m_currentPassword );
@@ -661,8 +661,8 @@ XmppSipPlugin::onNewMessage( const Jreen::Message& message )
     if ( !info.isValid() )
     {
         QString to = from;
-        QString response = QString( tr( "I'm sorry -- I'm just an automatic presence used by Tomahawk Player"
-                                        " (http://gettomahawk.com). If you are getting this message, the person you"
+        QString response = QString( tr( "I'm sorry -- I'm just an automatic presence used by Hatchet Player"
+                                        " (http://gethatchet.com). If you are getting this message, the person you"
                                         " are trying to reach is probably not signed on, so please try again later!" ) );
 
         // this is not a sip message, so we send it directly through the client
@@ -691,7 +691,7 @@ XmppSipPlugin::onPresenceReceived( const Jreen::RosterItem::Ptr& item, const Jre
 
     if ( presence.error() )
     {
-        //qDebug() << Q_FUNC_INFO << fulljid << "Running tomahawk: no" << "presence error";
+        //qDebug() << Q_FUNC_INFO << fulljid << "Running hatchet: no" << "presence error";
         return;
     }
 
@@ -706,18 +706,18 @@ XmppSipPlugin::onPresenceReceived( const Jreen::RosterItem::Ptr& item, const Jre
         {
             if ( peer.bare() == jid.bare() )
             {
-                Tomahawk::peerinfo_ptr peerInfo = PeerInfo::get( this, peer.full() );
+                Hatchet::peerinfo_ptr peerInfo = PeerInfo::get( this, peer.full() );
                 if( !peerInfo.isNull() )
                     peerInfo->setFriendlyName( item->name() );
             }
         }
     }
 
-    // ignore anyone not Running tomahawk:
+    // ignore anyone not Running hatchet:
     Jreen::Capabilities::Ptr caps = presence.payload<Jreen::Capabilities>();
     if ( caps )
     {
-        tDebug( LOGVERBOSE ) << Q_FUNC_INFO << fulljid << "Running tomahawk: maybe" << "caps" << caps->node() << "requesting disco...";
+        tDebug( LOGVERBOSE ) << Q_FUNC_INFO << fulljid << "Running hatchet: maybe" << "caps" << caps->node() << "requesting disco...";
 
         // request disco features
         QString node = caps->node() + '#' + caps->ver();
@@ -731,7 +731,7 @@ XmppSipPlugin::onPresenceReceived( const Jreen::RosterItem::Ptr& item, const Jre
     }
     else if ( !caps )
     {
-//        qDebug() << Q_FUNC_INFO << "Running tomahawk: no" << "no caps";
+//        qDebug() << Q_FUNC_INFO << "Running hatchet: no" << "no caps";
         if ( presenceMeansOnline( m_peers[ jid ] ) )
             handlePeerStatus( jid, Jreen::Presence::Unavailable );
     }
@@ -772,7 +772,7 @@ XmppSipPlugin::onSubscriptionReceived( const Jreen::RosterItem::Ptr& item, const
                                 tr( "Authorize User" ),
                                 QString( tr( "Do you want to add <b>%1</b> to your friend list?" ) ).arg( presence.from().bare() ),
                                 QMessageBox::Yes | QMessageBox::No,
-                                TomahawkUtils::tomahawkWindow()
+                                HatchetUtils::hatchetWindow()
                               );
 
     // add confirmBox to m_subscriptionConfirmBoxes
@@ -838,9 +838,9 @@ XmppSipPlugin::onNewIq( const Jreen::IQ& iq )
         Jreen::JID jid = iq.from();
         Jreen::DataForm::Ptr form = discoInfo->form();
 
-        if ( discoInfo->features().contains( TOMAHAWK_FEATURE ) )
+        if ( discoInfo->features().contains( HATCHET_FEATURE ) )
         {
-            tDebug( LOGVERBOSE ) << Q_FUNC_INFO << jid.full() << "Running tomahawk/feature enabled: yes";
+            tDebug( LOGVERBOSE ) << Q_FUNC_INFO << jid.full() << "Running hatchet/feature enabled: yes";
 
             // the actual presence doesn't matter, it just needs to be "online"
             handlePeerStatus( jid, Jreen::Presence::Available );
@@ -854,7 +854,7 @@ XmppSipPlugin::onNewIq( const Jreen::IQ& iq )
             QMutexLocker locker( &peerQueueMutex );
             QString versionString = QString( "%1 %2 %3" ).arg( softwareVersion->name(), softwareVersion->os(), softwareVersion->version() );
             tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "Received software version for" << iq.from().full() << ":" << versionString;
-            Tomahawk::peerinfo_ptr peerInfo =  PeerInfo::get( this, iq.from().full() );
+            Hatchet::peerinfo_ptr peerInfo =  PeerInfo::get( this, iq.from().full() );
             if ( !peerInfo.isNull() )
             {
                 peerInfo->setVersionString( versionString );
@@ -884,7 +884,7 @@ XmppSipPlugin::onNewIq( const Jreen::IQ& iq )
     }*/
     else
     {
-        TomahawkXmppMessage::Ptr sipMessage = iq.payload< TomahawkXmppMessage >();
+        HatchetXmppMessage::Ptr sipMessage = iq.payload< HatchetXmppMessage >();
         if ( sipMessage )
         {
             QMutexLocker locker( &peerQueueMutex );
@@ -898,7 +898,7 @@ XmppSipPlugin::onNewIq( const Jreen::IQ& iq )
             }
 
             // Get the peer information for the sender.
-            Tomahawk::peerinfo_ptr peerInfo = PeerInfo::get( this, iq.from().full() );
+            Hatchet::peerinfo_ptr peerInfo = PeerInfo::get( this, iq.from().full() );
             if ( peerInfo.isNull() )
             {
                 tDebug() << Q_FUNC_INFO << "no valid peerInfo for" << iq.from().full();
@@ -956,7 +956,7 @@ XmppSipPlugin::handlePeerStatus( const Jreen::JID& jid, Jreen::Presence::Type pr
 
         m_peers[ jid ] = presenceType;
 
-        Tomahawk::peerinfo_ptr peerInfo = PeerInfo::get( this, fulljid );
+        Hatchet::peerinfo_ptr peerInfo = PeerInfo::get( this, fulljid );
         if ( !peerInfo.isNull() )
         {
             QMutexLocker locker( &peerQueueMutex );
@@ -988,7 +988,7 @@ XmppSipPlugin::handlePeerStatus( const Jreen::JID& jid, Jreen::Presence::Type pr
         QMutexLocker locker( &peerQueueMutex );
         m_peers[ jid ] = presenceType;
 
-        Tomahawk::peerinfo_ptr peerInfo = PeerInfo::get( this, fulljid, PeerInfo::AutoCreate );
+        Hatchet::peerinfo_ptr peerInfo = PeerInfo::get( this, fulljid, PeerInfo::AutoCreate );
         peerInfo->setContactId( jid.bare() );
         peerInfo->setStatus( PeerInfo::Online );
         peerInfo->setFriendlyName( m_jidsNames.value( jid.bare() ) );
@@ -1026,7 +1026,7 @@ XmppSipPlugin::onNewAvatar( const QString& jid )
     {
         if ( peer.bare() == jid )
         {
-            Tomahawk::peerinfo_ptr peerInfo = PeerInfo::get( this, peer.full() );
+            Hatchet::peerinfo_ptr peerInfo = PeerInfo::get( this, peer.full() );
             if ( !peerInfo.isNull() )
                 peerInfo->setAvatar( m_avatarManager->avatar( jid ) );
         }
@@ -1043,7 +1043,7 @@ bool
 XmppSipPlugin::readXmlConsoleEnabled()
 {
     // HACK we want to allow xmlconsole to be set manually in the onfig file, which means we can't hide it in a QVariantHash
-    const bool xmlConsole = TomahawkSettings::instance()->value( QString( "accounts/%1/xmlconsole" ).arg( m_account->accountId() ), false ).toBool();
+    const bool xmlConsole = HatchetSettings::instance()->value( QString( "accounts/%1/xmlconsole" ).arg( m_account->accountId() ), false ).toBool();
     return xmlConsole;
 }
 

@@ -1,22 +1,22 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013     , Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef PLAYLIST_H
@@ -42,7 +42,7 @@ namespace _detail
     class Closure;
 }
 
-namespace Tomahawk
+namespace Hatchet
 {
 class DatabaseCommand_LoadAllPlaylists;
 class DatabaseCommand_LoadAllSortedPlaylists;
@@ -73,7 +73,7 @@ public slots:
     void remove( const playlist_ptr& playlist );
 
 signals:
-    void aboutToBeDeletePlaylist( const Tomahawk::playlist_ptr& playlist );
+    void aboutToBeDeletePlaylist( const Hatchet::playlist_ptr& playlist );
 
 private:
     PlaylistRemovalHandler();
@@ -103,16 +103,16 @@ public:
     virtual ~Playlist();
 
     static QSharedPointer<PlaylistRemovalHandler> removalHandler();
-    static Tomahawk::playlist_ptr get( const QString& guid );
+    static Hatchet::playlist_ptr get( const QString& guid );
 
     // one CTOR is private, only called by DatabaseCommand_LoadAllPlaylists
-    static Tomahawk::playlist_ptr create( const source_ptr& author,
+    static Hatchet::playlist_ptr create( const source_ptr& author,
                                           const QString& guid,
                                           const QString& title,
                                           const QString& info,
                                           const QString& creator,
                                           bool shared,
-                                          const QList<Tomahawk::query_ptr>& queries = QList<Tomahawk::query_ptr>() );
+                                          const QList<Hatchet::query_ptr>& queries = QList<Hatchet::query_ptr>() );
 
     void rename( const QString& title );
 
@@ -147,7 +147,7 @@ public:
     void setTitle( const QString& s );
     // </IGNORE>
 
-    QList<plentry_ptr> entriesFromQueries( const QList<Tomahawk::query_ptr>& queries, bool clearFirst = false );
+    QList<plentry_ptr> entriesFromQueries( const QList<Hatchet::query_ptr>& queries, bool clearFirst = false );
 
     void addUpdater( PlaylistUpdaterInterface* updater );
     void removeUpdater( PlaylistUpdaterInterface* updater );
@@ -159,13 +159,13 @@ public:
      */
     bool hasCustomDeleter() const;
 
-    Tomahawk::playlistinterface_ptr playlistInterface();
+    Hatchet::playlistinterface_ptr playlistInterface();
 
 signals:
     /**
      * emitted when the playlist revision changes (whenever the playlist changes)
      */
-    void revisionLoaded( Tomahawk::PlaylistRevision );
+    void revisionLoaded( Hatchet::PlaylistRevision );
 
     /**
      * watch for this to see when newly created playlist is synced to DB (if you care)
@@ -180,27 +180,27 @@ signals:
      * Delete command is scheduled but not completed. Do not call remove() again once this
      * is emitted.
      */
-    void aboutToBeDeleted( const Tomahawk::playlist_ptr& pl );
+    void aboutToBeDeleted( const Hatchet::playlist_ptr& pl );
 
     /// was deleted, eh?
-    void deleted( const Tomahawk::playlist_ptr& pl );
+    void deleted( const Hatchet::playlist_ptr& pl );
 
     /**
      * Notification for tracks being inserted at a specific point
      * Contiguous range from startPosition
      */
-    void tracksInserted( const QList< Tomahawk::plentry_ptr >& tracks, int startPosition );
+    void tracksInserted( const QList< Hatchet::plentry_ptr >& tracks, int startPosition );
 
     /**
      * Notification for tracks being removed from PlaylistModel
      */
-    void tracksRemoved( const QList< Tomahawk::query_ptr >& tracks );
+    void tracksRemoved( const QList< Hatchet::query_ptr >& tracks );
 
     /**
      * Notification for tracks being moved in a playlist. List is of new tracks, and new position of first track
      * Contiguous range from startPosition
      */
-    void tracksMoved( const QList< Tomahawk::plentry_ptr >& tracks, int startPosition );
+    void tracksMoved( const QList< Hatchet::plentry_ptr >& tracks, int startPosition );
 
 public slots:
     // want to update the playlist from the model?
@@ -211,18 +211,18 @@ public slots:
     // entries should be <= entries(), with changed metadata.
     void updateEntries( const QString& newrev, const QString& oldrev, const QList< plentry_ptr >& entries );
 
-    virtual void addEntry( const Tomahawk::query_ptr& query );
-    virtual void addEntries( const QList<Tomahawk::query_ptr>& queries );
-    virtual void insertEntries( const QList<Tomahawk::query_ptr>& queries, const int position );
+    virtual void addEntry( const Hatchet::query_ptr& query );
+    virtual void addEntries( const QList<Hatchet::query_ptr>& queries );
+    virtual void insertEntries( const QList<Hatchet::query_ptr>& queries, const int position );
 
-    void reportCreated( const Tomahawk::playlist_ptr& self );
-    void reportDeleted( const Tomahawk::playlist_ptr& self );
+    void reportCreated( const Hatchet::playlist_ptr& self );
+    void reportDeleted( const Hatchet::playlist_ptr& self );
 
     void setRevision( const QString& rev,
                       const QList<QString>& neworderedguids,
                       const QList<QString>& oldorderedguids,
                       bool is_newest_rev,
-                      const QMap< QString, Tomahawk::plentry_ptr >& addedmap,
+                      const QMap< QString, Hatchet::plentry_ptr >& addedmap,
                       bool applied );
 
     void resolve();
@@ -248,7 +248,7 @@ protected:
                        const QString& info,
                        const QString& creator,
                        bool shared,
-                       const QList< Tomahawk::plentry_ptr >& entries );
+                       const QList< Hatchet::plentry_ptr >& entries );
 
     explicit Playlist( const source_ptr& author,
                        const QString& guid,
@@ -262,13 +262,13 @@ protected:
                                      const QList<QString>& neworderedguids,
                                      const QList<QString>& oldorderedguids,
                                      bool is_newest_rev,
-                                     const QMap< QString, Tomahawk::plentry_ptr >& addedmap );
+                                     const QMap< QString, Hatchet::plentry_ptr >& addedmap );
 
     virtual void removeFromDatabase();
 
     Playlist( PlaylistPrivate* d );
 
-    Tomahawk::PlaylistPrivate* d_ptr;
+    Hatchet::PlaylistPrivate* d_ptr;
 private slots:
     void onResultsChanged();
     void onResolvingFinished();
@@ -282,11 +282,11 @@ private:
     void setLoaded( bool b );
     void checkRevisionQueue();
 
-    Q_DECLARE_PRIVATE( Tomahawk::Playlist )
+    Q_DECLARE_PRIVATE( Hatchet::Playlist )
 };
 
 }
 
-Q_DECLARE_METATYPE( QSharedPointer< Tomahawk::Playlist > )
+Q_DECLARE_METATYPE( QSharedPointer< Hatchet::Playlist > )
 
 #endif // PLAYLIST_H

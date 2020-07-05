@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ArtistPlaylistInterface.h"
@@ -29,17 +29,17 @@
 #include "Result.h"
 #include "Source.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
-ArtistPlaylistInterface::ArtistPlaylistInterface( Tomahawk::Artist* artist, Tomahawk::ModelMode mode, const Tomahawk::collection_ptr& collection )
-    : Tomahawk::PlaylistInterface()
+ArtistPlaylistInterface::ArtistPlaylistInterface( Hatchet::Artist* artist, Hatchet::ModelMode mode, const Hatchet::collection_ptr& collection )
+    : Hatchet::PlaylistInterface()
     , m_currentItem( 0 )
     , m_infoSystemLoaded( false )
     , m_databaseLoaded( false )
     , m_mode( mode )
     , m_collection( collection )
-    , m_artist( QPointer< Tomahawk::Artist >( artist ) )
+    , m_artist( QPointer< Hatchet::Artist >( artist ) )
 {
 }
 
@@ -88,29 +88,29 @@ ArtistPlaylistInterface::currentItem() const
 }
 
 
-QList<Tomahawk::query_ptr>
+QList<Hatchet::query_ptr>
 ArtistPlaylistInterface::tracks() const
 {
     if ( m_queries.isEmpty() && m_artist )
     {
         if ( ( m_mode == Mixed || m_mode == InfoSystemMode ) && !m_infoSystemLoaded )
         {
-            Tomahawk::InfoSystem::InfoStringHash artistInfo;
+            Hatchet::InfoSystem::InfoStringHash artistInfo;
             artistInfo["artist"] = m_artist.data()->name();
 
-            Tomahawk::InfoSystem::InfoRequestData requestData;
+            Hatchet::InfoSystem::InfoRequestData requestData;
             requestData.caller = id();
-            requestData.input = QVariant::fromValue< Tomahawk::InfoSystem::InfoStringHash >( artistInfo );
-            requestData.type = Tomahawk::InfoSystem::InfoArtistSongs;
+            requestData.input = QVariant::fromValue< Hatchet::InfoSystem::InfoStringHash >( artistInfo );
+            requestData.type = Hatchet::InfoSystem::InfoArtistSongs;
             requestData.timeoutMillis = 0;
             requestData.allSources = true;
-            Tomahawk::InfoSystem::InfoSystem::instance()->getInfo( requestData );
+            Hatchet::InfoSystem::InfoSystem::instance()->getInfo( requestData );
 
-            connect( Tomahawk::InfoSystem::InfoSystem::instance(),
-                    SIGNAL( info( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ),
-                    SLOT( infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ) );
+            connect( Hatchet::InfoSystem::InfoSystem::instance(),
+                    SIGNAL( info( Hatchet::InfoSystem::InfoRequestData, QVariant ) ),
+                    SLOT( infoSystemInfo( Hatchet::InfoSystem::InfoRequestData, QVariant ) ) );
 
-            connect( Tomahawk::InfoSystem::InfoSystem::instance(),
+            connect( Hatchet::InfoSystem::InfoSystem::instance(),
                     SIGNAL( finished( QString ) ),
                     SLOT( infoSystemFinished( QString ) ) );
         }
@@ -120,10 +120,10 @@ ArtistPlaylistInterface::tracks() const
             cmd->setArtist( m_artist->weakRef() );
             cmd->setSortOrder( DatabaseCommand_AllTracks::AlbumPosition );
 
-            connect( cmd, SIGNAL( tracks( QList<Tomahawk::query_ptr>, QVariant ) ),
-                            SLOT( onTracksLoaded( QList<Tomahawk::query_ptr> ) ) );
+            connect( cmd, SIGNAL( tracks( QList<Hatchet::query_ptr>, QVariant ) ),
+                            SLOT( onTracksLoaded( QList<Hatchet::query_ptr> ) ) );
 
-            Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+            Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
         }
     }
 
@@ -132,20 +132,20 @@ ArtistPlaylistInterface::tracks() const
 
 
 void
-ArtistPlaylistInterface::infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData requestData, QVariant output )
+ArtistPlaylistInterface::infoSystemInfo( Hatchet::InfoSystem::InfoRequestData requestData, QVariant output )
 {
     if ( requestData.caller != id() )
         return;
 
     switch ( requestData.type )
     {
-        case Tomahawk::InfoSystem::InfoArtistSongs:
+        case Hatchet::InfoSystem::InfoArtistSongs:
         {
             QVariantMap returnedData = output.value< QVariantMap >();
             if ( !returnedData.isEmpty() )
             {
-                Tomahawk::InfoSystem::InfoStringHash inputInfo;
-                inputInfo = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+                Hatchet::InfoSystem::InfoStringHash inputInfo;
+                inputInfo = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
 
                 QStringList tracks = returnedData[ "tracks" ].toStringList();
                 QList<query_ptr> ql;
@@ -190,9 +190,9 @@ ArtistPlaylistInterface::infoSystemFinished( const QString &infoId )
 
     m_infoSystemLoaded = true;
 
-    disconnect( Tomahawk::InfoSystem::InfoSystem::instance(), SIGNAL( info( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ),
-                this, SLOT( infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ) );
-    disconnect( Tomahawk::InfoSystem::InfoSystem::instance(), SIGNAL( finished( QString ) ),
+    disconnect( Hatchet::InfoSystem::InfoSystem::instance(), SIGNAL( info( Hatchet::InfoSystem::InfoRequestData, QVariant ) ),
+                this, SLOT( infoSystemInfo( Hatchet::InfoSystem::InfoRequestData, QVariant ) ) );
+    disconnect( Hatchet::InfoSystem::InfoSystem::instance(), SIGNAL( finished( QString ) ),
                 this, SLOT( infoSystemFinished( QString) ) );
 
     if ( m_queries.isEmpty() && m_mode == Mixed )
@@ -202,10 +202,10 @@ ArtistPlaylistInterface::infoSystemFinished( const QString &infoId )
         //this takes discnumber into account as well
         cmd->setSortOrder( DatabaseCommand_AllTracks::AlbumPosition );
 
-        connect( cmd, SIGNAL( tracks( QList<Tomahawk::query_ptr>, QVariant ) ),
-                        SLOT( onTracksLoaded( QList<Tomahawk::query_ptr> ) ) );
+        connect( cmd, SIGNAL( tracks( QList<Hatchet::query_ptr>, QVariant ) ),
+                        SLOT( onTracksLoaded( QList<Hatchet::query_ptr> ) ) );
 
-        Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+        Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
     }
     else
     {
@@ -232,10 +232,10 @@ ArtistPlaylistInterface::onTracksLoaded( const QList< query_ptr >& tracks )
 
 
 qint64
-ArtistPlaylistInterface::indexOfResult( const Tomahawk::result_ptr& result ) const
+ArtistPlaylistInterface::indexOfResult( const Hatchet::result_ptr& result ) const
 {
     int i = 0;
-    foreach ( const Tomahawk::query_ptr& query, m_queries )
+    foreach ( const Hatchet::query_ptr& query, m_queries )
     {
         if ( query->numResults() && query->results().contains( result ) )
             return i;
@@ -248,10 +248,10 @@ ArtistPlaylistInterface::indexOfResult( const Tomahawk::result_ptr& result ) con
 
 
 qint64
-ArtistPlaylistInterface::indexOfQuery( const Tomahawk::query_ptr& query ) const
+ArtistPlaylistInterface::indexOfQuery( const Hatchet::query_ptr& query ) const
 {
     int i = 0;
-    foreach ( const Tomahawk::query_ptr& q, m_queries )
+    foreach ( const Hatchet::query_ptr& q, m_queries )
     {
         if ( q->equals( query ) )
             return i;
@@ -271,16 +271,16 @@ ArtistPlaylistInterface::queryAt( qint64 index ) const
         return m_queries.at( index );
     }
 
-    return Tomahawk::query_ptr();
+    return Hatchet::query_ptr();
 }
 
 
 result_ptr
 ArtistPlaylistInterface::resultAt( qint64 index ) const
 {
-    Tomahawk::query_ptr query = queryAt( index );
+    Hatchet::query_ptr query = queryAt( index );
     if ( query && query->numResults() )
         return query->results().first();
 
-    return Tomahawk::result_ptr();
+    return Hatchet::result_ptr();
 }

@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "SourceViewPage.h"
@@ -29,22 +29,22 @@
 #include "database/Database.h"
 #include "database/DatabaseCommand_AllAlbums.h"
 
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 
 
-SourceInfoWidget::SourceInfoWidget( const Tomahawk::source_ptr& source, QWidget* parent )
+SourceInfoWidget::SourceInfoWidget( const Hatchet::source_ptr& source, QWidget* parent )
     : QWidget( parent )
     , ui( new Ui::SourceInfoWidget )
     , m_source( source )
 {
     ui->setupUi( this );
 
-    TomahawkUtils::unmarginLayout( layout() );
-    TomahawkUtils::unmarginLayout( ui->horizontalLayout );
-    TomahawkUtils::unmarginLayout( ui->verticalLayout );
-    TomahawkUtils::unmarginLayout( ui->verticalLayout_2 );
-    TomahawkUtils::unmarginLayout( ui->verticalLayout_3 );
+    HatchetUtils::unmarginLayout( layout() );
+    HatchetUtils::unmarginLayout( ui->horizontalLayout );
+    HatchetUtils::unmarginLayout( ui->verticalLayout );
+    HatchetUtils::unmarginLayout( ui->verticalLayout_2 );
+    HatchetUtils::unmarginLayout( ui->verticalLayout_3 );
 
     ui->splitter->setStretchFactor( 0, 0 );
     ui->splitter->setStretchFactor( 1, 1 );
@@ -95,7 +95,7 @@ SourceInfoWidget::onCollectionChanged()
 void
 SourceInfoWidget::loadRecentAdditions()
 {
-    m_recentAlbumModel->addFilteredCollection( m_source->dbCollection(), 20, Tomahawk::DatabaseCommand_AllAlbums::ModificationTime, true );
+    m_recentAlbumModel->addFilteredCollection( m_source->dbCollection(), 20, Hatchet::DatabaseCommand_AllAlbums::ModificationTime, true );
 }
 
 
@@ -118,6 +118,6 @@ SourceInfoWidget::changeEvent( QEvent* e )
 QPixmap
 SourceInfoWidget::pixmap() const
 {
-    return TomahawkUtils::defaultPixmap( TomahawkUtils::NewAdditions, TomahawkUtils::Original );
+    return HatchetUtils::defaultPixmap( HatchetUtils::NewAdditions, HatchetUtils::Original );
 
 }

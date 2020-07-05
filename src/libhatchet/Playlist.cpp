@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "Playlist_p.h"
@@ -41,7 +41,7 @@
 #include <QDomDocument>
 #include <QDomElement>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 static QSharedPointer<PlaylistRemovalHandler> s_removalHandler;
 
@@ -74,7 +74,7 @@ Playlist::Playlist( const source_ptr& author,
                     const QString& info,
                     const QString& creator,
                     bool shared,
-                    const QList< Tomahawk::plentry_ptr >& entries )
+                    const QList< Hatchet::plentry_ptr >& entries )
     : QObject()
     , d_ptr( new PlaylistPrivate( this, author, guid, title, info, creator, shared, entries ) )
 {
@@ -89,7 +89,7 @@ Playlist::Playlist( const source_ptr& author,
                     const QString& creator,
                     bool shared)
     : QObject()
-    , d_ptr( new PlaylistPrivate( this, author, guid, title, info, creator, shared, QList< Tomahawk::plentry_ptr >() ) )
+    , d_ptr( new PlaylistPrivate( this, author, guid, title, info, creator, shared, QList< Hatchet::plentry_ptr >() ) )
 {
     init();
 }
@@ -133,10 +133,10 @@ Playlist::create( const source_ptr& author,
                   const QString& info,
                   const QString& creator,
                   bool shared,
-                  const QList<Tomahawk::query_ptr>& queries )
+                  const QList<Hatchet::query_ptr>& queries )
 {
     QList< plentry_ptr > entries;
-    foreach( const Tomahawk::query_ptr& query, queries )
+    foreach( const Hatchet::query_ptr& query, queries )
     {
         plentry_ptr p( new PlaylistEntry );
         p->setGuid( uuid() );
@@ -176,7 +176,7 @@ Playlist::get( const QString& guid )
 {
     playlist_ptr p;
 
-    foreach( const Tomahawk::source_ptr& source, SourceList::instance()->sources() )
+    foreach( const Hatchet::source_ptr& source, SourceList::instance()->sources() )
     {
         p = source->dbCollection()->playlist( guid );
         if ( !p )
@@ -196,7 +196,7 @@ void
 Playlist::rename( const QString& title )
 {
     DatabaseCommand_RenamePlaylist* cmd = new DatabaseCommand_RenamePlaylist( author(), guid(), title );
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr(cmd) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr(cmd) );
 }
 
 
@@ -227,7 +227,7 @@ Playlist::reportCreated( const playlist_ptr& self )
 
 
 void
-Playlist::reportDeleted( const Tomahawk::playlist_ptr& self )
+Playlist::reportDeleted( const Hatchet::playlist_ptr& self )
 {
     Q_D( Playlist );
 
@@ -300,16 +300,16 @@ Playlist::loadRevision( const QString& rev )
                                 const QList<QString>&,
                                 const QList<QString>&,
                                 bool,
-                                const QMap< QString, Tomahawk::plentry_ptr >&,
+                                const QMap< QString, Hatchet::plentry_ptr >&,
                                 bool ) ),
                     SLOT( setRevision( const QString&,
                                        const QList<QString>&,
                                        const QList<QString>&,
                                        bool,
-                                       const QMap< QString, Tomahawk::plentry_ptr >&,
+                                       const QMap< QString, Hatchet::plentry_ptr >&,
                                        bool ) ) );
 
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 }
 
 
@@ -364,7 +364,7 @@ Playlist::createNewRevision( const QString& newrev, const QString& oldrev, const
     else
     {
         d->queuedSetPlaylistRevision = true;
-        Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+        Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
     }
 }
 
@@ -409,7 +409,7 @@ Playlist::updateEntries( const QString& newrev, const QString& oldrev, const QLi
     else
     {
         d->queuedSetPlaylistRevision = true;
-        Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+        Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
     }
 }
 
@@ -421,7 +421,7 @@ Playlist::setRevision( const QString& rev,
                        const QList<QString>& neworderedguids,
                        const QList<QString>& oldorderedguids,
                        bool is_newest_rev,
-                       const QMap< QString, Tomahawk::plentry_ptr >& addedmap,
+                       const QMap< QString, Hatchet::plentry_ptr >& addedmap,
                        bool applied )
 {
     Q_D( Playlist );
@@ -434,7 +434,7 @@ Playlist::setRevision( const QString& rev,
                                    Q_ARG( QList<QString>, neworderedguids ),
                                    Q_ARG( QList<QString>, oldorderedguids ),
                                    Q_ARG( bool, is_newest_rev ),
-                                   QGenericArgument( "QMap< QString,Tomahawk::plentry_ptr >", (const void*)&addedmap ),
+                                   QGenericArgument( "QMap< QString,Hatchet::plentry_ptr >", (const void*)&addedmap ),
                                    Q_ARG( bool, applied )
                                  );
         return;
@@ -473,7 +473,7 @@ Playlist::setNewRevision( const QString& rev,
                           const QList<QString>& neworderedguids,
                           const QList<QString>& oldorderedguids,
                           bool is_newest_rev,
-                          const QMap< QString, Tomahawk::plentry_ptr >& addedmap )
+                          const QMap< QString, Hatchet::plentry_ptr >& addedmap )
 {
     Q_D( Playlist );
     Q_UNUSED( oldorderedguids );
@@ -529,7 +529,7 @@ Playlist::removeFromDatabase()
 
     emit aboutToBeDeleted( d->weakSelf.toStrongRef() );
     DatabaseCommand_DeletePlaylist* cmd = new DatabaseCommand_DeletePlaylist( d->source, d->guid );
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 }
 
 
@@ -591,7 +591,7 @@ Playlist::setPlaylistRevisionFinished()
         DatabaseCommand_SetPlaylistRevision* cmd = d->queuedSetPlaylistRevisionCmds.dequeue();
         // Update oldrev to currentRevision so that optimistic locking works correctly.
         cmd->setOldrev( currentrevision() );
-        Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+        Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
     }
     else
     {
@@ -618,7 +618,7 @@ Playlist::addEntries( const QList<query_ptr>& queries )
     {
         tDebug() << Q_FUNC_INFO << "Queueing addEntries call!";
         loadRevision();
-        d->queuedOps << NewClosure( 0, "", this, SLOT( addEntries( QList<Tomahawk::query_ptr> ) ), queries );
+        d->queuedOps << NewClosure( 0, "", this, SLOT( addEntries( QList<Hatchet::query_ptr> ) ), queries );
         return;
     }
 
@@ -645,7 +645,7 @@ Playlist::insertEntries( const QList< query_ptr >& queries, const int position )
     {
         tDebug() << Q_FUNC_INFO << "Queueing insertEntries call!";
         loadRevision();
-        d->queuedOps << NewClosure( 0, "", this, SLOT( insertEntries( QList<Tomahawk::query_ptr>, int ) ), queries, position );
+        d->queuedOps << NewClosure( 0, "", this, SLOT( insertEntries( QList<Hatchet::query_ptr>, int ) ), queries, position );
         return;
     }
 
@@ -674,7 +674,7 @@ Playlist::insertEntries( const QList< query_ptr >& queries, const int position )
 
 
 QList<plentry_ptr>
-Playlist::entriesFromQueries( const QList<Tomahawk::query_ptr>& queries, bool clearFirst )
+Playlist::entriesFromQueries( const QList<Hatchet::query_ptr>& queries, bool clearFirst )
 {
     QList<plentry_ptr> el;
     if ( !clearFirst )
@@ -790,13 +790,13 @@ Playlist::setWeakSelf( QWeakPointer< Playlist > self )
 }
 
 
-Tomahawk::playlistinterface_ptr
+Hatchet::playlistinterface_ptr
 Playlist::playlistInterface()
 {
     Q_D( Playlist );
     if ( d->playlistInterface.isNull() )
     {
-        d->playlistInterface = Tomahawk::playlistinterface_ptr( new Tomahawk::PlaylistPlaylistInterface( this ) );
+        d->playlistInterface = Hatchet::playlistinterface_ptr( new Hatchet::PlaylistPlaylistInterface( this ) );
     }
 
     return d->playlistInterface;

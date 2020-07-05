@@ -5,7 +5,7 @@ ADD_DEFINITIONS( -DUNICODE )
 
 SET( OS_SPECIFIC_LINK_LIBRARIES
     ${OS_SPECIFIC_LINK_LIBRARIES}
-# third party shipped with tomahawk
+# third party shipped with hatchet
 
 # system libs
     "secur32.dll"

@@ -1,22 +1,22 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *   Copyright 2013,      Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "JSResolverHelper.h"
@@ -68,7 +68,7 @@
     #include <winnls.h>
 #endif
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 JSResolverHelper::JSResolverHelper( const QString& scriptPath, JSResolver* parent )
     : QObject( parent )
@@ -455,11 +455,11 @@ JSResolverHelper::nativeReportCapabilities( const QVariant& v )
 
     bool ok;
     int intCap = v.toInt( &ok );
-    Tomahawk::ExternalResolver::Capabilities capabilities;
+    Hatchet::ExternalResolver::Capabilities capabilities;
     if ( !ok )
-        capabilities = Tomahawk::ExternalResolver::NullCapability;
+        capabilities = Hatchet::ExternalResolver::NullCapability;
     else
-        capabilities = static_cast< Tomahawk::ExternalResolver::Capabilities >( intCap );
+        capabilities = static_cast< Hatchet::ExternalResolver::Capabilities >( intCap );
 
     m_resolver->onCapabilitiesChanged( capabilities );
 }
@@ -526,13 +526,13 @@ JSResolverHelper::nativeRetrieveMetadata( int metadataId, const QString& url,
 {
     if ( sizehint <= 0 )
     {
-        QString javascript = QString( "Tomahawk.retrievedMetadata( %1, null, 'Supplied size is not (yet) supported');" )
+        QString javascript = QString( "Hatchet.retrievedMetadata( %1, null, 'Supplied size is not (yet) supported');" )
                 .arg( metadataId );
         m_resolver->d_func()->scriptAccount->evaluateJavaScript( javascript );
         return;
     }
 
-    if ( TomahawkUtils::isHttpResult( url ) || TomahawkUtils::isHttpsResult( url ) )
+    if ( HatchetUtils::isHttpResult( url ) || HatchetUtils::isHttpsResult( url ) )
     {
         QMap<QString, QString> headers;
         if ( options.contains( "headers" ) && options["headers"].canConvert( QVariant::Map ) )
@@ -545,7 +545,7 @@ JSResolverHelper::nativeRetrieveMetadata( int metadataId, const QString& url,
         }
 
         // TODO: Add heuristic if size is not defined
-        CloudStream stream( url, sizehint, headers, Tomahawk::Utils::nam() );
+        CloudStream stream( url, sizehint, headers, Hatchet::Utils::nam() );
         stream.Precache();
         QScopedPointer<TagLib::File> tag;
         if ( mime_type == "audio/mpeg" )
@@ -593,7 +593,7 @@ JSResolverHelper::nativeRetrieveMetadata( int metadataId, const QString& url,
         }
         else
         {
-            QString javascript = QString( "Tomahawk.retrievedMetadata( %1, null, 'Unknown mime type for tagging: %2');" )
+            QString javascript = QString( "Hatchet.retrievedMetadata( %1, null, 'Unknown mime type for tagging: %2');" )
                     .arg( metadataId ).arg( mime_type );
             m_resolver->d_func()->scriptAccount->evaluateJavaScript( javascript );
             return;
@@ -608,7 +608,7 @@ JSResolverHelper::nativeRetrieveMetadata( int metadataId, const QString& url,
 
         if ( !tag->tag() || tag->tag()->isEmpty() )
         {
-            QString javascript = QString( "Tomahawk.retrievedMetadata( %1, null, 'Could not read tag information.');" )
+            QString javascript = QString( "Hatchet.retrievedMetadata( %1, null, 'Could not read tag information.');" )
                     .arg( metadataId );
             m_resolver->d_func()->scriptAccount->evaluateJavaScript( javascript );
             return;
@@ -622,7 +622,7 @@ JSResolverHelper::nativeRetrieveMetadata( int metadataId, const QString& url,
 
         if ( m["track"].toString().isEmpty() )
         {
-            QString javascript = QString( "Tomahawk.retrievedMetadata( %1, null, 'Empty track returnd');" )
+            QString javascript = QString( "Hatchet.retrievedMetadata( %1, null, 'Empty track returnd');" )
                     .arg( metadataId );
             m_resolver->d_func()->scriptAccount->evaluateJavaScript( javascript );
             return;
@@ -630,7 +630,7 @@ JSResolverHelper::nativeRetrieveMetadata( int metadataId, const QString& url,
 
         if ( m["artist"].toString().isEmpty() )
         {
-            QString javascript = QString( "Tomahawk.retrievedMetadata( %1, null, 'Empty artist returnd');" )
+            QString javascript = QString( "Hatchet.retrievedMetadata( %1, null, 'Empty artist returnd');" )
                     .arg( metadataId );
             m_resolver->d_func()->scriptAccount->evaluateJavaScript( javascript );
             return;
@@ -644,14 +644,14 @@ JSResolverHelper::nativeRetrieveMetadata( int metadataId, const QString& url,
             m["samplerate"] = tag->audioProperties()->sampleRate();
         }
 
-        QString javascript = QString( "Tomahawk.retrievedMetadata( %1, %2 );" )
+        QString javascript = QString( "Hatchet.retrievedMetadata( %1, %2 );" )
                 .arg( metadataId )
-                .arg( QString::fromLatin1( TomahawkUtils::toJson( m ) ) );
+                .arg( QString::fromLatin1( HatchetUtils::toJson( m ) ) );
         m_resolver->d_func()->scriptAccount->evaluateJavaScript( javascript );
     }
     else
     {
-        QString javascript = QString( "Tomahawk.retrievedMetadata( %1, null, 'Protocol not supported');" )
+        QString javascript = QString( "Hatchet.retrievedMetadata( %1, null, 'Protocol not supported');" )
                 .arg( metadataId );
         m_resolver->d_func()->scriptAccount->evaluateJavaScript( javascript );
     }
@@ -705,15 +705,15 @@ JSResolverHelper::nativeAsyncRequest( const int requestId, const QVariantMap& op
         {
             data = options["data"].toString().toUtf8();
         }
-        reply = new NetworkReply( Tomahawk::Utils::nam()->post( req, data ) );
+        reply = new NetworkReply( Hatchet::Utils::nam()->post( req, data ) );
     }
     else if ( options.contains( "method") && options["method"].toString().toUpper() == "HEAD" )
     {
-        reply = new NetworkReply( Tomahawk::Utils::nam()->head( req ) );
+        reply = new NetworkReply( Hatchet::Utils::nam()->head( req ) );
     }
     else
     {
-        reply = new NetworkReply( Tomahawk::Utils::nam()->get( req ) );
+        reply = new NetworkReply( Hatchet::Utils::nam()->get( req ) );
     }
 
     NewClosure( reply, SIGNAL( finished() ), this, SLOT( nativeAsyncRequestDone( int, NetworkReply* ) ), requestId, reply );
@@ -754,7 +754,7 @@ JSResolverHelper::hasFuzzyIndex()
 
 
 bool
-JSResolverHelper::indexDataFromVariant( const QVariantMap &map, struct Tomahawk::IndexData& indexData )
+JSResolverHelper::indexDataFromVariant( const QVariantMap &map, struct Hatchet::IndexData& indexData )
 {
     // We do not use artistId at the moment
     indexData.artistId = 0;

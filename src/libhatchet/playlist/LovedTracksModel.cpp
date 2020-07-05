@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2013,      Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "LovedTracksModel_p.h"
@@ -88,13 +88,13 @@ LovedTracksModel::onSourcesReady()
 
     loadTracks();
 
-    foreach ( const Tomahawk::source_ptr& source, SourceList::instance()->sources() )
+    foreach ( const Hatchet::source_ptr& source, SourceList::instance()->sources() )
         onSourceAdded( source );
 }
 
 
 void
-LovedTracksModel::onSourceAdded( const Tomahawk::source_ptr& source )
+LovedTracksModel::onSourceAdded( const Hatchet::source_ptr& source )
 {
     connect( source.data(), SIGNAL( socialAttributesChanged( QString ) ), SLOT( onTrackLoved() ), Qt::UniqueConnection );
 }
@@ -109,21 +109,21 @@ LovedTracksModel::onTrackLoved()
 
 
 void
-LovedTracksModel::tracksLoaded( QList< Tomahawk::query_ptr > newLoved )
+LovedTracksModel::tracksLoaded( QList< Hatchet::query_ptr > newLoved )
 {
     finishLoading();
 
-    QList< Tomahawk::query_ptr > tracks;
+    QList< Hatchet::query_ptr > tracks;
 
-    foreach ( const Tomahawk::plentry_ptr ple, playlistEntries() )
+    foreach ( const Hatchet::plentry_ptr ple, playlistEntries() )
         tracks << ple->query();
 
     bool changed = false;
-    QList< Tomahawk::query_ptr > mergedTracks = TomahawkUtils::mergePlaylistChanges( tracks, newLoved, changed );
+    QList< Hatchet::query_ptr > mergedTracks = HatchetUtils::mergePlaylistChanges( tracks, newLoved, changed );
 
     if ( changed )
     {
-        QList<Tomahawk::plentry_ptr> el = playlist()->entriesFromQueries( mergedTracks, true );
+        QList<Hatchet::plentry_ptr> el = playlist()->entriesFromQueries( mergedTracks, true );
 
         clear();
         appendEntries( el );
@@ -132,7 +132,7 @@ LovedTracksModel::tracksLoaded( QList< Tomahawk::query_ptr > newLoved )
 
 
 void
-LovedTracksModel::setSource( const Tomahawk::source_ptr& source )
+LovedTracksModel::setSource( const Hatchet::source_ptr& source )
 {
     Q_D( LovedTracksModel );
     d->source = source;
@@ -143,7 +143,7 @@ LovedTracksModel::setSource( const Tomahawk::source_ptr& source )
         else
             connect( SourceList::instance(), SIGNAL( ready() ), SLOT( onSourcesReady() ) );
 
-        connect( SourceList::instance(), SIGNAL( sourceAdded( Tomahawk::source_ptr ) ), SLOT( onSourceAdded( Tomahawk::source_ptr ) ) );
+        connect( SourceList::instance(), SIGNAL( sourceAdded( Hatchet::source_ptr ) ), SLOT( onSourceAdded( Hatchet::source_ptr ) ) );
     }
     else
     {

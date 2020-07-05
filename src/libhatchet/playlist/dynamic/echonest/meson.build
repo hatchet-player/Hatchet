@@ -1,11 +1,11 @@
-# libtomahawk/playlist/dynamic/echonest build file
+# libhatchet/playlist/dynamic/echonest build file
 #============================================================================
 
 
-libtomahawk_inc += include_directories('.')
-libtomahawk_playlist_dynamic_echonest_dir = meson.current_source_dir()
+libhatchet_inc += include_directories('.')
+libhatchet_playlist_dynamic_echonest_dir = meson.current_source_dir()
 
 
-libtomahawk_gui_src += files()
-#     join_paths(libtomahawk_playlist_dynamic_echonest_dir, ''))
+libhatchet_gui_src += files()
+#     join_paths(libhatchet_playlist_dynamic_echonest_dir, ''))
 

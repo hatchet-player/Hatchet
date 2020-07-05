@@ -1,25 +1,25 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "EchonestPlugin.h"
 
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
 #include "utils/NetworkAccessManager.h"
 
@@ -27,7 +27,7 @@
 
 #include <QNetworkConfiguration>
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 namespace InfoSystem
@@ -39,7 +39,7 @@ EchonestPlugin::EchonestPlugin()
     : InfoPlugin()
 {
     qDebug() << Q_FUNC_INFO;
-    m_supportedGetTypes << Tomahawk::InfoSystem::InfoArtistFamiliarity << Tomahawk::InfoSystem::InfoArtistHotttness << Tomahawk::InfoSystem::InfoArtistTerms << Tomahawk::InfoSystem::InfoMiscTopTerms;
+    m_supportedGetTypes << Hatchet::InfoSystem::InfoArtistFamiliarity << Hatchet::InfoSystem::InfoArtistHotttness << Hatchet::InfoSystem::InfoArtistTerms << Hatchet::InfoSystem::InfoMiscTopTerms;
 }
 
 
@@ -52,26 +52,26 @@ EchonestPlugin::~EchonestPlugin()
 void
 EchonestPlugin::init()
 {
-    Echonest::Config::instance()->setNetworkAccessManager( Tomahawk::Utils::nam() );
+    Echonest::Config::instance()->setNetworkAccessManager( Hatchet::Utils::nam() );
 }
 
 
 void
-EchonestPlugin::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
+EchonestPlugin::getInfo( Hatchet::InfoSystem::InfoRequestData requestData )
 {
     switch ( requestData.type )
     {
-        case Tomahawk::InfoSystem::InfoArtistBiography:
+        case Hatchet::InfoSystem::InfoArtistBiography:
             return getArtistBiography( requestData );
-        case Tomahawk::InfoSystem::InfoArtistFamiliarity:
+        case Hatchet::InfoSystem::InfoArtistFamiliarity:
             return getArtistFamiliarity( requestData );
-        case Tomahawk::InfoSystem::InfoArtistHotttness:
+        case Hatchet::InfoSystem::InfoArtistHotttness:
             return getArtistHotttnesss( requestData );
-        case Tomahawk::InfoSystem::InfoArtistTerms:
+        case Hatchet::InfoSystem::InfoArtistTerms:
             return getArtistTerms( requestData );
-        case Tomahawk::InfoSystem::InfoTrackEnergy:
+        case Hatchet::InfoSystem::InfoTrackEnergy:
             return getSongProfile( requestData, "energy" );
-        case Tomahawk::InfoSystem::InfoMiscTopTerms:
+        case Hatchet::InfoSystem::InfoMiscTopTerms:
             return getMiscTopTerms( requestData );
         default:
         {
@@ -83,7 +83,7 @@ EchonestPlugin::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
 
 
 void
-EchonestPlugin::getSongProfile( const Tomahawk::InfoSystem::InfoRequestData &requestData, const QString &item )
+EchonestPlugin::getSongProfile( const Hatchet::InfoSystem::InfoRequestData &requestData, const QString &item )
 {
     //WARNING: Totally not implemented yet
     Q_UNUSED( item );
@@ -101,13 +101,13 @@ EchonestPlugin::getSongProfile( const Tomahawk::InfoSystem::InfoRequestData &req
 
 
 void
-EchonestPlugin::getArtistBiography( const Tomahawk::InfoSystem::InfoRequestData &requestData )
+EchonestPlugin::getArtistBiography( const Hatchet::InfoSystem::InfoRequestData &requestData )
 {
-    if ( !requestData.input.canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !requestData.input.canConvert< Hatchet::InfoSystem::InfoStringHash >() )
     {
         return;
     }
-    InfoStringHash hash = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+    InfoStringHash hash = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
     if ( !hash.contains( "artist" ) )
     {
         return;
@@ -116,13 +116,13 @@ EchonestPlugin::getArtistBiography( const Tomahawk::InfoSystem::InfoRequestData 
     Echonest::Artist artist( hash["artist"] );
     QNetworkReply *reply = artist.fetchBiographies();
     reply->setProperty( "artist", QVariant::fromValue< Echonest::Artist >( artist ) );
-    reply->setProperty( "requestData", QVariant::fromValue< Tomahawk::InfoSystem::InfoRequestData >( requestData ) );
+    reply->setProperty( "requestData", QVariant::fromValue< Hatchet::InfoSystem::InfoRequestData >( requestData ) );
     connect( reply, SIGNAL( finished() ), SLOT( getArtistBiographySlot() ) );
 }
 
 
 void
-EchonestPlugin::getArtistFamiliarity( const Tomahawk::InfoSystem::InfoRequestData &requestData )
+EchonestPlugin::getArtistFamiliarity( const Hatchet::InfoSystem::InfoRequestData &requestData )
 {
     if( !isValidArtistData( requestData ) )
         return;
@@ -131,13 +131,13 @@ EchonestPlugin::getArtistFamiliarity( const Tomahawk::InfoSystem::InfoRequestDat
     Echonest::Artist artist( requestData.input.toString() );
     QNetworkReply* reply = artist.fetchFamiliarity();
     reply->setProperty( "artist", QVariant::fromValue< Echonest::Artist >( artist ) );
-    reply->setProperty( "requestData", QVariant::fromValue< Tomahawk::InfoSystem::InfoRequestData >( requestData ) );
+    reply->setProperty( "requestData", QVariant::fromValue< Hatchet::InfoSystem::InfoRequestData >( requestData ) );
     connect( reply, SIGNAL( finished() ), SLOT( getArtistFamiliaritySlot() ) );
 }
 
 
 void
-EchonestPlugin::getArtistHotttnesss( const Tomahawk::InfoSystem::InfoRequestData &requestData )
+EchonestPlugin::getArtistHotttnesss( const Hatchet::InfoSystem::InfoRequestData &requestData )
 {
     if( !isValidArtistData( requestData ) )
         return;
@@ -145,13 +145,13 @@ EchonestPlugin::getArtistHotttnesss( const Tomahawk::InfoSystem::InfoRequestData
     Echonest::Artist artist( requestData.input.toString() );
     QNetworkReply* reply = artist.fetchHotttnesss();
     reply->setProperty( "artist", QVariant::fromValue< Echonest::Artist >( artist ) );
-    reply->setProperty( "requestData", QVariant::fromValue< Tomahawk::InfoSystem::InfoRequestData >( requestData ) );
+    reply->setProperty( "requestData", QVariant::fromValue< Hatchet::InfoSystem::InfoRequestData >( requestData ) );
     connect( reply, SIGNAL( finished() ), SLOT( getArtistHotttnesssSlot() ) );
 }
 
 
 void
-EchonestPlugin::getArtistTerms( const Tomahawk::InfoSystem::InfoRequestData &requestData )
+EchonestPlugin::getArtistTerms( const Hatchet::InfoSystem::InfoRequestData &requestData )
 {
     if( !isValidArtistData( requestData ) )
         return;
@@ -159,16 +159,16 @@ EchonestPlugin::getArtistTerms( const Tomahawk::InfoSystem::InfoRequestData &req
     Echonest::Artist artist( requestData.input.toString() );
     QNetworkReply* reply = artist.fetchTerms( Echonest::Artist::Weight );
     reply->setProperty( "artist", QVariant::fromValue< Echonest::Artist >( artist ) );
-    reply->setProperty( "requestData", QVariant::fromValue< Tomahawk::InfoSystem::InfoRequestData >( requestData ) );
+    reply->setProperty( "requestData", QVariant::fromValue< Hatchet::InfoSystem::InfoRequestData >( requestData ) );
     connect( reply, SIGNAL( finished() ), SLOT( getArtistTermsSlot() ) );
 }
 
 
 void
-EchonestPlugin::getMiscTopTerms( const Tomahawk::InfoSystem::InfoRequestData &requestData )
+EchonestPlugin::getMiscTopTerms( const Hatchet::InfoSystem::InfoRequestData &requestData )
 {
     QNetworkReply* reply = Echonest::Artist::topTerms( 20 );
-    reply->setProperty( "requestData", QVariant::fromValue< Tomahawk::InfoSystem::InfoRequestData >( requestData ) );
+    reply->setProperty( "requestData", QVariant::fromValue< Hatchet::InfoSystem::InfoRequestData >( requestData ) );
     connect( reply, SIGNAL( finished() ), SLOT( getMiscTopSlot() ) );
 }
 
@@ -191,7 +191,7 @@ EchonestPlugin::getArtistBiographySlot()
         siteData[ "licensetype" ] = biography.license().type;
         biographyMap[ biography.site() ] = siteData;
     }
-    Tomahawk::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
+    Hatchet::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
     emit info( requestData, biographyMap );
 }
 
@@ -203,7 +203,7 @@ EchonestPlugin::getArtistFamiliaritySlot()
     reply->deleteLater();
     Echonest::Artist artist = artistFromReply( reply );
     qreal familiarity = artist.familiarity();
-    Tomahawk::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
+    Hatchet::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
     emit info( requestData, familiarity );
 }
 
@@ -215,7 +215,7 @@ EchonestPlugin::getArtistHotttnesssSlot()
     reply->deleteLater();
     Echonest::Artist artist = artistFromReply( reply );
     qreal hotttnesss = artist.hotttnesss();
-    Tomahawk::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
+    Hatchet::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
     emit info( requestData, hotttnesss );
 }
 
@@ -234,7 +234,7 @@ EchonestPlugin::getArtistTermsSlot()
         termHash[ "frequency" ] = QString::number( term.frequency() );
         termsMap[ term.name() ] = termHash;
     }
-    Tomahawk::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
+    Hatchet::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
     emit info( requestData, termsMap );
 }
 
@@ -252,13 +252,13 @@ EchonestPlugin::getMiscTopSlot()
         termHash[ "frequency" ] = QString::number( term.frequency() );
         termsMap[ term.name() ] = termHash;
     }
-    Tomahawk::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
+    Hatchet::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
     emit info( requestData, termsMap );
 }
 
 
 bool
-EchonestPlugin::isValidArtistData( const Tomahawk::InfoSystem::InfoRequestData &requestData )
+EchonestPlugin::isValidArtistData( const Hatchet::InfoSystem::InfoRequestData &requestData )
 {
     if ( requestData.input.isNull() || !requestData.input.isValid() || !requestData.input.canConvert< QString >() )
     {
@@ -276,7 +276,7 @@ EchonestPlugin::isValidArtistData( const Tomahawk::InfoSystem::InfoRequestData &
 
 
 bool
-EchonestPlugin::isValidTrackData( const Tomahawk::InfoSystem::InfoRequestData &requestData )
+EchonestPlugin::isValidTrackData( const Hatchet::InfoSystem::InfoRequestData &requestData )
 {
     if ( requestData.input.isNull() || !requestData.input.isValid() || !requestData.input.canConvert< QString >() )
     {
@@ -312,6 +312,6 @@ EchonestPlugin::artistFromReply( QNetworkReply* reply )
 
 } //ns InfoSystem
 
-} //ns Tomahawk
+} //ns Hatchet
 
-Q_EXPORT_PLUGIN2( Tomahawk::InfoSystem::InfoPlugin, Tomahawk::InfoSystem::EchonestPlugin )
+Q_EXPORT_PLUGIN2( Hatchet::InfoSystem::InfoPlugin, Hatchet::InfoSystem::EchonestPlugin )

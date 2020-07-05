@@ -1,21 +1,21 @@
-# libtomahawk.sip build file
+# libhatchet.sip build file
 #============================================================================
 
 
-libtomahawk_inc += include_directories('.')
-libtomahawk_sip_dir = meson.current_source_dir()
+libhatchet_inc += include_directories('.')
+libhatchet_sip_dir = meson.current_source_dir()
 
 
-libtomahawk_src += files(
-    join_paths(libtomahawk_sip_dir, 'PeerInfo.cpp'),
-    join_paths(libtomahawk_sip_dir, 'SipInfo.cpp'),
-    join_paths(libtomahawk_sip_dir, 'SipPlugin.cpp'),
-    join_paths(libtomahawk_sip_dir, 'SipStatusMessage.cpp'))
+libhatchet_src += files(
+    join_paths(libhatchet_sip_dir, 'PeerInfo.cpp'),
+    join_paths(libhatchet_sip_dir, 'SipInfo.cpp'),
+    join_paths(libhatchet_sip_dir, 'SipPlugin.cpp'),
+    join_paths(libhatchet_sip_dir, 'SipStatusMessage.cpp'))
 
 
-libtomahawk_moc_h += files(
-    join_paths(libtomahawk_sip_dir, 'PeerInfo.h'),
-    join_paths(libtomahawk_sip_dir, 'SipInfo.h'),
-    join_paths(libtomahawk_sip_dir, 'SipPlugin.h'),
-    join_paths(libtomahawk_sip_dir, 'SipStatusMessage.h'))
+libhatchet_moc_h += files(
+    join_paths(libhatchet_sip_dir, 'PeerInfo.h'),
+    join_paths(libhatchet_sip_dir, 'SipInfo.h'),
+    join_paths(libhatchet_sip_dir, 'SipPlugin.h'),
+    join_paths(libhatchet_sip_dir, 'SipStatusMessage.h'))
     

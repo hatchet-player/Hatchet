@@ -1,29 +1,29 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "playlist/dynamic/echonest/EchonestGenerator.h"
 #include "playlist/dynamic/echonest/EchonestControl.h"
 #include "playlist/dynamic/echonest/EchonestSteerer.h"
 #include "Query.h"
-#include "utils/TomahawkUtils.h"
-#include "utils/TomahawkCache.h"
-#include "TomahawkSettings.h"
+#include "utils/HatchetUtils.h"
+#include "utils/HatchetCache.h"
+#include "HatchetSettings.h"
 #include "database/DatabaseCommand_CollectionAttributes.h"
 #include "database/Database.h"
 #include "utils/Logger.h"
@@ -34,7 +34,7 @@
 #include <QReadWriteLock>
 #include <EchonestCatalogSynchronizer.h>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 QStringList EchonestGenerator::s_moods = QStringList();
@@ -127,7 +127,7 @@ CatalogManager::collectionAttributes( const PairList& data )
 void
 CatalogManager::doCatalogUpdate()
 {
-    Tomahawk::dbcmd_ptr cmd( new DatabaseCommand_CollectionAttributes( DatabaseCommand_SetCollectionAttributes::EchonestSongCatalog ) );
+    Hatchet::dbcmd_ptr cmd( new DatabaseCommand_CollectionAttributes( DatabaseCommand_SetCollectionAttributes::EchonestSongCatalog ) );
     connect( cmd.data(), SIGNAL( collectionAttributes( PairList ) ), this, SLOT( collectionAttributes( PairList ) ) );
     Database::instance()->enqueue( cmd );
 }
@@ -650,7 +650,7 @@ EchonestGenerator::loadStyles()
     {
         if ( s_styles_lock.tryLockForRead() )
         {
-            QVariant styles = TomahawkUtils::Cache::instance()->getData( "EchonestGenerator", "styles" );
+            QVariant styles = HatchetUtils::Cache::instance()->getData( "EchonestGenerator", "styles" );
             s_styles_lock.unlock();
             if ( styles.isValid() && styles.canConvert< QStringList >() )
             {
@@ -678,7 +678,7 @@ EchonestGenerator::loadMoods()
     {
         if ( s_moods_lock.tryLockForRead() )
         {
-            QVariant moods = TomahawkUtils::Cache::instance()->getData( "EchonestGenerator", "moods" );
+            QVariant moods = HatchetUtils::Cache::instance()->getData( "EchonestGenerator", "moods" );
             s_moods_lock.unlock();
             if ( moods.isValid() && moods.canConvert< QStringList >() ) {
                 s_moods = moods.toStringList();
@@ -705,7 +705,7 @@ EchonestGenerator::loadGenres()
     {
         if ( s_genres_lock.tryLockForRead() )
         {
-            QVariant genres = TomahawkUtils::Cache::instance()->getData( "EchonestGenerator", "genres" );
+            QVariant genres = HatchetUtils::Cache::instance()->getData( "EchonestGenerator", "genres" );
             s_genres_lock.unlock();
             if ( genres.isValid() && genres.canConvert< QStringList >() )
             {
@@ -750,7 +750,7 @@ EchonestGenerator::moodsReceived()
     }
     s_moodsJob = 0;
 
-    TomahawkUtils::Cache::instance()->putData( "EchonestGenerator", 1209600000 /* 2 weeks */, "moods", QVariant::fromValue< QStringList >( s_moods ) );
+    HatchetUtils::Cache::instance()->putData( "EchonestGenerator", 1209600000 /* 2 weeks */, "moods", QVariant::fromValue< QStringList >( s_moods ) );
     s_moods_lock.unlock();
     emit moodsSaved();
 }
@@ -780,7 +780,7 @@ EchonestGenerator::stylesReceived()
     }
     s_stylesJob = 0;
 
-    TomahawkUtils::Cache::instance()->putData( "EchonestGenerator", 1209600000 /* 2 weeks */, "styles", QVariant::fromValue< QStringList >( s_styles ) );
+    HatchetUtils::Cache::instance()->putData( "EchonestGenerator", 1209600000 /* 2 weeks */, "styles", QVariant::fromValue< QStringList >( s_styles ) );
     s_styles_lock.unlock();
     emit stylesSaved();
 }
@@ -812,7 +812,7 @@ EchonestGenerator::genresReceived()
     }
     s_genresJob = 0;
 
-    TomahawkUtils::Cache::instance()->putData( "EchonestGenerator", 1209600000 /* 2 weeks */, "genres", QVariant::fromValue< QStringList >( s_genres ) );
+    HatchetUtils::Cache::instance()->putData( "EchonestGenerator", 1209600000 /* 2 weeks */, "genres", QVariant::fromValue< QStringList >( s_genres ) );
     s_genres_lock.unlock();
     emit genresSaved();
 }

@@ -2,7 +2,7 @@
     This file was automatically generated from ./Schema.sql on Tue Jul 30 12:51:06 CEST 2013.
 */
 
-static const char * tomahawk_schema_sql = 
+static const char * hatchet_schema_sql = 
 "CREATE TABLE IF NOT EXISTS oplog ("
 "    id INTEGER PRIMARY KEY AUTOINCREMENT,"
 "    source INTEGER REFERENCES source(id) ON DELETE CASCADE ON UPDATE CASCADE, "
@@ -200,9 +200,9 @@ static const char * tomahawk_schema_sql =
 "INSERT INTO settings(k,v) VALUES('schema_version', '31');"
     ;
 
-const char * get_tomahawk_sql()
+const char * get_hatchet_sql()
 {
-    return tomahawk_schema_sql;
+    return hatchet_schema_sql;
 }
 
 

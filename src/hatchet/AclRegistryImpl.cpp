@@ -1,27 +1,27 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "AclRegistryImpl.h"
 
 
-#include "TomahawkSettings.h"
-#include "TomahawkApp.h"
+#include "HatchetSettings.h"
+#include "HatchetApp.h"
 #include "Source.h"
 
 #include "accounts/AccountManager.h"
@@ -50,31 +50,31 @@ ACLRegistryImpl::~ACLRegistryImpl()
 }
 
 
-Tomahawk::ACLStatus::Type
-ACLRegistryImpl::isAuthorizedUser( const QString& dbid, const QString &username, Tomahawk::ACLStatus::Type globalType, bool skipEmission )
+Hatchet::ACLStatus::Type
+ACLRegistryImpl::isAuthorizedUser( const QString& dbid, const QString &username, Hatchet::ACLStatus::Type globalType, bool skipEmission )
 {
-    if ( QThread::currentThread() != TOMAHAWK_APPLICATION::instance()->thread() )
+    if ( QThread::currentThread() != HATCHET_APPLICATION::instance()->thread() )
     {
         if ( !skipEmission )
-            QMetaObject::invokeMethod( this, "isAuthorizedUser", Qt::QueuedConnection, Q_ARG( const QString&, dbid ), Q_ARG( const QString &, username ), Q_ARG( Tomahawk::ACLStatus::Type, globalType ), Q_ARG( bool, skipEmission ) );
-        return Tomahawk::ACLStatus::NotFound;
+            QMetaObject::invokeMethod( this, "isAuthorizedUser", Qt::QueuedConnection, Q_ARG( const QString&, dbid ), Q_ARG( const QString &, username ), Q_ARG( Hatchet::ACLStatus::Type, globalType ), Q_ARG( bool, skipEmission ) );
+        return Hatchet::ACLStatus::NotFound;
     }
 
-    if ( Tomahawk::Accounts::AccountManager::instance() )
+    if ( Hatchet::Accounts::AccountManager::instance() )
     {
         tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "Checking account friendly names against" << username;
-        Tomahawk::Accounts::AccountManager* accountManager = Tomahawk::Accounts::AccountManager::instance();
-        QList< Tomahawk::Accounts::Account* > accounts = accountManager->accounts();
-        foreach( Tomahawk::Accounts::Account* account, accounts )
+        Hatchet::Accounts::AccountManager* accountManager = Hatchet::Accounts::AccountManager::instance();
+        QList< Hatchet::Accounts::Account* > accounts = accountManager->accounts();
+        foreach( Hatchet::Accounts::Account* account, accounts )
         {
-            if ( !( account->types() & Tomahawk::Accounts::SipType ) )
+            if ( !( account->types() & Hatchet::Accounts::SipType ) )
                 continue;
             tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "Checking against account friendly name" << account->accountFriendlyName();
             if ( account->accountFriendlyName() == username )
             {
                 if ( !skipEmission )
-                    emit aclResult( dbid, username, Tomahawk::ACLStatus::Stream );
-                return Tomahawk::ACLStatus::Stream;
+                    emit aclResult( dbid, username, Hatchet::ACLStatus::Stream );
+                return Hatchet::ACLStatus::Stream;
             }
         }
     }
@@ -114,22 +114,22 @@ ACLRegistryImpl::isAuthorizedUser( const QString& dbid, const QString &username,
     }
 
     if ( skipEmission )
-        return Tomahawk::ACLStatus::NotFound;
+        return Hatchet::ACLStatus::NotFound;
 
     // User was not found, create a new user entry
     ACLRegistry::User user;
     user.knownDbids.append( dbid );
     user.knownAccountIds.append( username );
-    if ( globalType != Tomahawk::ACLStatus::NotFound )
+    if ( globalType != Hatchet::ACLStatus::NotFound )
         user.acl = globalType;
 
-    if ( !TomahawkUtils::headless() )
+    if ( !HatchetUtils::headless() )
     {
         getUserDecision( user, username );
-        return Tomahawk::ACLStatus::NotFound;
+        return Hatchet::ACLStatus::NotFound;
     }
     else
-        user.acl = Tomahawk::ACLStatus::Stream;
+        user.acl = Hatchet::ACLStatus::Stream;
 
     m_cache.append( user );
     save();
@@ -141,7 +141,7 @@ ACLRegistryImpl::isAuthorizedUser( const QString& dbid, const QString &username,
 void
 ACLRegistryImpl::getUserDecision( ACLRegistry::User user, const QString &username )
 {
-    if ( TomahawkUtils::headless() )
+    if ( HatchetUtils::headless() )
         return;
 
     tDebug( LOGVERBOSE ) << Q_FUNC_INFO;
@@ -154,7 +154,7 @@ ACLRegistryImpl::getUserDecision( ACLRegistry::User user, const QString &usernam
 void
 ACLRegistryImpl::userDecision( ACLRegistry::User user )
 {
-    if ( TomahawkUtils::headless() )
+    if ( HatchetUtils::headless() )
         return;
 
     tDebug( LOGVERBOSE ) << Q_FUNC_INFO;
@@ -171,10 +171,10 @@ ACLRegistryImpl::userDecision( ACLRegistry::User user )
 void
 ACLRegistryImpl::queueNextJob()
 {
-    if ( TomahawkUtils::headless() )
+    if ( HatchetUtils::headless() )
         return;
 
-    if ( QThread::currentThread() != TOMAHAWK_APPLICATION::instance()->thread() )
+    if ( QThread::currentThread() != HATCHET_APPLICATION::instance()->thread() )
     {
         QMetaObject::invokeMethod( this, "queueNextJob", Qt::QueuedConnection );
         return;
@@ -193,8 +193,8 @@ ACLRegistryImpl::queueNextJob()
         bool found = false;
         foreach( QString dbid, user.knownDbids )
         {
-            Tomahawk::ACLStatus::Type acl = isAuthorizedUser( dbid, job->username(), Tomahawk::ACLStatus::NotFound, true );
-            if ( acl != Tomahawk::ACLStatus::NotFound )
+            Hatchet::ACLStatus::Type acl = isAuthorizedUser( dbid, job->username(), Hatchet::ACLStatus::NotFound, true );
+            if ( acl != Hatchet::ACLStatus::NotFound )
             {
                 tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "Found existing acl entry for =" << user.knownAccountIds.first();
                 found = true;
@@ -231,7 +231,7 @@ void
 ACLRegistryImpl::load()
 {
     tDebug( LOGVERBOSE ) << Q_FUNC_INFO;
-    QVariantList entryList = TomahawkSettings::instance()->aclEntries();
+    QVariantList entryList = HatchetSettings::instance()->aclEntries();
     foreach ( QVariant entry, entryList )
     {
         if ( !entry.isValid() || !entry.canConvert< ACLRegistry::User >() )
@@ -262,5 +262,5 @@ ACLRegistryImpl::save()
         if ( val.isValid() )
             entryList.append( val );
     }
-    TomahawkSettings::instance()->setAclEntries( entryList );
+    HatchetSettings::instance()->setAclEntries( entryList );
 }

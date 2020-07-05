@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "EchonestCatalogSynchronizer.h"
@@ -31,29 +31,29 @@
 #include "PlaylistEntry.h"
 #include "Query.h"
 #include "SourceList.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "Track.h"
 
 #include <echonest5/CatalogUpdateEntry.h>
 #include <echonest5/Config.h>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 EchonestCatalogSynchronizer* EchonestCatalogSynchronizer::s_instance = 0;
 
 EchonestCatalogSynchronizer::EchonestCatalogSynchronizer( QObject *parent )
     : QObject( parent )
 {
-    m_syncing = TomahawkSettings::instance()->enableEchonestCatalogs();
+    m_syncing = HatchetSettings::instance()->enableEchonestCatalogs();
 
     qRegisterMetaType<QList<QStringList> >("QList<QStringList>");
 
-    connect( TomahawkSettings::instance(), SIGNAL( changed() ), this, SLOT( checkSettingsChanged() ) );
+    connect( HatchetSettings::instance(), SIGNAL( changed() ), this, SLOT( checkSettingsChanged() ) );
     connect( SourceList::instance()->getLocal()->dbCollection().data(), SIGNAL( tracksAdded( QList<unsigned int> ) ), this, SLOT( tracksAdded( QList<unsigned int> ) ), Qt::QueuedConnection );
     connect( SourceList::instance()->getLocal()->dbCollection().data(), SIGNAL( tracksRemoved( QList<unsigned int> ) ), this, SLOT( tracksRemoved( QList<unsigned int> ) ), Qt::QueuedConnection );
 
-    const QByteArray artist = TomahawkSettings::instance()->value( "collection/artistCatalog" ).toByteArray();
-    const QByteArray song = TomahawkSettings::instance()->value( "collection/songCatalog" ).toByteArray();
+    const QByteArray artist = HatchetSettings::instance()->value( "collection/artistCatalog" ).toByteArray();
+    const QByteArray song = HatchetSettings::instance()->value( "collection/songCatalog" ).toByteArray();
 
     if ( !artist.isEmpty() )
         m_artistCatalog.setId( artist );
@@ -79,25 +79,25 @@ EchonestCatalogSynchronizer::EchonestCatalogSynchronizer( QObject *parent )
 void
 EchonestCatalogSynchronizer::checkSettingsChanged()
 {
-    if ( TomahawkSettings::instance()->enableEchonestCatalogs() && !m_syncing )
+    if ( HatchetSettings::instance()->enableEchonestCatalogs() && !m_syncing )
     {
         // enable, and upload whole db
         m_syncing = true;
 
         tDebug() << "Echonest Catalog sync pref changed, uploading!!";
         uploadDb();
-    } else if ( !TomahawkSettings::instance()->enableEchonestCatalogs() && m_syncing )
+    } else if ( !HatchetSettings::instance()->enableEchonestCatalogs() && m_syncing )
     {
 
         tDebug() << "Found echonest change, doing catalog deletes!";
         // delete all track nums and catalog ids from our peers
         {
             DatabaseCommand_SetTrackAttributes* cmd = new DatabaseCommand_SetTrackAttributes( DatabaseCommand_SetTrackAttributes::EchonestCatalogId );
-            Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+            Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
         }
         {
             DatabaseCommand_SetCollectionAttributes* cmd = new DatabaseCommand_SetCollectionAttributes( DatabaseCommand_SetCollectionAttributes::EchonestSongCatalog, true );
-            Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+            Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
         }
 
         if ( !m_songCatalog.id().isEmpty() )
@@ -130,7 +130,7 @@ EchonestCatalogSynchronizer::catalogDeleted()
         // HACK libechonest bug, should be a static method but it's not. Doesn't actually use any instance vars though
         m_songCatalog.parseDelete( r );
         // If we didn't throw, no errors, so clear our config
-        TomahawkSettings::instance()->setValue( toDel, QString() );
+        HatchetSettings::instance()->setValue( toDel, QString() );
     } catch ( const Echonest::ParseError& e )
     {
         tLog() << "Error in libechonest parsing catalog delete:" << e.what();
@@ -161,8 +161,8 @@ EchonestCatalogSynchronizer::songCreateFinished()
     try
     {
         m_songCatalog = Echonest::Catalog::parseCreate( r );
-        TomahawkSettings::instance()->setValue( "collection/songCatalog", m_songCatalog.id() );
-        Tomahawk::dbcmd_ptr cmd( new DatabaseCommand_SetCollectionAttributes( DatabaseCommand_SetCollectionAttributes::EchonestSongCatalog,
+        HatchetSettings::instance()->setValue( "collection/songCatalog", m_songCatalog.id() );
+        Hatchet::dbcmd_ptr cmd( new DatabaseCommand_SetCollectionAttributes( DatabaseCommand_SetCollectionAttributes::EchonestSongCatalog,
                                                                                             m_songCatalog.id() ) );
         Database::instance()->enqueue( cmd );
     } catch ( const Echonest::ParseError& e )
@@ -181,7 +181,7 @@ EchonestCatalogSynchronizer::songCreateFinished()
                  "AND file.source IS NULL");
     DatabaseCommand_GenericSelect* cmd = new DatabaseCommand_GenericSelect( sql, DatabaseCommand_GenericSelect::Track, true );
     connect( cmd, SIGNAL( rawData( QList< QStringList > ) ), this, SLOT( rawTracksAdd( QList< QStringList > ) ) );
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 }
 
 
@@ -198,9 +198,9 @@ EchonestCatalogSynchronizer::artistCreateFinished()
     try
     {
         m_artistCatalog = Echonest::Catalog::parseCreate( r );
-        TomahawkSettings::instance()->setValue( "collection/artistCatalog", m_artistCatalog.id() );
+        HatchetSettings::instance()->setValue( "collection/artistCatalog", m_artistCatalog.id() );
 
-//        Tomahawk::dbcmd_ptr cmd( new DatabaseCommand_SetCollectionAttributes( SourceList::instance()->getLocal(),
+//        Hatchet::dbcmd_ptr cmd( new DatabaseCommand_SetCollectionAttributes( SourceList::instance()->getLocal(),
 //                                                                                            DatabaseCommand_SetCollectionAttributes::EchonestSongCatalog,
 //                                                                                            m_songCatalog.id() ) );
 //        Database::instance()->enqueue( cmd );
@@ -317,8 +317,8 @@ EchonestCatalogSynchronizer::tracksAdded( const QList< unsigned int >& tracks )
     qDebug() << Q_FUNC_INFO << "Got tracks added from db, fetching metadata" << tracks;
     // Get the result_ptrs from the tracks
     DatabaseCommand_LoadFiles* cmd = new DatabaseCommand_LoadFiles( tracks );
-    connect( cmd, SIGNAL( results( QList<Tomahawk::result_ptr> ) ), this, SLOT( loadedResults( QList<Tomahawk::result_ptr> ) ) );
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    connect( cmd, SIGNAL( results( QList<Hatchet::result_ptr> ) ), this, SLOT( loadedResults( QList<Hatchet::result_ptr> ) ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 }
 
 

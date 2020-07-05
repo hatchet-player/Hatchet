@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2013, Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef ACCOUNT_H
@@ -36,7 +36,7 @@
 class SipPlugin;
 class AccountConfigWidget;
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 namespace Accounts
@@ -54,7 +54,7 @@ enum AccountType
     StatusPushType = 0x08
 };
 
-// ATTENTION: keep in sync with tomahawk.js
+// ATTENTION: keep in sync with hatchet.js
 enum ConfigTestResultType
 {
     ConfigTestResultOther = 0,
@@ -128,7 +128,7 @@ public:
 
     virtual QString errorMessage() const { QMutexLocker locker( &m_mutex ); return m_cachedError; }
 
-    virtual Tomahawk::InfoSystem::InfoPluginPtr infoPlugin() = 0;
+    virtual Hatchet::InfoSystem::InfoPluginPtr infoPlugin() = 0;
     virtual SipPlugin* sipPlugin( bool create = true ) = 0;
 
     // Some accounts cannot be enabled if authentication fails. Return true after failing to authenticate
@@ -164,7 +164,7 @@ public slots:
 
 signals:
     void error( int errorId, const QString& errorStr );
-    void connectionStateChanged( Tomahawk::Accounts::Account::ConnectionState state );
+    void connectionStateChanged( Hatchet::Accounts::Account::ConnectionState state );
 
     void configurationChanged();
     void configTestResult( int, const QString& = QString() );
@@ -174,7 +174,7 @@ protected:
     virtual void syncConfig();
 
 private slots:
-    void onConnectionStateChanged( Tomahawk::Accounts::Account::ConnectionState );
+    void onConnectionStateChanged( Hatchet::Accounts::Account::ConnectionState );
     void onError( int, const QString& );
 
 private:
@@ -220,10 +220,10 @@ public:
 
 }
 
-Q_DECLARE_INTERFACE( Tomahawk::Accounts::AccountFactory, "tomahawk.AccountFactory/1.0" )
+Q_DECLARE_INTERFACE( Hatchet::Accounts::AccountFactory, "hatchet.AccountFactory/1.0" )
 
-Q_DECLARE_METATYPE( Tomahawk::Accounts::Account* )
-Q_DECLARE_METATYPE( QList< Tomahawk::Accounts::Account* > )
-Q_DECLARE_METATYPE( Tomahawk::Accounts::AccountTypes )
+Q_DECLARE_METATYPE( Hatchet::Accounts::Account* )
+Q_DECLARE_METATYPE( QList< Hatchet::Accounts::Account* > )
+Q_DECLARE_METATYPE( Hatchet::Accounts::AccountTypes )
 
 #endif

@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DatabaseCommand_LoadPlaylistEntries.h"
@@ -28,7 +28,7 @@
 
 #include <QSqlQuery>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 void
@@ -43,7 +43,7 @@ DatabaseCommand_LoadPlaylistEntries::exec( DatabaseImpl* dbi )
 void
 DatabaseCommand_LoadPlaylistEntries::generateEntries( DatabaseImpl* dbi )
 {
-    TomahawkSqlQuery query_entries = dbi->newquery();
+    HatchetSqlQuery query_entries = dbi->newquery();
     query_entries.prepare( "SELECT entries, playlist, author, timestamp, previous_revision "
                            "FROM playlist_revision "
                            "WHERE guid = :guid" );
@@ -59,13 +59,13 @@ DatabaseCommand_LoadPlaylistEntries::generateEntries( DatabaseImpl* dbi )
         if ( !query_entries.value( 0 ).isNull() )
         {
             // entries should be a list of strings:
-            QVariant v = TomahawkUtils::parseJson( query_entries.value( 0 ).toByteArray(), &ok );
+            QVariant v = HatchetUtils::parseJson( query_entries.value( 0 ).toByteArray(), &ok );
             Q_ASSERT( ok && v.type() == QVariant::List ); //TODO
 
             m_guids = v.toStringList();
             QString inclause = QString( "('%1')" ).arg( m_guids.join( "', '" ) );
 
-            TomahawkSqlQuery query = dbi->newquery();
+            HatchetSqlQuery query = dbi->newquery();
             QString sql = QString( "SELECT guid, trackname, artistname, albumname, annotation, "
                                 "duration, addedon, addedby, result_hint "
                                 "FROM playlist_item "
@@ -82,7 +82,7 @@ DatabaseCommand_LoadPlaylistEntries::generateEntries( DatabaseImpl* dbi )
                 const QString resultHint = query.value( 8 ).toString();
                 e->setResultHint( resultHint );
 
-                Tomahawk::query_ptr q = Tomahawk::Query::get( query.value( 2 ).toString(), query.value( 1 ).toString(), query.value( 3 ).toString() );
+                Hatchet::query_ptr q = Hatchet::Query::get( query.value( 2 ).toString(), query.value( 1 ).toString(), query.value( 3 ).toString() );
                 if ( q.isNull() )
                     continue;
 
@@ -106,7 +106,7 @@ DatabaseCommand_LoadPlaylistEntries::generateEntries( DatabaseImpl* dbi )
 
     if ( !prevrev.isEmpty() )
     {
-        TomahawkSqlQuery query_entries_old = dbi->newquery();
+        HatchetSqlQuery query_entries_old = dbi->newquery();
         query_entries_old.prepare( "SELECT entries, "
                                    "(SELECT currentrevision = ? FROM playlist WHERE guid = ?) "
                                    "FROM playlist_revision "
@@ -124,7 +124,7 @@ DatabaseCommand_LoadPlaylistEntries::generateEntries( DatabaseImpl* dbi )
 
         if ( !query_entries_old.value( 0 ).isNull() )
         {
-            QVariant v = TomahawkUtils::parseJson( query_entries_old.value( 0 ).toByteArray(), &ok );
+            QVariant v = HatchetUtils::parseJson( query_entries_old.value( 0 ).toByteArray(), &ok );
             Q_ASSERT( ok && v.type() == QVariant::List ); //TODO
             m_oldentries = v.toStringList();
         }

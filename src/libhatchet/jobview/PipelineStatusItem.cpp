@@ -1,26 +1,26 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *                        Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "PipelineStatusItem.h"
 
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 
 #include "JobStatusModel.h"
 #include "JobStatusView.h"
@@ -29,11 +29,11 @@
 #include "Track.h"
 
 
-PipelineStatusItem::PipelineStatusItem( const Tomahawk::query_ptr& q )
+PipelineStatusItem::PipelineStatusItem( const Hatchet::query_ptr& q )
     : JobStatusItem()
 {
-    connect( Tomahawk::Pipeline::instance(), SIGNAL( resolving( Tomahawk::query_ptr ) ), this, SLOT( resolving( Tomahawk::query_ptr ) ) );
-    connect( Tomahawk::Pipeline::instance(), SIGNAL( idle() ), this, SLOT( idle() ) );
+    connect( Hatchet::Pipeline::instance(), SIGNAL( resolving( Hatchet::query_ptr ) ), this, SLOT( resolving( Hatchet::query_ptr ) ) );
+    connect( Hatchet::Pipeline::instance(), SIGNAL( idle() ), this, SLOT( idle() ) );
 
     if ( !q.isNull() )
         resolving( q );
@@ -48,7 +48,7 @@ PipelineStatusItem::~PipelineStatusItem()
 QString
 PipelineStatusItem::rightColumnText() const
 {
-    return QString( "%1" ).arg( Tomahawk::Pipeline::instance()->activeQueryCount() + Tomahawk::Pipeline::instance()->pendingQueryCount() );
+    return QString( "%1" ).arg( Hatchet::Pipeline::instance()->activeQueryCount() + Hatchet::Pipeline::instance()->pendingQueryCount() );
 }
 
 
@@ -62,7 +62,7 @@ PipelineStatusItem::mainText() const
 void
 PipelineStatusItem::idle()
 {
-    if ( !Tomahawk::Pipeline::instance()->activeQueryCount() )
+    if ( !Hatchet::Pipeline::instance()->activeQueryCount() )
         emit finished();
 }
 
@@ -70,12 +70,12 @@ PipelineStatusItem::idle()
 QPixmap
 PipelineStatusItem::icon() const
 {
-    return TomahawkUtils::defaultPixmap( TomahawkUtils::Search );
+    return HatchetUtils::defaultPixmap( HatchetUtils::Search );
 }
 
 
 void
-PipelineStatusItem::resolving( const Tomahawk::query_ptr& query )
+PipelineStatusItem::resolving( const Hatchet::query_ptr& query )
 {
     if ( query->isFullTextQuery() )
         m_latestQuery = query->fullTextQuery();
@@ -91,12 +91,12 @@ PipelineStatusItem::resolving( const Tomahawk::query_ptr& query )
 PipelineStatusManager::PipelineStatusManager( QObject* parent )
     : QObject( parent )
 {
-    connect( Tomahawk::Pipeline::instance(), SIGNAL( resolving( Tomahawk::query_ptr ) ), this, SLOT( resolving( Tomahawk::query_ptr ) ) );
+    connect( Hatchet::Pipeline::instance(), SIGNAL( resolving( Hatchet::query_ptr ) ), this, SLOT( resolving( Hatchet::query_ptr ) ) );
 }
 
 
 void
-PipelineStatusManager::resolving( const Tomahawk::query_ptr& p )
+PipelineStatusManager::resolving( const Hatchet::query_ptr& p )
 {
     Q_UNUSED( p );
 

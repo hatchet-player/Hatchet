@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2011, Hugo Lindström <hugolm84@gmail.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "SpotifyAccount.h"
@@ -28,7 +28,7 @@
 #include "resolvers/ScriptResolver.h"
 #include "utils/Closure.h"
 #include "utils/Logger.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 
 #include "ActionCollection.h"
 #include "Pipeline.h"
@@ -39,7 +39,7 @@
 #include "SpotifyAccountConfig.h"
 #include "SpotifyInfoPlugin.h"
 //#include "SpotifyPlaylistUpdater.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "Track.h"
 
 #include <QAction>
@@ -50,7 +50,7 @@
 #include <QMessageBox>
 #include <QPixmap>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 using namespace Accounts;
 
 
@@ -118,7 +118,7 @@ SpotifyAccount::~SpotifyAccount()
 
     if ( m_infoPlugin )
     {
-        Tomahawk::InfoSystem::InfoSystem::instance()->removeInfoPlugin( infoPlugin() );
+        Hatchet::InfoSystem::InfoSystem::instance()->removeInfoPlugin( infoPlugin() );
     }
 
 
@@ -137,12 +137,12 @@ SpotifyAccount::init()
     setAccountServiceName( "spotify" );
 
     AtticaManager::instance()->registerCustomAccount( s_resolverId, this );
-    qRegisterMetaType< Tomahawk::Accounts::SpotifyPlaylistInfo* >( "Tomahawk::Accounts::SpotifyPlaylist*" );
+    qRegisterMetaType< Hatchet::Accounts::SpotifyPlaylistInfo* >( "Hatchet::Accounts::SpotifyPlaylist*" );
 
-    if ( infoPlugin() && Tomahawk::InfoSystem::InfoSystem::instance()->workerThread() )
+    if ( infoPlugin() && Hatchet::InfoSystem::InfoSystem::instance()->workerThread() )
     {
-        infoPlugin()->moveToThread( Tomahawk::InfoSystem::InfoSystem::instance()->workerThread().data() );
-        Tomahawk::InfoSystem::InfoSystem::instance()->addInfoPlugin( infoPlugin() );
+        infoPlugin()->moveToThread( Hatchet::InfoSystem::InfoSystem::instance()->workerThread().data() );
+        Hatchet::InfoSystem::InfoSystem::instance()->addInfoPlugin( infoPlugin() );
     }
 
     if ( !AtticaManager::instance()->resolversLoaded() )
@@ -231,7 +231,7 @@ SpotifyAccount::hookupResolver()
     // 0.4.x->0.5.x upgrade. So we do it manually for a while
     killExistingResolvers();
     m_spotifyResolver = QPointer< ScriptResolver >( qobject_cast< ScriptResolver* >( Pipeline::instance()->addScriptResolver( accountId(), path ) ) );
-    m_spotifyResolver.data()->setIcon( TomahawkUtils::defaultPixmap( TomahawkUtils::SpotifyIcon ) );
+    m_spotifyResolver.data()->setIcon( HatchetUtils::defaultPixmap( HatchetUtils::SpotifyIcon ) );
 
     connect( m_spotifyResolver.data(), SIGNAL( changed() ), this, SLOT( resolverChanged() ) );
     connect( m_spotifyResolver.data(), SIGNAL( customMessage( QString, QVariantMap ) ), this, SLOT( resolverMessage( QString, QVariantMap ) ) );
@@ -248,11 +248,11 @@ SpotifyAccount::killExistingResolvers()
 {
     QProcess p;
 #if defined(Q_OS_UNIX)
-    const int ret = p.execute( "killall -9 spotify_tomahawkresolver" );
-    tLog( LOGVERBOSE ) << "Tried to killall -9 spotify_tomahawkresolver with return code:" << ret;
+    const int ret = p.execute( "killall -9 spotify_hatchetresolver" );
+    tLog( LOGVERBOSE ) << "Tried to killall -9 spotify_hatchetresolver with return code:" << ret;
 #elif defined(Q_OS_WIN)
-    const int ret = p.execute( "taskkill.exe /F /im spotify_tomahawkresolver.exe" );
-    tLog( LOGVERBOSE ) << "Tried to taskkill.exe /F /im spotify_tomahawkresolver.exe with return code:" << ret;
+    const int ret = p.execute( "taskkill.exe /F /im spotify_hatchetresolver.exe" );
+    tLog( LOGVERBOSE ) << "Tried to taskkill.exe /F /im spotify_hatchetresolver.exe with return code:" << ret;
 #endif
 }
 
@@ -261,11 +261,11 @@ bool
 SpotifyAccount::checkForResolver()
 {
 #if defined(Q_OS_WIN)
-    QDir appDataDir = TomahawkUtils::appDataDir();
-    return appDataDir.exists( QString( "atticaresolvers/%1/spotify_tomahawkresolver.exe" ).arg( s_resolverId ) );
+    QDir appDataDir = HatchetUtils::appDataDir();
+    return appDataDir.exists( QString( "atticaresolvers/%1/spotify_hatchetresolver.exe" ).arg( s_resolverId ) );
 #elif defined(Q_OS_LINUX)  || defined(Q_OS_MAC)
-    QDir appDataDir = TomahawkUtils::appDataDir();
-    return appDataDir.exists( QString( "atticaresolvers/%1/spotify_tomahawkresolver" ).arg( s_resolverId ) );
+    QDir appDataDir = HatchetUtils::appDataDir();
+    return appDataDir.exists( QString( "atticaresolvers/%1/spotify_hatchetresolver" ).arg( s_resolverId ) );
 #endif
 
     return false;
@@ -313,9 +313,9 @@ SpotifyAccount::authenticate()
     }
     else if ( m_spotifyResolver.isNull() || manualResolverRemoved )
     {
-/*        Mon Sep 1 2014 - 02:03:56 [8]: void Tomahawk::Accounts::AccountManager::hookupAndEnable(Tomahawk::Accounts::Account*, bool)
+/*        Mon Sep 1 2014 - 02:03:56 [8]: void Hatchet::Accounts::AccountManager::hookupAndEnable(Hatchet::Accounts::Account*, bool)
         Mon Sep 1 2014 - 02:03:56 [8]: Spotify account authenticating...
-        Mon Sep 1 2014 - 02:03:56 [1]: virtual void Tomahawk::Accounts::SpotifyAccount::authenticate() "spotify-linux-x64" true false true
+        Mon Sep 1 2014 - 02:03:56 [1]: virtual void Hatchet::Accounts::SpotifyAccount::authenticate() "spotify-linux-x64" true false true
         Mon Sep 1 2014 - 02:03:56 [8]: Got null resolver but asked to authenticate, so installing if we have one from attica: false "" */
 
         tDebug() << Q_FUNC_INFO << s_resolverId << m_spotifyResolver.isNull() << manualResolverRemoved << AtticaManager::instance()->resolversLoaded();
@@ -454,7 +454,7 @@ SpotifyAccount::privateModeChanged()
     tLog( LOGVERBOSE ) << Q_FUNC_INFO << "Sending privateMode";
     QVariantMap msg;
     msg[ "_msgtype" ] = "setPrivacyMode";
-    bool _private = TomahawkSettings::instance()->privateListeningMode() != TomahawkSettings::PublicListening;
+    bool _private = HatchetSettings::instance()->privateListeningMode() != HatchetSettings::PublicListening;
     if ( m_configWidget) {
       _private |= m_configWidget->persitentPrivacy();
     }
@@ -926,10 +926,10 @@ SpotifyAccount::resolverMessage( const QString &msgType, const QVariantMap &msg 
 
         if ( !m_updaters.contains( plid ) )
         {
-            // If the resolver gets out-of-sync with Tomahawk's config, also
+            // If the resolver gets out-of-sync with Hatchet's config, also
             // inform it that we do not sync the playlist anymore. This is a
             // very rare case but will lead to crashes if we do not sync
-            // Tomahawk's sync settings to the resolver. See TWK-1397.
+            // Hatchet's sync settings to the resolver. See TWK-1397.
             QVariantMap msg;
             msg[ "_msgtype" ] = "removeFromSyncList";
             msg[ "playlistid" ] = plid;
@@ -1024,7 +1024,7 @@ SpotifyAccount::resolverMessage( const QString &msgType, const QVariantMap &msg 
 
         if( info && info->name != title )
         {
-            tLog( LOGVERBOSE ) << "Playlist renamed fetched in tomahawk";
+            tLog( LOGVERBOSE ) << "Playlist renamed fetched in hatchet";
             updater->spotifyPlaylistRenamed( title, newRev, oldRev  );
         }
 
@@ -1254,7 +1254,7 @@ SpotifyAccount::login( const QString& username, const QString& password )
     msg[ "_msgtype" ] = "login";
     msg[ "username" ] = username;
     msg[ "password" ] = password;
-    msg[ "privateSession" ] = ( m_configWidget.data()->persitentPrivacy() || TomahawkSettings::instance()->privateListeningMode() != TomahawkSettings::PublicListening );
+    msg[ "privateSession" ] = ( m_configWidget.data()->persitentPrivacy() || HatchetSettings::instance()->privateListeningMode() != HatchetSettings::PublicListening );
     msg[ "highQuality" ] = m_configWidget.data()->highQuality();
 
     m_spotifyResolver.data()->sendMessage( msg );
@@ -1300,7 +1300,7 @@ SpotifyAccount::startPlaylistSync( SpotifyPlaylistInfo* playlist )
 SpotifyAccount::startPlaylistSyncWithPlaylist( const QString& msgType, const QVariantMap& msg, const QVariant& )
 {
     Q_UNUSED( msgType );
-    tLog( LOGVERBOSE ) << Q_FUNC_INFO <<  "Got full spotify playlist body, creating a tomahawk playlist and enabling sync!!";
+    tLog( LOGVERBOSE ) << Q_FUNC_INFO <<  "Got full spotify playlist body, creating a hatchet playlist and enabling sync!!";
     const QString id = msg.value( "id" ).toString();
     const QString name = msg.value( "name" ).toString();
     const QString revid = msg.value( "revid" ).toString();
@@ -1314,7 +1314,7 @@ SpotifyAccount::startPlaylistSyncWithPlaylist( const QString& msgType, const QVa
     QList< query_ptr > queries = SpotifyPlaylistUpdater::variantToQueries( tracks );*/
     /**
      * Begin syncing a playlist. Two options:
-     * 1) This is a playlist that has never been synced to tomahawk. Create a new one
+     * 1) This is a playlist that has never been synced to hatchet. Create a new one
      *    and attach a new SpotifyPlaylistUpdater to it
      * 2) This was previously synced, and has since been unsynced. THe playlist is still around
      *    with an inactive SpotifyPlaylistUpdater, so just enable it and bring it up to date by merging current with new
@@ -1340,7 +1340,7 @@ SpotifyAccount::startPlaylistSyncWithPlaylist( const QString& msgType, const QVa
     else
     {
 
-        playlist_ptr plPtr = Tomahawk::Playlist::create( SourceList::instance()->getLocal(),
+        playlist_ptr plPtr = Hatchet::Playlist::create( SourceList::instance()->getLocal(),
                                                         uuid(),
                                                         name,
                                                         QString(),
@@ -1448,7 +1448,7 @@ SpotifyAccount::hasPlaylist(const QString& plId)
 }
 
 
-Tomahawk::playlist_ptr
+Hatchet::playlist_ptr
 SpotifyAccount::playlistForURI(const QString& plId)
 {
     return m_updaters[ plId ]->playlist();
@@ -1537,11 +1537,11 @@ SpotifyAccount::stopPlaylistSync( SpotifyPlaylistInfo* playlist, bool forceDontD
 
         if ( deleteOnUnsync() && !forceDontDelete )
         {
-            playlist_ptr tomahawkPl = updater->playlist();
+            playlist_ptr hatchetPl = updater->playlist();
 
-            if ( !tomahawkPl.isNull() )
+            if ( !hatchetPl.isNull() )
             {
-                Playlist::removalHandler()->remove( tomahawkPl );
+                Playlist::removalHandler()->remove( hatchetPl );
             }
 
             updater->deleteLater();

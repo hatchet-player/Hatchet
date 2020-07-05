@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2012, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef PLAYABLEITEM_H
@@ -36,22 +36,22 @@ public:
     ~PlayableItem();
 
     explicit PlayableItem( PlayableItem* parent = 0 );
-    explicit PlayableItem( const Tomahawk::artist_ptr& artist, PlayableItem* parent = 0, int row = -1 );
-    explicit PlayableItem( const Tomahawk::album_ptr& album, PlayableItem* parent = 0, int row = -1 );
-    explicit PlayableItem( const Tomahawk::result_ptr& result, PlayableItem* parent = 0, int row = -1 );
-    explicit PlayableItem( const Tomahawk::query_ptr& query, PlayableItem* parent = 0, int row = -1 );
-    explicit PlayableItem( const Tomahawk::plentry_ptr& entry, PlayableItem* parent = 0, int row = -1 );
-    explicit PlayableItem( const Tomahawk::source_ptr& source, PlayableItem* parent = 0, int row = -1 );
+    explicit PlayableItem( const Hatchet::artist_ptr& artist, PlayableItem* parent = 0, int row = -1 );
+    explicit PlayableItem( const Hatchet::album_ptr& album, PlayableItem* parent = 0, int row = -1 );
+    explicit PlayableItem( const Hatchet::result_ptr& result, PlayableItem* parent = 0, int row = -1 );
+    explicit PlayableItem( const Hatchet::query_ptr& query, PlayableItem* parent = 0, int row = -1 );
+    explicit PlayableItem( const Hatchet::plentry_ptr& entry, PlayableItem* parent = 0, int row = -1 );
+    explicit PlayableItem( const Hatchet::source_ptr& source, PlayableItem* parent = 0, int row = -1 );
 
-    const Tomahawk::artist_ptr& artist() const { return m_artist; }
-    const Tomahawk::album_ptr& album() const { return m_album; }
-    const Tomahawk::query_ptr& query() const { return m_query; }
-    const Tomahawk::plentry_ptr& entry() const { return m_entry; }
-    const Tomahawk::source_ptr& source() const { return m_source; }
-    const Tomahawk::result_ptr& result() const;
+    const Hatchet::artist_ptr& artist() const { return m_artist; }
+    const Hatchet::album_ptr& album() const { return m_album; }
+    const Hatchet::query_ptr& query() const { return m_query; }
+    const Hatchet::plentry_ptr& entry() const { return m_entry; }
+    const Hatchet::source_ptr& source() const { return m_source; }
+    const Hatchet::result_ptr& result() const;
 
-    Tomahawk::PlaybackLog playbackLog() const;
-    void setPlaybackLog( const Tomahawk::PlaybackLog& log );
+    Hatchet::PlaybackLog playbackLog() const;
+    void setPlaybackLog( const Hatchet::PlaybackLog& log );
 
     PlayableItem* parent() const { return m_parent; }
     void forceUpdate() { emit dataChanged(); }
@@ -79,18 +79,18 @@ private slots:
 private:
     void init( int row = -1 );
 
-    Tomahawk::artist_ptr m_artist;
-    Tomahawk::album_ptr m_album;
-    Tomahawk::plentry_ptr m_entry;
-    Tomahawk::result_ptr m_result;
-    Tomahawk::query_ptr m_query;
-    Tomahawk::source_ptr m_source;
+    Hatchet::artist_ptr m_artist;
+    Hatchet::album_ptr m_album;
+    Hatchet::plentry_ptr m_entry;
+    Hatchet::result_ptr m_result;
+    Hatchet::query_ptr m_query;
+    Hatchet::source_ptr m_source;
 
     PlayableItem* m_parent;
     bool m_fetchingMore = false;
     bool m_isPlaying = false;
 
-    Tomahawk::PlaybackLog m_playbackLog;
+    Hatchet::PlaybackLog m_playbackLog;
 };
 
 #endif // PLAYABLEITEM_H

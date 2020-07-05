@@ -1,32 +1,32 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2011,      Leo Franchi <lfranchi@kde.org>
  *   Copyright 2011,      Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2011-2016, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2013,      Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #pragma once
-#ifndef TOMAHAWK_UTILS_SHORTLINKHELPER_H
-#define TOMAHAWK_UTILS_SHORTLINKHELPER_H
+#ifndef HATCHET_UTILS_SHORTLINKHELPER_H
+#define HATCHET_UTILS_SHORTLINKHELPER_H
 
 #include "DllMacro.h"
 #include "Typedefs.h"
 
-namespace Tomahawk {
+namespace Hatchet {
 namespace Utils {
 
 class ShortLinkHelperPrivate;
@@ -41,11 +41,11 @@ public:
     QString hostname() const;
 
 public slots:
-    void shortLink( const Tomahawk::playlist_ptr& playlist );
+    void shortLink( const Hatchet::playlist_ptr& playlist );
     void shortenLink( const QUrl& url, const QVariant &callbackObj = QVariant() );
 
 signals:
-    void shortLinkReady( const Tomahawk::playlist_ptr& playlist, const QUrl& shortUrl );
+    void shortLinkReady( const Hatchet::playlist_ptr& playlist, const QUrl& shortUrl );
     void shortLinkReady( const QUrl& longUrl, const QUrl& shortUrl, const QVariant& callbackObj );
     void done();
 
@@ -53,7 +53,7 @@ protected:
     QScopedPointer<ShortLinkHelperPrivate> d_ptr;
 
 private slots:
-    void shortLinkRequestFinished( const Tomahawk::playlist_ptr& playlist );
+    void shortLinkRequestFinished( const Hatchet::playlist_ptr& playlist );
     void shortenLinkRequestFinished();
     void shortenLinkRequestError( QNetworkReply::NetworkError );
 
@@ -62,6 +62,6 @@ private:
 };
 
 } // namespace Utils
-} // namespace Tomahawk
+} // namespace Hatchet
 
-#endif // TOMAHAWK_UTILS_SHORTLINKHELPER_H
+#endif // HATCHET_UTILS_SHORTLINKHELPER_H

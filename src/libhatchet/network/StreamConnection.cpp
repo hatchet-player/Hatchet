@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "StreamConnection.h"
@@ -36,10 +36,10 @@
 #include <QFile>
 #include <QTimer>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
-StreamConnection::StreamConnection( Servent* s, ControlConnection* cc, QString fid, const Tomahawk::result_ptr& result )
+StreamConnection::StreamConnection( Servent* s, ControlConnection* cc, QString fid, const Hatchet::result_ptr& result )
     : Connection( s )
     , m_cc( cc )
     , m_fid( fid )
@@ -117,7 +117,7 @@ StreamConnection::id() const
 }
 
 
-Tomahawk::source_ptr
+Hatchet::source_ptr
 StreamConnection::source() const
 {
     return m_source;
@@ -167,13 +167,13 @@ StreamConnection::setup()
     qDebug() << "in TX mode, fid:" << m_fid;
 
     DatabaseCommand_LoadFiles* cmd = new DatabaseCommand_LoadFiles( m_fid.toUInt() );
-    connect( cmd, SIGNAL( result( Tomahawk::result_ptr ) ), SLOT( startSending( Tomahawk::result_ptr ) ) );
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    connect( cmd, SIGNAL( result( Hatchet::result_ptr ) ), SLOT( startSending( Hatchet::result_ptr ) ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 }
 
 
 void
-StreamConnection::startSending( const Tomahawk::result_ptr& result )
+StreamConnection::startSending( const Hatchet::result_ptr& result )
 {
     if ( result.isNull() )
     {
@@ -188,12 +188,12 @@ StreamConnection::startSending( const Tomahawk::result_ptr& result )
     std::function< void ( const QString, QSharedPointer< QIODevice > ) > callback =
             std::bind( &StreamConnection::reallyStartSending, this, result,
                        std::placeholders::_1, std::placeholders::_2 );
-    Tomahawk::UrlHandler::getIODeviceForUrl( m_result, m_result->url(), callback );
+    Hatchet::UrlHandler::getIODeviceForUrl( m_result, m_result->url(), callback );
 }
 
 
 void
-StreamConnection::reallyStartSending( const Tomahawk::result_ptr result, const QString url, QSharedPointer< QIODevice > io )
+StreamConnection::reallyStartSending( const Hatchet::result_ptr result, const QString url, QSharedPointer< QIODevice > io )
 {
     Q_UNUSED( url );
 

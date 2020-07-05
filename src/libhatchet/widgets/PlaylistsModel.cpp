@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "PlaylistsModel_p.h"
@@ -21,7 +21,7 @@
 #include "widgets/RecentlyPlayedPlaylistsModel.h"
 #include "Track.h"
 
-namespace Tomahawk {
+namespace Hatchet {
 
 
 PlaylistsModel::PlaylistsModel( const QList<playlist_ptr>& playlists, QObject* parent )
@@ -51,16 +51,16 @@ PlaylistsModel::data( const QModelIndex& index, int role ) const
     case Qt::DisplayRole:
         return pl->title();
     case RecentlyPlayedPlaylistsModel::PlaylistRole:
-        return QVariant::fromValue< Tomahawk::playlist_ptr >( pl );
+        return QVariant::fromValue< Hatchet::playlist_ptr >( pl );
     case RecentlyPlayedPlaylistsModel::ArtistRole:
     {
         return d->artists[pl];
     }
     case RecentlyPlayedPlaylistsModel::PlaylistTypeRole:
     {
-        if ( !pl.dynamicCast< Tomahawk::DynamicPlaylist >().isNull() )
+        if ( !pl.dynamicCast< Hatchet::DynamicPlaylist >().isNull() )
         {
-            dynplaylist_ptr dynp = pl.dynamicCast< Tomahawk::DynamicPlaylist >();
+            dynplaylist_ptr dynp = pl.dynamicCast< Hatchet::DynamicPlaylist >();
             if ( dynp->mode() == Static )
                 return RecentlyPlayedPlaylistsModel::AutoPlaylist;
             else if ( dynp->mode() == OnDemand )
@@ -73,12 +73,12 @@ PlaylistsModel::data( const QModelIndex& index, int role ) const
     }
     case RecentlyPlayedPlaylistsModel::DynamicPlaylistRole:
     {
-        dynplaylist_ptr dynp = pl.dynamicCast< Tomahawk::DynamicPlaylist >();
-        return QVariant::fromValue< Tomahawk::dynplaylist_ptr >( dynp );
+        dynplaylist_ptr dynp = pl.dynamicCast< Hatchet::DynamicPlaylist >();
+        return QVariant::fromValue< Hatchet::dynplaylist_ptr >( dynp );
     }
     case RecentlyPlayedPlaylistsModel::TrackCountRole:
     {
-        if ( !pl.dynamicCast< Tomahawk::DynamicPlaylist >().isNull() && pl.dynamicCast< Tomahawk::DynamicPlaylist >()->mode() == OnDemand )
+        if ( !pl.dynamicCast< Hatchet::DynamicPlaylist >().isNull() && pl.dynamicCast< Hatchet::DynamicPlaylist >()->mode() == OnDemand )
             return QString( QChar( 0x221E ) );
         else
             return pl->entries().count();
@@ -107,7 +107,7 @@ PlaylistsModel::updateArtists()
     {
         QStringList artists;
 
-        foreach ( const Tomahawk::plentry_ptr& entry, playlist->entries() )
+        foreach ( const Hatchet::plentry_ptr& entry, playlist->entries() )
         {
             if ( !artists.contains( entry->query()->track()->artist() ) )
                 artists << entry->query()->track()->artist();
@@ -118,4 +118,4 @@ PlaylistsModel::updateArtists()
 }
 
 
-} // namespace Tomahawk
+} // namespace Hatchet

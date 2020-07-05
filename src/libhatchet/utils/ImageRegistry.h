@@ -20,7 +20,7 @@
 
 #include <QPixmap>
 
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 #include "DllMacro.h"
 
 class DLLEXPORT ImageRegistry
@@ -30,12 +30,12 @@ public:
 
     explicit ImageRegistry();
 
-    QIcon icon( const QString& image, TomahawkUtils::ImageMode mode = TomahawkUtils::Original );
-    QPixmap pixmap( const QString& image, const QSize& size, TomahawkUtils::ImageMode mode = TomahawkUtils::Original, float opacity = 1.0, QColor tint = QColor( 0, 0, 0, 0 ) );
+    QIcon icon( const QString& image, HatchetUtils::ImageMode mode = HatchetUtils::Original );
+    QPixmap pixmap( const QString& image, const QSize& size, HatchetUtils::ImageMode mode = HatchetUtils::Original, float opacity = 1.0, QColor tint = QColor( 0, 0, 0, 0 ) );
 
 private:
     qint64 cacheKey( const QSize& size, float opacity, QColor tint );
-    void putInCache( const QString& image, const QSize& size, TomahawkUtils::ImageMode mode, float opacity, const QPixmap& pixmap, QColor tint );
+    void putInCache( const QString& image, const QSize& size, HatchetUtils::ImageMode mode, float opacity, const QPixmap& pixmap, QColor tint );
 
     static ImageRegistry* s_instance;
 };

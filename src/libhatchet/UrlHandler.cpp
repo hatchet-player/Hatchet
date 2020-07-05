@@ -1,22 +1,22 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *   Copyright 2013-2014, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "UrlHandler_p.h"
@@ -29,7 +29,7 @@
 Q_DECLARE_METATYPE( IODeviceFactoryFunc )
 Q_DECLARE_METATYPE( IODeviceCallback )
 
-namespace Tomahawk {
+namespace Hatchet {
 namespace UrlHandler {
 
 QMap< QString, IODeviceFactoryFunc > iofactories;
@@ -56,7 +56,7 @@ registerIODeviceFactory( const QString &proto, IODeviceFactoryFunc fac )
 
 
 void
-getIODeviceForUrl( const Tomahawk::result_ptr& result, const QString& url,
+getIODeviceForUrl( const Hatchet::result_ptr& result, const QString& url,
                    std::function< void ( const QString, QSharedPointer< QIODevice > ) > callback )
 {
     if ( iofactories.isEmpty() )
@@ -86,7 +86,7 @@ getIODeviceForUrl( const Tomahawk::result_ptr& result, const QString& url,
 
 
 void
-localFileIODeviceFactory( const Tomahawk::result_ptr&, const QString& url,
+localFileIODeviceFactory( const Hatchet::result_ptr&, const QString& url,
                           IODeviceCallback callback )
 {
     // ignore "file://" at front of url
@@ -101,12 +101,12 @@ localFileIODeviceFactory( const Tomahawk::result_ptr&, const QString& url,
 
 
 void
-httpIODeviceFactory( const Tomahawk::result_ptr&, const QString& url,
+httpIODeviceFactory( const Hatchet::result_ptr&, const QString& url,
                      IODeviceCallback callback )
 {
     QNetworkRequest req( url );
     // Follow HTTP Redirects
-    QSharedPointer< NetworkReply > reply( new NetworkReply( Tomahawk::Utils::nam()->get( req ) ) );
+    QSharedPointer< NetworkReply > reply( new NetworkReply( Hatchet::Utils::nam()->get( req ) ) );
     qRegisterMetaType<NetworkReply*>("NetworkReply*");
     qRegisterMetaType<IODeviceCallback>("IODeviceCallback");
     HttpIODeviceReadyHandler* handler = new HttpIODeviceReadyHandler( reply, callback );
@@ -116,7 +116,7 @@ httpIODeviceFactory( const Tomahawk::result_ptr&, const QString& url,
 
 
 void
-getUrlTranslation( const Tomahawk::result_ptr& result, const QString& url,
+getUrlTranslation( const Hatchet::result_ptr& result, const QString& url,
                    std::function< void ( const QString& ) > callback )
 {
     QRegExp rx( "^([a-zA-Z0-9]+)://(.+)$" );
@@ -144,4 +144,4 @@ registerUrlTranslator( const QString &proto, UrlTranslatorFunc fac )
 
 
 } // namespace UrlHandler
-} // namespace Tomahawk
+} // namespace Hatchet

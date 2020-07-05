@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2012, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "PlaylistInterface.h"
@@ -24,7 +24,7 @@
 #include "Source.h"
 #include "utils/Logger.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 PlaylistInterface::PlaylistInterface()
@@ -70,7 +70,7 @@ PlaylistInterface::siblingResultIndex( int itemsAway, qint64 rootIndex ) const
     while ( idx >= 0 && !safetyCheck.contains( idx ) )
     {
         safetyCheck << idx;
-        Tomahawk::query_ptr query = queryAt( idx );
+        Hatchet::query_ptr query = queryAt( idx );
 
         if ( query && query->playable() )
         {
@@ -84,13 +84,13 @@ PlaylistInterface::siblingResultIndex( int itemsAway, qint64 rootIndex ) const
 }
 
 
-Tomahawk::result_ptr
+Hatchet::result_ptr
 PlaylistInterface::siblingResult( int itemsAway, qint64 rootIndex ) const
 {
     qint64 idx = siblingResultIndex( itemsAway, rootIndex );
     if ( idx >= 0 )
     {
-        Tomahawk::query_ptr query = queryAt( idx );
+        Hatchet::query_ptr query = queryAt( idx );
 
         if ( query && query->playable() )
         {
@@ -98,17 +98,17 @@ PlaylistInterface::siblingResult( int itemsAway, qint64 rootIndex ) const
         }
     }
 
-    return Tomahawk::result_ptr();
+    return Hatchet::result_ptr();
 }
 
 
-Tomahawk::result_ptr
+Hatchet::result_ptr
 PlaylistInterface::setSiblingResult( int itemsAway, qint64 rootIndex )
 {
     qint64 idx = siblingResultIndex( itemsAway, rootIndex );
     if ( idx >= 0 )
     {
-        Tomahawk::query_ptr query = queryAt( idx );
+        Hatchet::query_ptr query = queryAt( idx );
 
         if ( query && query->playable() )
         {
@@ -117,17 +117,17 @@ PlaylistInterface::setSiblingResult( int itemsAway, qint64 rootIndex )
         }
     }
 
-    return Tomahawk::result_ptr();
+    return Hatchet::result_ptr();
 }
 
 
 int
-PlaylistInterface::posOfResult( const Tomahawk::result_ptr& result ) const
+PlaylistInterface::posOfResult( const Hatchet::result_ptr& result ) const
 {
-    const QList< Tomahawk::query_ptr > queries = tracks();
+    const QList< Hatchet::query_ptr > queries = tracks();
 
     int res = 0;
-    foreach ( const Tomahawk::query_ptr& query, queries )
+    foreach ( const Hatchet::query_ptr& query, queries )
     {
         if ( query && query->numResults() && query->results().contains( result ) )
             return res;
@@ -140,12 +140,12 @@ PlaylistInterface::posOfResult( const Tomahawk::result_ptr& result ) const
 
 
 int
-PlaylistInterface::posOfQuery( const Tomahawk::query_ptr& query ) const
+PlaylistInterface::posOfQuery( const Hatchet::query_ptr& query ) const
 {
-    const QList< Tomahawk::query_ptr > queries = tracks();
+    const QList< Hatchet::query_ptr > queries = tracks();
 
     int res = 0;
-    foreach ( const Tomahawk::query_ptr& q, queries )
+    foreach ( const Hatchet::query_ptr& q, queries )
     {
         if ( query == q )
             return res;
@@ -157,10 +157,10 @@ PlaylistInterface::posOfQuery( const Tomahawk::query_ptr& query ) const
 }
 
 
-QList<Tomahawk::query_ptr>
-PlaylistInterface::filterTracks( const QList<Tomahawk::query_ptr>& queries )
+QList<Hatchet::query_ptr>
+PlaylistInterface::filterTracks( const QList<Hatchet::query_ptr>& queries )
 {
-    QList<Tomahawk::query_ptr> result;
+    QList<Hatchet::query_ptr> result;
 
     for ( int i = 0; i < queries.count(); i++ )
     {
@@ -194,7 +194,7 @@ PlaylistInterface::filterTracks( const QList<Tomahawk::query_ptr>& queries )
 bool
 PlaylistInterface::hasNextResult() const
 {
-    Tomahawk::result_ptr r = siblingResult( 1 );
+    Hatchet::result_ptr r = siblingResult( 1 );
     return ( r && r->isOnline() );
 }
 
@@ -202,7 +202,7 @@ PlaylistInterface::hasNextResult() const
 bool
 PlaylistInterface::hasPreviousResult() const
 {
-    Tomahawk::result_ptr r = siblingResult( -1 );
+    Hatchet::result_ptr r = siblingResult( -1 );
     return ( r && r->isOnline() );
 }
 
@@ -216,8 +216,8 @@ PlaylistInterface::onItemsChanged()
         return;
     }
 
-    Tomahawk::result_ptr prevResult = siblingResult( -1, m_currentIndex );
-    Tomahawk::result_ptr nextResult = siblingResult( 1, m_currentIndex );
+    Hatchet::result_ptr prevResult = siblingResult( -1, m_currentIndex );
+    Hatchet::result_ptr nextResult = siblingResult( 1, m_currentIndex );
 
     {
         bool avail = prevResult && prevResult->playable();
@@ -252,7 +252,7 @@ PlaylistInterface::setCurrentIndex( qint64 index )
 void
 PlaylistInterface::startLoading()
 {
-    foreach ( const Tomahawk::query_ptr& query, tracks() )
+    foreach ( const Hatchet::query_ptr& query, tracks() )
     {
         disconnect( query.data(), SIGNAL( playableStateChanged( bool ) ), this, SLOT( onItemsChanged() ) );
         disconnect( query.data(), SIGNAL( resolvingFinished( bool ) ), this, SLOT( onQueryResolved() ) );
@@ -265,7 +265,7 @@ PlaylistInterface::startLoading()
 void
 PlaylistInterface::finishLoading()
 {
-    foreach ( const Tomahawk::query_ptr& query, tracks() )
+    foreach ( const Hatchet::query_ptr& query, tracks() )
     {
         connect( query.data(), SIGNAL( playableStateChanged( bool ) ), SLOT( onItemsChanged() ), Qt::UniqueConnection );
         connect( query.data(), SIGNAL( resolvingFinished( bool ) ), SLOT( onQueryResolved() ), Qt::UniqueConnection );
@@ -284,7 +284,7 @@ PlaylistInterface::onQueryResolved()
 
     // We're looking for the first playable track, but want to make sure the
     // second track doesn't start playing before the first really finished resolving
-    foreach ( const Tomahawk::query_ptr& query, tracks() )
+    foreach ( const Hatchet::query_ptr& query, tracks() )
     {
         if ( !query->resolvingFinished() )
         {
@@ -303,7 +303,7 @@ PlaylistInterface::onQueryResolved()
     m_foundFirstTrack = true;
     emit foundFirstPlayableTrack();
 
-    foreach ( const Tomahawk::query_ptr& query, tracks() )
+    foreach ( const Hatchet::query_ptr& query, tracks() )
     {
         disconnect( query.data(), SIGNAL( resolvingFinished( bool ) ), this, SLOT( onQueryResolved() ) );
     }

@@ -1,31 +1,31 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "Dashboard.h"
 #include "ui_DashboardWidget.h"
 
-#include "libtomahawk-widgets/PlaylistDelegate.h"
+#include "libhatchet-widgets/PlaylistDelegate.h"
 
 #include "ViewManager.h"
 #include "SourceList.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "widgets/RecentPlaylistsModel.h"
 #include "widgets/RecentlyPlayedPlaylistsModel.h"
 #include "MetaPlaylistInterface.h"
@@ -38,8 +38,8 @@
 #include "widgets/BasicHeader.h"
 #include "utils/ImageRegistry.h"
 #include "utils/AnimatedSpinner.h"
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 #include "utils/DpiScaler.h"
 
@@ -49,8 +49,8 @@
 #define HISTORY_PLAYLIST_ITEMS 10
 #define HISTORY_TRACK_ITEMS 15
 
-using namespace Tomahawk;
-using namespace Tomahawk::Widgets;
+using namespace Hatchet;
+using namespace Hatchet::Widgets;
 
 
 Dashboard::Dashboard( QWidget* /* parent */ )
@@ -90,7 +90,7 @@ DashboardWidget::DashboardWidget( QWidget* parent )
         area->setWidget( widget );
 
         QPalette pal = palette();
-        pal.setBrush( backgroundRole(), TomahawkStyle::PAGE_BACKGROUND );
+        pal.setBrush( backgroundRole(), HatchetStyle::PAGE_BACKGROUND );
         area->setPalette( pal );
         area->setAutoFillBackground( true );
         area->setFrameShape( QFrame::NoFrame );
@@ -100,7 +100,7 @@ DashboardWidget::DashboardWidget( QWidget* parent )
         layout->addWidget( headerWidget );
         layout->addWidget( widget );
         setLayout( layout );
-        TomahawkUtils::unmarginLayout( layout );
+        HatchetUtils::unmarginLayout( layout );
     }
 
     MetaPlaylistInterface* mpl = new MetaPlaylistInterface();

@@ -1,22 +1,22 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2011, Michael Zanetti <mzanetti@kde.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef SOURCEDELEGATE_H
@@ -40,9 +40,9 @@ public:
 signals:
     void clicked( const QModelIndex& idx );
     void doubleClicked( const QModelIndex& idx );
-    void latchOn( const Tomahawk::source_ptr& idx );
-    void latchOff( const Tomahawk::source_ptr& idx );
-    void toggleRealtimeLatch( const Tomahawk::source_ptr& idx, bool realtime );
+    void latchOn( const Hatchet::source_ptr& idx );
+    void latchOff( const Hatchet::source_ptr& idx );
+    void toggleRealtimeLatch( const Hatchet::source_ptr& idx, bool realtime );
 
 protected:
     virtual QSize sizeHint( const QStyleOptionViewItem& option, const QModelIndex& index ) const;

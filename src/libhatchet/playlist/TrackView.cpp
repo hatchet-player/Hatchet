@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "TrackView.h"
@@ -27,10 +27,10 @@
 #include "DropJob.h"
 #include "Result.h"
 #include "Source.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "audio/AudioEngine.h"
 #include "widgets/OverlayWidget.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Closure.h"
 #include "utils/AnimatedSpinner.h"
 #include "utils/Logger.h"
@@ -46,7 +46,7 @@
 
 #define SCROLL_TIMEOUT 280
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 TrackView::TrackView( QWidget* parent )
     : QTreeView( parent )
@@ -116,7 +116,7 @@ TrackView::~TrackView()
     {
         tDebug() << Q_FUNC_INFO << "Storing shuffle & random mode settings for guid" << m_guid;
 
-        TomahawkSettings* s = TomahawkSettings::instance();
+        HatchetSettings* s = HatchetSettings::instance();
         s->setShuffleState( m_guid, proxyModel()->playlistInterface()->shuffled() );
         s->setRepeatMode( m_guid, proxyModel()->playlistInterface()->repeatMode() );
     }
@@ -150,7 +150,7 @@ TrackView::setGuid( const QString& newguid )
         {
             tDebug() << Q_FUNC_INFO << "Restoring shuffle & random mode settings for guid" << m_guid;
 
-            TomahawkSettings* s = TomahawkSettings::instance();
+            HatchetSettings* s = HatchetSettings::instance();
             proxyModel()->playlistInterface()->setShuffled( s->shuffleState( m_guid ) );
             proxyModel()->playlistInterface()->setRepeatMode( s->repeatMode( m_guid ) );
         }
@@ -414,7 +414,7 @@ TrackView::startAutoPlay( const QModelIndex& index )
     if ( item && !item->query().isNull() && !item->query()->resolvingFinished() )
     {
         m_autoPlaying = item->query(); // So we can kill it if user starts autoplaying this playlist again
-        NewClosure( item->query().data(), SIGNAL( resolvingFinished( bool ) ), this, SLOT( autoPlayResolveFinished( Tomahawk::query_ptr, int ) ),
+        NewClosure( item->query().data(), SIGNAL( resolvingFinished( bool ) ), this, SLOT( autoPlayResolveFinished( Hatchet::query_ptr, int ) ),
                     item->query(), index.row() );
         return;
     }
@@ -738,7 +738,7 @@ TrackView::startDrag( Qt::DropActions supportedActions )
 
     QDrag* drag = new QDrag( this );
     drag->setMimeData( data );
-    const QPixmap p = TomahawkUtils::createDragPixmap( TomahawkUtils::MediaTypeTrack, indexes.count() );
+    const QPixmap p = HatchetUtils::createDragPixmap( HatchetUtils::MediaTypeTrack, indexes.count() );
     drag->setPixmap( p );
     drag->setHotSpot( QPoint( -20, -20 ) );
 
@@ -850,7 +850,7 @@ TrackView::onMenuTriggered( int action )
 }
 
 
-Tomahawk::playlistinterface_ptr
+Hatchet::playlistinterface_ptr
 TrackView::playlistInterface() const
 {
     return proxyModel()->playlistInterface();
@@ -858,7 +858,7 @@ TrackView::playlistInterface() const
 
 
 void
-TrackView::setPlaylistInterface( const Tomahawk::playlistinterface_ptr& playlistInterface )
+TrackView::setPlaylistInterface( const Hatchet::playlistinterface_ptr& playlistInterface )
 {
     proxyModel()->setPlaylistInterface( playlistInterface );
 }

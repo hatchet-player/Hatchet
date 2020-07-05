@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013, Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ScriptCommand_AllArtists.h"
@@ -27,9 +27,9 @@
 #include "utils/Logger.h"
 #include "../Typedefs.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
-ScriptCommand_AllArtists::ScriptCommand_AllArtists( const Tomahawk::collection_ptr& collection,
+ScriptCommand_AllArtists::ScriptCommand_AllArtists( const Hatchet::collection_ptr& collection,
                                                     QObject* parent )
     : ScriptCommand( parent )
     , m_collection( collection )
@@ -40,7 +40,7 @@ ScriptCommand_AllArtists::ScriptCommand_AllArtists( const Tomahawk::collection_p
 void
 ScriptCommand_AllArtists::enqueue()
 {
-    Tomahawk::ScriptCollection* collection = qobject_cast< Tomahawk::ScriptCollection* >( m_collection.data() );
+    Hatchet::ScriptCollection* collection = qobject_cast< Hatchet::ScriptCollection* >( m_collection.data() );
     if ( collection == 0 )
     {
         reportFailure();
@@ -61,7 +61,7 @@ ScriptCommand_AllArtists::setFilter( const QString& filter )
 void
 ScriptCommand_AllArtists::exec()
 {
-    Tomahawk::ScriptCollection* collection = qobject_cast< Tomahawk::ScriptCollection* >( m_collection.data() );
+    Hatchet::ScriptCollection* collection = qobject_cast< Hatchet::ScriptCollection* >( m_collection.data() );
     Q_ASSERT( collection );
 
     QVariantMap arguments;
@@ -80,7 +80,7 @@ void
 ScriptCommand_AllArtists::reportFailure()
 {
     tDebug() << Q_FUNC_INFO << "for collection" << m_collection->name();
-    emit artists( QList< Tomahawk::artist_ptr >() );
+    emit artists( QList< Hatchet::artist_ptr >() );
     emit done();
 }
 
@@ -97,7 +97,7 @@ ScriptCommand_AllArtists::onArtistsJobDone( const QVariantMap& result )
         return;
     }
 
-    QList< Tomahawk::artist_ptr > a = parseArtistVariantList( result[ "artists" ].toList() );
+    QList< Hatchet::artist_ptr > a = parseArtistVariantList( result[ "artists" ].toList() );
     emit artists( a );
     emit done();
 
@@ -105,10 +105,10 @@ ScriptCommand_AllArtists::onArtistsJobDone( const QVariantMap& result )
 }
 
 
-QList< Tomahawk::artist_ptr >
+QList< Hatchet::artist_ptr >
 ScriptCommand_AllArtists::parseArtistVariantList( const QVariantList& reslist )
 {
-    QList< Tomahawk::artist_ptr > results;
+    QList< Hatchet::artist_ptr > results;
 
     foreach( const QVariant& rv, reslist )
     {
@@ -116,7 +116,7 @@ ScriptCommand_AllArtists::parseArtistVariantList( const QVariantList& reslist )
         if ( val.trimmed().isEmpty() )
             continue;
 
-        Tomahawk::artist_ptr ap = Tomahawk::Artist::get( val, false );
+        Hatchet::artist_ptr ap = Hatchet::Artist::get( val, false );
 
         results << ap;
     }

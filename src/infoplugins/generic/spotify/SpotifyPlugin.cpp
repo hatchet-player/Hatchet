@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Hugo Lindström <hugolm84@gmail.com>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "SpotifyPlugin.h"
@@ -29,17 +29,17 @@
 #include "Album.h"
 #include "Typedefs.h"
 #include "audio/AudioEngine.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "utils/Json.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
 #include "utils/NetworkAccessManager.h"
 #include "CountryUtils.h"
 #include "Source.h"
 
-#define SPOTIFY_API_URL "http://spotikea.tomahawk-player.org/"
+#define SPOTIFY_API_URL "http://spotikea.hatchet-player.org/"
 
-using namespace Tomahawk::InfoSystem;
+using namespace Hatchet::InfoSystem;
 
 
 SpotifyPlugin::SpotifyPlugin()
@@ -58,7 +58,7 @@ SpotifyPlugin::~SpotifyPlugin()
 
 
 void
-SpotifyPlugin::dataError( Tomahawk::InfoSystem::InfoRequestData requestData )
+SpotifyPlugin::dataError( Hatchet::InfoSystem::InfoRequestData requestData )
 {
     emit info( requestData, QVariant() );
     return;
@@ -66,12 +66,12 @@ SpotifyPlugin::dataError( Tomahawk::InfoSystem::InfoRequestData requestData )
 
 
 void
-SpotifyPlugin::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
+SpotifyPlugin::getInfo( Hatchet::InfoSystem::InfoRequestData requestData )
 {
     qDebug() << Q_FUNC_INFO << requestData.caller;
     qDebug() << Q_FUNC_INFO << requestData.customData;
 
-    InfoStringHash hash = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+    InfoStringHash hash = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
 
     switch ( requestData.type )
     {
@@ -96,16 +96,16 @@ SpotifyPlugin::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
 
 
 void
-SpotifyPlugin::fetchChart( Tomahawk::InfoSystem::InfoRequestData requestData )
+SpotifyPlugin::fetchChart( Hatchet::InfoSystem::InfoRequestData requestData )
 {
-    if ( !requestData.input.canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !requestData.input.canConvert< Hatchet::InfoSystem::InfoStringHash >() )
     {
         dataError( requestData );
         return;
     }
 
-    InfoStringHash hash = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
-    Tomahawk::InfoSystem::InfoStringHash criteria;
+    InfoStringHash hash = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
+    Hatchet::InfoSystem::InfoStringHash criteria;
     /// Each request needs to contain both a id and source
     if ( !hash.contains( "chart_id" ) && !hash.contains( "chart_source" ) )
     {
@@ -122,22 +122,22 @@ SpotifyPlugin::fetchChart( Tomahawk::InfoSystem::InfoRequestData requestData )
 
 
 void
-SpotifyPlugin::fetchChartCapabilities( Tomahawk::InfoSystem::InfoRequestData requestData )
+SpotifyPlugin::fetchChartCapabilities( Hatchet::InfoSystem::InfoRequestData requestData )
 {
-    if ( !requestData.input.canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !requestData.input.canConvert< Hatchet::InfoSystem::InfoStringHash >() )
     {
         dataError( requestData );
         return;
     }
 
-    Tomahawk::InfoSystem::InfoStringHash criteria;
+    Hatchet::InfoSystem::InfoStringHash criteria;
     criteria[ "InfoChartCapabilities" ] = "spotifyplugin";
     emit getCachedInfo( criteria, Q_INT64_C(604800000), requestData );
 }
 
 
 void
-SpotifyPlugin::notInCacheSlot( Tomahawk::InfoSystem::InfoStringHash criteria, Tomahawk::InfoSystem::InfoRequestData requestData )
+SpotifyPlugin::notInCacheSlot( Hatchet::InfoSystem::InfoStringHash criteria, Hatchet::InfoSystem::InfoRequestData requestData )
 {
     switch ( requestData.type )
     {
@@ -148,8 +148,8 @@ SpotifyPlugin::notInCacheSlot( Tomahawk::InfoSystem::InfoStringHash criteria, To
             QUrl url = QUrl( QString( SPOTIFY_API_URL "toplist/%1/" ).arg( criteria["chart_id"] ) );
             qDebug() << Q_FUNC_INFO << "Getting chart url" << url;
 
-            QNetworkReply* reply = Tomahawk::Utils::nam()->get( QNetworkRequest( url ) );
-            reply->setProperty( "requestData", QVariant::fromValue< Tomahawk::InfoSystem::InfoRequestData >( requestData ) );
+            QNetworkReply* reply = Hatchet::Utils::nam()->get( QNetworkRequest( url ) );
+            reply->setProperty( "requestData", QVariant::fromValue< Hatchet::InfoSystem::InfoRequestData >( requestData ) );
             connect( reply, SIGNAL( finished() ), SLOT( chartReturned() ) );
             return;
         }
@@ -165,7 +165,7 @@ SpotifyPlugin::notInCacheSlot( Tomahawk::InfoSystem::InfoStringHash criteria, To
             tDebug() << "SpotifyPlugin: InfoChart fetching possible resources";
 
             QUrl url = QUrl( QString( SPOTIFY_API_URL "toplist/charts" )  );
-            QNetworkReply* reply = Tomahawk::Utils::nam()->get( QNetworkRequest( url ) );
+            QNetworkReply* reply = Hatchet::Utils::nam()->get( QNetworkRequest( url ) );
             tDebug() << Q_FUNC_INFO << "fetching:" << url;
             connect( reply, SIGNAL( finished() ), SLOT( chartTypes() ) );
             m_chartsFetchJobs++;
@@ -203,7 +203,7 @@ SpotifyPlugin::chartTypes()
     {
         bool ok;
         QByteArray jsonData = reply->readAll();
-        const QVariantMap res = TomahawkUtils::parseJson( jsonData, &ok ).toMap();
+        const QVariantMap res = HatchetUtils::parseJson( jsonData, &ok ).toMap();
         const QVariantMap chartObj = res;
 
         if ( !ok )
@@ -221,13 +221,13 @@ SpotifyPlugin::chartTypes()
            QString country;
 
            if( geo == "For me" )
-              continue; /// country = geo; Lets use this later, when we can get the spotify username from tomahawk
+              continue; /// country = geo; Lets use this later, when we can get the spotify username from hatchet
            else if( geo == "Everywhere" )
                country = geo;
            else
            {
                QLocale l( QString( "en_%1" ).arg( geo ) );
-               country = Tomahawk::CountryUtils::fullCountryFromCode( geo );
+               country = Hatchet::CountryUtils::fullCountryFromCode( geo );
 
                for ( int i = 1; i < country.size(); i++ )
                {
@@ -272,7 +272,7 @@ SpotifyPlugin::chartTypes()
         foreach ( InfoRequestData request, m_cachedRequests )
         {
             emit info( request, m_allChartsMap );
-            Tomahawk::InfoSystem::InfoStringHash criteria;
+            Hatchet::InfoSystem::InfoStringHash criteria;
             criteria[ "InfoChartCapabilities" ] = "spotifyplugin";
             emit updateCache( criteria, Q_INT64_C(604800000), request.type, m_allChartsMap );
         }
@@ -293,7 +293,7 @@ SpotifyPlugin::chartReturned()
     {
         bool ok;
         QByteArray jsonData = reply->readAll();
-        QVariantMap res = TomahawkUtils::parseJson( jsonData, &ok ).toMap();
+        QVariantMap res = HatchetUtils::parseJson( jsonData, &ok ).toMap();
 
         if ( !ok )
         {
@@ -373,13 +373,13 @@ SpotifyPlugin::chartReturned()
             returnedData["type"] = "artists";
         }
 
-        Tomahawk::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
+        Hatchet::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
 
         emit info( requestData, returnedData );
 
         // update cache
-        Tomahawk::InfoSystem::InfoStringHash criteria;
-        Tomahawk::InfoSystem::InfoStringHash origData = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+        Hatchet::InfoSystem::InfoStringHash criteria;
+        Hatchet::InfoSystem::InfoStringHash origData = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
         criteria[ "chart_id" ] = origData[ "chart_id" ];
         criteria[ "chart_source" ] = origData[ "chart_source" ];
         emit updateCache( criteria, Q_INT64_C(86400000), requestData.type, returnedData );
@@ -389,4 +389,4 @@ SpotifyPlugin::chartReturned()
 }
 
 
-Q_EXPORT_PLUGIN2( Tomahawk::InfoSystem::InfoPlugin, Tomahawk::InfoSystem::SpotifyPlugin )
+Q_EXPORT_PLUGIN2( Hatchet::InfoSystem::InfoPlugin, Hatchet::InfoSystem::SpotifyPlugin )

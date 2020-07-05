@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ArtistViewPage.h"
@@ -43,16 +43,16 @@
 #include "SourceList.h"
 #include "MetaPlaylistInterface.h"
 #include "widgets/BasicHeader.h"
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
-ArtistInfoWidget::ArtistInfoWidget( const Tomahawk::artist_ptr& artist, QWidget* parent )
+ArtistInfoWidget::ArtistInfoWidget( const Hatchet::artist_ptr& artist, QWidget* parent )
     : QWidget( parent )
-    , TomahawkUtils::DpiScaler( this )
+    , HatchetUtils::DpiScaler( this )
     , ui( new Ui::ArtistInfoWidget )
     , m_artist( artist )
 {
@@ -72,9 +72,9 @@ ArtistInfoWidget::ArtistInfoWidget( const Tomahawk::artist_ptr& artist, QWidget*
         ui->relatedArtists->proxyModel()->sort( -1 );
         ui->relatedArtists->setEmptyTip( tr( "Sorry, we could not find any related artists!" ) );
 
-        TomahawkStyle::stylePageFrame( ui->relatedArtists );
-        TomahawkStyle::stylePageFrame( ui->artistFrame );
-        TomahawkStyle::styleScrollBar( ui->relatedArtists->verticalScrollBar() );
+        HatchetStyle::stylePageFrame( ui->relatedArtists );
+        HatchetStyle::stylePageFrame( ui->artistFrame );
+        HatchetStyle::styleScrollBar( ui->relatedArtists->verticalScrollBar() );
     }
 
     {
@@ -93,9 +93,9 @@ ArtistInfoWidget::ArtistInfoWidget( const Tomahawk::artist_ptr& artist, QWidget*
         ui->albums->proxyModel()->sort( -1 );
         ui->albums->setEmptyTip( tr( "Sorry, we could not find any albums for this artist!" ) );
 
-        TomahawkStyle::stylePageFrame( ui->albumFrame );
-        TomahawkStyle::styleScrollBar( ui->albums->verticalScrollBar() );
-        TomahawkStyle::styleScrollBar( ui->albums->horizontalScrollBar() );
+        HatchetStyle::stylePageFrame( ui->albumFrame );
+        HatchetStyle::styleScrollBar( ui->albums->verticalScrollBar() );
+        HatchetStyle::styleScrollBar( ui->albums->horizontalScrollBar() );
     }
 
     {
@@ -115,7 +115,7 @@ ArtistInfoWidget::ArtistInfoWidget( const Tomahawk::artist_ptr& artist, QWidget*
         ui->topHits->proxyModel()->sort( -1 );
         ui->topHits->setEmptyTip( tr( "Sorry, we could not find any top hits for this artist!" ) );
 
-        TomahawkStyle::stylePageFrame( ui->trackFrame );
+        HatchetStyle::stylePageFrame( ui->trackFrame );
     }
 
     {
@@ -135,14 +135,14 @@ ArtistInfoWidget::ArtistInfoWidget( const Tomahawk::artist_ptr& artist, QWidget*
                                        QPainter::NonCosmeticDefaultPen );
         ui->biography->installEventFilter( this );
 
-        TomahawkStyle::stylePageWidget( ui->biography );
-        TomahawkStyle::stylePageFrame( ui->bioFrame );
+        HatchetStyle::stylePageWidget( ui->biography );
+        HatchetStyle::stylePageFrame( ui->bioFrame );
 
         connect( ui->biography, SIGNAL( linkClicked( QUrl ) ), SLOT( onBiographyLinkClicked( QUrl ) ) );
 
         QFont f = ui->topHitsMoreLabel->font();
         f.setWeight( QFont::Light );
-        f.setPointSize( TomahawkUtils::defaultFontSize() + 1 );
+        f.setPointSize( HatchetUtils::defaultFontSize() + 1 );
         ui->topHitsMoreLabel->setFont( f );
         ui->albumsMoreLabel->setFont( f );
 
@@ -180,7 +180,7 @@ ArtistInfoWidget::ArtistInfoWidget( const Tomahawk::artist_ptr& artist, QWidget*
         m_area->setWidget( m_widget );
 
         QPalette pal = palette();
-        pal.setBrush( backgroundRole(), TomahawkStyle::PAGE_BACKGROUND );
+        pal.setBrush( backgroundRole(), HatchetStyle::PAGE_BACKGROUND );
         m_area->setPalette( pal );
         m_area->setAutoFillBackground( true );
         m_area->setFrameShape( QFrame::NoFrame );
@@ -213,12 +213,12 @@ ArtistInfoWidget::ArtistInfoWidget( const Tomahawk::artist_ptr& artist, QWidget*
 
         QWidget* vbox = new QWidget;
         QPalette pal = vbox->palette();
-        pal.setBrush( vbox->backgroundRole(), TomahawkStyle::PAGE_BACKGROUND );
+        pal.setBrush( vbox->backgroundRole(), HatchetStyle::PAGE_BACKGROUND );
         vbox->setPalette( pal );
         vbox->setAutoFillBackground( true );
 
         QVBoxLayout* vboxl = new QVBoxLayout;
-        TomahawkUtils::unmarginLayout( vboxl );
+        HatchetUtils::unmarginLayout( vboxl );
         vboxl->setContentsMargins( 32, 32, 32, 32 );
         vboxl->setSpacing( scaledY( 8 ) );
         vbox->setLayout( vboxl );
@@ -238,7 +238,7 @@ ArtistInfoWidget::ArtistInfoWidget( const Tomahawk::artist_ptr& artist, QWidget*
         layout->addWidget( m_headerWidget );
         layout->addWidget( m_stackedWidget );
         setLayout( layout );
-        TomahawkUtils::unmarginLayout( layout );
+        HatchetUtils::unmarginLayout( layout );
     }
 
     MetaPlaylistInterface* mpl = new MetaPlaylistInterface();
@@ -249,9 +249,9 @@ ArtistInfoWidget::ArtistInfoWidget( const Tomahawk::artist_ptr& artist, QWidget*
 
     onSliderValueChanged( 0 );
 
-    TomahawkUtils::fixMargins( this );
+    HatchetUtils::fixMargins( this );
 
-    m_pixmap = TomahawkUtils::defaultPixmap( TomahawkUtils::DefaultArtistImage, TomahawkUtils::Original, scaled( QSize( 48, 48 ) ) );
+    m_pixmap = HatchetUtils::defaultPixmap( HatchetUtils::DefaultArtistImage, HatchetUtils::Original, scaled( QSize( 48, 48 ) ) );
     load( artist );
 }
 
@@ -263,7 +263,7 @@ ArtistInfoWidget::~ArtistInfoWidget()
 }
 
 
-Tomahawk::playlistinterface_ptr
+Hatchet::playlistinterface_ptr
 ArtistInfoWidget::playlistInterface() const
 {
     return m_plInterface;
@@ -316,10 +316,10 @@ ArtistInfoWidget::load( const artist_ptr& artist )
         disconnect( m_artist.data(), SIGNAL( updated() ), this, SLOT( onArtistImageUpdated() ) );
         disconnect( m_artist.data(), SIGNAL( similarArtistsLoaded() ), this, SLOT( onSimilarArtistsLoaded() ) );
         disconnect( m_artist.data(), SIGNAL( biographyLoaded() ), this, SLOT( onBiographyLoaded() ) );
-        disconnect( m_artist.data(), SIGNAL( albumsAdded( QList<Tomahawk::album_ptr>, Tomahawk::ModelMode ) ),
-                    this,              SLOT( onAlbumsFound( QList<Tomahawk::album_ptr>, Tomahawk::ModelMode ) ) );
-        disconnect( m_artist.data(), SIGNAL( tracksAdded( QList<Tomahawk::query_ptr>, Tomahawk::ModelMode, Tomahawk::collection_ptr ) ),
-                    this,              SLOT( onTracksFound( QList<Tomahawk::query_ptr>, Tomahawk::ModelMode ) ) );
+        disconnect( m_artist.data(), SIGNAL( albumsAdded( QList<Hatchet::album_ptr>, Hatchet::ModelMode ) ),
+                    this,              SLOT( onAlbumsFound( QList<Hatchet::album_ptr>, Hatchet::ModelMode ) ) );
+        disconnect( m_artist.data(), SIGNAL( tracksAdded( QList<Hatchet::query_ptr>, Hatchet::ModelMode, Hatchet::collection_ptr ) ),
+                    this,              SLOT( onTracksFound( QList<Hatchet::query_ptr>, Hatchet::ModelMode ) ) );
     }
 
     m_artist = artist;
@@ -329,10 +329,10 @@ ArtistInfoWidget::load( const artist_ptr& artist )
     connect( m_artist.data(), SIGNAL( biographyLoaded() ), SLOT( onBiographyLoaded() ) );
     connect( m_artist.data(), SIGNAL( similarArtistsLoaded() ), SLOT( onSimilarArtistsLoaded() ) );
     connect( m_artist.data(), SIGNAL( updated() ), SLOT( onArtistImageUpdated() ) );
-    connect( m_artist.data(), SIGNAL( albumsAdded( QList<Tomahawk::album_ptr>, Tomahawk::ModelMode ) ),
-                                SLOT( onAlbumsFound( QList<Tomahawk::album_ptr>, Tomahawk::ModelMode ) ) );
-    connect( m_artist.data(), SIGNAL( tracksAdded( QList<Tomahawk::query_ptr>, Tomahawk::ModelMode, Tomahawk::collection_ptr ) ),
-                                SLOT( onTracksFound( QList<Tomahawk::query_ptr>, Tomahawk::ModelMode ) ) );
+    connect( m_artist.data(), SIGNAL( albumsAdded( QList<Hatchet::album_ptr>, Hatchet::ModelMode ) ),
+                                SLOT( onAlbumsFound( QList<Hatchet::album_ptr>, Hatchet::ModelMode ) ) );
+    connect( m_artist.data(), SIGNAL( tracksAdded( QList<Hatchet::query_ptr>, Hatchet::ModelMode, Hatchet::collection_ptr ) ),
+                                SLOT( onTracksFound( QList<Hatchet::query_ptr>, Hatchet::ModelMode ) ) );
 
     m_topHitsModel->startLoading();
 
@@ -353,7 +353,7 @@ ArtistInfoWidget::load( const artist_ptr& artist )
 
 
 void
-ArtistInfoWidget::onAlbumsFound( const QList<Tomahawk::album_ptr>& albums, ModelMode mode )
+ArtistInfoWidget::onAlbumsFound( const QList<Hatchet::album_ptr>& albums, ModelMode mode )
 {
     Q_UNUSED( mode );
 
@@ -362,7 +362,7 @@ ArtistInfoWidget::onAlbumsFound( const QList<Tomahawk::album_ptr>& albums, Model
 
 
 void
-ArtistInfoWidget::onTracksFound( const QList<Tomahawk::query_ptr>& queries, ModelMode mode )
+ArtistInfoWidget::onTracksFound( const QList<Hatchet::query_ptr>& queries, ModelMode mode )
 {
     Q_UNUSED( mode );
 
@@ -395,7 +395,7 @@ ArtistInfoWidget::onBiographyLoaded()
                     "a:hover { color: #000000; text-decoration: underline; font-weight: bold; }"
                  "</style></head>"
                  "<body>%2</body></html>" )
-               .arg( TomahawkUtils::defaultFontSize() )
+               .arg( HatchetUtils::defaultFontSize() )
                .arg( m_artist->biography().trimmed().replace( '\n', "<br><br>" ) );
 
     ui->biography->setHtml( html );
@@ -408,7 +408,7 @@ ArtistInfoWidget::onArtistImageUpdated()
     const QSize coverSize = QSize( ui->cover->width(), ui->cover->width() );
     if ( !m_artist || m_artist->cover( QSize( 0, 0 ) ).isNull() )
     {
-        ui->cover->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::DefaultArtistImage, TomahawkUtils::Original, coverSize ) );
+        ui->cover->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::DefaultArtistImage, HatchetUtils::Original, coverSize ) );
     }
     else
     {
@@ -427,9 +427,9 @@ ArtistInfoWidget::onBiographyLinkClicked( const QUrl& url )
 {
     tDebug() << Q_FUNC_INFO << url;
 
-    if ( url.scheme() == "tomahawk" )
+    if ( url.scheme() == "hatchet" )
     {
-        GlobalActionManager::instance()->parseTomahawkLink( url.toString() );
+        GlobalActionManager::instance()->parseHatchetLink( url.toString() );
     }
     else
     {
@@ -458,7 +458,7 @@ QPixmap
 ArtistInfoWidget::pixmap() const
 {
     if ( m_pixmap.isNull() )
-        return Tomahawk::ViewPage::pixmap();
+        return Hatchet::ViewPage::pixmap();
     else
         return m_pixmap;
 }

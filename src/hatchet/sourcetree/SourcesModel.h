@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 
@@ -36,7 +36,7 @@ class QMimeData;
 class SourceTreeItem;
 class GroupItem;
 
-namespace Tomahawk {
+namespace Hatchet {
     class Source;
     class Playlist;
 }
@@ -108,15 +108,15 @@ public:
 
     void appendGroups();
 
-    void appendItem( const Tomahawk::source_ptr& source );
-    bool removeItem( const Tomahawk::source_ptr& source );
+    void appendItem( const Hatchet::source_ptr& source );
+    bool removeItem( const Hatchet::source_ptr& source );
 
-    void linkSourceItemToPage( SourceTreeItem* item, Tomahawk::ViewPage* p );
+    void linkSourceItemToPage( SourceTreeItem* item, Hatchet::ViewPage* p );
     void removeSourceItemLink( SourceTreeItem* item );
 
     QModelIndex indexFromItem( SourceTreeItem* item ) const;
 
-    QList< Tomahawk::source_ptr > sourcesWithViewPage() const;
+    QList< Hatchet::source_ptr > sourcesWithViewPage() const;
 
 public slots:
     void loadSources();
@@ -127,7 +127,7 @@ public slots:
     void onItemRowsRemovedBegin( int first, int last );
     void onItemRowsRemovedDone();
 
-    void viewPageActivated( Tomahawk::ViewPage* );
+    void viewPageActivated( Hatchet::ViewPage* );
 
     void itemSelectRequest( SourceTreeItem* item );
     void itemExpandRequest( SourceTreeItem* item );
@@ -139,29 +139,29 @@ signals:
     void toggleExpandRequest( const QPersistentModelIndex& idx );
 
 private slots:
-    void onSourcesAdded( const QList<Tomahawk::source_ptr>& sources );
-    void onSourceAdded( const Tomahawk::source_ptr& source );
-    void onSourceRemoved( const Tomahawk::source_ptr& source );
+    void onSourcesAdded( const QList<Hatchet::source_ptr>& sources );
+    void onSourceAdded( const Hatchet::source_ptr& source );
+    void onSourceRemoved( const Hatchet::source_ptr& source );
 
-    void onScriptCollectionAdded( const Tomahawk::collection_ptr& collection );
-    void onScriptCollectionRemoved( const Tomahawk::collection_ptr& collection );
+    void onScriptCollectionAdded( const Hatchet::collection_ptr& collection );
+    void onScriptCollectionRemoved( const Hatchet::collection_ptr& collection );
 
-    void onViewPageRemoved( Tomahawk::ViewPage* p );
+    void onViewPageRemoved( Hatchet::ViewPage* p );
 
-    Tomahawk::ViewPage* scriptCollectionClicked( const Tomahawk::collection_ptr& collection );
-    Tomahawk::ViewPage* getScriptCollectionPage( const Tomahawk::collection_ptr& collection ) const;
+    Hatchet::ViewPage* scriptCollectionClicked( const Hatchet::collection_ptr& collection );
+    Hatchet::ViewPage* getScriptCollectionPage( const Hatchet::collection_ptr& collection ) const;
 
     void onWidgetDestroyed( QWidget* w );
 
     /*
      *  name is the internal name in the ViewManager
      */
-    void appendPageItem( const QString& name, Tomahawk::ViewPage* page, int sortValue );
+    void appendPageItem( const QString& name, Hatchet::ViewPage* page, int sortValue );
 
 private:
     SourceTreeItem* itemFromIndex( const QModelIndex& idx ) const;
     int rowForItem( SourceTreeItem* item ) const;
-    SourceTreeItem* activatePlaylistPage( Tomahawk::ViewPage* p, SourceTreeItem* i );
+    SourceTreeItem* activatePlaylistPage( Hatchet::ViewPage* p, SourceTreeItem* i );
 
     SourceTreeItem* m_rootItem;
     GroupItem* m_browse;
@@ -169,13 +169,13 @@ private:
     GroupItem* m_myMusicGroup;
     GroupItem* m_cloudGroup;
 
-    QList< Tomahawk::source_ptr > m_sourcesWithViewPage;
-    QHash< Tomahawk::source_ptr, SourceTreeItem* > m_sourcesWithViewPageItems;
-    QHash< Tomahawk::collection_ptr, SourceTreeItem* > m_scriptCollections;
-    QHash< Tomahawk::collection_ptr, Tomahawk::ViewPage* > m_scriptCollectionPages;
+    QList< Hatchet::source_ptr > m_sourcesWithViewPage;
+    QHash< Hatchet::source_ptr, SourceTreeItem* > m_sourcesWithViewPageItems;
+    QHash< Hatchet::collection_ptr, SourceTreeItem* > m_scriptCollections;
+    QHash< Hatchet::collection_ptr, Hatchet::ViewPage* > m_scriptCollectionPages;
 
-    QHash< Tomahawk::ViewPage*, SourceTreeItem* > m_sourceTreeLinks;
-    Tomahawk::ViewPage* m_viewPageDelayedCacheItem;
+    QHash< Hatchet::ViewPage*, SourceTreeItem* > m_sourceTreeLinks;
+    Hatchet::ViewPage* m_viewPageDelayedCacheItem;
 };
 
 Q_DECLARE_METATYPE( QList< QAction* > )

@@ -1,27 +1,27 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "TransferStatusItem.h"
 
 #include "network/StreamConnection.h"
 #include "network/Servent.h"
-#include "utils/TomahawkUtils.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtils.h"
+#include "utils/HatchetUtilsGui.h"
 
 #include "Artist.h"
 #include "JobStatusModel.h"
@@ -118,12 +118,12 @@ TransferStatusManager::streamRegistered( StreamConnection* sc )
 QPixmap
 TransferStatusManager::rxPixmap() const
 {
-    return TomahawkUtils::defaultPixmap( TomahawkUtils::Downloading, TomahawkUtils::Original, QSize( 128, 128 ) );
+    return HatchetUtils::defaultPixmap( HatchetUtils::Downloading, HatchetUtils::Original, QSize( 128, 128 ) );
 }
 
 
 QPixmap
 TransferStatusManager::txPixmap() const
 {
-    return TomahawkUtils::defaultPixmap( TomahawkUtils::Uploading, TomahawkUtils::Original, QSize( 128, 128 ) );
+    return HatchetUtils::defaultPixmap( HatchetUtils::Uploading, HatchetUtils::Original, QSize( 128, 128 ) );
 }

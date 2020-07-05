@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013-2016, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2014,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "CollectionViewPage.h"
@@ -33,18 +33,18 @@
 #include "playlist/GridView.h"
 #include "playlist/PlayableProxyModelPlaylistInterface.h"
 #include "resolvers/ScriptCollection.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "utils/ImageRegistry.h"
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Closure.h"
 #include "utils/Logger.h"
 #include "MetaPlaylistInterface.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
-CollectionViewPage::CollectionViewPage( const Tomahawk::collection_ptr& collection, QWidget* parent )
+CollectionViewPage::CollectionViewPage( const Hatchet::collection_ptr& collection, QWidget* parent )
     : QWidget( parent )
     , m_header( new FilterHeader( this ) )
     , m_columnView( new ColumnView() )
@@ -59,7 +59,7 @@ CollectionViewPage::CollectionViewPage( const Tomahawk::collection_ptr& collecti
 
     m_header->setBackground( ImageRegistry::instance()->pixmap( RESPATH "images/collection_background.png", QSize( 0, 0 ) ), true );
 
-    setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::DefaultCollection, TomahawkUtils::Original, QSize( 256, 256 ) ) );
+    setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::DefaultCollection, HatchetUtils::Original, QSize( 256, 256 ) ) );
 
     m_columnView->proxyModel()->setStyle( PlayableProxyModel::SingleColumn );
 
@@ -86,19 +86,19 @@ CollectionViewPage::CollectionViewPage( const Tomahawk::collection_ptr& collecti
         m_albumView->setAutoResize( false );
         m_albumView->setAutoFitItems( true );
         m_albumView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-        m_albumView->setItemWidth( TomahawkUtils::DpiScaler::scaledX( this, 170 ) );
+        m_albumView->setItemWidth( HatchetUtils::DpiScaler::scaledX( this, 170 ) );
         m_albumView->delegate()->setWordWrapping( true );
 
         m_albumView->setEmptyTip( tr( "Sorry, there are no albums in this collection!" ) );
 
-        TomahawkStyle::stylePageFrame( m_albumView );
+        HatchetStyle::stylePageFrame( m_albumView );
 
-        m_albumView->setStyleSheet( QString( "QListView { background-color: %1; }" ).arg( TomahawkStyle::PAGE_BACKGROUND.name() ) );
+        m_albumView->setStyleSheet( QString( "QListView { background-color: %1; }" ).arg( HatchetStyle::PAGE_BACKGROUND.name() ) );
     }
 
     m_stack = new QStackedWidget();
     setLayout( new QVBoxLayout() );
-    TomahawkUtils::unmarginLayout( layout() );
+    HatchetUtils::unmarginLayout( layout() );
 
     {
         m_header->ui->anchor1Label->setText( tr( "Artists" ) );
@@ -238,10 +238,10 @@ CollectionViewPage::setCurrentMode( CollectionViewPageMode mode )
 {
     if ( m_mode != mode )
     {
-        TomahawkSettings::instance()->beginGroup( "ui" );
-        TomahawkSettings::instance()->setValue( "flexibleTreeViewMode", mode );
-        TomahawkSettings::instance()->endGroup();
-        TomahawkSettings::instance()->sync();
+        HatchetSettings::instance()->beginGroup( "ui" );
+        HatchetSettings::instance()->setValue( "flexibleTreeViewMode", mode );
+        HatchetSettings::instance()->endGroup();
+        HatchetSettings::instance()->sync();
 
         m_mode = mode;
     }
@@ -301,10 +301,10 @@ CollectionViewPage::setCurrentMode( CollectionViewPageMode mode )
 }
 
 
-Tomahawk::playlistinterface_ptr
+Hatchet::playlistinterface_ptr
 CollectionViewPage::playlistInterface() const
 {
-    return m_playlistInterface.objectCast<Tomahawk::PlaylistInterface>();
+    return m_playlistInterface.objectCast<Hatchet::PlaylistInterface>();
 }
 
 
@@ -361,11 +361,11 @@ CollectionViewPage::setFilter( const QString& pattern )
 void
 CollectionViewPage::restoreViewMode()
 {
-    //FIXME: needs be moved to TomahawkSettings
-    TomahawkSettings::instance()->beginGroup( "ui" );
-    int modeNumber = TomahawkSettings::instance()->value( "flexibleTreeViewMode", Columns ).toInt();
+    //FIXME: needs be moved to HatchetSettings
+    HatchetSettings::instance()->beginGroup( "ui" );
+    int modeNumber = HatchetSettings::instance()->value( "flexibleTreeViewMode", Columns ).toInt();
     m_mode = static_cast< CollectionViewPageMode >( modeNumber );
-    TomahawkSettings::instance()->endGroup();
+    HatchetSettings::instance()->endGroup();
 
     // try to set a supported mode otherwise fall back to artists view
     CollectionViewPageMode mode = (CollectionViewPageMode) modeNumber;

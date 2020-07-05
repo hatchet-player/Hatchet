@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2012-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "MetaPlaylistInterface.h"
@@ -22,11 +22,11 @@
 #include "Source.h"
 #include "utils/Logger.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 MetaPlaylistInterface::MetaPlaylistInterface()
-    : Tomahawk::PlaylistInterface()
+    : Hatchet::PlaylistInterface()
 {
 }
 
@@ -37,14 +37,14 @@ MetaPlaylistInterface::~MetaPlaylistInterface()
 
 
 void
-MetaPlaylistInterface::addChildInterface( const Tomahawk::playlistinterface_ptr& interface )
+MetaPlaylistInterface::addChildInterface( const Hatchet::playlistinterface_ptr& interface )
 {
     m_childInterfaces << interface;
 
     if ( m_childInterfaces.count() == 1 )
     {
-        connect( interface.data(), SIGNAL( repeatModeChanged( Tomahawk::PlaylistModes::RepeatMode ) ),
-                                   SIGNAL( repeatModeChanged( Tomahawk::PlaylistModes::RepeatMode ) ) );
+        connect( interface.data(), SIGNAL( repeatModeChanged( Hatchet::PlaylistModes::RepeatMode ) ),
+                                   SIGNAL( repeatModeChanged( Hatchet::PlaylistModes::RepeatMode ) ) );
 
         connect( interface.data(), SIGNAL( shuffleModeChanged( bool ) ),
                                    SIGNAL( shuffleModeChanged( bool ) ) );
@@ -53,19 +53,19 @@ MetaPlaylistInterface::addChildInterface( const Tomahawk::playlistinterface_ptr&
 
 
 void
-MetaPlaylistInterface::removeChildInterface( const Tomahawk::playlistinterface_ptr& interface )
+MetaPlaylistInterface::removeChildInterface( const Hatchet::playlistinterface_ptr& interface )
 {
     m_childInterfaces.removeAll( interface );
 }
 
 
-QList< Tomahawk::query_ptr >
+QList< Hatchet::query_ptr >
 MetaPlaylistInterface::tracks() const
 {
     if ( !m_childInterfaces.isEmpty() )
         return m_childInterfaces.first()->tracks();
     else
-        return QList< Tomahawk::query_ptr >();
+        return QList< Hatchet::query_ptr >();
 }
 
 
@@ -85,7 +85,7 @@ MetaPlaylistInterface::currentItem() const
     if ( !m_childInterfaces.isEmpty() && m_childInterfaces.first() )
         return m_childInterfaces.first()->currentItem();
     else
-        return Tomahawk::result_ptr();
+        return Hatchet::result_ptr();
 }
 
 
@@ -99,28 +99,28 @@ MetaPlaylistInterface::siblingIndex( int itemsAway, qint64 rootIndex ) const
 }
 
 
-Tomahawk::query_ptr
+Hatchet::query_ptr
 MetaPlaylistInterface::queryAt( qint64 index ) const
 {
     if ( !m_childInterfaces.isEmpty() )
         return m_childInterfaces.first()->queryAt( index );
     else
-        return Tomahawk::query_ptr();
+        return Hatchet::query_ptr();
 }
 
 
-Tomahawk::result_ptr
+Hatchet::result_ptr
 MetaPlaylistInterface::resultAt( qint64 index ) const
 {
     if ( !m_childInterfaces.isEmpty() )
         return m_childInterfaces.first()->resultAt( index );
     else
-        return Tomahawk::result_ptr();
+        return Hatchet::result_ptr();
 }
 
 
 qint64
-MetaPlaylistInterface::indexOfResult( const Tomahawk::result_ptr& result ) const
+MetaPlaylistInterface::indexOfResult( const Hatchet::result_ptr& result ) const
 {
     if ( !m_childInterfaces.isEmpty() )
         return m_childInterfaces.first()->indexOfResult( result );
@@ -130,7 +130,7 @@ MetaPlaylistInterface::indexOfResult( const Tomahawk::result_ptr& result ) const
 
 
 qint64
-MetaPlaylistInterface::indexOfQuery( const Tomahawk::query_ptr& query ) const
+MetaPlaylistInterface::indexOfQuery( const Hatchet::query_ptr& query ) const
 {
     if ( !m_childInterfaces.isEmpty() )
         return m_childInterfaces.first()->indexOfQuery( query );
@@ -160,9 +160,9 @@ MetaPlaylistInterface::shuffled() const
 
 
 bool
-MetaPlaylistInterface::hasChildInterface( const Tomahawk::playlistinterface_ptr& interface )
+MetaPlaylistInterface::hasChildInterface( const Hatchet::playlistinterface_ptr& interface )
 {
-    foreach ( const Tomahawk::playlistinterface_ptr& iface, m_childInterfaces )
+    foreach ( const Hatchet::playlistinterface_ptr& iface, m_childInterfaces )
     {
         if ( iface == interface || iface->hasChildInterface( interface ) )
             return true;

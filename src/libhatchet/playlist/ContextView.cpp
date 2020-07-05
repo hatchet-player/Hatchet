@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ContextView.h"
@@ -33,13 +33,13 @@
 #include "playlist/TrackItemDelegate.h"
 #include "playlist/TrackDetailView.h"
 #include "PlayableProxyModelPlaylistInterface.h"
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/ImageRegistry.h"
 #include "utils/Closure.h"
 #include "utils/Logger.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 ContextView::ContextView( QWidget* parent, const QString& caption )
@@ -50,25 +50,25 @@ ContextView::ContextView( QWidget* parent, const QString& caption )
     TrackItemDelegate* del = new TrackItemDelegate( TrackItemDelegate::LovedTracks, m_trackView, m_trackView->proxyModel() );
     m_trackView->setPlaylistItemDelegate( del );
     m_trackView->proxyModel()->setStyle( PlayableProxyModel::SingleColumn );
-    m_trackView->setStyleSheet( QString( "QTreeView { background-color: %1; }" ).arg( TomahawkStyle::PAGE_BACKGROUND.name() ) );
+    m_trackView->setStyleSheet( QString( "QTreeView { background-color: %1; }" ).arg( HatchetStyle::PAGE_BACKGROUND.name() ) );
 #ifndef Q_OS_MAC
-    TomahawkStyle::styleScrollBar( m_trackView->verticalScrollBar() );
+    HatchetStyle::styleScrollBar( m_trackView->verticalScrollBar() );
 #endif
 
     setLayout( new QVBoxLayout() );
-    TomahawkUtils::unmarginLayout( layout() );
+    HatchetUtils::unmarginLayout( layout() );
 
     m_captionLabel = new CaptionLabel( this );
     setCaption( caption );
 
     QWidget* vbox = new QWidget;
     QPalette pal = vbox->palette();
-    pal.setBrush( vbox->backgroundRole(), TomahawkStyle::PAGE_BACKGROUND );
+    pal.setBrush( vbox->backgroundRole(), HatchetStyle::PAGE_BACKGROUND );
     vbox->setPalette( pal );
     vbox->setAutoFillBackground( true );
 
     QVBoxLayout* vboxl = new QVBoxLayout();
-    TomahawkUtils::unmarginLayout( vboxl );
+    HatchetUtils::unmarginLayout( vboxl );
     vboxl->setContentsMargins( 32, 32, 32, 32 );
     vboxl->setSpacing( 32 );
 
@@ -76,11 +76,11 @@ ContextView::ContextView( QWidget* parent, const QString& caption )
 
     QWidget* hbox = new QWidget;
     QHBoxLayout* hboxl = new QHBoxLayout();
-    TomahawkUtils::unmarginLayout( hboxl );
+    HatchetUtils::unmarginLayout( hboxl );
     hboxl->setSpacing( 32 );
 
     m_innerLayout = new QVBoxLayout();
-    TomahawkUtils::unmarginLayout( m_innerLayout );
+    HatchetUtils::unmarginLayout( m_innerLayout );
     m_innerLayout->addWidget( m_trackView, 1 );
     m_innerLayout->addStretch();
 
@@ -95,13 +95,13 @@ ContextView::ContextView( QWidget* parent, const QString& caption )
     layout()->addWidget( vbox );
 
     connect( m_captionLabel, SIGNAL( clicked() ), SIGNAL( closeClicked() ) );
-    connect( m_trackView, SIGNAL( querySelected( Tomahawk::query_ptr ) ), SLOT( onQuerySelected( Tomahawk::query_ptr ) ) );
+    connect( m_trackView, SIGNAL( querySelected( Hatchet::query_ptr ) ), SLOT( onQuerySelected( Hatchet::query_ptr ) ) );
     connect( m_trackView, SIGNAL( modelChanged() ), SLOT( onModelChanged() ) );
-    connect( m_trackView, SIGNAL( querySelected( Tomahawk::query_ptr ) ), m_detailView, SLOT( setQuery( Tomahawk::query_ptr ) ) );
+    connect( m_trackView, SIGNAL( querySelected( Hatchet::query_ptr ) ), m_detailView, SLOT( setQuery( Hatchet::query_ptr ) ) );
     connect( m_detailView, SIGNAL( downloadAll() ), SLOT( onDownloadAll() ) );
     connect( m_detailView, SIGNAL( downloadCancel() ), SLOT( onDownloadCancel() ) );
 
-    TomahawkUtils::fixMargins( this );
+    HatchetUtils::fixMargins( this );
 }
 
 
@@ -116,8 +116,8 @@ ContextView::setTrackView( TrackView* view )
 {
     if ( m_trackView )
     {
-        disconnect( m_trackView, SIGNAL( querySelected( Tomahawk::query_ptr ) ), this, SLOT( onQuerySelected( Tomahawk::query_ptr ) ) );
-        disconnect( m_trackView, SIGNAL( querySelected( Tomahawk::query_ptr ) ), m_detailView, SLOT( setQuery( Tomahawk::query_ptr ) ) );
+        disconnect( m_trackView, SIGNAL( querySelected( Hatchet::query_ptr ) ), this, SLOT( onQuerySelected( Hatchet::query_ptr ) ) );
+        disconnect( m_trackView, SIGNAL( querySelected( Hatchet::query_ptr ) ), m_detailView, SLOT( setQuery( Hatchet::query_ptr ) ) );
         disconnect( m_trackView, SIGNAL( modelChanged() ), this, SLOT( onModelChanged() ) );
 
         m_innerLayout->removeWidget( m_trackView );
@@ -125,15 +125,15 @@ ContextView::setTrackView( TrackView* view )
     }
 
     m_trackView = view;
-    m_trackView->setStyleSheet( QString( "QTreeView { background-color: %1; }" ).arg( TomahawkStyle::PAGE_BACKGROUND.name() ) );
+    m_trackView->setStyleSheet( QString( "QTreeView { background-color: %1; }" ).arg( HatchetStyle::PAGE_BACKGROUND.name() ) );
 #ifndef Q_OS_MAC
-    TomahawkStyle::styleScrollBar( m_trackView->verticalScrollBar() );
+    HatchetStyle::styleScrollBar( m_trackView->verticalScrollBar() );
 #endif
 
     m_innerLayout->insertWidget( 0, view, 1 );
 
-    connect( m_trackView, SIGNAL( querySelected( Tomahawk::query_ptr ) ), SLOT( onQuerySelected( Tomahawk::query_ptr ) ) );
-    connect( m_trackView, SIGNAL( querySelected( Tomahawk::query_ptr ) ), m_detailView, SLOT( setQuery( Tomahawk::query_ptr ) ) );
+    connect( m_trackView, SIGNAL( querySelected( Hatchet::query_ptr ) ), SLOT( onQuerySelected( Hatchet::query_ptr ) ) );
+    connect( m_trackView, SIGNAL( querySelected( Hatchet::query_ptr ) ), m_detailView, SLOT( setQuery( Hatchet::query_ptr ) ) );
     connect( m_trackView, SIGNAL( modelChanged() ), SLOT( onModelChanged() ) );
 }
 
@@ -175,7 +175,7 @@ ContextView::onDownloadCancel()
 
 
 void
-ContextView::onQuerySelected( const Tomahawk::query_ptr& query )
+ContextView::onQuerySelected( const Hatchet::query_ptr& query )
 {
     if ( m_query )
     {
@@ -217,7 +217,7 @@ ContextView::setGuid( const QString& guid )
 }
 
 
-Tomahawk::playlistinterface_ptr
+Hatchet::playlistinterface_ptr
 ContextView::playlistInterface() const
 {
     return m_trackView->proxyModel()->playlistInterface();

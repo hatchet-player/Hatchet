@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DownloadManager.h"
@@ -21,7 +21,7 @@
 #include <QTimer>
 
 #include "filemetadata/ScanManager.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "infosystem/InfoSystem.h"
 #include "utils/Logger.h"
 #include "Result.h"
@@ -47,7 +47,7 @@ DownloadManager::DownloadManager()
 {
     tLog() << Q_FUNC_INFO << "Initializing DownloadManager.";
 
-    QVariantList downloads = TomahawkSettings::instance()->downloadStates();
+    QVariantList downloads = HatchetSettings::instance()->downloadStates();
     foreach ( const QVariant& download, downloads )
     {
         QVariantMap map = download.toMap();
@@ -88,9 +88,9 @@ DownloadManager::localFileForDownload( const QString& url ) const
 
 
 QUrl
-DownloadManager::localUrlForDownload( const Tomahawk::query_ptr& query ) const
+DownloadManager::localUrlForDownload( const Hatchet::query_ptr& query ) const
 {
-    Tomahawk::result_ptr result = query->numResults( true ) ? query->results().first() : Tomahawk::result_ptr();
+    Hatchet::result_ptr result = query->numResults( true ) ? query->results().first() : Hatchet::result_ptr();
     if ( result )
     {
         return localUrlForDownload( result );
@@ -101,7 +101,7 @@ DownloadManager::localUrlForDownload( const Tomahawk::query_ptr& query ) const
 
 
 QUrl
-DownloadManager::localUrlForDownload( const Tomahawk::result_ptr& result ) const
+DownloadManager::localUrlForDownload( const Hatchet::result_ptr& result ) const
 {
     if ( result && !result->downloadFormats().isEmpty() &&
         !localFileForDownload( result->downloadFormats().first().url.toString() ).isEmpty() )
@@ -121,7 +121,7 @@ void
 DownloadManager::storeJobs( const QList<downloadjob_ptr>& jobs )
 {
     tDebug() << Q_FUNC_INFO;
-    QVariantList downloads = TomahawkSettings::instance()->downloadStates();
+    QVariantList downloads = HatchetSettings::instance()->downloadStates();
     foreach ( const downloadjob_ptr& job, jobs )
     {
         if ( job->state() != DownloadJob::Finished )
@@ -144,7 +144,7 @@ DownloadManager::storeJobs( const QList<downloadjob_ptr>& jobs )
             downloads << map;
     }
 
-    TomahawkSettings::instance()->setDownloadStates( downloads );
+    HatchetSettings::instance()->setDownloadStates( downloads );
 }
 
 
@@ -153,7 +153,7 @@ DownloadManager::resumeJobs()
 {
     tLog() << Q_FUNC_INFO;
 
-/*    QList<downloadjob_ptr> jobs = TomahawkSettings::instance()->storedJobs();
+/*    QList<downloadjob_ptr> jobs = HatchetSettings::instance()->storedJobs();
     for ( int i = jobs.count() - 1; i >= 0; i-- )
     {
         downloadjob_ptr job = jobs.at( i );
@@ -314,10 +314,10 @@ DownloadManager::onJobFinished()
     files << job->localFile();
     ScanManager::instance()->runFileScan( files, true );
 
-    Tomahawk::InfoSystem::InfoPushData pushData( "DownloadManager", Tomahawk::InfoSystem::InfoNotifyUser,
+    Hatchet::InfoSystem::InfoPushData pushData( "DownloadManager", Hatchet::InfoSystem::InfoNotifyUser,
                                                  tr( "%applicationName finished downloading %1 by %2." ).arg( job->track()->track() ).arg( job->track()->artist() ),
-                                                 Tomahawk::InfoSystem::PushNoFlag );
-    Tomahawk::InfoSystem::InfoSystem::instance()->pushInfo( pushData );
+                                                 Hatchet::InfoSystem::PushNoFlag );
+    Hatchet::InfoSystem::InfoSystem::instance()->pushInfo( pushData );
 
     storeJobs( jobs( DownloadJob::Finished ) );
 }

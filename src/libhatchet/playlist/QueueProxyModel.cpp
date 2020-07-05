@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "QueueProxyModel.h"
@@ -28,7 +28,7 @@
 #include "Source.h"
 #include "ViewManager.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 QueueProxyModel::QueueProxyModel( TrackView* parent )
@@ -37,7 +37,7 @@ QueueProxyModel::QueueProxyModel( TrackView* parent )
     connect( this, SIGNAL( indexPlayable( QModelIndex ) ), SLOT( onIndexChanged( QModelIndex ) ) );
     connect( this, SIGNAL( indexResolved( QModelIndex ) ), SLOT( onIndexChanged( QModelIndex ) ) );
     connect( parent, SIGNAL( itemActivated( QModelIndex ) ), SLOT( onIndexActivated( QModelIndex ) ) );
-    connect( AudioEngine::instance(), SIGNAL( loading( Tomahawk::result_ptr ) ), SLOT( onPlaybackStarted( Tomahawk::result_ptr ) ) );
+    connect( AudioEngine::instance(), SIGNAL( loading( Hatchet::result_ptr ) ), SLOT( onPlaybackStarted( Hatchet::result_ptr ) ) );
 }
 
 
@@ -62,7 +62,7 @@ QueueProxyModel::onIndexChanged( const QModelIndex& index )
 
 
 void
-QueueProxyModel::onPlaybackStarted( const Tomahawk::result_ptr result )
+QueueProxyModel::onPlaybackStarted( const Hatchet::result_ptr result )
 {
     for ( int i = 0; i < rowCount(); i++ )
     {

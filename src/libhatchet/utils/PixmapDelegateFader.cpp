@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2012, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2010-2012, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "PixmapDelegateFader.h"
@@ -27,25 +27,25 @@
 
 #include "Logger.h"
 #include "Source.h"
-#include "TomahawkUtilsGui.h"
+#include "HatchetUtilsGui.h"
 #include "Track.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
-QPointer< TomahawkUtils::SharedTimeLine > PixmapDelegateFader::s_stlInstance = QPointer< TomahawkUtils::SharedTimeLine >();
+QPointer< HatchetUtils::SharedTimeLine > PixmapDelegateFader::s_stlInstance = QPointer< HatchetUtils::SharedTimeLine >();
 
 
-QPointer< TomahawkUtils::SharedTimeLine >
+QPointer< HatchetUtils::SharedTimeLine >
 PixmapDelegateFader::stlInstance()
 {
     if ( s_stlInstance.isNull() )
-        s_stlInstance = QPointer< TomahawkUtils::SharedTimeLine> ( new TomahawkUtils::SharedTimeLine() );
+        s_stlInstance = QPointer< HatchetUtils::SharedTimeLine> ( new HatchetUtils::SharedTimeLine() );
 
     return s_stlInstance;
 }
 
 
-PixmapDelegateFader::PixmapDelegateFader( const artist_ptr& artist, const QSize& size, TomahawkUtils::ImageMode mode, bool forceLoad )
+PixmapDelegateFader::PixmapDelegateFader( const artist_ptr& artist, const QSize& size, HatchetUtils::ImageMode mode, bool forceLoad )
     : m_artist( artist )
     , m_size( size )
     , m_mode( mode )
@@ -62,7 +62,7 @@ PixmapDelegateFader::PixmapDelegateFader( const artist_ptr& artist, const QSize&
 }
 
 
-PixmapDelegateFader::PixmapDelegateFader( const album_ptr& album, const QSize& size, TomahawkUtils::ImageMode mode, bool forceLoad )
+PixmapDelegateFader::PixmapDelegateFader( const album_ptr& album, const QSize& size, HatchetUtils::ImageMode mode, bool forceLoad )
     : m_album( album )
     , m_size( size )
     , m_mode( mode )
@@ -79,7 +79,7 @@ PixmapDelegateFader::PixmapDelegateFader( const album_ptr& album, const QSize& s
 }
 
 
-PixmapDelegateFader::PixmapDelegateFader( const query_ptr& track, const QSize& size, TomahawkUtils::ImageMode mode, bool forceLoad )
+PixmapDelegateFader::PixmapDelegateFader( const query_ptr& track, const QSize& size, HatchetUtils::ImageMode mode, bool forceLoad )
     : m_track( track )
     , m_size( size )
     , m_mode( mode )
@@ -138,11 +138,11 @@ PixmapDelegateFader::setSize( const QSize& size )
     {
         // No cover loaded yet, use default and don't fade in
         if ( !m_album.isNull() )
-            m_current = m_currentReference = TomahawkUtils::defaultPixmap( TomahawkUtils::DefaultAlbumCover, m_mode, m_size );
+            m_current = m_currentReference = HatchetUtils::defaultPixmap( HatchetUtils::DefaultAlbumCover, m_mode, m_size );
         else if ( !m_artist.isNull() )
-            m_current = m_currentReference = TomahawkUtils::defaultPixmap( TomahawkUtils::DefaultArtistImage, m_mode, m_size );
+            m_current = m_currentReference = HatchetUtils::defaultPixmap( HatchetUtils::DefaultArtistImage, m_mode, m_size );
         else if ( !m_track.isNull() )
-            m_current = m_currentReference = TomahawkUtils::defaultPixmap( TomahawkUtils::DefaultTrackImage, m_mode, m_size );
+            m_current = m_currentReference = HatchetUtils::defaultPixmap( HatchetUtils::DefaultTrackImage, m_mode, m_size );
     }
     else
     {

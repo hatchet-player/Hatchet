@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013, Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "CredentialsManager.h"
@@ -21,7 +21,7 @@
 #include "utils/Logger.h"
 
 #ifdef Q_OS_MAC
-    #include "TomahawkSettings.h"
+    #include "HatchetSettings.h"
 #else
     #include <qt5keychain/keychain.h>
     #include "utils/Json.h"
@@ -30,7 +30,7 @@
 #include <QStringList>
 
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 namespace Accounts
@@ -55,7 +55,7 @@ CredentialsStorageKey::operator !=( const CredentialsStorageKey& other ) const
 }
 
 uint
-qHash( const Tomahawk::Accounts::CredentialsStorageKey& key )
+qHash( const Hatchet::Accounts::CredentialsStorageKey& key )
 {
     return qHash( key.service() + key.key() );
 }
@@ -90,8 +90,8 @@ CredentialsManager::loadCredentials( const QString &service )
     foreach ( QString key, accountIds )
     {
         tDebug() << Q_FUNC_INFO << "beginGroup" << QString( "accounts/%1" ).arg( key );
-        TomahawkSettings::instance()->beginGroup( QString( "accounts/%1" ).arg( key ) );
-        const QVariantMap creds = TomahawkSettings::instance()->value( "credentials" ).toMap();
+        HatchetSettings::instance()->beginGroup( QString( "accounts/%1" ).arg( key ) );
+        const QVariantMap creds = HatchetSettings::instance()->value( "credentials" ).toMap();
         tDebug() << creds[ "username" ]
                  << ( creds[ "password" ].isNull() ? ", no password" : ", has password" );
 
@@ -99,7 +99,7 @@ CredentialsManager::loadCredentials( const QString &service )
         {
             m_credentials.insert( CredentialsStorageKey( service, key ), creds );
         }
-        TomahawkSettings::instance()->endGroup();
+        HatchetSettings::instance()->endGroup();
     }
 
     emit serviceReady( service );
@@ -181,9 +181,9 @@ CredentialsManager::setCredentials( const CredentialsStorageKey& csKey, const QV
         m_credentials.remove( csKey );
 
 #ifdef Q_OS_MAC
-        TomahawkSettings::instance()->beginGroup( QString( "accounts/%1" ).arg( csKey.key() ) );
-        TomahawkSettings::instance()->remove( "credentials" );
-        TomahawkSettings::instance()->endGroup();
+        HatchetSettings::instance()->beginGroup( QString( "accounts/%1" ).arg( csKey.key() ) );
+        HatchetSettings::instance()->remove( "credentials" );
+        HatchetSettings::instance()->endGroup();
 #else
         QKeychain::DeletePasswordJob* dj = new QKeychain::DeletePasswordJob( csKey.service(), this );
         dj->setKey( csKey.key() );
@@ -198,9 +198,9 @@ CredentialsManager::setCredentials( const CredentialsStorageKey& csKey, const QV
         m_credentials.insert( csKey, value );
 
 #ifdef Q_OS_MAC
-        TomahawkSettings::instance()->beginGroup( QString( "accounts/%1" ).arg( csKey.key() ) );
-        TomahawkSettings::instance()->setValue( "credentials", value );
-        TomahawkSettings::instance()->endGroup();
+        HatchetSettings::instance()->beginGroup( QString( "accounts/%1" ).arg( csKey.key() ) );
+        HatchetSettings::instance()->setValue( "credentials", value );
+        HatchetSettings::instance()->endGroup();
 #else
         QKeychain::WritePasswordJob* wj = new QKeychain::WritePasswordJob( csKey.service(), this );
         wj->setKey( csKey.key() );
@@ -214,7 +214,7 @@ CredentialsManager::setCredentials( const CredentialsStorageKey& csKey, const QV
         else if ( value.type() == QVariant::Map )
         {
             bool ok;
-            QByteArray data = TomahawkUtils::toJson( value.toMap(), &ok );
+            QByteArray data = HatchetUtils::toJson( value.toMap(), &ok );
 
             if ( ok )
             {
@@ -274,7 +274,7 @@ CredentialsManager::keychainJobFinished( QKeychain::Job* j )
             QVariant creds;
             bool ok;
 
-            creds = TomahawkUtils::parseJson( readJob->textData().toLatin1(), &ok );
+            creds = HatchetUtils::parseJson( readJob->textData().toLatin1(), &ok );
 
             QVariantMap map = creds.toMap();
             creds = QVariant( map );
@@ -315,4 +315,4 @@ CredentialsManager::keychainJobFinished( QKeychain::Job* j )
 
 } //namespace Accounts
 
-} //namespace Tomahawk
+} //namespace Hatchet

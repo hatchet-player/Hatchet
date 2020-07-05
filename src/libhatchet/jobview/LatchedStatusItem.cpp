@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "LatchedStatusItem.h"
@@ -22,9 +22,9 @@
 #include "SourceList.h"
 #include "JobStatusView.h"
 #include "JobStatusModel.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 
-LatchedStatusItem::LatchedStatusItem( const Tomahawk::source_ptr& from, const Tomahawk::source_ptr& to, LatchedStatusManager* parent )
+LatchedStatusItem::LatchedStatusItem( const Hatchet::source_ptr& from, const Hatchet::source_ptr& to, LatchedStatusManager* parent )
     : JobStatusItem()
     , m_from( from )
     , m_to( to )
@@ -63,12 +63,12 @@ void LatchedStatusItem::stop()
 LatchedStatusManager::LatchedStatusManager( QObject* parent )
     : QObject( parent )
 {
-    connect( SourceList::instance(), SIGNAL( sourceLatchedOn( Tomahawk::source_ptr, Tomahawk::source_ptr ) ), this, SLOT( latchedOn( Tomahawk::source_ptr, Tomahawk::source_ptr ) ) );
-    connect( SourceList::instance(), SIGNAL( sourceLatchedOff( Tomahawk::source_ptr, Tomahawk::source_ptr ) ), this, SLOT( latchedOff( Tomahawk::source_ptr, Tomahawk::source_ptr ) ) );
+    connect( SourceList::instance(), SIGNAL( sourceLatchedOn( Hatchet::source_ptr, Hatchet::source_ptr ) ), this, SLOT( latchedOn( Hatchet::source_ptr, Hatchet::source_ptr ) ) );
+    connect( SourceList::instance(), SIGNAL( sourceLatchedOff( Hatchet::source_ptr, Hatchet::source_ptr ) ), this, SLOT( latchedOff( Hatchet::source_ptr, Hatchet::source_ptr ) ) );
 }
 
 void
-LatchedStatusManager::latchedOn( const Tomahawk::source_ptr& from, const Tomahawk::source_ptr& to )
+LatchedStatusManager::latchedOn( const Hatchet::source_ptr& from, const Hatchet::source_ptr& to )
 {
     if ( from.isNull() || to.isNull() )
         return;
@@ -86,7 +86,7 @@ LatchedStatusManager::latchedOn( const Tomahawk::source_ptr& from, const Tomahaw
 void
 LatchedStatusManager::sourceOffline()
 {
-    Tomahawk::Source* s = qobject_cast< Tomahawk::Source* >( sender() );
+    Hatchet::Source* s = qobject_cast< Hatchet::Source* >( sender() );
     Q_ASSERT( s );
 
     if ( m_jobs.contains( s->nodeId() ) )
@@ -99,7 +99,7 @@ LatchedStatusManager::sourceOffline()
 
 
 void
-LatchedStatusManager::latchedOff( const Tomahawk::source_ptr& from, const Tomahawk::source_ptr& to )
+LatchedStatusManager::latchedOff( const Hatchet::source_ptr& from, const Hatchet::source_ptr& to )
 {
     if ( from.isNull() || to.isNull() )
         return;
@@ -116,5 +116,5 @@ LatchedStatusManager::latchedOff( const Tomahawk::source_ptr& from, const Tomaha
 QPixmap
 LatchedStatusManager::pixmap() const
 {
-    return TomahawkUtils::defaultPixmap( TomahawkUtils::HeadphonesOn, TomahawkUtils::Original, QSize( 128, 128 ) );
+    return HatchetUtils::defaultPixmap( HatchetUtils::HeadphonesOn, HatchetUtils::Original, QSize( 128, 128 ) );
 }

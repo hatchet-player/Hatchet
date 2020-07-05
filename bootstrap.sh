@@ -15,7 +15,7 @@ rm -rf build
 meson setup build -Dprefix="/usr"
 
 
-# Build tomahawk
+# Build hatchet
 #---------------------------------------------------
 cd build
 ninja

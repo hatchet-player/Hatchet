@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2013,      Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DatabaseCommand_p.h"
@@ -24,7 +24,7 @@
 #include "Source.h"
 
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 DatabaseCommand::DatabaseCommand( QObject* parent )
@@ -34,7 +34,7 @@ DatabaseCommand::DatabaseCommand( QObject* parent )
 }
 
 
-DatabaseCommand::DatabaseCommand( const Tomahawk::source_ptr& src, QObject* parent )
+DatabaseCommand::DatabaseCommand( const Hatchet::source_ptr& src, QObject* parent )
     : QObject( parent )
     , d_ptr( new DatabaseCommandPrivate( this, src ) )
 {
@@ -73,14 +73,14 @@ DatabaseCommand::_exec( DatabaseImpl* lib )
 
 
 void
-DatabaseCommand::setSource( const Tomahawk::source_ptr& s )
+DatabaseCommand::setSource( const Hatchet::source_ptr& s )
 {
     Q_D( DatabaseCommand );
     d->source = s;
 }
 
 
-const Tomahawk::source_ptr&
+const Hatchet::source_ptr&
 DatabaseCommand::source() const
 {
     Q_D( const DatabaseCommand );

@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "QueueView.h"
@@ -27,10 +27,10 @@
 #include "Pipeline.h"
 #include "Source.h"
 #include "SourceList.h"
-#include "TomahawkSettings.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "HatchetSettings.h"
+#include "utils/HatchetUtilsGui.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 QueueView::QueueView( QWidget* parent )
@@ -47,7 +47,7 @@ QueueView::QueueView( QWidget* parent )
     queueModel->setAcceptPlayableQueriesOnly( true );
     queueModel->setReadOnly( false );
     queueModel->setTitle( tr( "Queue" ) );
-    setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::Queue ) );
+    setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::Queue ) );
 
     view()->trackView()->setPlayableModel( queueModel );
     view()->setEmptyTip( tr( "The queue is currently empty. Drop something to enqueue it!" ) );
@@ -80,7 +80,7 @@ QueueView::restoreState()
     if ( !Pipeline::instance()->isRunning() || !SourceList::instance()->isReady() )
         return;
 
-    QVariantList vl = TomahawkSettings::instance()->queueState().toList();
+    QVariantList vl = HatchetSettings::instance()->queueState().toList();
     QList< query_ptr > ql;
 
     foreach ( const QVariant& v, vl )
@@ -106,5 +106,5 @@ QueueView::saveState()
         vl << query->toVariant();
     }
 
-    TomahawkSettings::instance()->setQueueState( vl );
+    HatchetSettings::instance()->setQueueState( vl );
 }

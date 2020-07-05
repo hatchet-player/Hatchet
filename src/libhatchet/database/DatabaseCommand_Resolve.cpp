@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DatabaseCommand_Resolve.h"
@@ -27,7 +27,7 @@
 #include "SourceList.h"
 #include "Track.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 DatabaseCommand_Resolve::DatabaseCommand_Resolve( const query_ptr& query )
@@ -58,10 +58,10 @@ DatabaseCommand_Resolve::exec( DatabaseImpl* lib )
     {
         tDebug() << "Using result-hint to speed up resolving:" << m_query->resultHint();
 
-        Tomahawk::result_ptr result = lib->resultFromHint( m_query );
+        Hatchet::result_ptr result = lib->resultFromHint( m_query );
         if ( result && ( !result->resolvedByCollection() || result->resolvedByCollection()->isOnline() ) )
         {
-            QList<Tomahawk::result_ptr> res;
+            QList<Hatchet::result_ptr> res;
             res << result;
             emit results( m_query->id(), res );
             return;
@@ -78,7 +78,7 @@ DatabaseCommand_Resolve::exec( DatabaseImpl* lib )
 void
 DatabaseCommand_Resolve::resolve( DatabaseImpl* lib )
 {
-    QList<Tomahawk::result_ptr> res;
+    QList<Hatchet::result_ptr> res;
 
     // STEP 1
     QList< QPair<int, float> > tracks = lib->search( m_query );
@@ -91,7 +91,7 @@ DatabaseCommand_Resolve::resolve( DatabaseImpl* lib )
     }
 
     // STEP 2
-    TomahawkSqlQuery files_query = lib->newquery();
+    HatchetSqlQuery files_query = lib->newquery();
 
     QStringList trksl;
     for ( int k = 0; k < tracks.count(); k++ )
@@ -140,7 +140,7 @@ DatabaseCommand_Resolve::resolve( DatabaseImpl* lib )
         if ( !s->isLocal() )
             url = QString( "servent://%1\t%2" ).arg( s->nodeId() ).arg( url );
 
-        Tomahawk::result_ptr result = Tomahawk::Result::getCached( url );
+        Hatchet::result_ptr result = Hatchet::Result::getCached( url );
         if ( result )
         {
             tDebug( LOGVERBOSE ) << "Result already cached:" << result->toString();
@@ -176,14 +176,14 @@ DatabaseCommand_Resolve::resolve( DatabaseImpl* lib )
 void
 DatabaseCommand_Resolve::fullTextResolve( DatabaseImpl* lib )
 {
-    QList<Tomahawk::result_ptr> res;
+    QList<Hatchet::result_ptr> res;
     typedef QPair<int, float> scorepair_t;
 
     // STEP 1
     QList< QPair<int, float> > trackPairs = lib->search( m_query );
     QList< QPair<int, float> > albumPairs = lib->searchAlbum( m_query, 20 );
 
-    TomahawkSqlQuery query = lib->newquery();
+    HatchetSqlQuery query = lib->newquery();
     query.prepare( "SELECT album.name, artist.id, artist.name FROM album, artist WHERE artist.id = album.artist AND album.id = ?" );
 
     foreach ( const scorepair_t& albumPair, albumPairs )
@@ -191,11 +191,11 @@ DatabaseCommand_Resolve::fullTextResolve( DatabaseImpl* lib )
         query.bindValue( 0, albumPair.first );
         query.exec();
 
-        QList<Tomahawk::album_ptr> albumList;
+        QList<Hatchet::album_ptr> albumList;
         while ( query.next() )
         {
-            Tomahawk::artist_ptr artist = Tomahawk::Artist::get( query.value( 1 ).toUInt(), query.value( 2 ).toString() );
-            Tomahawk::album_ptr album = Tomahawk::Album::get( albumPair.first, query.value( 0 ).toString(), artist );
+            Hatchet::artist_ptr artist = Hatchet::Artist::get( query.value( 1 ).toUInt(), query.value( 2 ).toString() );
+            Hatchet::album_ptr album = Hatchet::Album::get( albumPair.first, query.value( 0 ).toString(), artist );
             albumList << album;
         }
 
@@ -210,7 +210,7 @@ DatabaseCommand_Resolve::fullTextResolve( DatabaseImpl* lib )
     }
 
     // STEP 2
-    TomahawkSqlQuery files_query = lib->newquery();
+    HatchetSqlQuery files_query = lib->newquery();
 
     QStringList trksl;
     for ( int k = 0; k < trackPairs.count(); k++ )
@@ -258,7 +258,7 @@ DatabaseCommand_Resolve::fullTextResolve( DatabaseImpl* lib )
         if ( !s->isLocal() )
             url = QString( "servent://%1\t%2" ).arg( s->nodeId() ).arg( url );
 
-        Tomahawk::result_ptr result = Tomahawk::Result::getCached( url );
+        Hatchet::result_ptr result = Hatchet::Result::getCached( url );
         if ( result )
         {
             tDebug( LOGVERBOSE ) << "Result already cached:" << result->toString();

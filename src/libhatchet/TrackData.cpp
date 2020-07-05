@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2013, Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "TrackData.h"
@@ -44,7 +44,7 @@
 #include <QReadWriteLock>
 #include <QCoreApplication>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 QHash< QString, trackdata_wptr > TrackData::s_trackDatasByName = QHash< QString, trackdata_wptr >();
 QHash< unsigned int, trackdata_wptr > TrackData::s_trackDatasById = QHash< unsigned int, trackdata_wptr >();
@@ -176,7 +176,7 @@ TrackData::toString() const
 query_ptr
 TrackData::toQuery()
 {
-    return Tomahawk::Query::get( m_artist, m_track, "" );
+    return Hatchet::Query::get( m_artist, m_track, "" );
 }
 
 
@@ -232,7 +232,7 @@ TrackData::loadAttributes()
     m_attributesLoaded = true;
 
     DatabaseCommand_LoadTrackAttributes* cmd = new DatabaseCommand_LoadTrackAttributes( m_ownRef.toStrongRef() );
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr(cmd) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr(cmd) );
 }
 
 
@@ -257,7 +257,7 @@ TrackData::loadSocialActions( bool force )
     m_socialActionsLoaded = true;
 
     DatabaseCommand_LoadSocialActions* cmd = new DatabaseCommand_LoadSocialActions( m_ownRef.toStrongRef() );
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 }
 
 
@@ -282,20 +282,20 @@ TrackData::allSocialActions() const
 }
 
 
-QList< Tomahawk::SocialAction >
+QList< Hatchet::SocialAction >
 TrackData::socialActions( const QString& actionName, const QVariant& value, bool filterDupeSourceNames )
 {
     QMutexLocker locker( &s_memberMutex );
 
-    QList< Tomahawk::SocialAction > filtered;
-    foreach ( const Tomahawk::SocialAction& sa, m_allSocialActions )
+    QList< Hatchet::SocialAction > filtered;
+    foreach ( const Hatchet::SocialAction& sa, m_allSocialActions )
     {
         if ( sa.action == actionName )
         {
             if ( !value.isNull() && sa.value != value )
             {
-                Tomahawk::source_ptr srcWithBadValue = sa.source;
-                QList< Tomahawk::SocialAction>::iterator it = filtered.begin();
+                Hatchet::source_ptr srcWithBadValue = sa.source;
+                QList< Hatchet::SocialAction>::iterator it = filtered.begin();
                 while ( it != filtered.end() )
                 {
                     if ( it->source == srcWithBadValue )
@@ -307,7 +307,7 @@ TrackData::socialActions( const QString& actionName, const QVariant& value, bool
             }
 
             bool dupe = false;
-            for ( QList< Tomahawk::SocialAction>::iterator it = filtered.begin();
+            for ( QList< Hatchet::SocialAction>::iterator it = filtered.begin();
                   it != filtered.end(); ++it )
             {
                 if ( it->source == sa.source ||
@@ -337,12 +337,12 @@ TrackData::socialActions( const QString& actionName, const QVariant& value, bool
 void
 TrackData::parseSocialActions()
 {
-    QListIterator< Tomahawk::SocialAction > it( m_allSocialActions );
+    QListIterator< Hatchet::SocialAction > it( m_allSocialActions );
     unsigned int highestTimestamp = 0;
 
     while ( it.hasNext() )
     {
-        Tomahawk::SocialAction socialAction;
+        Hatchet::SocialAction socialAction;
         socialAction = it.next();
         if ( socialAction.timestamp.toUInt() > highestTimestamp && socialAction.source->isLocal() )
         {
@@ -377,15 +377,15 @@ TrackData::setLoved( bool loved )
     emit socialActionsLoaded();
 
     DatabaseCommand_SocialAction* cmd = new DatabaseCommand_SocialAction( m_ownRef.toStrongRef(), QString( "Love" ), loved ? QString( "true" ) : QString( "false" ) );
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 }
 
 
 void
-TrackData::share( const Tomahawk::source_ptr& source )
+TrackData::share( const Hatchet::source_ptr& source )
 {
     DatabaseCommand_ShareTrack* cmd = new DatabaseCommand_ShareTrack( m_ownRef.toStrongRef(), source->nodeId() );
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 }
 
 
@@ -399,16 +399,16 @@ TrackData::loadStats()
 
     DatabaseCommand_TrackStats* cmd = new DatabaseCommand_TrackStats( m_ownRef.toStrongRef() );
     connect( cmd, SIGNAL( trackStats( unsigned int, unsigned int ) ), SLOT( onTrackStatsLoaded( unsigned int, unsigned int ) ) );
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr(cmd) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr(cmd) );
 }
 
 
-QList< Tomahawk::PlaybackLog >
-TrackData::playbackHistory( const Tomahawk::source_ptr& source ) const
+QList< Hatchet::PlaybackLog >
+TrackData::playbackHistory( const Hatchet::source_ptr& source ) const
 {
     QMutexLocker locker( &s_memberMutex );
 
-    QList< Tomahawk::PlaybackLog > history;
+    QList< Hatchet::PlaybackLog > history;
     foreach ( const PlaybackLog& log, m_playbackHistory )
     {
         if ( source.isNull() || log.source == source )
@@ -422,7 +422,7 @@ TrackData::playbackHistory( const Tomahawk::source_ptr& source ) const
 
 
 void
-TrackData::setPlaybackHistory( const QList< Tomahawk::PlaybackLog >& playbackData )
+TrackData::setPlaybackHistory( const QList< Hatchet::PlaybackLog >& playbackData )
 {
     {
         QMutexLocker locker( &s_memberMutex );
@@ -472,33 +472,33 @@ TrackData::chartCount() const
 }
 
 
-QList<Tomahawk::query_ptr>
+QList<Hatchet::query_ptr>
 TrackData::similarTracks() const
 {
     if ( !m_simTracksLoaded )
     {
-        Tomahawk::InfoSystem::InfoStringHash trackInfo;
+        Hatchet::InfoSystem::InfoStringHash trackInfo;
         trackInfo["artist"] = artist();
         trackInfo["track"] = track();
 
-        Tomahawk::InfoSystem::InfoRequestData requestData;
+        Hatchet::InfoSystem::InfoRequestData requestData;
         requestData.caller = id();
         requestData.customData = QVariantMap();
 
-        requestData.input = QVariant::fromValue< Tomahawk::InfoSystem::InfoStringHash >( trackInfo );
-        requestData.type = Tomahawk::InfoSystem::InfoTrackSimilars;
-        requestData.requestId = TomahawkUtils::infosystemRequestId();
+        requestData.input = QVariant::fromValue< Hatchet::InfoSystem::InfoStringHash >( trackInfo );
+        requestData.type = Hatchet::InfoSystem::InfoTrackSimilars;
+        requestData.requestId = HatchetUtils::infosystemRequestId();
 
-        connect( Tomahawk::InfoSystem::InfoSystem::instance(),
-                 SIGNAL( info( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ),
-                 SLOT( infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ), Qt::UniqueConnection );
+        connect( Hatchet::InfoSystem::InfoSystem::instance(),
+                 SIGNAL( info( Hatchet::InfoSystem::InfoRequestData, QVariant ) ),
+                 SLOT( infoSystemInfo( Hatchet::InfoSystem::InfoRequestData, QVariant ) ), Qt::UniqueConnection );
 
-        connect( Tomahawk::InfoSystem::InfoSystem::instance(),
+        connect( Hatchet::InfoSystem::InfoSystem::instance(),
                  SIGNAL( finished( QString ) ),
                  SLOT( infoSystemFinished( QString ) ), Qt::UniqueConnection );
 
         m_infoJobs++;
-        Tomahawk::InfoSystem::InfoSystem::instance()->getInfo( requestData );
+        Hatchet::InfoSystem::InfoSystem::instance()->getInfo( requestData );
     }
 
     return m_similarTracks;
@@ -510,28 +510,28 @@ TrackData::lyrics() const
 {
     if ( !m_lyricsLoaded )
     {
-        Tomahawk::InfoSystem::InfoStringHash trackInfo;
+        Hatchet::InfoSystem::InfoStringHash trackInfo;
         trackInfo["artist"] = artist();
         trackInfo["track"] = track();
 
-        Tomahawk::InfoSystem::InfoRequestData requestData;
+        Hatchet::InfoSystem::InfoRequestData requestData;
         requestData.caller = id();
         requestData.customData = QVariantMap();
 
-        requestData.input = QVariant::fromValue< Tomahawk::InfoSystem::InfoStringHash >( trackInfo );
-        requestData.type = Tomahawk::InfoSystem::InfoTrackLyrics;
-        requestData.requestId = TomahawkUtils::infosystemRequestId();
+        requestData.input = QVariant::fromValue< Hatchet::InfoSystem::InfoStringHash >( trackInfo );
+        requestData.type = Hatchet::InfoSystem::InfoTrackLyrics;
+        requestData.requestId = HatchetUtils::infosystemRequestId();
 
-        connect( Tomahawk::InfoSystem::InfoSystem::instance(),
-                 SIGNAL( info( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ),
-                 SLOT( infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ), Qt::UniqueConnection );
+        connect( Hatchet::InfoSystem::InfoSystem::instance(),
+                 SIGNAL( info( Hatchet::InfoSystem::InfoRequestData, QVariant ) ),
+                 SLOT( infoSystemInfo( Hatchet::InfoSystem::InfoRequestData, QVariant ) ), Qt::UniqueConnection );
 
-        connect( Tomahawk::InfoSystem::InfoSystem::instance(),
+        connect( Hatchet::InfoSystem::InfoSystem::instance(),
                  SIGNAL( finished( QString ) ),
                  SLOT( infoSystemFinished( QString ) ), Qt::UniqueConnection );
 
         m_infoJobs++;
-        Tomahawk::InfoSystem::InfoSystem::instance()->getInfo( requestData );
+        Hatchet::InfoSystem::InfoSystem::instance()->getInfo( requestData );
     }
 
     return m_lyrics;
@@ -539,7 +539,7 @@ TrackData::lyrics() const
 
 
 void
-TrackData::infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData requestData, QVariant output )
+TrackData::infoSystemInfo( Hatchet::InfoSystem::InfoRequestData requestData, QVariant output )
 {
     if ( requestData.caller != id() )
         return;
@@ -586,10 +586,10 @@ TrackData::infoSystemFinished( QString target )
 
     if ( --m_infoJobs == 0 )
     {
-        disconnect( Tomahawk::InfoSystem::InfoSystem::instance(), SIGNAL( info( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ),
-                    this, SLOT( infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ) );
+        disconnect( Hatchet::InfoSystem::InfoSystem::instance(), SIGNAL( info( Hatchet::InfoSystem::InfoRequestData, QVariant ) ),
+                    this, SLOT( infoSystemInfo( Hatchet::InfoSystem::InfoRequestData, QVariant ) ) );
 
-        disconnect( Tomahawk::InfoSystem::InfoSystem::instance(), SIGNAL( finished( QString ) ),
+        disconnect( Hatchet::InfoSystem::InfoSystem::instance(), SIGNAL( finished( QString ) ),
                     this, SLOT( infoSystemFinished( QString ) ) );
     }
 }

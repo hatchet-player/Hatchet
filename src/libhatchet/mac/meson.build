@@ -1,11 +1,11 @@
-# libtomahawk.mac build file
+# libhatchet.mac build file
 #============================================================================
 
-libtomahawk_inc += include_directories('.')
-libtomahawk_mac_dir = meson.current_source_dir()
+libhatchet_inc += include_directories('.')
+libhatchet_mac_dir = meson.current_source_dir()
 
 
 if (sys_name.contains('darwin'))
-    libtomahawk_src += files(
-        join_paths(libtomahawk_mac_dir, 'FileHelpers.mm'))
+    libhatchet_src += files(
+        join_paths(libhatchet_mac_dir, 'FileHelpers.mm'))
 endif

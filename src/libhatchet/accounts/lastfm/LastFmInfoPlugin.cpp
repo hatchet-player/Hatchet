@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Leo Franchi            <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "LastFmInfoPlugin.h"
@@ -27,18 +27,18 @@
 #include "Album.h"
 #include "Typedefs.h"
 #include "audio/AudioEngine.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
 #include "accounts/lastfm/LastFmAccount.h"
 #include "Source.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "utils/NetworkAccessManager.h"
 
 #include <lastfm5/ws.h>
 #include <lastfm5/XmlQuery.h>
 
-using namespace Tomahawk::Accounts;
-using namespace Tomahawk::InfoSystem;
+using namespace Hatchet::Accounts;
+using namespace Hatchet::InfoSystem;
 
 
 LastFmInfoPlugin::LastFmInfoPlugin( LastFmAccount* account )
@@ -54,7 +54,7 @@ LastFmInfoPlugin::LastFmInfoPlugin( LastFmAccount* account )
 void
 LastFmInfoPlugin::init()
 {
-    if ( Tomahawk::InfoSystem::InfoSystem::instance()->workerThread() && thread() != Tomahawk::InfoSystem::InfoSystem::instance()->workerThread().data() )
+    if ( Hatchet::InfoSystem::InfoSystem::instance()->workerThread() && thread() != Hatchet::InfoSystem::InfoSystem::instance()->workerThread().data() )
     {
         tDebug() << "Failure: move to the worker thread before running init";
         return;
@@ -77,7 +77,7 @@ LastFmInfoPlugin::init()
 
     lastfm::ws::ApiKey = "7194b85b6d1f424fe1668173a78c0c4a";
     lastfm::ws::SharedSecret = "ba80f1df6d27ae63e9cb1d33ccf2052f";
-    lastfm::setNetworkAccessManager( Tomahawk::Utils::nam() );
+    lastfm::setNetworkAccessManager( Hatchet::Utils::nam() );
 
     if ( !m_account.isNull() )
     {
@@ -98,7 +98,7 @@ LastFmInfoPlugin::~LastFmInfoPlugin()
 
 
 void
-LastFmInfoPlugin::dataError( Tomahawk::InfoSystem::InfoRequestData requestData )
+LastFmInfoPlugin::dataError( Hatchet::InfoSystem::InfoRequestData requestData )
 {
     emit info( requestData, QVariant() );
     return;
@@ -106,7 +106,7 @@ LastFmInfoPlugin::dataError( Tomahawk::InfoSystem::InfoRequestData requestData )
 
 
 void
-LastFmInfoPlugin::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
+LastFmInfoPlugin::getInfo( Hatchet::InfoSystem::InfoRequestData requestData )
 {
     switch ( requestData.type )
     {
@@ -146,7 +146,7 @@ LastFmInfoPlugin::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
 
 
 void
-LastFmInfoPlugin::pushInfo( Tomahawk::InfoSystem::InfoPushData pushData )
+LastFmInfoPlugin::pushInfo( Hatchet::InfoSystem::InfoPushData pushData )
 {
     switch ( pushData.type )
     {
@@ -180,10 +180,10 @@ LastFmInfoPlugin::nowPlaying( const QVariant &input )
     }
 
     QVariantMap map = input.toMap();
-    if ( map.contains( "private" ) && map[ "private" ] == TomahawkSettings::FullyPrivate )
+    if ( map.contains( "private" ) && map[ "private" ] == HatchetSettings::FullyPrivate )
         return;
 
-    if ( !map.contains( "trackinfo" ) || !map[ "trackinfo" ].canConvert< Tomahawk::InfoSystem::InfoStringHash >() || !m_scrobbler )
+    if ( !map.contains( "trackinfo" ) || !map[ "trackinfo" ].canConvert< Hatchet::InfoSystem::InfoStringHash >() || !m_scrobbler )
     {
         tLog() << Q_FUNC_INFO << "LastFmInfoPlugin::nowPlaying no m_scrobbler, or cannot convert input!";
         if ( !m_scrobbler )
@@ -191,7 +191,7 @@ LastFmInfoPlugin::nowPlaying( const QVariant &input )
         return;
     }
 
-    Tomahawk::InfoSystem::InfoStringHash hash = map[ "trackinfo" ].value< Tomahawk::InfoSystem::InfoStringHash >();
+    Hatchet::InfoSystem::InfoStringHash hash = map[ "trackinfo" ].value< Hatchet::InfoSystem::InfoStringHash >();
 
     if ( !hash.contains( "title" ) || !hash.contains( "artist" ) || !hash.contains( "album" ) || !hash.contains( "duration" ) )
         return;
@@ -231,13 +231,13 @@ LastFmInfoPlugin::sendLoveSong( const InfoType type, QVariant input )
 {
     qDebug() << Q_FUNC_INFO;
 
-    if ( !input.toMap().contains( "trackinfo" ) || !input.toMap()[ "trackinfo" ].canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !input.toMap().contains( "trackinfo" ) || !input.toMap()[ "trackinfo" ].canConvert< Hatchet::InfoSystem::InfoStringHash >() )
     {
         tLog() << "LastFmInfoPlugin::nowPlaying cannot convert input!";
         return;
     }
 
-    InfoStringHash hash = input.toMap()[ "trackinfo" ].value< Tomahawk::InfoSystem::InfoStringHash >();
+    InfoStringHash hash = input.toMap()[ "trackinfo" ].value< Hatchet::InfoSystem::InfoStringHash >();
     if ( !hash.contains( "title" ) || !hash.contains( "artist" ) || !hash.contains( "album" ) )
         return;
 
@@ -251,11 +251,11 @@ LastFmInfoPlugin::sendLoveSong( const InfoType type, QVariant input )
     track.setDuration( hash["duration"].toUInt( &ok ) );
     track.setSource( lastfm::Track::Player );
 
-    if ( type == Tomahawk::InfoSystem::InfoLove )
+    if ( type == Hatchet::InfoSystem::InfoLove )
     {
         track.love();
     }
-    else if ( type == Tomahawk::InfoSystem::InfoUnLove )
+    else if ( type == Hatchet::InfoSystem::InfoUnLove )
     {
         track.unlove();
     }
@@ -263,21 +263,21 @@ LastFmInfoPlugin::sendLoveSong( const InfoType type, QVariant input )
 
 
 void
-LastFmInfoPlugin::fetchSimilarArtists( Tomahawk::InfoSystem::InfoRequestData requestData )
+LastFmInfoPlugin::fetchSimilarArtists( Hatchet::InfoSystem::InfoRequestData requestData )
 {
-    if ( !requestData.input.canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !requestData.input.canConvert< Hatchet::InfoSystem::InfoStringHash >() )
     {
         dataError( requestData );
         return;
     }
-    InfoStringHash hash = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+    InfoStringHash hash = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
     if ( !hash.contains( "artist" ) )
     {
         dataError( requestData );
         return;
     }
 
-    Tomahawk::InfoSystem::InfoStringHash criteria;
+    Hatchet::InfoSystem::InfoStringHash criteria;
     criteria["artist"] = hash["artist"];
 
     emit getCachedInfo( criteria, Q_INT64_C(2419200000), requestData );
@@ -285,21 +285,21 @@ LastFmInfoPlugin::fetchSimilarArtists( Tomahawk::InfoSystem::InfoRequestData req
 
 
 void
-LastFmInfoPlugin::fetchSimilarTracks( Tomahawk::InfoSystem::InfoRequestData requestData )
+LastFmInfoPlugin::fetchSimilarTracks( Hatchet::InfoSystem::InfoRequestData requestData )
 {
-    if ( !requestData.input.canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !requestData.input.canConvert< Hatchet::InfoSystem::InfoStringHash >() )
     {
         dataError( requestData );
         return;
     }
-    InfoStringHash hash = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+    InfoStringHash hash = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
     if ( !hash.contains( "artist" ) || !hash.contains( "track" ) )
     {
         dataError( requestData );
         return;
     }
 
-    Tomahawk::InfoSystem::InfoStringHash criteria;
+    Hatchet::InfoSystem::InfoStringHash criteria;
     criteria["artist"] = hash["artist"];
     criteria["track"] = hash["track"];
 
@@ -308,21 +308,21 @@ LastFmInfoPlugin::fetchSimilarTracks( Tomahawk::InfoSystem::InfoRequestData requ
 
 
 void
-LastFmInfoPlugin::fetchTopTracks( Tomahawk::InfoSystem::InfoRequestData requestData )
+LastFmInfoPlugin::fetchTopTracks( Hatchet::InfoSystem::InfoRequestData requestData )
 {
-    if ( !requestData.input.canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !requestData.input.canConvert< Hatchet::InfoSystem::InfoStringHash >() )
     {
         dataError( requestData );
         return;
     }
-    InfoStringHash hash = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+    InfoStringHash hash = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
     if ( !hash.contains( "artist" ) )
     {
         dataError( requestData );
         return;
     }
 
-    Tomahawk::InfoSystem::InfoStringHash criteria;
+    Hatchet::InfoSystem::InfoStringHash criteria;
     criteria["artist"] = hash["artist"];
 
     emit getCachedInfo( criteria, Q_INT64_C(2419200000), requestData );
@@ -330,21 +330,21 @@ LastFmInfoPlugin::fetchTopTracks( Tomahawk::InfoSystem::InfoRequestData requestD
 
 
 void
-LastFmInfoPlugin::fetchArtistInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
+LastFmInfoPlugin::fetchArtistInfo( Hatchet::InfoSystem::InfoRequestData requestData )
 {
-    if ( !requestData.input.canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !requestData.input.canConvert< Hatchet::InfoSystem::InfoStringHash >() )
     {
         dataError( requestData );
         return;
     }
-    InfoStringHash hash = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+    InfoStringHash hash = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
     if ( !hash.contains( "artist" ) )
     {
         dataError( requestData );
         return;
     }
 
-    Tomahawk::InfoSystem::InfoStringHash criteria;
+    Hatchet::InfoSystem::InfoStringHash criteria;
     criteria["artist"] = hash["artist"];
 
     emit getCachedInfo( criteria, Q_INT64_C(2419200000), requestData );
@@ -352,15 +352,15 @@ LastFmInfoPlugin::fetchArtistInfo( Tomahawk::InfoSystem::InfoRequestData request
 
 
 void
-LastFmInfoPlugin::fetchChart( Tomahawk::InfoSystem::InfoRequestData requestData )
+LastFmInfoPlugin::fetchChart( Hatchet::InfoSystem::InfoRequestData requestData )
 {
-    if ( !requestData.input.canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !requestData.input.canConvert< Hatchet::InfoSystem::InfoStringHash >() )
     {
         dataError( requestData );
         return;
     }
-    InfoStringHash hash = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
-    Tomahawk::InfoSystem::InfoStringHash criteria;
+    InfoStringHash hash = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
+    Hatchet::InfoSystem::InfoStringHash criteria;
     if ( !hash.contains( "chart_id" ) )
     {
         dataError( requestData );
@@ -374,36 +374,36 @@ LastFmInfoPlugin::fetchChart( Tomahawk::InfoSystem::InfoRequestData requestData 
 
 
 void
-LastFmInfoPlugin::fetchChartCapabilities( Tomahawk::InfoSystem::InfoRequestData requestData )
+LastFmInfoPlugin::fetchChartCapabilities( Hatchet::InfoSystem::InfoRequestData requestData )
 {
-    if ( !requestData.input.canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !requestData.input.canConvert< Hatchet::InfoSystem::InfoStringHash >() )
     {
         dataError( requestData );
         return;
     }
-    InfoStringHash hash = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
-    Tomahawk::InfoSystem::InfoStringHash criteria;
+    InfoStringHash hash = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
+    Hatchet::InfoSystem::InfoStringHash criteria;
 
     emit getCachedInfo( criteria, Q_INT64_C(0), requestData );
 }
 
 
 void
-LastFmInfoPlugin::fetchAlbumInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
+LastFmInfoPlugin::fetchAlbumInfo( Hatchet::InfoSystem::InfoRequestData requestData )
 {
-    if ( !requestData.input.canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !requestData.input.canConvert< Hatchet::InfoSystem::InfoStringHash >() )
     {
         dataError( requestData );
         return;
     }
-    InfoStringHash hash = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+    InfoStringHash hash = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
     if ( !hash.contains( "artist" ) || !hash.contains( "album" ) )
     {
         dataError( requestData );
         return;
     }
 
-    Tomahawk::InfoSystem::InfoStringHash criteria;
+    Hatchet::InfoSystem::InfoStringHash criteria;
     criteria["artist"] = hash["artist"];
     criteria["album"] = hash["album"];
 
@@ -412,16 +412,16 @@ LastFmInfoPlugin::fetchAlbumInfo( Tomahawk::InfoSystem::InfoRequestData requestD
 
 
 void
-LastFmInfoPlugin::notInCacheSlot( QHash<QString, QString> criteria, Tomahawk::InfoSystem::InfoRequestData requestData )
+LastFmInfoPlugin::notInCacheSlot( QHash<QString, QString> criteria, Hatchet::InfoSystem::InfoRequestData requestData )
 {
-    if ( !Tomahawk::Utils::nam() )
+    if ( !Hatchet::Utils::nam() )
     {
         tLog() << "Have a null QNAM, uh oh";
         emit info( requestData, QVariant() );
         return;
     }
 
-    InfoStringHash hash = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+    InfoStringHash hash = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
     switch ( requestData.type )
     {
         case InfoChart:
@@ -445,7 +445,7 @@ LastFmInfoPlugin::notInCacheSlot( QHash<QString, QString> criteria, Tomahawk::In
             args["method"] = criteria["chart_id"];
             args["limit"] = "100";
             QNetworkReply* reply = lastfm::ws::get( args );
-            reply->setProperty( "requestData", QVariant::fromValue< Tomahawk::InfoSystem::InfoRequestData >( requestData ) );
+            reply->setProperty( "requestData", QVariant::fromValue< Hatchet::InfoSystem::InfoRequestData >( requestData ) );
 
             connect( reply, SIGNAL( finished() ), SLOT( chartReturned() ) );
             return;
@@ -490,7 +490,7 @@ LastFmInfoPlugin::notInCacheSlot( QHash<QString, QString> criteria, Tomahawk::In
         {
             lastfm::Artist a( criteria["artist"] );
             QNetworkReply* reply = a.getSimilar();
-            reply->setProperty( "requestData", QVariant::fromValue< Tomahawk::InfoSystem::InfoRequestData >( requestData ) );
+            reply->setProperty( "requestData", QVariant::fromValue< Hatchet::InfoSystem::InfoRequestData >( requestData ) );
 
             connect( reply, SIGNAL( finished() ), SLOT( similarArtistsReturned() ) );
             return;
@@ -503,7 +503,7 @@ LastFmInfoPlugin::notInCacheSlot( QHash<QString, QString> criteria, Tomahawk::In
             t.setTitle( criteria["track"] );
 
             QNetworkReply* reply = t.getSimilar();
-            reply->setProperty( "requestData", QVariant::fromValue< Tomahawk::InfoSystem::InfoRequestData >( requestData ) );
+            reply->setProperty( "requestData", QVariant::fromValue< Hatchet::InfoSystem::InfoRequestData >( requestData ) );
 
             connect( reply, SIGNAL( finished() ), SLOT( similarTracksReturned() ) );
             return;
@@ -513,7 +513,7 @@ LastFmInfoPlugin::notInCacheSlot( QHash<QString, QString> criteria, Tomahawk::In
         {
             lastfm::Artist a( criteria["artist"] );
             QNetworkReply* reply = a.getTopTracks();
-            reply->setProperty( "requestData", QVariant::fromValue< Tomahawk::InfoSystem::InfoRequestData >( requestData ) );
+            reply->setProperty( "requestData", QVariant::fromValue< Hatchet::InfoSystem::InfoRequestData >( requestData ) );
 
             connect( reply, SIGNAL( finished() ), SLOT( topTracksReturned() ) );
             return;
@@ -524,7 +524,7 @@ LastFmInfoPlugin::notInCacheSlot( QHash<QString, QString> criteria, Tomahawk::In
         {
             lastfm::Artist a( criteria["artist"] );
             QNetworkReply* reply = a.getInfo();
-            reply->setProperty( "requestData", QVariant::fromValue< Tomahawk::InfoSystem::InfoRequestData >( requestData ) );
+            reply->setProperty( "requestData", QVariant::fromValue< Hatchet::InfoSystem::InfoRequestData >( requestData ) );
 
             connect( reply, SIGNAL( finished() ), SLOT( artistInfoReturned() ) );
             return;
@@ -534,7 +534,7 @@ LastFmInfoPlugin::notInCacheSlot( QHash<QString, QString> criteria, Tomahawk::In
         {
             lastfm::Album a( criteria["artist"], criteria["album"] );
             QNetworkReply* reply = a.getInfo();
-            reply->setProperty( "requestData", QVariant::fromValue< Tomahawk::InfoSystem::InfoRequestData >( requestData ) );
+            reply->setProperty( "requestData", QVariant::fromValue< Hatchet::InfoSystem::InfoRequestData >( requestData ) );
 
             connect( reply, SIGNAL( finished() ), SLOT( albumInfoReturned() ) );
             return;
@@ -578,14 +578,14 @@ LastFmInfoPlugin::similarArtistsReturned()
     returnedData["artists"] = sortedArtists;
     returnedData["score"] = sortedScores;
 
-    Tomahawk::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
+    Hatchet::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
 
     emit info( requestData, returnedData );
 
     if ( !sortedArtists.isEmpty() )
     {
-        Tomahawk::InfoSystem::InfoStringHash origData = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash>();
-        Tomahawk::InfoSystem::InfoStringHash criteria;
+        Hatchet::InfoSystem::InfoStringHash origData = requestData.input.value< Hatchet::InfoSystem::InfoStringHash>();
+        Hatchet::InfoSystem::InfoStringHash criteria;
         criteria["artist"] = origData["artist"];
         emit updateCache( criteria, Q_INT64_C(2419200000), requestData.type, returnedData );
     }
@@ -630,14 +630,14 @@ LastFmInfoPlugin::similarTracksReturned()
 
     tDebug( LOGVERBOSE ) << "Returning data, tracks:" << sortedTracks << "artists:" << sortedArtists << "scores:" << sortedScores;
 
-    Tomahawk::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
+    Hatchet::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
 
     emit info( requestData, returnedData );
 
     if ( !sortedTracks.isEmpty() )
     {
-        Tomahawk::InfoSystem::InfoStringHash origData = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash>();
-        Tomahawk::InfoSystem::InfoStringHash criteria;
+        Hatchet::InfoSystem::InfoStringHash origData = requestData.input.value< Hatchet::InfoSystem::InfoStringHash>();
+        Hatchet::InfoSystem::InfoStringHash criteria;
         criteria["artist"] = origData["artist"];
         criteria["track"] = origData["track"];
         emit updateCache( criteria, Q_INT64_C(2419200000), requestData.type, returnedData );
@@ -685,7 +685,7 @@ LastFmInfoPlugin::chartReturned()
         tDebug() << Q_FUNC_INFO << "got non tracks and non artists";
     }
 
-    Tomahawk::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
+    Hatchet::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
 
     emit info( requestData, returnedData );
     // TODO update cache
@@ -704,12 +704,12 @@ LastFmInfoPlugin::topTracksReturned()
     QVariantMap returnedData;
     returnedData["tracks"] = topTracks;
 
-    Tomahawk::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
+    Hatchet::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
 
     emit info( requestData, returnedData );
 
-    Tomahawk::InfoSystem::InfoStringHash origData = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash>();
-    Tomahawk::InfoSystem::InfoStringHash criteria;
+    Hatchet::InfoSystem::InfoStringHash origData = requestData.input.value< Hatchet::InfoSystem::InfoStringHash>();
+    Hatchet::InfoSystem::InfoStringHash criteria;
     criteria["artist"] = origData["artist"];
     emit updateCache( criteria, Q_INT64_C(0), requestData.type, returnedData );
 }
@@ -720,9 +720,9 @@ LastFmInfoPlugin::artistInfoReturned()
 {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>( sender() );
     reply->deleteLater();
-    Tomahawk::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
+    Hatchet::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
 
-    if ( requestData.type == Tomahawk::InfoSystem::InfoArtistBiography )
+    if ( requestData.type == Hatchet::InfoSystem::InfoArtistBiography )
     {
         QVariantMap returnedData;
         lastfm::XmlQuery lfm;
@@ -739,10 +739,10 @@ LastFmInfoPlugin::artistInfoReturned()
             trackRegExp.setMinimal( true );
 
             QString biography = lfm["artist"]["bio"]["content"].text().trimmed().replace( "User-contributed text is available under the Creative Commons By-SA License and may also be available under the GNU FDL.", "" );
-            biography = biography.replace( tagRegExp, "<a href=\"tomahawk://view/tag?name=\\1\">" )
-                                 .replace( artistRegExp, "<a href=\"tomahawk://view/artist?name=\\1\">" )
-                                 .replace( albumRegExp, "<a href=\"tomahawk://view/album?artist=\\2&name=\\3\">" )
-                                 .replace( trackRegExp, "<a href=\"tomahawk://view/track?artist=\\2&album=\\3&name=\\4\">" )
+            biography = biography.replace( tagRegExp, "<a href=\"hatchet://view/tag?name=\\1\">" )
+                                 .replace( artistRegExp, "<a href=\"hatchet://view/artist?name=\\1\">" )
+                                 .replace( albumRegExp, "<a href=\"hatchet://view/album?artist=\\2&name=\\3\">" )
+                                 .replace( trackRegExp, "<a href=\"hatchet://view/track?artist=\\2&album=\\3&name=\\4\">" )
                                  .replace( "&album=_", "" );
 
             QVariantMap siteData;
@@ -751,14 +751,14 @@ LastFmInfoPlugin::artistInfoReturned()
             siteData[ "summary" ] = lfm["artist"]["bio"]["summary"].text().trimmed().replace( "\r", "\n" ).replace( "\n\n", "\n" );
             returnedData[ "last.fm" ] = siteData;
 
-            Tomahawk::InfoSystem::InfoStringHash origData = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash>();
-            Tomahawk::InfoSystem::InfoStringHash criteria;
+            Hatchet::InfoSystem::InfoStringHash origData = requestData.input.value< Hatchet::InfoSystem::InfoStringHash>();
+            Hatchet::InfoSystem::InfoStringHash criteria;
             criteria["artist"] = origData["artist"];
             emit updateCache( criteria, Q_INT64_C(0), requestData.type, returnedData );
         }
         emit info( requestData, returnedData );
     }
-    else if ( requestData.type == Tomahawk::InfoSystem::InfoArtistImages )
+    else if ( requestData.type == Hatchet::InfoSystem::InfoArtistImages )
     {
         lastfm::Artist artist = lastfm::Artist::getInfo( reply );
 
@@ -769,7 +769,7 @@ LastFmInfoPlugin::artistInfoReturned()
             imgurl = artist.imageUrl( lastfm::AbstractType::LargeImage );
 
         QNetworkRequest req( imgurl );
-        QNetworkReply* newReply = Tomahawk::Utils::nam()->get( req );
+        QNetworkReply* newReply = Hatchet::Utils::nam()->get( req );
         newReply->setProperty( "requestData", reply->property( "requestData" ) );
         connect( newReply, SIGNAL( finished() ), SLOT( coverArtReturned() ) );
     }
@@ -781,9 +781,9 @@ LastFmInfoPlugin::albumInfoReturned()
 {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>( sender() );
     reply->deleteLater();
-    Tomahawk::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
+    Hatchet::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
 
-    if ( requestData.type == Tomahawk::InfoSystem::InfoAlbumCoverArt )
+    if ( requestData.type == Hatchet::InfoSystem::InfoAlbumCoverArt )
     {
         lastfm::XmlQuery lfm;
         if ( lfm.parse( reply->readAll() ) )
@@ -795,7 +795,7 @@ LastFmInfoPlugin::albumInfoReturned()
                 imgurl = QUrl( lfm["album"]["image size=large"].text() );
 
             QNetworkRequest req( imgurl );
-            QNetworkReply* newReply = Tomahawk::Utils::nam()->get( req );
+            QNetworkReply* newReply = Hatchet::Utils::nam()->get( req );
             newReply->setProperty( "requestData", reply->property( "requestData" ) );
             connect( newReply, SIGNAL( finished() ), SLOT( coverArtReturned() ) );
         }
@@ -811,8 +811,8 @@ LastFmInfoPlugin::coverArtReturned()
     QUrl redir = reply->attribute( QNetworkRequest::RedirectionTargetAttribute ).toUrl();
     if ( redir.isEmpty() )
     {
-        Tomahawk::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
-        Tomahawk::InfoSystem::InfoStringHash origData = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash>();
+        Hatchet::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
+        Hatchet::InfoSystem::InfoStringHash origData = requestData.input.value< Hatchet::InfoSystem::InfoStringHash>();
 
         QByteArray ba = reply->readAll();
         if ( ba.isNull() || ba.isEmpty() )
@@ -834,7 +834,7 @@ LastFmInfoPlugin::coverArtReturned()
 
         emit info( requestData, returnedData );
 
-        Tomahawk::InfoSystem::InfoStringHash criteria;
+        Hatchet::InfoSystem::InfoStringHash criteria;
         criteria["artist"] = origData["artist"];
         criteria["album"] = origData["album"];
         emit updateCache( criteria, Q_INT64_C(2419200000), requestData.type, returnedData );
@@ -843,7 +843,7 @@ LastFmInfoPlugin::coverArtReturned()
     {
         // Follow HTTP redirect
         QNetworkRequest req( redir );
-        QNetworkReply* newReply = Tomahawk::Utils::nam()->get( req );
+        QNetworkReply* newReply = Hatchet::Utils::nam()->get( req );
         newReply->setProperty( "requestData", reply->property( "requestData" ) );
         connect( newReply, SIGNAL( finished() ), SLOT( coverArtReturned() ) );
     }
@@ -862,7 +862,7 @@ LastFmInfoPlugin::artistImagesReturned()
         if ( ba.isNull() || !ba.length() )
         {
             tLog() << Q_FUNC_INFO << "Uh oh, null byte array";
-            emit info( reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >(), QVariant() );
+            emit info( reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >(), QVariant() );
             return;
         }
         foreach ( const QUrl& url, m_badUrls )
@@ -875,26 +875,26 @@ LastFmInfoPlugin::artistImagesReturned()
         returnedData["imgbytes"] = ba;
         returnedData["url"] = reply->url().toString();
 
-        Tomahawk::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
+        Hatchet::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
 
         emit info( requestData, returnedData );
 
-        Tomahawk::InfoSystem::InfoStringHash origData = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash>();
-        Tomahawk::InfoSystem::InfoStringHash criteria;
+        Hatchet::InfoSystem::InfoStringHash origData = requestData.input.value< Hatchet::InfoSystem::InfoStringHash>();
+        Hatchet::InfoSystem::InfoStringHash criteria;
         criteria["artist"] = origData["artist"];
         emit updateCache( criteria, Q_INT64_C(2419200000), requestData.type, returnedData );
     }
     else
     {
-        if ( !Tomahawk::Utils::nam() )
+        if ( !Hatchet::Utils::nam() )
         {
             tLog() << Q_FUNC_INFO << "Uh oh, nam is null";
-            emit info( reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >(), QVariant() );
+            emit info( reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >(), QVariant() );
             return;
         }
         // Follow HTTP redirect
         QNetworkRequest req( redir );
-        QNetworkReply* newReply = Tomahawk::Utils::nam()->get( req );
+        QNetworkReply* newReply = Hatchet::Utils::nam()->get( req );
         newReply->setProperty( "requestData", reply->property( "requestData" ) );
         connect( newReply, SIGNAL( finished() ), SLOT( artistImagesReturned() ) );
     }
@@ -985,7 +985,7 @@ LastFmInfoPlugin::createScrobbler()
     if ( m_account.data()->sessionKey().isEmpty() ) // no session key, so get one
     {
         tLog() << Q_FUNC_INFO << "Session key is empty";
-        QString authToken = TomahawkUtils::md5( ( lastfm::ws::Username.toLower() + TomahawkUtils::md5( m_pw.toUtf8() ) ).toUtf8() );
+        QString authToken = HatchetUtils::md5( ( lastfm::ws::Username.toLower() + HatchetUtils::md5( m_pw.toUtf8() ) ).toUtf8() );
 
         QMap<QString, QString> query;
         query[ "method" ] = "auth.getMobileSession";

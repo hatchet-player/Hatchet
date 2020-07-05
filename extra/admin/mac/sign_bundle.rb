@@ -2,7 +2,7 @@
 if ARGV.length < 2
   puts "Usage: ruby sign_update.rb version private_key_file"
   puts "\nCall this from the build directory."
-  puts "If you don't have the tomahawk private key and you think you should, ask leo :)"
+  puts "If you don't have the hatchet private key and you think you should, ask leo :)"
   exit
 end
 

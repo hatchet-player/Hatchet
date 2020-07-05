@@ -1,9 +1,9 @@
 [main]
 host = https://www.transifex.com
 
-[tomahawk.tomahawk-master]
-file_filter = lang/tomahawk_<lang>.ts
-source_file = lang/tomahawk_en.ts
+[hatchet.hatchet-master]
+file_filter = lang/hatchet_<lang>.ts
+source_file = lang/hatchet_en.ts
 source_lang = en
 type = QT
 

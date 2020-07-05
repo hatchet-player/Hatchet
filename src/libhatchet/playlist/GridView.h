@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef GRIDVIEW_H
@@ -29,7 +29,7 @@
 #include "widgets/OverlayWidget.h"
 #include "DllMacro.h"
 
-namespace Tomahawk
+namespace Hatchet
 {
     class ContextMenu;
     class MetaPlaylistInterface;
@@ -39,7 +39,7 @@ class AnimatedSpinner;
 class GridItemDelegate;
 class PlayableModel;
 
-class DLLEXPORT GridView : public QListView, public Tomahawk::ViewPage
+class DLLEXPORT GridView : public QListView, public Hatchet::ViewPage
 {
 Q_OBJECT
 
@@ -72,8 +72,8 @@ public:
     void setItemWidth( int width );
 
     virtual QWidget* widget() { return this; }
-    virtual Tomahawk::playlistinterface_ptr playlistInterface() const;
-    void setPlaylistInterface( const Tomahawk::playlistinterface_ptr& playlistInterface );
+    virtual Hatchet::playlistinterface_ptr playlistInterface() const;
+    void setPlaylistInterface( const Hatchet::playlistinterface_ptr& playlistInterface );
 
     virtual QString title() const { return m_model->title(); }
     virtual QString description() const { return m_model->description(); }
@@ -124,13 +124,13 @@ private:
     AnimatedSpinner* m_loadingSpinner;
     OverlayWidget* m_overlay;
 
-    Tomahawk::MetaPlaylistInterface* m_mpl;
-    Tomahawk::playlistinterface_ptr m_playlistInterface;
+    Hatchet::MetaPlaylistInterface* m_mpl;
+    Hatchet::playlistinterface_ptr m_playlistInterface;
 
     QModelIndex m_contextMenuIndex;
     QPersistentModelIndex m_playing;
 
-    Tomahawk::ContextMenu* m_contextMenu;
+    Hatchet::ContextMenu* m_contextMenu;
 
     QString m_emptyTip;
     bool m_inited;

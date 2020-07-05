@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef DATABASECOMMAND_LOADALLSORTEDPLAYLISTS_H
@@ -22,7 +22,7 @@
 #include "DatabaseCommand.h"
 #include "DatabaseCommand_LoadAllPlaylists.h"
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 /**
@@ -38,13 +38,13 @@ class DatabaseCommand_LoadAllSortedPlaylists : public DatabaseCommand
 public:
     // don't macros rock... not
     typedef QPair<int,QString> SourcePlaylistPair;
-    explicit DatabaseCommand_LoadAllSortedPlaylists( const Tomahawk::source_ptr& s, QObject* parent = 0 )
+    explicit DatabaseCommand_LoadAllSortedPlaylists( const Hatchet::source_ptr& s, QObject* parent = 0 )
         : DatabaseCommand( s, parent )
         , m_limitAmount( 0 )
         , m_sortOrder( DatabaseCommand_LoadAllPlaylists::None )
         , m_sortAscDesc( DatabaseCommand_LoadAllPlaylists::NoOrder )
     {
-        qRegisterMetaType<QList<Tomahawk::DatabaseCommand_LoadAllSortedPlaylists::SourcePlaylistPair> >("QList<Tomahawk::DatabaseCommand_LoadAllSortedPlaylists::SourcePlaylistPair>");
+        qRegisterMetaType<QList<Hatchet::DatabaseCommand_LoadAllSortedPlaylists::SourcePlaylistPair> >("QList<Hatchet::DatabaseCommand_LoadAllSortedPlaylists::SourcePlaylistPair>");
     }
 
     virtual void exec( DatabaseImpl* );
@@ -56,7 +56,7 @@ public:
     void setSortAscDesc( DatabaseCommand_LoadAllPlaylists::SortAscDesc asc  ) { m_sortAscDesc = asc; }
 
 signals:
-    void done( const QList<Tomahawk::DatabaseCommand_LoadAllSortedPlaylists::SourcePlaylistPair>& playlistGuids ); // QPair< sourceid, playlistguid>
+    void done( const QList<Hatchet::DatabaseCommand_LoadAllSortedPlaylists::SourcePlaylistPair>& playlistGuids ); // QPair< sourceid, playlistguid>
 
 private:
     unsigned int m_limitAmount;

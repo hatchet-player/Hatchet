@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DatabaseCommand_AllTracks.h"
@@ -32,14 +32,14 @@
 
 #include <unordered_map>
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 void
 DatabaseCommand_AllTracks::exec( DatabaseImpl* dbi )
 {
-    TomahawkSqlQuery query = dbi->newquery();
-    QList<Tomahawk::query_ptr> ql;
+    HatchetSqlQuery query = dbi->newquery();
+    QList<Hatchet::query_ptr> ql;
 
     QString m_orderToken, sourceToken;
     switch ( m_sortOrder )
@@ -104,7 +104,7 @@ DatabaseCommand_AllTracks::exec( DatabaseImpl* dbi )
 
     // Small cache to keep already created source objects.
     // This saves some mutex locking.
-    std::unordered_map<uint, Tomahawk::source_ptr> sourceCache;
+    std::unordered_map<uint, Hatchet::source_ptr> sourceCache;
 
     while( query.next() )
     {
@@ -124,8 +124,8 @@ DatabaseCommand_AllTracks::exec( DatabaseImpl* dbi )
         const uint trackId = query.value( 14 ).toUInt();
         const QString albumArtist = query.value( 15 ).toString();
 
-        std::unordered_map<uint, Tomahawk::source_ptr>::const_iterator _s = sourceCache.find( sourceId );
-        Tomahawk::source_ptr s;
+        std::unordered_map<uint, Hatchet::source_ptr>::const_iterator _s = sourceCache.find( sourceId );
+        Hatchet::source_ptr s;
         if ( _s == sourceCache.end() )
         {
             s = SourceList::instance()->get( sourceId );
@@ -143,7 +143,7 @@ DatabaseCommand_AllTracks::exec( DatabaseImpl* dbi )
         if ( !s->isLocal() )
             url = QString( "servent://%1\t%2" ).arg( s->nodeId() ).arg( url );
 
-        Tomahawk::track_ptr t = Tomahawk::Track::get( trackId,
+        Hatchet::track_ptr t = Hatchet::Track::get( trackId,
                                                       artist, track, album,
                                                       albumArtist, duration, composer,
                                                       albumpos, discnumber );
@@ -153,7 +153,7 @@ DatabaseCommand_AllTracks::exec( DatabaseImpl* dbi )
         if ( m_album || m_artist )
             t->loadAttributes();
 
-        Tomahawk::result_ptr result = Tomahawk::Result::get( url, t );
+        Hatchet::result_ptr result = Hatchet::Result::get( url, t );
         if ( !result )
             continue;
 
@@ -163,7 +163,7 @@ DatabaseCommand_AllTracks::exec( DatabaseImpl* dbi )
         result->setMimetype( mimetype );
         result->setResolvedByCollection( s->dbCollection(), false );
 
-        ql << Tomahawk::Query::getFixed( t, result );
+        ql << Hatchet::Query::getFixed( t, result );
     }
 
     emit tracks( ql, data() );

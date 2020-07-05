@@ -1,28 +1,28 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "PlaylistDelegate.h"
 
 #include "playlist/dynamic/GeneratorInterface.h"
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtils.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtils.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"
 
 #include <QApplication>
@@ -30,7 +30,7 @@
 
 #include "widgets/RecentlyPlayedPlaylistsModel.h"
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 namespace Widgets
@@ -46,9 +46,9 @@ PlaylistDelegate::sizeHint( const QStyleOptionViewItem& option, const QModelInde
     int height = 2 * 6; // margins
     QFont font = option.font;
     QFontMetrics fm1( font );
-    font.setPointSize( TomahawkUtils::defaultFontSize() - 1 );
+    font.setPointSize( HatchetUtils::defaultFontSize() - 1 );
     height += fm1.height() * 3;
-    font.setPointSize( TomahawkUtils::defaultFontSize() );
+    font.setPointSize( HatchetUtils::defaultFontSize() );
     QFontMetrics fm2( font );
     height += fm2.height();
 
@@ -80,18 +80,18 @@ PlaylistDelegate::paint( QPainter* painter, const QStyleOptionViewItem& option, 
     QTextOption to;
     to.setAlignment( Qt::AlignCenter );
     QFont font = opt.font;
-    font.setPointSize( TomahawkUtils::defaultFontSize() - 1 );
+    font.setPointSize( HatchetUtils::defaultFontSize() - 1 );
 
     QFont boldFont = font;
     boldFont.setBold( true );
-    boldFont.setPointSize( TomahawkUtils::defaultFontSize() );
+    boldFont.setPointSize( HatchetUtils::defaultFontSize() );
     QFontMetrics boldFontMetrics( boldFont );
 
     QFont figFont = boldFont;
-    figFont.setPointSize( TomahawkUtils::defaultFontSize() - 1 );
+    figFont.setPointSize( HatchetUtils::defaultFontSize() - 1 );
 
     QRect pixmapRect = option.rect.adjusted( 12, 12, -option.rect.width() + option.rect.height() - 12, -12 );
-    QPixmap avatar = index.data( RecentlyPlayedPlaylistsModel::PlaylistRole ).value< Tomahawk::playlist_ptr >()->author()->avatar( TomahawkUtils::RoundedCorners, pixmapRect.size(), true );
+    QPixmap avatar = index.data( RecentlyPlayedPlaylistsModel::PlaylistRole ).value< Hatchet::playlist_ptr >()->author()->avatar( HatchetUtils::RoundedCorners, pixmapRect.size(), true );
     painter->drawPixmap( pixmapRect, avatar );
 
     pixmapRect = QRect( option.rect.width() - option.fontMetrics.height() * 2.5 - 10, option.rect.top() + option.rect.height() / 4, option.fontMetrics.height() * 2.5, option.fontMetrics.height() * 2.5 );
@@ -99,11 +99,11 @@ PlaylistDelegate::paint( QPainter* painter, const QStyleOptionViewItem& option, 
     RecentlyPlayedPlaylistsModel::PlaylistTypes type = (RecentlyPlayedPlaylistsModel::PlaylistTypes)index.data( RecentlyPlayedPlaylistsModel::PlaylistTypeRole ).toInt();
 
     if ( type == RecentlyPlayedPlaylistsModel::StaticPlaylist )
-        icon = TomahawkUtils::defaultPixmap( TomahawkUtils::Playlist, TomahawkUtils::Original, pixmapRect.size() );
+        icon = HatchetUtils::defaultPixmap( HatchetUtils::Playlist, HatchetUtils::Original, pixmapRect.size() );
     else if ( type == RecentlyPlayedPlaylistsModel::AutoPlaylist )
-        icon = TomahawkUtils::defaultPixmap( TomahawkUtils::AutomaticPlaylist, TomahawkUtils::Original, pixmapRect.size() );
+        icon = HatchetUtils::defaultPixmap( HatchetUtils::AutomaticPlaylist, HatchetUtils::Original, pixmapRect.size() );
     else if ( type == RecentlyPlayedPlaylistsModel::Station )
-        icon = TomahawkUtils::defaultPixmap( TomahawkUtils::Station, TomahawkUtils::Original, pixmapRect.size() );
+        icon = HatchetUtils::defaultPixmap( HatchetUtils::Station, HatchetUtils::Original, pixmapRect.size() );
 
     painter->drawPixmap( pixmapRect, icon );
 
@@ -121,16 +121,16 @@ PlaylistDelegate::paint( QPainter* painter, const QStyleOptionViewItem& option, 
         rect.setTop( pixmapRect.bottom() - painter->fontMetrics().height() - 1 );
         rect.setBottom( pixmapRect.bottom() + 1 );
 
-        QColor figColor( TomahawkStyle::DASHBOARD_ROUNDFIGURE_BACKGROUND );
+        QColor figColor( HatchetStyle::DASHBOARD_ROUNDFIGURE_BACKGROUND );
         painter->setPen( Qt::white );
         painter->setBrush( figColor );
 
-        TomahawkUtils::drawBackgroundAndNumbers( painter, tracks, rect );
+        HatchetUtils::drawBackgroundAndNumbers( painter, tracks, rect );
         painter->restore();
     }
 
     painter->setFont( font );
-    QString author = index.data( RecentlyPlayedPlaylistsModel::PlaylistRole ).value< Tomahawk::playlist_ptr >()->author()->friendlyName();
+    QString author = index.data( RecentlyPlayedPlaylistsModel::PlaylistRole ).value< Hatchet::playlist_ptr >()->author()->friendlyName();
     if ( author.indexOf( '@' ) > 0 )
         author = author.mid( 0, author.indexOf( '@' ) );
 
@@ -143,7 +143,7 @@ PlaylistDelegate::paint( QPainter* painter, const QStyleOptionViewItem& option, 
     QString descText;
     if ( type == RecentlyPlayedPlaylistsModel::Station )
     {
-        descText = index.data( RecentlyPlayedPlaylistsModel::DynamicPlaylistRole ).value< Tomahawk::dynplaylist_ptr >()->generator()->sentenceSummary();
+        descText = index.data( RecentlyPlayedPlaylistsModel::DynamicPlaylistRole ).value< Hatchet::dynplaylist_ptr >()->generator()->sentenceSummary();
     }
     else
     {

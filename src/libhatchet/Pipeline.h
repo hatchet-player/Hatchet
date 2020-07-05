@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2013,      Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #pragma once
@@ -31,13 +31,13 @@
 
 #include <functional>
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 class PipelinePrivate;
 class Resolver;
 class ExternalResolver;
-typedef std::function<Tomahawk::ExternalResolver*( QString, QString, QStringList )> ResolverFactoryFunc;
+typedef std::function<Hatchet::ExternalResolver*( QString, QString, QStringList )> ResolverFactoryFunc;
 
 class DLLEXPORT Pipeline : public QObject
 {
@@ -54,17 +54,17 @@ public:
     unsigned int pendingQueryCount() const;
     unsigned int activeQueryCount() const;
 
-    void reportError( QID qid, Tomahawk::Resolver* r );
-    void reportResults( QID qid, Tomahawk::Resolver* r, const QList< result_ptr >& results );
+    void reportError( QID qid, Hatchet::Resolver* r );
+    void reportResults( QID qid, Hatchet::Resolver* r, const QList< result_ptr >& results );
     void reportAlbums( QID qid, const QList< album_ptr >& albums );
     void reportArtists( QID qid, const QList< artist_ptr >& artists );
 
     void addExternalResolverFactory( ResolverFactoryFunc resolverFactory );
-    Tomahawk::ExternalResolver* addScriptResolver( const QString& accountId, const QString& scriptPath, const QStringList& additionalScriptPaths = QStringList() );
+    Hatchet::ExternalResolver* addScriptResolver( const QString& accountId, const QString& scriptPath, const QStringList& additionalScriptPaths = QStringList() );
     void stopScriptResolver( const QString& scriptPath );
     void removeScriptResolver( const QString& scriptPath );
     QList< QPointer< ExternalResolver > > scriptResolvers() const;
-    Tomahawk::ExternalResolver* resolverForPath( const QString& scriptPath );
+    Hatchet::ExternalResolver* resolverForPath( const QString& scriptPath );
 
     QList< Resolver* > resolvers() const;
     void addResolver( Resolver* r );
@@ -87,16 +87,16 @@ public slots:
 signals:
     void running();
     void idle();
-    void resolving( const Tomahawk::query_ptr& query );
+    void resolving( const Hatchet::query_ptr& query );
 
-    void resolverAdded( Tomahawk::Resolver* );
-    void resolverRemoved( Tomahawk::Resolver* );
+    void resolverAdded( Hatchet::Resolver* );
+    void resolverRemoved( Hatchet::Resolver* );
 
 protected:
     QScopedPointer<PipelinePrivate> d_ptr;
 
 private slots:
-    void timeoutShunt( const query_ptr& q, Tomahawk::Resolver* r );
+    void timeoutShunt( const query_ptr& q, Hatchet::Resolver* r );
     void shunt( const query_ptr& q );
     void shuntNext();
 
@@ -107,13 +107,13 @@ private:
     Q_DECLARE_PRIVATE( Pipeline )
 
     void addResultsToQuery( const query_ptr& query, const QList< result_ptr >& results );
-    Tomahawk::Resolver* nextResolver( const Tomahawk::query_ptr& query ) const;
+    Hatchet::Resolver* nextResolver( const Hatchet::query_ptr& query ) const;
 
-    void checkQIDState( const Tomahawk::query_ptr& query );
-    void incQIDState( const Tomahawk::query_ptr& query, Tomahawk::Resolver* );
-    void decQIDState( const Tomahawk::query_ptr& query, Tomahawk::Resolver* );
+    void checkQIDState( const Hatchet::query_ptr& query );
+    void incQIDState( const Hatchet::query_ptr& query, Hatchet::Resolver* );
+    void decQIDState( const Hatchet::query_ptr& query, Hatchet::Resolver* );
 };
 
-} // Tomahawk
+} // Hatchet
 
 #endif // PIPELINE_H

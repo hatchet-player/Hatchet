@@ -1,24 +1,24 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DatabaseCommand_AllAlbums.h"
 
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
 
 #include "Artist.h"
@@ -30,10 +30,10 @@
 #include <QSqlQuery>
 
 
-namespace Tomahawk
+namespace Hatchet
 {
 
-DatabaseCommand_AllAlbums::DatabaseCommand_AllAlbums( const Tomahawk::collection_ptr& collection, const Tomahawk::artist_ptr& artist, QObject* parent )
+DatabaseCommand_AllAlbums::DatabaseCommand_AllAlbums( const Hatchet::collection_ptr& collection, const Hatchet::artist_ptr& artist, QObject* parent )
   : DatabaseCommand( parent )
   , m_collection( collection.objectCast< DatabaseCollection >() )
   , m_artist( artist )
@@ -50,7 +50,7 @@ DatabaseCommand_AllAlbums::~DatabaseCommand_AllAlbums()
 
 
 void
-DatabaseCommand_AllAlbums::setArtist( const Tomahawk::artist_ptr& artist )
+DatabaseCommand_AllAlbums::setArtist( const Hatchet::artist_ptr& artist )
 {
     m_artist = artist;
 }
@@ -59,8 +59,8 @@ DatabaseCommand_AllAlbums::setArtist( const Tomahawk::artist_ptr& artist )
 void
 DatabaseCommand_AllAlbums::execForArtist( DatabaseImpl* dbi )
 {
-    TomahawkSqlQuery query = dbi->newquery();
-    QList<Tomahawk::album_ptr> al;
+    HatchetSqlQuery query = dbi->newquery();
+    QList<Hatchet::album_ptr> al;
     QString orderToken, sourceToken, filterToken, timeToken, tables;
 
     switch ( m_sortOrder )
@@ -82,7 +82,7 @@ DatabaseCommand_AllAlbums::execForArtist( DatabaseImpl* dbi )
         QStringList sl = m_filter.split( " ", QString::SkipEmptyParts );
         foreach( QString s, sl )
         {
-            filtersql += QString( " AND ( artist.name LIKE '%%1%' OR album.name LIKE '%%1%' OR track.name LIKE '%%1%' )" ).arg( TomahawkSqlQuery::escape( s ) );
+            filtersql += QString( " AND ( artist.name LIKE '%%1%' OR album.name LIKE '%%1%' OR track.name LIKE '%%1%' )" ).arg( HatchetSqlQuery::escape( s ) );
         }
 
         filterToken = QString( "AND artist.id = file_join.artist AND file_join.track = track.id %1" ).arg( filtersql );
@@ -119,7 +119,7 @@ DatabaseCommand_AllAlbums::execForArtist( DatabaseImpl* dbi )
             albumName = tr( "Unknown" );
         }
 
-        Tomahawk::album_ptr album = Tomahawk::Album::get( albumId, albumName, m_artist );
+        Hatchet::album_ptr album = Hatchet::Album::get( albumId, albumName, m_artist );
         al << album;
     }
 
@@ -132,8 +132,8 @@ DatabaseCommand_AllAlbums::execForArtist( DatabaseImpl* dbi )
 void
 DatabaseCommand_AllAlbums::execForCollection( DatabaseImpl* dbi )
 {
-    TomahawkSqlQuery query = dbi->newquery();
-    QList<Tomahawk::album_ptr> al;
+    HatchetSqlQuery query = dbi->newquery();
+    QList<Hatchet::album_ptr> al;
     QString orderToken, sourceToken;
 
     switch ( m_sortOrder )
@@ -166,8 +166,8 @@ DatabaseCommand_AllAlbums::execForCollection( DatabaseImpl* dbi )
 
     while( query.next() )
     {
-        Tomahawk::artist_ptr artist = Tomahawk::Artist::get( query.value( 2 ).toUInt(), query.value( 3 ).toString() );
-        Tomahawk::album_ptr album = Tomahawk::Album::get( query.value( 0 ).toUInt(), query.value( 1 ).toString(), artist );
+        Hatchet::artist_ptr artist = Hatchet::Artist::get( query.value( 2 ).toUInt(), query.value( 3 ).toString() );
+        Hatchet::album_ptr album = Hatchet::Album::get( query.value( 0 ).toUInt(), query.value( 1 ).toString(), artist );
 
         al << album;
     }

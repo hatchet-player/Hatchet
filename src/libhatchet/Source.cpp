@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013,      Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "Source_p.h"
@@ -36,14 +36,14 @@
 #include "database/Database.h"
 #include "utils/Logger.h"
 #include "sip/PeerInfo.h"
-#include "utils/TomahawkCache.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetCache.h"
+#include "utils/HatchetUtilsGui.h"
 
 #include <QCoreApplication>
 #include <QtAlgorithms>
 #include <QPainter>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 Source::Source( int id, const QString& nodeId )
@@ -60,11 +60,11 @@ Source::Source( int id, const QString& nodeId )
     if ( d->isLocal )
     {
         connect( Accounts::AccountManager::instance(),
-                 SIGNAL( connected( Tomahawk::Accounts::Account* ) ),
+                 SIGNAL( connected( Hatchet::Accounts::Account* ) ),
                  SLOT( setOnline() ) );
         connect( Accounts::AccountManager::instance(),
-                 SIGNAL( disconnected( Tomahawk::Accounts::Account*, Tomahawk::Accounts::AccountManager::DisconnectReason ) ),
-                 SLOT( handleDisconnect( Tomahawk::Accounts::Account*, Tomahawk::Accounts::AccountManager::DisconnectReason ) ) );
+                 SIGNAL( disconnected( Hatchet::Accounts::Account*, Hatchet::Accounts::AccountManager::DisconnectReason ) ),
+                 SLOT( handleDisconnect( Hatchet::Accounts::Account*, Hatchet::Accounts::AccountManager::DisconnectReason ) ) );
     }
 }
 
@@ -143,7 +143,7 @@ Source::peerInfos() const
         return PeerInfo::getAllSelf().toSet();
 
     }
-    return QSet< Tomahawk::peerinfo_ptr >();
+    return QSet< Hatchet::peerinfo_ptr >();
 }
 
 
@@ -296,7 +296,7 @@ Source::friendlyNamesLessThan( const QString& first, const QString& second )
 
 
 QPixmap
-Source::avatar( TomahawkUtils::ImageMode style, const QSize& size, bool defaultAvatarFallback )
+Source::avatar( HatchetUtils::ImageMode style, const QSize& size, bool defaultAvatarFallback )
 {
     Q_D( Source );
 
@@ -313,14 +313,14 @@ Source::avatar( TomahawkUtils::ImageMode style, const QSize& size, bool defaultA
     if ( !d->avatarLoaded )
     {
         d->avatarLoaded = true;
-        QByteArray avatarBuffer = TomahawkUtils::Cache::instance()->getData( "Sources", dbFriendlyName() ).toByteArray();
+        QByteArray avatarBuffer = HatchetUtils::Cache::instance()->getData( "Sources", dbFriendlyName() ).toByteArray();
         if ( !avatarBuffer.isNull() )
         {
             QPixmap avatar;
             avatar.loadFromData( avatarBuffer );
             avatarBuffer.clear();
 
-            d->avatar = new QPixmap( TomahawkUtils::createRoundedImage( avatar, QSize( 0, 0 ) ) );
+            d->avatar = new QPixmap( HatchetUtils::createRoundedImage( avatar, QSize( 0, 0 ) ) );
         }
     }
 
@@ -331,7 +331,7 @@ Source::avatar( TomahawkUtils::ImageMode style, const QSize& size, bool defaultA
 
     if ( defaultAvatarFallback )
     {
-        QPixmap px = TomahawkUtils::defaultPixmap( TomahawkUtils::DefaultSourceAvatar, style, size );
+        QPixmap px = HatchetUtils::defaultPixmap( HatchetUtils::DefaultSourceAvatar, style, size );
         QPainter p( &px );
         p.setRenderHint( QPainter::Antialiasing );
 
@@ -434,9 +434,9 @@ Source::controlConnection() const
 
 
 void
-Source::handleDisconnect( Tomahawk::Accounts::Account*, Tomahawk::Accounts::AccountManager::DisconnectReason reason )
+Source::handleDisconnect( Hatchet::Accounts::Account*, Hatchet::Accounts::AccountManager::DisconnectReason reason )
 {
-    if ( reason == Tomahawk::Accounts::AccountManager::Disabled )
+    if ( reason == Hatchet::Accounts::AccountManager::Disabled )
         setOffline();
 }
 
@@ -460,7 +460,7 @@ Source::setOffline()
 
         d->cc = 0;
         DatabaseCommand_SourceOffline* cmd = new DatabaseCommand_SourceOffline( id() );
-        Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+        Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
     }
 }
 
@@ -483,7 +483,7 @@ Source::setOnline( bool force )
         DatabaseCommand_addSource* cmd = new DatabaseCommand_addSource( d->nodeId, dbFriendlyName() );
         connect( cmd, SIGNAL( done( unsigned int, QString ) ),
                         SLOT( dbLoaded( unsigned int, const QString& ) ) );
-        Database::instance()->enqueue( Tomahawk::dbcmd_ptr(cmd) );
+        Database::instance()->enqueue( Hatchet::dbcmd_ptr(cmd) );
     }
 }
 
@@ -521,7 +521,7 @@ Source::scanningFinished( bool updateGUI )
 
 
 void
-Source::onStateChanged( Tomahawk::DBSyncConnectionState newstate, Tomahawk::DBSyncConnectionState oldstate, const QString& info )
+Source::onStateChanged( Hatchet::DBSyncConnectionState newstate, Hatchet::DBSyncConnectionState oldstate, const QString& info )
 {
     Q_D( Source );
 
@@ -584,15 +584,15 @@ Source::currentTrack() const
 }
 
 
-Tomahawk::playlistinterface_ptr
+Hatchet::playlistinterface_ptr
 Source::playlistInterface()
 {
     Q_D( Source );
 
     if ( d->playlistInterface.isNull() )
     {
-        Tomahawk::source_ptr source = SourceList::instance()->get( id() );
-        d->playlistInterface = Tomahawk::playlistinterface_ptr( new Tomahawk::SourcePlaylistInterface( source.data() ) );
+        Hatchet::source_ptr source = SourceList::instance()->get( id() );
+        d->playlistInterface = Hatchet::playlistinterface_ptr( new Hatchet::SourcePlaylistInterface( source.data() ) );
     }
 
     return d->playlistInterface;
@@ -609,7 +609,7 @@ Source::acquireLock()
 
 
 void
-Source::onPlaybackStarted( const Tomahawk::track_ptr& track, unsigned int duration )
+Source::onPlaybackStarted( const Hatchet::track_ptr& track, unsigned int duration )
 {
     Q_D( Source );
 
@@ -627,7 +627,7 @@ Source::onPlaybackStarted( const Tomahawk::track_ptr& track, unsigned int durati
 
 
 void
-Source::onPlaybackFinished( const Tomahawk::track_ptr& track, const Tomahawk::PlaybackLog& log )
+Source::onPlaybackFinished( const Hatchet::track_ptr& track, const Hatchet::PlaybackLog& log )
 {
     Q_D( Source );
 
@@ -708,8 +708,8 @@ Source::executeCommands()
     if ( commandsAvail )
     {
         QMutexLocker lock( &d->cmdMutex );
-        QList< Tomahawk::dbcmd_ptr > cmdGroup;
-        Tomahawk::dbcmd_ptr cmd = d->cmds.takeFirst();
+        QList< Hatchet::dbcmd_ptr > cmdGroup;
+        Hatchet::dbcmd_ptr cmd = d->cmds.takeFirst();
         while ( cmd->groupable() )
         {
             cmdGroup << cmd;
@@ -780,14 +780,14 @@ Source::updateTracks()
 {
     {
         DatabaseCommand* cmd = new DatabaseCommand_UpdateSearchIndex();
-        Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+        Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
     }
 
     {
         // Re-calculate local db stats
         DatabaseCommand_CollectionStats* cmd = new DatabaseCommand_CollectionStats( SourceList::instance()->get( id() ) );
         connect( cmd, SIGNAL( done( QVariantMap ) ), SLOT( setStats( QVariantMap ) ), Qt::QueuedConnection );
-        Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+        Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
     }
 }
 

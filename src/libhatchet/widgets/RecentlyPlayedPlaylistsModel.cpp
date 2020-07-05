@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "RecentlyPlayedPlaylistsModel.h"
@@ -29,10 +29,10 @@
 #include "PlaylistEntry.h"
 #include "PlaylistInterface.h"
 #include "SourceList.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "Track.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 RecentlyPlayedPlaylistsModel::RecentlyPlayedPlaylistsModel( QObject* parent )
@@ -42,9 +42,9 @@ RecentlyPlayedPlaylistsModel::RecentlyPlayedPlaylistsModel( QObject* parent )
 {
     loadFromSettings();
 
-    connect( SourceList::instance(), SIGNAL( sourceAdded( Tomahawk::source_ptr ) ), this, SLOT( onSourceAdded( Tomahawk::source_ptr ) ), Qt::QueuedConnection );
-    connect( TomahawkSettings::instance(), SIGNAL( recentlyPlayedPlaylistAdded( QString, int ) ), this, SLOT( plAdded( QString, int ) ) );
-    connect( AudioEngine::instance(),SIGNAL( playlistChanged( Tomahawk::playlistinterface_ptr ) ), this, SLOT( playlistChanged( Tomahawk::playlistinterface_ptr ) ), Qt::QueuedConnection );
+    connect( SourceList::instance(), SIGNAL( sourceAdded( Hatchet::source_ptr ) ), this, SLOT( onSourceAdded( Hatchet::source_ptr ) ), Qt::QueuedConnection );
+    connect( HatchetSettings::instance(), SIGNAL( recentlyPlayedPlaylistAdded( QString, int ) ), this, SLOT( plAdded( QString, int ) ) );
+    connect( AudioEngine::instance(),SIGNAL( playlistChanged( Hatchet::playlistinterface_ptr ) ), this, SLOT( playlistChanged( Hatchet::playlistinterface_ptr ) ), Qt::QueuedConnection );
 
     emit emptinessChanged( m_recplaylists.isEmpty() );
 }
@@ -61,17 +61,17 @@ RecentlyPlayedPlaylistsModel::loadFromSettings()
     m_recplaylists.clear();
     m_waitingForSome = false;
 
-    QStringList playlist_guids = TomahawkSettings::instance()->recentlyPlayedPlaylistGuids( m_maxPlaylists );
+    QStringList playlist_guids = HatchetSettings::instance()->recentlyPlayedPlaylistGuids( m_maxPlaylists );
 
     for( int i = playlist_guids.size() - 1; i >= 0; i-- )
     {
 //        qDebug() << "loading playlist" << playlist_guids[i];
 
-        playlist_ptr pl = m_cached.value( playlist_guids[i], Tomahawk::playlist_ptr() );
+        playlist_ptr pl = m_cached.value( playlist_guids[i], Hatchet::playlist_ptr() );
         if ( !pl )
-            pl = Tomahawk::Playlist::get( playlist_guids[i] );
+            pl = Hatchet::Playlist::get( playlist_guids[i] );
         if ( !pl )
-            pl = Tomahawk::DynamicPlaylist::get( playlist_guids[i] );
+            pl = Hatchet::DynamicPlaylist::get( playlist_guids[i] );
 
         if ( pl )
         {
@@ -80,9 +80,9 @@ RecentlyPlayedPlaylistsModel::loadFromSettings()
             if ( !m_cached.contains( playlist_guids[i] ) )
             {
                 if ( pl.dynamicCast< DynamicPlaylist >().isNull() )
-                    connect( pl.data(), SIGNAL(revisionLoaded(Tomahawk::PlaylistRevision)), this, SLOT(playlistRevisionLoaded()) );
+                    connect( pl.data(), SIGNAL(revisionLoaded(Hatchet::PlaylistRevision)), this, SLOT(playlistRevisionLoaded()) );
                 else
-                    connect( pl.data(), SIGNAL(dynamicRevisionLoaded(Tomahawk::DynamicPlaylistRevision)), this, SLOT(playlistRevisionLoaded()) );
+                    connect( pl.data(), SIGNAL(dynamicRevisionLoaded(Hatchet::DynamicPlaylistRevision)), this, SLOT(playlistRevisionLoaded()) );
                 m_cached[playlist_guids[i]] = pl;
             }
         } else
@@ -106,14 +106,14 @@ RecentlyPlayedPlaylistsModel::data( const QModelIndex& index, int role ) const
     case Qt::DisplayRole:
         return pl->title();
     case PlaylistRole:
-        return QVariant::fromValue< Tomahawk::playlist_ptr >( pl );
+        return QVariant::fromValue< Hatchet::playlist_ptr >( pl );
     case ArtistRole:
     {
         if ( m_artists.value( pl ).isEmpty() )
         {
             QStringList artists;
 
-            foreach ( const Tomahawk::plentry_ptr& entry, pl->entries() )
+            foreach ( const Hatchet::plentry_ptr& entry, pl->entries() )
             {
                 if ( !artists.contains( entry->query()->track()->artist() ) )
                     artists << entry->query()->track()->artist();
@@ -126,9 +126,9 @@ RecentlyPlayedPlaylistsModel::data( const QModelIndex& index, int role ) const
     }
     case PlaylistTypeRole:
     {
-        if ( !pl.dynamicCast< Tomahawk::DynamicPlaylist >().isNull() )
+        if ( !pl.dynamicCast< Hatchet::DynamicPlaylist >().isNull() )
         {
-            dynplaylist_ptr dynp = pl.dynamicCast< Tomahawk::DynamicPlaylist >();
+            dynplaylist_ptr dynp = pl.dynamicCast< Hatchet::DynamicPlaylist >();
             if ( dynp->mode() == Static )
                 return AutoPlaylist;
             else if ( dynp->mode() == OnDemand )
@@ -140,12 +140,12 @@ RecentlyPlayedPlaylistsModel::data( const QModelIndex& index, int role ) const
     }
     case DynamicPlaylistRole:
     {
-        dynplaylist_ptr dynp = pl.dynamicCast< Tomahawk::DynamicPlaylist >();
-        return QVariant::fromValue< Tomahawk::dynplaylist_ptr >( dynp );
+        dynplaylist_ptr dynp = pl.dynamicCast< Hatchet::DynamicPlaylist >();
+        return QVariant::fromValue< Hatchet::dynplaylist_ptr >( dynp );
     }
     case TrackCountRole:
     {
-        if ( !pl.dynamicCast< Tomahawk::DynamicPlaylist >().isNull() && pl.dynamicCast< Tomahawk::DynamicPlaylist >()->mode() == OnDemand )
+        if ( !pl.dynamicCast< Hatchet::DynamicPlaylist >().isNull() && pl.dynamicCast< Hatchet::DynamicPlaylist >()->mode() == OnDemand )
             return QString( QChar( 0x221E ) );
         else
             return pl->entries().count();
@@ -174,15 +174,15 @@ RecentlyPlayedPlaylistsModel::playlistRevisionLoaded()
 
 
 void
-RecentlyPlayedPlaylistsModel::onSourceAdded( const Tomahawk::source_ptr& source )
+RecentlyPlayedPlaylistsModel::onSourceAdded( const Hatchet::source_ptr& source )
 {
     connect( source.data(), SIGNAL( online() ),
                               SLOT( sourceOnline() ) );
 
-    connect( source->dbCollection().data(), SIGNAL( playlistsAdded( QList<Tomahawk::playlist_ptr> ) ),
+    connect( source->dbCollection().data(), SIGNAL( playlistsAdded( QList<Hatchet::playlist_ptr> ) ),
                                               SLOT( loadFromSettings() ) );
-    connect( source->dbCollection().data(), SIGNAL( playlistsDeleted( QList<Tomahawk::playlist_ptr> ) ),
-                                              SLOT( onPlaylistsRemoved( QList<Tomahawk::playlist_ptr> ) ) );
+    connect( source->dbCollection().data(), SIGNAL( playlistsDeleted( QList<Hatchet::playlist_ptr> ) ),
+                                              SLOT( onPlaylistsRemoved( QList<Hatchet::playlist_ptr> ) ) );
 }
 
 
@@ -250,7 +250,7 @@ RecentlyPlayedPlaylistsModel::plAdded( const QString& plguid, int sourceId )
 
 
 void
-RecentlyPlayedPlaylistsModel::playlistChanged( Tomahawk::playlistinterface_ptr pli )
+RecentlyPlayedPlaylistsModel::playlistChanged( Hatchet::playlistinterface_ptr pli )
 {
     // ARG
     if ( !pli )

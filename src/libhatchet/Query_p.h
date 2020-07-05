@@ -6,7 +6,7 @@
 #include <QMutex>
 #include <map>
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 class QueryPrivate
@@ -37,10 +37,10 @@ public:
     Query* q_ptr;
 
 private:
-    QList< Tomahawk::artist_ptr > artists;
-    QList< Tomahawk::album_ptr > albums;
-    QList< Tomahawk::result_ptr > results;
-    Tomahawk::result_ptr preferredResult;
+    QList< Hatchet::artist_ptr > artists;
+    QList< Hatchet::album_ptr > albums;
+    QList< Hatchet::result_ptr > results;
+    Hatchet::result_ptr preferredResult;
 
     float score;
     bool solved;
@@ -54,16 +54,16 @@ private:
     QString resultHint;
     bool saveResultHint;
 
-    QList< QPointer< Tomahawk::Resolver > > resolvers;
+    QList< QPointer< Hatchet::Resolver > > resolvers;
 
     track_ptr queryTrack;
 
     mutable QMutex mutex;
-    QWeakPointer< Tomahawk::Query > ownRef;
+    QWeakPointer< Hatchet::Query > ownRef;
 
     std::map<QString, float> howSimilarCache;
 };
 
-} // Tomahawk
+} // Hatchet
 
 #endif // QUERY_P_H

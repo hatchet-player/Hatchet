@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "sourcetree/SourcesModel.h"
@@ -46,7 +46,7 @@
 #include <QMimeData>
 #include <QSize>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 SourcesModel::SourcesModel( QObject* parent )
@@ -56,28 +56,28 @@ SourcesModel::SourcesModel( QObject* parent )
 {
     m_rootItem = new SourceTreeItem( this, 0, Invalid );
 
-    connect( ViewManager::instance(), SIGNAL( viewPageAdded( QString, Tomahawk::ViewPage*, int ) ),
-             SLOT( appendPageItem( QString, Tomahawk::ViewPage*, int ) ) );
+    connect( ViewManager::instance(), SIGNAL( viewPageAdded( QString, Hatchet::ViewPage*, int ) ),
+             SLOT( appendPageItem( QString, Hatchet::ViewPage*, int ) ) );
 
     appendGroups();
     onSourcesAdded( SourceList::instance()->sources() );
 
-    connect( SourceList::instance(), SIGNAL( sourceAdded( Tomahawk::source_ptr ) ),
-             SLOT( onSourceAdded( Tomahawk::source_ptr ) ) );
-    connect( SourceList::instance(), SIGNAL( sourceRemoved( Tomahawk::source_ptr ) ),
-             SLOT( onSourceRemoved( Tomahawk::source_ptr ) ) );
-    connect( ViewManager::instance(), SIGNAL( viewPageActivated( Tomahawk::ViewPage* ) ),
-             SLOT( viewPageActivated( Tomahawk::ViewPage* ) ) );
+    connect( SourceList::instance(), SIGNAL( sourceAdded( Hatchet::source_ptr ) ),
+             SLOT( onSourceAdded( Hatchet::source_ptr ) ) );
+    connect( SourceList::instance(), SIGNAL( sourceRemoved( Hatchet::source_ptr ) ),
+             SLOT( onSourceRemoved( Hatchet::source_ptr ) ) );
+    connect( ViewManager::instance(), SIGNAL( viewPageActivated( Hatchet::ViewPage* ) ),
+             SLOT( viewPageActivated( Hatchet::ViewPage* ) ) );
 
     foreach ( const collection_ptr& c, SourceList::instance()->scriptCollections() )
     {
         onScriptCollectionAdded( c );
     }
 
-    connect( SourceList::instance(), SIGNAL( scriptCollectionAdded( Tomahawk::collection_ptr ) ),
-             this, SLOT( onScriptCollectionAdded( Tomahawk::collection_ptr ) ) );
-    connect( SourceList::instance(), SIGNAL( scriptCollectionRemoved( Tomahawk::collection_ptr ) ),
-             this, SLOT( onScriptCollectionRemoved( Tomahawk::collection_ptr ) ) );
+    connect( SourceList::instance(), SIGNAL( scriptCollectionAdded( Hatchet::collection_ptr ) ),
+             this, SLOT( onScriptCollectionAdded( Hatchet::collection_ptr ) ) );
+    connect( SourceList::instance(), SIGNAL( scriptCollectionRemoved( Hatchet::collection_ptr ) ),
+             this, SLOT( onScriptCollectionRemoved( Hatchet::collection_ptr ) ) );
 }
 
 
@@ -157,7 +157,7 @@ SourcesModel::data( const QModelIndex& index, int role ) const
         if ( item->type() == Source )
         {
             SourceItem* cItem = qobject_cast< SourceItem* >( item );
-            return cItem->localLatchMode() == Tomahawk::PlaylistModes::RealTime;
+            return cItem->localLatchMode() == Hatchet::PlaylistModes::RealTime;
         }
         return false;
     }
@@ -312,7 +312,7 @@ SourcesModel::appendGroups()
 
     endInsertRows();
 
-    QHash< QString, ViewPagePlugin* > plugins = Tomahawk::Utils::PluginLoader( "viewpage" ).loadPlugins< ViewPagePlugin >();
+    QHash< QString, ViewPagePlugin* > plugins = Hatchet::Utils::PluginLoader( "viewpage" ).loadPlugins< ViewPagePlugin >();
     foreach ( ViewPagePlugin* plugin, plugins.values() )
     {
         ViewManager::instance()->addDynamicPage( plugin );
@@ -359,7 +359,7 @@ SourcesModel::appendPageItem( const QString& name, ViewPage* page, int sortValue
 
 
 void
-SourcesModel::appendItem( const Tomahawk::source_ptr& source )
+SourcesModel::appendItem( const Hatchet::source_ptr& source )
 {
     GroupItem* parent;
     if ( !source.isNull() && source->isLocal() )
@@ -381,7 +381,7 @@ SourcesModel::appendItem( const Tomahawk::source_ptr& source )
 
 
 bool
-SourcesModel::removeItem( const Tomahawk::source_ptr& source )
+SourcesModel::removeItem( const Hatchet::source_ptr& source )
 {
 //    qDebug() << "Removing source item from SourceTree:" << source->friendlyName();
 
@@ -409,7 +409,7 @@ SourcesModel::removeItem( const Tomahawk::source_ptr& source )
 
 
 void
-SourcesModel::viewPageActivated( Tomahawk::ViewPage* page )
+SourcesModel::viewPageActivated( Hatchet::ViewPage* page )
 {
     if ( !m_sourcesWithViewPage.isEmpty() )
     {
@@ -568,14 +568,14 @@ SourcesModel::onScriptCollectionRemoved( const collection_ptr& collection )
 
 
 void
-SourcesModel::onViewPageRemoved( Tomahawk::ViewPage* p )
+SourcesModel::onViewPageRemoved( Hatchet::ViewPage* p )
 {
     p->onItemDeleted();
 }
 
 
 ViewPage*
-SourcesModel::scriptCollectionClicked( const Tomahawk::collection_ptr& collection )
+SourcesModel::scriptCollectionClicked( const Hatchet::collection_ptr& collection )
 {
     m_scriptCollectionPages.insert( collection, ViewManager::instance()->show( collection ) );
     return m_scriptCollectionPages[ collection ];
@@ -583,7 +583,7 @@ SourcesModel::scriptCollectionClicked( const Tomahawk::collection_ptr& collectio
 
 
 ViewPage*
-SourcesModel::getScriptCollectionPage( const Tomahawk::collection_ptr& collection ) const
+SourcesModel::getScriptCollectionPage( const Hatchet::collection_ptr& collection ) const
 {
     return m_scriptCollectionPages[ collection ];
 }
@@ -668,7 +668,7 @@ SourcesModel::linkSourceItemToPage( SourceTreeItem* item, ViewPage* p )
 
     if ( p && p->isDeletable() )
     {
-        NewClosure( item, SIGNAL( removed() ), this, SLOT( onViewPageRemoved( Tomahawk::ViewPage* ) ), p );
+        NewClosure( item, SIGNAL( removed() ), this, SLOT( onViewPageRemoved( Hatchet::ViewPage* ) ), p );
     }
 }
 
@@ -676,7 +676,7 @@ SourcesModel::linkSourceItemToPage( SourceTreeItem* item, ViewPage* p )
 void
 SourcesModel::onWidgetDestroyed( QWidget* w )
 {
-    int ret = m_sourceTreeLinks.remove( dynamic_cast< Tomahawk::ViewPage* > ( w ) );
+    int ret = m_sourceTreeLinks.remove( dynamic_cast< Hatchet::ViewPage* > ( w ) );
     tDebug() << "Removed stale source page:" << ret;
 }
 

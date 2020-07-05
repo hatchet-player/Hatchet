@@ -1,1 +1,1 @@
-See http://github.com/tomahawk-player/tomahawk/blob/stable/ChangeLog
+please see https://github.com/hatchet-player/Hatchet/blob/main/doc/CHANGELOG

@@ -1,30 +1,30 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DatabaseCommand_AddClientAuth.h"
 
 #include "DatabaseImpl.h"
-#include "TomahawkSqlQuery.h"
+#include "HatchetSqlQuery.h"
 #include "utils/Logger.h"
 #include "Source.h"
 
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 DatabaseCommand_AddClientAuth::DatabaseCommand_AddClientAuth( const QString& clientToken,
@@ -43,7 +43,7 @@ DatabaseCommand_AddClientAuth::DatabaseCommand_AddClientAuth( const QString& cli
 
 void DatabaseCommand_AddClientAuth::exec( DatabaseImpl* lib )
 {
-    TomahawkSqlQuery q = lib->newquery();
+    HatchetSqlQuery q = lib->newquery();
     q.prepare( "INSERT INTO http_client_auth (token, website, name, ua, mtime, permissions) VALUES (?, ?, ?, ?, ?, ?)" );
     q.addBindValue( m_clientToken );
     q.addBindValue( m_website );

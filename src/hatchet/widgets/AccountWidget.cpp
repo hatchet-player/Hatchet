@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2012-2013, Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "AccountWidget.h"
@@ -23,8 +23,8 @@
 #include "accounts/AccountModel.h"
 #include "accounts/AccountManager.h"
 #include "sip/SipPlugin.h"
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/AnimatedSpinner.h"
 #include "utils/Logger.h"
 #include "widgets/ElidedLabel.h"
@@ -44,10 +44,10 @@
 
 AccountWidget::AccountWidget( QWidget* parent )
     : QWidget( parent )
-    , TomahawkUtils::DpiScaler( this )
+    , HatchetUtils::DpiScaler( this )
 {
     QHBoxLayout *mainLayout = new QHBoxLayout();
-    TomahawkUtils::unmarginLayout( mainLayout );
+    HatchetUtils::unmarginLayout( mainLayout );
     setLayout( mainLayout );
     setContentsMargins( 0, scaledY( 8 ), 0, scaledY( 8 ) );
 
@@ -76,10 +76,10 @@ AccountWidget::AccountWidget( QWidget* parent )
     idContLayout->addWidget( m_idLabel );
 
     m_spinnerWidget = new QWidget( idContainer );
-    QSize spinnerSize = 16 > TomahawkUtils::defaultFontHeight()  ?
+    QSize spinnerSize = 16 > HatchetUtils::defaultFontHeight()  ?
                             QSize( 16, 16 ) :
-                            QSize( TomahawkUtils::defaultFontHeight(),
-                                   TomahawkUtils::defaultFontHeight() );
+                            QSize( HatchetUtils::defaultFontHeight(),
+                                   HatchetUtils::defaultFontHeight() );
     m_spinnerWidget->setFixedSize( spinnerSize );
     idContLayout->addWidget( m_spinnerWidget );
     m_spinnerWidget->setContentsMargins( 0, 1, 0, 0 );
@@ -104,19 +104,19 @@ AccountWidget::AccountWidget( QWidget* parent )
     m_inviteContainer = new QFrame( this );
     m_inviteContainer->setObjectName( "inviteContainer" );
     vLayout->addWidget( m_inviteContainer, 1, 0 );
-    m_inviteContainer->setStyleSheet( QString( "QWidget { background: white; } QFrame#%1 { border: 1px solid %2; }" ).arg( m_inviteContainer->objectName() ).arg( TomahawkStyle::BORDER_LINE.name() ) );
+    m_inviteContainer->setStyleSheet( QString( "QWidget { background: white; } QFrame#%1 { border: 1px solid %2; }" ).arg( m_inviteContainer->objectName() ).arg( HatchetStyle::BORDER_LINE.name() ) );
     m_inviteContainer->setMinimumWidth( m_inviteContainer->logicalDpiX() * 2 );
     m_inviteContainer->setContentsMargins( 1, 1, 1, 2 );
     m_inviteContainer->setAttribute( Qt::WA_TranslucentBackground, false );
 
     QHBoxLayout* containerLayout = new QHBoxLayout();
     m_inviteContainer->setLayout( containerLayout );
-    TomahawkUtils::unmarginLayout( containerLayout );
+    HatchetUtils::unmarginLayout( containerLayout );
     containerLayout->setContentsMargins( 1, 1, 0, 0 );
 
     m_addAccountIcon = new QLabel( m_inviteContainer );
     m_addAccountIcon->setContentsMargins( 1, 0, 0, 0 );
-    m_addAccountIcon->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::AddContact, TomahawkUtils::Original, QSize( 16, 16 ) ) );
+    m_addAccountIcon->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::AddContact, HatchetUtils::Original, QSize( 16, 16 ) ) );
     m_addAccountIcon->setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Expanding );
     m_addAccountIcon->setAlignment( Qt::AlignCenter );
     containerLayout->addWidget( m_addAccountIcon );
@@ -150,9 +150,9 @@ AccountWidget::~AccountWidget()
 void
 AccountWidget::update( const QPersistentModelIndex& idx, int accountIdx )
 {
-    Tomahawk::Accounts::Account* account =
-            idx.data( Tomahawk::Accounts::AccountModel::ChildrenOfFactoryRole )
-            .value< QList< Tomahawk::Accounts::Account* > >().at( accountIdx );
+    Hatchet::Accounts::Account* account =
+            idx.data( Hatchet::Accounts::AccountModel::ChildrenOfFactoryRole )
+            .value< QList< Hatchet::Accounts::Account* > >().at( accountIdx );
 
     if ( account )
     {
@@ -170,7 +170,7 @@ AccountWidget::update( const QPersistentModelIndex& idx, int accountIdx )
 
         switch ( account->connectionState() )
         {
-            case Tomahawk::Accounts::Account::Connected:
+            case Hatchet::Accounts::Account::Connected:
             {
                 if ( account->enabled() )
                     m_statusToggle->setChecked( true );
@@ -183,7 +183,7 @@ AccountWidget::update( const QPersistentModelIndex& idx, int accountIdx )
                 break;
             }
 
-            case Tomahawk::Accounts::Account::Connecting:
+            case Hatchet::Accounts::Account::Connecting:
             {
                 if ( !account->enabled() )
                     tDebug() << "AccountWidget warning:" << account->accountFriendlyName()
@@ -194,7 +194,7 @@ AccountWidget::update( const QPersistentModelIndex& idx, int accountIdx )
                 break;
             }
 
-            case Tomahawk::Accounts::Account::Disconnected:
+            case Hatchet::Accounts::Account::Disconnected:
             {
                 if ( !account->enabled() )
                     m_statusToggle->setChecked( false );
@@ -207,7 +207,7 @@ AccountWidget::update( const QPersistentModelIndex& idx, int accountIdx )
                 break;
             }
 
-            case Tomahawk::Accounts::Account::Disconnecting:
+            case Hatchet::Accounts::Account::Disconnecting:
             {
                 if ( account->enabled() )
                     tDebug() << "AccountWidget warning:" << account->accountFriendlyName()
@@ -218,14 +218,14 @@ AccountWidget::update( const QPersistentModelIndex& idx, int accountIdx )
             }
         }
 
-        if ( !account->enabled() && account->connectionState() == Tomahawk::Accounts::Account::Disconnected )
+        if ( !account->enabled() && account->connectionState() == Hatchet::Accounts::Account::Disconnected )
         {
             m_spinner->fadeOut();
             m_statusToggle->setBackChecked( false );
             m_statusToggle->setChecked( false );
             setInviteWidgetsEnabled( false );
         }
-        else if ( account->enabled() && account->connectionState() == Tomahawk::Accounts::Account::Connected )
+        else if ( account->enabled() && account->connectionState() == Hatchet::Accounts::Account::Connected )
         {
             m_spinner->fadeOut();
             m_statusToggle->setBackChecked( true );
@@ -239,19 +239,19 @@ AccountWidget::update( const QPersistentModelIndex& idx, int accountIdx )
 void
 AccountWidget::changeAccountConnectionState( bool connected )
 {
-    Tomahawk::Accounts::Account* account =
-            m_myFactoryIdx.data( Tomahawk::Accounts::AccountModel::ChildrenOfFactoryRole )
-            .value< QList< Tomahawk::Accounts::Account* > >().at( m_myAccountIdx );
+    Hatchet::Accounts::Account* account =
+            m_myFactoryIdx.data( Hatchet::Accounts::AccountModel::ChildrenOfFactoryRole )
+            .value< QList< Hatchet::Accounts::Account* > >().at( m_myAccountIdx );
 
     if ( account )
     {
         if ( connected )
         {
-            Tomahawk::Accounts::AccountManager::instance()->enableAccount( account );
+            Hatchet::Accounts::AccountManager::instance()->enableAccount( account );
         }
         else
         {
-            Tomahawk::Accounts::AccountManager::instance()->disableAccount( account );
+            Hatchet::Accounts::AccountManager::instance()->disableAccount( account );
         }
     }
 }
@@ -260,9 +260,9 @@ AccountWidget::changeAccountConnectionState( bool connected )
 void
 AccountWidget::sendInvite()
 {
-    Tomahawk::Accounts::Account* account =
-            m_myFactoryIdx.data( Tomahawk::Accounts::AccountModel::ChildrenOfFactoryRole )
-            .value< QList< Tomahawk::Accounts::Account* > >().at( m_myAccountIdx );
+    Hatchet::Accounts::Account* account =
+            m_myFactoryIdx.data( Hatchet::Accounts::AccountModel::ChildrenOfFactoryRole )
+            .value< QList< Hatchet::Accounts::Account* > >().at( m_myAccountIdx );
 
     if ( account )
     {
@@ -312,9 +312,9 @@ AccountWidget::setupConnections( const QPersistentModelIndex& idx, int accountId
     m_myFactoryIdx = idx;
     m_myAccountIdx = accountIdx;
 
-    Tomahawk::Accounts::Account* account =
-            idx.data( Tomahawk::Accounts::AccountModel::ChildrenOfFactoryRole )
-            .value< QList< Tomahawk::Accounts::Account* > >().at( accountIdx );
+    Hatchet::Accounts::Account* account =
+            idx.data( Hatchet::Accounts::AccountModel::ChildrenOfFactoryRole )
+            .value< QList< Hatchet::Accounts::Account* > >().at( accountIdx );
 
     if ( account )
     {

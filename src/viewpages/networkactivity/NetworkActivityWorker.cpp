@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "NetworkActivityWorker_p.h"
@@ -31,7 +31,7 @@
 
 #include <QDateTime>
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 namespace Widgets
@@ -55,27 +55,27 @@ NetworkActivityWorker::run()
     tLog() << Q_FUNC_INFO << QDateTime::currentDateTime().toTime_t();
     {
         // Load trending tracks
-        qRegisterMetaType< QList< QPair< double,Tomahawk::track_ptr > > >("QList< QPair< double,Tomahawk::track_ptr > >");
+        qRegisterMetaType< QList< QPair< double,Hatchet::track_ptr > > >("QList< QPair< double,Hatchet::track_ptr > >");
         DatabaseCommand_TrendingTracks* dbcmd = new DatabaseCommand_TrendingTracks();
-        dbcmd->setLimit( Tomahawk::Widgets::NetworkActivityWidget::numberOfTrendingTracks );
-        connect( dbcmd, SIGNAL( done( QList< QPair< double,Tomahawk::track_ptr > >) ),
-                 SLOT( trendingTracksReceived( QList< QPair< double,Tomahawk::track_ptr > > ) ),
+        dbcmd->setLimit( Hatchet::Widgets::NetworkActivityWidget::numberOfTrendingTracks );
+        connect( dbcmd, SIGNAL( done( QList< QPair< double,Hatchet::track_ptr > >) ),
+                 SLOT( trendingTracksReceived( QList< QPair< double,Hatchet::track_ptr > > ) ),
                  Qt::QueuedConnection );
         Database::instance()->enqueue( dbcmd_ptr( dbcmd ) );
     }
     {
-        qRegisterMetaType< QList< QPair< double, Tomahawk::artist_ptr > > >("QList< QPair< double, Tomahawk::artist_ptr > >");
+        qRegisterMetaType< QList< QPair< double, Hatchet::artist_ptr > > >("QList< QPair< double, Hatchet::artist_ptr > >");
         DatabaseCommand_TrendingArtists* dbcmd = new DatabaseCommand_TrendingArtists();
-        dbcmd->setLimit( Tomahawk::Widgets::NetworkActivityWidget::numberOfTrendingArtists );
-        connect( dbcmd, SIGNAL( done( QList< QPair< double, Tomahawk::artist_ptr > > ) ),
-                 SLOT( trendingArtistsReceived( QList< QPair< double, Tomahawk::artist_ptr > >) ),
+        dbcmd->setLimit( Hatchet::Widgets::NetworkActivityWidget::numberOfTrendingArtists );
+        connect( dbcmd, SIGNAL( done( QList< QPair< double, Hatchet::artist_ptr > > ) ),
+                 SLOT( trendingArtistsReceived( QList< QPair< double, Hatchet::artist_ptr > >) ),
                  Qt::QueuedConnection );
         Database::instance()->enqueue( dbcmd_ptr( dbcmd ) );
     }
     {
         DatabaseCommand_LoadAllSources* dbcmd = new DatabaseCommand_LoadAllSources();
-        connect( dbcmd, SIGNAL( done( QList<Tomahawk::source_ptr> ) ),
-                 SLOT( allSourcesReceived( QList<Tomahawk::source_ptr> ) ),
+        connect( dbcmd, SIGNAL( done( QList<Hatchet::source_ptr> ) ),
+                 SLOT( allSourcesReceived( QList<Hatchet::source_ptr> ) ),
                  Qt::QueuedConnection);
         Database::instance()->enqueue( dbcmd_ptr( dbcmd ) );
     }
@@ -84,7 +84,7 @@ NetworkActivityWorker::run()
 
 
 void
-NetworkActivityWorker::allPlaylistsReceived( const QHash< Tomahawk::playlist_ptr, QStringList >& playlists )
+NetworkActivityWorker::allPlaylistsReceived( const QHash< Hatchet::playlist_ptr, QStringList >& playlists )
 {
     Q_D( NetworkActivityWorker );
     d->sourcesToLoad--;
@@ -99,7 +99,7 @@ NetworkActivityWorker::allPlaylistsReceived( const QHash< Tomahawk::playlist_ptr
         {
             d->playtimesToLoad++;
             DatabaseCommand_CalculatePlaytime* dbcmd = new DatabaseCommand_CalculatePlaytime( playlist, d->playlists.value( playlist ), QDateTime::currentDateTime().addDays( -7 ), QDateTime::currentDateTime() );
-            connect( dbcmd, SIGNAL( done( Tomahawk::playlist_ptr, uint ) ), SLOT( playtime( Tomahawk::playlist_ptr, uint ) ) );
+            connect( dbcmd, SIGNAL( done( Hatchet::playlist_ptr, uint ) ), SLOT( playtime( Hatchet::playlist_ptr, uint ) ) );
             Database::instance()->enqueue( dbcmd_ptr( dbcmd ) );
         }
     }
@@ -117,8 +117,8 @@ NetworkActivityWorker::allSourcesReceived( const QList<source_ptr>& sources )
     {
         DatabaseCommand_LoadAllPlaylists* dbcmd = new DatabaseCommand_LoadAllPlaylists( source );
         dbcmd->setReturnPlEntryIds( true );
-        connect( dbcmd, SIGNAL( done( QHash< Tomahawk::playlist_ptr, QStringList > ) ),
-                 SLOT( allPlaylistsReceived ( QHash< Tomahawk::playlist_ptr, QStringList > ) ),
+        connect( dbcmd, SIGNAL( done( QHash< Hatchet::playlist_ptr, QStringList > ) ),
+                 SLOT( allPlaylistsReceived ( QHash< Hatchet::playlist_ptr, QStringList > ) ),
                  Qt::QueuedConnection );
         Database::instance()->enqueue( dbcmd_ptr( dbcmd ) );
     }
@@ -136,7 +136,7 @@ NetworkActivityWorker::playlistLoaded(PlaylistRevision)
 
 
 void
-NetworkActivityWorker::playtime( const Tomahawk::playlist_ptr& playlist, uint playtime )
+NetworkActivityWorker::playtime( const Hatchet::playlist_ptr& playlist, uint playtime )
 {
     Q_D( NetworkActivityWorker );
     d->playtimesToLoad--;
@@ -152,13 +152,13 @@ NetworkActivityWorker::playtime( const Tomahawk::playlist_ptr& playlist, uint pl
         while (iter.hasPrevious() && (uint)playlists.size() < Widgets::NetworkActivityWidget::numberOfHotPlaylists )
         {
             iter.previous();
-            Tomahawk::playlist_ptr playlist = iter.value();
+            Hatchet::playlist_ptr playlist = iter.value();
             playlists << playlist;
             if ( !playlist->loaded() )
             {
                 d->playlistsToLoad++;
-                connect( playlist.data(), SIGNAL( revisionLoaded( Tomahawk::PlaylistRevision ) ),
-                         SLOT( playlistLoaded( Tomahawk::PlaylistRevision ) ),
+                connect( playlist.data(), SIGNAL( revisionLoaded( Hatchet::PlaylistRevision ) ),
+                         SLOT( playlistLoaded( Hatchet::PlaylistRevision ) ),
                          Qt::QueuedConnection );
                 playlist->loadRevision();
             }
@@ -190,7 +190,7 @@ NetworkActivityWorker::trendingArtistsReceived( const QList<QPair<double, artist
 
 
 void
-NetworkActivityWorker::trendingTracksReceived( const QList<QPair<double, Tomahawk::track_ptr> >& _tracks)
+NetworkActivityWorker::trendingTracksReceived( const QList<QPair<double, Hatchet::track_ptr> >& _tracks)
 {
     Q_D( NetworkActivityWorker );
     d->trendingTracksDone = true;
@@ -234,4 +234,4 @@ NetworkActivityWorker::checkHotPlaylistsDone()
 
 } // namespace Widgets
 
-} // namespace Tomahawk
+} // namespace Hatchet

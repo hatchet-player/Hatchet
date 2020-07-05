@@ -1,13 +1,13 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
- *   Copyright 2012, Jeff Mitchell <jeff@tomahawk-player.org>
+ *   Copyright 2012, Jeff Mitchell <jeff@hatchet-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
@@ -44,13 +44,13 @@ class ACCOUNTDLLEXPORT HatchetSipPlugin : public SipPlugin
     };
 
 public:
-    HatchetSipPlugin( Tomahawk::Accounts::Account *account );
+    HatchetSipPlugin( Hatchet::Accounts::Account *account );
 
     virtual ~HatchetSipPlugin();
 
     virtual bool isValid() const;
 
-    virtual void sendSipInfos( const Tomahawk::peerinfo_ptr& receiver, const QList< SipInfo >& infos );
+    virtual void sendSipInfos( const Hatchet::peerinfo_ptr& receiver, const QList< SipInfo >& infos );
 
 public slots:
     virtual void connectPlugin();
@@ -79,7 +79,7 @@ private:
     void newPeer( const QVariantMap& valMap );
     void peerAuthorization( const QVariantMap& valMap );
     void sendOplog( const QVariantMap& valMap ) const;
-    Tomahawk::Accounts::HatchetAccount* hatchetAccount() const;
+    Hatchet::Accounts::HatchetAccount* hatchetAccount() const;
 
     QPointer< WebSocketThreadController > m_webSocketThreadController;
     QString m_token;

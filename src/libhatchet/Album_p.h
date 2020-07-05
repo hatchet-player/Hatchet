@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013,      Uwe L. Korn  <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #pragma once
@@ -24,13 +24,13 @@
 
 #include "Album.h"
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 class AlbumPrivate
 {
 public:
-    AlbumPrivate( Album* q, unsigned int _id, const QString& _name, const Tomahawk::artist_ptr& _artist )
+    AlbumPrivate( Album* q, unsigned int _id, const QString& _name, const Hatchet::artist_ptr& _artist )
         : q_ptr( q )
         , waitingForId( false )
         , id( _id )
@@ -45,7 +45,7 @@ public:
     }
 
 
-    AlbumPrivate( Album* q, const QString& _name, const Tomahawk::artist_ptr& _artist )
+    AlbumPrivate( Album* q, const QString& _name, const Hatchet::artist_ptr& _artist )
         : q_ptr( q )
         , waitingForId( true )
         , id( 0 )
@@ -82,11 +82,11 @@ private:
     mutable QByteArray coverBuffer;
     mutable QPixmap* cover;
 
-    QHash< Tomahawk::ModelMode, QHash< Tomahawk::collection_ptr, Tomahawk::playlistinterface_ptr > > playlistInterface;
+    QHash< Hatchet::ModelMode, QHash< Hatchet::collection_ptr, Hatchet::playlistinterface_ptr > > playlistInterface;
 
-    QWeakPointer< Tomahawk::Album > ownRef;
+    QWeakPointer< Hatchet::Album > ownRef;
 };
 
-} // namespace Tomahawk
+} // namespace Hatchet
 
 #endif // ALBUM_P_H

@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef SOURCELIST_H
@@ -40,60 +40,60 @@ public:
 
     bool isReady() const { return m_isReady; }
 
-    const Tomahawk::source_ptr& getLocal() const;
-    void setLocal( const Tomahawk::source_ptr& localSrc );
+    const Hatchet::source_ptr& getLocal() const;
+    void setLocal( const Hatchet::source_ptr& localSrc );
 
-    void setWebSource( const Tomahawk::source_ptr& websrc );
-    const Tomahawk::source_ptr webSource() const;
+    void setWebSource( const Hatchet::source_ptr& websrc );
+    const Hatchet::source_ptr webSource() const;
 
     void loadSources();
     void removeAllRemote();
 
-    QList<Tomahawk::source_ptr> sources( bool onlyOnline = false ) const;
+    QList<Hatchet::source_ptr> sources( bool onlyOnline = false ) const;
     unsigned int count() const;
 
-    void addScriptCollection( const Tomahawk::collection_ptr& collection );
-    void removeScriptCollection( const Tomahawk::collection_ptr& collection );
-    QList<Tomahawk::collection_ptr> scriptCollections() const;
+    void addScriptCollection( const Hatchet::collection_ptr& collection );
+    void removeScriptCollection( const Hatchet::collection_ptr& collection );
+    QList<Hatchet::collection_ptr> scriptCollections() const;
 
-    Tomahawk::source_ptr get( const QString& username, const QString& friendlyName = QString(), bool autoCreate = false );
-    Tomahawk::source_ptr get( int id ) const;
+    Hatchet::source_ptr get( const QString& username, const QString& friendlyName = QString(), bool autoCreate = false );
+    Hatchet::source_ptr get( int id ) const;
 
 public slots:
     // called by the playlist creation dbcmds
-    void createPlaylist( const Tomahawk::source_ptr& src, const QVariant& contents );
-    void createDynamicPlaylist( const Tomahawk::source_ptr& src, const QVariant& contents );
+    void createPlaylist( const Hatchet::source_ptr& src, const QVariant& contents );
+    void createDynamicPlaylist( const Hatchet::source_ptr& src, const QVariant& contents );
 
 signals:
     void ready();
 
-    void sourceAdded( const Tomahawk::source_ptr& );
-    void sourceRemoved( const Tomahawk::source_ptr& );
+    void sourceAdded( const Hatchet::source_ptr& );
+    void sourceRemoved( const Hatchet::source_ptr& );
 
-    void scriptCollectionAdded( const Tomahawk::collection_ptr& );
-    void scriptCollectionRemoved( const Tomahawk::collection_ptr& );
+    void scriptCollectionAdded( const Hatchet::collection_ptr& );
+    void scriptCollectionRemoved( const Hatchet::collection_ptr& );
 
-    void sourceLatchedOn( const Tomahawk::source_ptr& from, const Tomahawk::source_ptr& to );
-    void sourceLatchedOff( const Tomahawk::source_ptr& from, const Tomahawk::source_ptr& to );
+    void sourceLatchedOn( const Hatchet::source_ptr& from, const Hatchet::source_ptr& to );
+    void sourceLatchedOff( const Hatchet::source_ptr& from, const Hatchet::source_ptr& to );
 
 private slots:
-    void setSources( const QList<Tomahawk::source_ptr>& sources );
+    void setSources( const QList<Hatchet::source_ptr>& sources );
     void sourceSynced();
 
-    void latchedOn( const Tomahawk::source_ptr& );
-    void latchedOff( const Tomahawk::source_ptr& );
+    void latchedOn( const Hatchet::source_ptr& );
+    void latchedOff( const Hatchet::source_ptr& );
 
 private:
-    void add( const Tomahawk::source_ptr& source );
+    void add( const Hatchet::source_ptr& source );
 
-    QMap< QString, Tomahawk::source_ptr > m_sources;
+    QMap< QString, Hatchet::source_ptr > m_sources;
     QMap< int, QString > m_sources_id2name;
 
-    QList< Tomahawk::collection_ptr > m_scriptCollections;
+    QList< Hatchet::collection_ptr > m_scriptCollections;
 
     bool m_isReady;
-    Tomahawk::source_ptr m_local;
-    Tomahawk::source_ptr m_dummy;
+    Hatchet::source_ptr m_local;
+    Hatchet::source_ptr m_dummy;
     mutable QMutex m_mut; // mutable so const methods can use a lock
 
     static SourceList* s_instance;

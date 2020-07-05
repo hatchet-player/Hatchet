@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013, Teo Mrnjavac <teo@kde.org>
  *   Copyright 2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "InboxModel.h"
@@ -31,7 +31,7 @@
 
 #include "PlaylistEntry.h"
 #include "SourceList.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 
 
 InboxModel::InboxModel( QObject* parent )
@@ -45,8 +45,8 @@ InboxModel::InboxModel( QObject* parent )
 
     // Every time a ShareTrack dbcmd is created, we keep track of it until it's committed,
     // so we can react with post-commit changes in the UI
-    Tomahawk::DatabaseCommandFactory* factory = Tomahawk::Database::instance()->commandFactory<Tomahawk::DatabaseCommand_ShareTrack>();
-    connect( factory, SIGNAL( created( Tomahawk::dbcmd_ptr ) ), SLOT( onDbcmdCreated( Tomahawk::dbcmd_ptr ) ) );
+    Hatchet::DatabaseCommandFactory* factory = Hatchet::Database::instance()->commandFactory<Hatchet::DatabaseCommand_ShareTrack>();
+    connect( factory, SIGNAL( created( Hatchet::dbcmd_ptr ) ), SLOT( onDbcmdCreated( Hatchet::dbcmd_ptr ) ) );
 }
 
 
@@ -70,7 +70,7 @@ InboxModel::unlistenedCount( const QModelIndex& parent ) const
         else if ( item && item->query() )
         {
             bool isUnlistened = true;
-            foreach ( Tomahawk::SocialAction sa, item->query()->queryTrack()->allSocialActions() )
+            foreach ( Hatchet::SocialAction sa, item->query()->queryTrack()->allSocialActions() )
             {
                 if ( sa.action == "Inbox" && sa.value.toBool() == false )
                 {
@@ -87,17 +87,17 @@ InboxModel::unlistenedCount( const QModelIndex& parent ) const
 
 
 void
-InboxModel::insertEntries( const QList< Tomahawk::plentry_ptr >& entries, int /* row */, const QModelIndex& /* parent */, const QList< Tomahawk::PlaybackLog >& /* logs */ )
+InboxModel::insertEntries( const QList< Hatchet::plentry_ptr >& entries, int /* row */, const QModelIndex& /* parent */, const QList< Hatchet::PlaybackLog >& /* logs */ )
 {
-    QList< Tomahawk::plentry_ptr > toInsert;
-    for ( QList< Tomahawk::plentry_ptr >::const_iterator it = entries.constBegin();
+    QList< Hatchet::plentry_ptr > toInsert;
+    for ( QList< Hatchet::plentry_ptr >::const_iterator it = entries.constBegin();
           it != entries.constEnd(); ++it )
     {
-        Tomahawk::plentry_ptr entry = *it;
-        for ( QList< Tomahawk::plentry_ptr >::iterator jt = toInsert.begin();
+        Hatchet::plentry_ptr entry = *it;
+        for ( QList< Hatchet::plentry_ptr >::iterator jt = toInsert.begin();
               jt != toInsert.end(); ++jt  )
         {
-            Tomahawk::plentry_ptr existingEntry = *jt;
+            Hatchet::plentry_ptr existingEntry = *jt;
             if ( entry->query()->equals( existingEntry->query(), true /*ignoreCase*/) )
             {
                 toInsert.erase( jt );
@@ -107,7 +107,7 @@ InboxModel::insertEntries( const QList< Tomahawk::plentry_ptr >& entries, int /*
         toInsert.append( entry );
     }
 
-    foreach ( Tomahawk::plentry_ptr plEntry, playlistEntries() )
+    foreach ( Hatchet::plentry_ptr plEntry, playlistEntries() )
     {
         for ( int i = 0; i < toInsert.count(); )
         {
@@ -123,9 +123,9 @@ InboxModel::insertEntries( const QList< Tomahawk::plentry_ptr >& entries, int /*
         }
     }
 
-    foreach ( const Tomahawk::plentry_ptr& entry, toInsert )
+    foreach ( const Hatchet::plentry_ptr& entry, toInsert )
     {
-        foreach ( const Tomahawk::SocialAction& sa, entry->query()->queryTrack()->socialActions( "Inbox", QVariant() /*neither true nor false!*/, true ) )
+        foreach ( const Hatchet::SocialAction& sa, entry->query()->queryTrack()->socialActions( "Inbox", QVariant() /*neither true nor false!*/, true ) )
         {
             QModelIndex parent = indexFromSource( sa.source );
             if ( !parent.isValid() )
@@ -145,7 +145,7 @@ InboxModel::insertEntries( const QList< Tomahawk::plentry_ptr >& entries, int /*
                 parent = item->index;
             }
 
-            QList< Tomahawk::plentry_ptr > el;
+            QList< Hatchet::plentry_ptr > el;
             el << entry;
             PlaylistModel::insertEntries( el, rowCount( parent ), parent );
         }
@@ -161,8 +161,8 @@ InboxModel::removeIndex( const QModelIndex& index, bool moreToCome )
     PlayableItem* item = itemFromIndex( index );
     if ( item && item->query() )
     {
-        Tomahawk::DatabaseCommand_DeleteInboxEntry* cmd = new Tomahawk::DatabaseCommand_DeleteInboxEntry( item->query() );
-        Tomahawk::Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+        Hatchet::DatabaseCommand_DeleteInboxEntry* cmd = new Hatchet::DatabaseCommand_DeleteInboxEntry( item->query() );
+        Hatchet::Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
     }
 
     PlaylistModel::removeIndex( index, moreToCome );
@@ -178,8 +178,8 @@ InboxModel::clear()
 
 void
 InboxModel::showNotification( InboxJobItem::Side side,
-                              const Tomahawk::source_ptr& src,
-                              const Tomahawk::trackdata_ptr& track )
+                              const Hatchet::source_ptr& src,
+                              const Hatchet::trackdata_ptr& track )
 {
     JobStatusView::instance()->model()->addJob( new InboxJobItem( side,
                                                                   src->friendlyName(),
@@ -187,20 +187,20 @@ InboxModel::showNotification( InboxJobItem::Side side,
 
     if ( side == InboxJobItem::Receiving )
     {
-        Tomahawk::InfoSystem::InfoStringHash trackInfo;
+        Hatchet::InfoSystem::InfoStringHash trackInfo;
         trackInfo["title"] = track->track();
         trackInfo["artist"] = track->artist();
 
-        Tomahawk::InfoSystem::InfoStringHash sourceInfo;
+        Hatchet::InfoSystem::InfoStringHash sourceInfo;
         sourceInfo["friendlyname"] = src->friendlyName();
 
         QVariantMap playInfo;
-        playInfo["trackinfo"] = QVariant::fromValue< Tomahawk::InfoSystem::InfoStringHash >( trackInfo );
-        playInfo["private"] = TomahawkSettings::instance()->privateListeningMode();
-        playInfo["sourceinfo"] = QVariant::fromValue< Tomahawk::InfoSystem::InfoStringHash >( sourceInfo );
+        playInfo["trackinfo"] = QVariant::fromValue< Hatchet::InfoSystem::InfoStringHash >( trackInfo );
+        playInfo["private"] = HatchetSettings::instance()->privateListeningMode();
+        playInfo["sourceinfo"] = QVariant::fromValue< Hatchet::InfoSystem::InfoStringHash >( sourceInfo );
 
-        Tomahawk::InfoSystem::InfoPushData pushData ( "InboxModel", Tomahawk::InfoSystem::InfoInboxReceived, playInfo, Tomahawk::InfoSystem::PushShortUrlFlag );
-        Tomahawk::InfoSystem::InfoSystem::instance()->pushInfo( pushData );
+        Hatchet::InfoSystem::InfoPushData pushData ( "InboxModel", Hatchet::InfoSystem::InfoInboxReceived, playInfo, Hatchet::InfoSystem::PushShortUrlFlag );
+        Hatchet::InfoSystem::InfoSystem::instance()->pushInfo( pushData );
     }
 }
 
@@ -208,9 +208,9 @@ InboxModel::showNotification( InboxJobItem::Side side,
 void
 InboxModel::showNotification( InboxJobItem::Side side,
                               const QString& dbid,
-                              const Tomahawk::trackdata_ptr& track )
+                              const Hatchet::trackdata_ptr& track )
 {
-    Tomahawk::source_ptr src = SourceList::instance()->get( dbid );
+    Hatchet::source_ptr src = SourceList::instance()->get( dbid );
     if ( !src.isNull() )
         showNotification( side, src, track );
 }
@@ -235,20 +235,20 @@ InboxModel::loadTracks()
 {
     startLoading();
 
-    Tomahawk::DatabaseCommand_LoadInboxEntries* cmd = new Tomahawk::DatabaseCommand_LoadInboxEntries();
-    connect( cmd, SIGNAL( tracks( QList<Tomahawk::query_ptr> ) ), SLOT( tracksLoaded( QList<Tomahawk::query_ptr> ) ) );
-    Tomahawk::Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Hatchet::DatabaseCommand_LoadInboxEntries* cmd = new Hatchet::DatabaseCommand_LoadInboxEntries();
+    connect( cmd, SIGNAL( tracks( QList<Hatchet::query_ptr> ) ), SLOT( tracksLoaded( QList<Hatchet::query_ptr> ) ) );
+    Hatchet::Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 }
 
 
 void
-InboxModel::tracksLoaded( QList< Tomahawk::query_ptr > incoming )
+InboxModel::tracksLoaded( QList< Hatchet::query_ptr > incoming )
 {
     finishLoading();
 
-    QList< Tomahawk::query_ptr > tracks;
+    QList< Hatchet::query_ptr > tracks;
 
-    foreach ( const Tomahawk::plentry_ptr ple, playlistEntries() )
+    foreach ( const Hatchet::plentry_ptr ple, playlistEntries() )
         tracks << ple->query();
 
     //We invert the result of the SQLite query.
@@ -256,21 +256,21 @@ InboxModel::tracksLoaded( QList< Tomahawk::query_ptr > incoming )
     //      their original order of insertion when the ORDER BY criterion is equal for some records
     //      (i.e. a stable sort). This assumption might not be true for other things that talk SQL,
     //      but it should work for us as long as we stick with SQLite.  -- Teo
-    QList< Tomahawk::query_ptr > newTracks;
+    QList< Hatchet::query_ptr > newTracks;
     while ( !incoming.isEmpty() )
         newTracks.append( incoming.takeLast() );
 
-    foreach ( Tomahawk::query_ptr newQuery, newTracks )
+    foreach ( Hatchet::query_ptr newQuery, newTracks )
     {
         newQuery->queryTrack()->loadSocialActions();
     }
 
     bool changed = false;
-    QList< Tomahawk::query_ptr > mergedTracks = TomahawkUtils::mergePlaylistChanges( tracks, newTracks, changed );
+    QList< Hatchet::query_ptr > mergedTracks = HatchetUtils::mergePlaylistChanges( tracks, newTracks, changed );
 
     if ( changed )
     {
-        QList< Tomahawk::plentry_ptr > el = playlist()->entriesFromQueries( mergedTracks, true );
+        QList< Hatchet::plentry_ptr > el = playlist()->entriesFromQueries( mergedTracks, true );
 
         clear();
         appendEntries( el );
@@ -279,16 +279,16 @@ InboxModel::tracksLoaded( QList< Tomahawk::query_ptr > incoming )
 
 
 void
-InboxModel::onDbcmdCreated( const Tomahawk::dbcmd_ptr& cmd )
+InboxModel::onDbcmdCreated( const Hatchet::dbcmd_ptr& cmd )
 {
-    connect( cmd.data(), SIGNAL( committed( Tomahawk::dbcmd_ptr ) ), SLOT( onDbcmdCommitted( Tomahawk::dbcmd_ptr ) ) );
+    connect( cmd.data(), SIGNAL( committed( Hatchet::dbcmd_ptr ) ), SLOT( onDbcmdCommitted( Hatchet::dbcmd_ptr ) ) );
 }
 
 
 void
-InboxModel::onDbcmdCommitted( const Tomahawk::dbcmd_ptr& cmd )
+InboxModel::onDbcmdCommitted( const Hatchet::dbcmd_ptr& cmd )
 {
-    Tomahawk::DatabaseCommand_ShareTrack* c = qobject_cast< Tomahawk::DatabaseCommand_ShareTrack* >( cmd.data() );
+    Hatchet::DatabaseCommand_ShareTrack* c = qobject_cast< Hatchet::DatabaseCommand_ShareTrack* >( cmd.data() );
     Q_ASSERT( c );
 
     QString myDbid = SourceList::instance()->getLocal()->nodeId();
@@ -300,7 +300,7 @@ InboxModel::onDbcmdCommitted( const Tomahawk::dbcmd_ptr& cmd )
     if ( myDbid != c->recipient() && !c->source()->isLocal() ) // if I'm not the sender and not the receiver, bail out
         return;
 
-    Tomahawk::trackdata_ptr td = Tomahawk::TrackData::get( 0, c->artist(), c->track() );
+    Hatchet::trackdata_ptr td = Hatchet::TrackData::get( 0, c->artist(), c->track() );
     if ( td.isNull() )
         return;
 
@@ -312,13 +312,13 @@ InboxModel::onDbcmdCommitted( const Tomahawk::dbcmd_ptr& cmd )
 
     //From here on, everything happens only on the recipient, and only if recipient!=source
 
-    Tomahawk::SocialAction action;
+    Hatchet::SocialAction action;
     action.action = "Inbox";
     action.source = c->source();
     action.value = true; //unlistened
     action.timestamp = c->timestamp();
 
-    QList< Tomahawk::SocialAction > actions = td->allSocialActions();
+    QList< Hatchet::SocialAction > actions = td->allSocialActions();
     actions << action;
     td->setAllSocialActions( actions );
 

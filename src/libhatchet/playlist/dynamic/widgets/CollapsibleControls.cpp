@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "CollapsibleControls.h"
@@ -24,7 +24,7 @@
 #include "playlist/dynamic/GeneratorInterface.h"
 #include "playlist/dynamic/DynamicControl.h"
 #include "utils/ImageRegistry.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "widgets/ElidedLabel.h"
 #include "Source.h"
 
@@ -38,7 +38,7 @@
 
 #include "utils/Logger.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 CollapsibleControls::CollapsibleControls( QWidget* parent )
@@ -59,7 +59,7 @@ CollapsibleControls::CollapsibleControls( const dynplaylist_ptr& playlist, bool 
 }
 
 
-Tomahawk::CollapsibleControls::~CollapsibleControls()
+Hatchet::CollapsibleControls::~CollapsibleControls()
 {
 
 }
@@ -81,7 +81,7 @@ CollapsibleControls::init()
     m_layout->setContentsMargins( 0, 0, 0, 0 );
     m_layout->setSpacing( 0 );
 
-    m_controls = new Tomahawk::DynamicControlList( this );
+    m_controls = new Hatchet::DynamicControlList( this );
     m_layout->addWidget( m_controls );
     connect( m_controls, SIGNAL( toggleCollapse() ), this, SLOT( toggleCollapse() ) );
 
@@ -121,7 +121,7 @@ CollapsibleControls::init()
     else
         m_layout->setCurrentWidget( m_summary );
 
-    connect( m_controls, SIGNAL( controlChanged( Tomahawk::dyncontrol_ptr ) ), SIGNAL( controlChanged( Tomahawk::dyncontrol_ptr ) ) );
+    connect( m_controls, SIGNAL( controlChanged( Hatchet::dyncontrol_ptr ) ), SIGNAL( controlChanged( Hatchet::dyncontrol_ptr ) ) );
     connect( m_controls, SIGNAL( controlsChanged( bool ) ), SIGNAL( controlsChanged( bool ) ) );
 
     setLayout( m_layout );
@@ -131,7 +131,7 @@ CollapsibleControls::init()
 
 
 QList< DynamicControlWrapper* >
-Tomahawk::CollapsibleControls::controls() const
+Hatchet::CollapsibleControls::controls() const
 {
     return m_controls->controls();
 }

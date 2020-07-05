@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef DOWNLOADJOB_H
@@ -45,7 +45,7 @@ public:
     enum TrackState
     { Waiting = 0, Running, Paused, Failed, Finished, Aborted, Any };
 
-    DownloadJob( const Tomahawk::result_ptr& result, DownloadFormat format, bool tryResuming = false, DownloadJob::TrackState state = Waiting );
+    DownloadJob( const Hatchet::result_ptr& result, DownloadFormat format, bool tryResuming = false, DownloadJob::TrackState state = Waiting );
     ~DownloadJob();
 
     QString toString() const;
@@ -53,12 +53,12 @@ public:
     TrackState state() const { return m_state; }
     unsigned int retries() const { return m_retries; }
 
-    Tomahawk::track_ptr track() const { return m_track; }
+    Hatchet::track_ptr track() const { return m_track; }
     int progressPercentage() const;
     long receivedSize() const { return m_rcvdSize; }
     long fileSize() const { return m_fileSize; }
 
-    static QString localPath( const Tomahawk::album_ptr& album );
+    static QString localPath( const Hatchet::album_ptr& album );
     QString localFile() const;
     DownloadFormat format() const;
 
@@ -112,8 +112,8 @@ private:
     QDateTime m_finishedTimestamp;
 
     DownloadFormat m_format;
-    Tomahawk::track_ptr m_track;
-    Tomahawk::result_ptr m_result;
+    Hatchet::track_ptr m_track;
+    Hatchet::result_ptr m_result;
 };
 
 typedef QSharedPointer<DownloadJob> downloadjob_ptr;

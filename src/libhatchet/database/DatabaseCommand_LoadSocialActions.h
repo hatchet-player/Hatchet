@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2011, Christopher Reichert <creichert07@gmail.com>
  *   Copyright 2012, Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef DATABASECOMMAND_LOADSOCIALACTIONS_H
@@ -31,17 +31,17 @@
 
 #include "DllMacro.h"
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 /**
  * \class DatabaseCommand_LoadSocialActions
  * \brief Database command used to load social actions from the database.
  *
- * This Database command allows Tomahawk to load social actions from
+ * This Database command allows Hatchet to load social actions from
  * the local database. The loaded social actions can be used to create
  * dynamic playlists, generate statistics and provide data to share with
- * friends on tomahawk.
+ * friends on hatchet.
  *
  * \see DatabaseCommand_SocialAction
  */
@@ -50,7 +50,7 @@ class DLLEXPORT DatabaseCommand_LoadSocialActions : public DatabaseCommand
 Q_OBJECT
 
 public:
-    typedef QMap<Tomahawk::track_ptr, Tomahawk::SocialAction> TrackActions;
+    typedef QMap<Hatchet::track_ptr, Hatchet::SocialAction> TrackActions;
     /**
      * \brief Default constructor for DatabaseCommand_LoadSocialActions.
      *
@@ -62,12 +62,12 @@ public:
 
     /**
      * \brief Overloaded constructor for DatabaseCommand_LoadSocialAction.
-     * \param result A Tomahawk Query object.
+     * \param result A Hatchet Query object.
      * \param parent Parent class.
      *
      * Constructor which creates a new database command for loading all social actions.
      */
-    explicit DatabaseCommand_LoadSocialActions( const Tomahawk::trackdata_ptr& track, QObject* parent = 0 )
+    explicit DatabaseCommand_LoadSocialActions( const Hatchet::trackdata_ptr& track, QObject* parent = 0 )
         : DatabaseCommand( parent ), m_track( track )
     {
         setSource( SourceList::instance()->getLocal() );
@@ -76,7 +76,7 @@ public:
     /**
      * Load all tracks with a specific social action
      */
-    explicit DatabaseCommand_LoadSocialActions( const QString& action, const Tomahawk::source_ptr& source, QObject* parent = 0 )
+    explicit DatabaseCommand_LoadSocialActions( const QString& action, const Hatchet::source_ptr& source, QObject* parent = 0 )
         : DatabaseCommand( parent ), m_actionOnly( action )
     {
         setSource( source );
@@ -110,7 +110,7 @@ signals:
     void done( DatabaseCommand_LoadSocialActions::TrackActions actionsForTracks );
 
 private:
-    Tomahawk::trackdata_ptr m_track;
+    Hatchet::trackdata_ptr m_track;
     QString m_actionOnly;
 
 };

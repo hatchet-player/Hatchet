@@ -1,35 +1,35 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 
-#include "TomahawkApp.h"
+#include "HatchetApp.h"
 
 #include "kdsingleapplicationguard.h"
 #include "UbuntuUnityHack.h"
-#include "TomahawkSettings.h"
-#include "utils/TomahawkUtils.h"
+#include "HatchetSettings.h"
+#include "utils/HatchetUtils.h"
 #include "config.h"
 #include "utils/Logger.h"
 
 #include "qca.h"
 
 #ifdef Q_OS_MAC
-    #include "TomahawkApp_Mac.h"
+    #include "HatchetApp_Mac.h"
 #endif
 
 #ifdef Q_OS_MAC64
@@ -166,7 +166,7 @@ main( int argc, char *argv[] )
     #ifdef Q_OS_MAC
     // Do Mac specific startup to get media keys working.
     // This must go before QApplication initialisation.
-    Tomahawk::macMain();
+    Hatchet::macMain();
 
     // used for url handler
     AEEventHandlerUPP h = AEEventHandlerUPP( appleEventHandler );
@@ -176,20 +176,20 @@ main( int argc, char *argv[] )
 
         QCoreApplication::setAttribute( Qt::AA_X11InitThreads );
 
-    TomahawkApp a( argc, argv );
+    HatchetApp a( argc, argv );
 
     #ifdef WITH_CRASHREPORTER
-    CrashReporter::Handler* handler = new CrashReporter::Handler( QDir::tempPath(), !TomahawkUtils::headless(), TOMAHAWK_TARGET_NAME "_crash_reporter" );
+    CrashReporter::Handler* handler = new CrashReporter::Handler( QDir::tempPath(), !HatchetUtils::headless(), HATCHET_TARGET_NAME "_crash_reporter" );
     #endif
 
-    // MUST register StateHash ****before*** initing TomahawkSettingsGui as constructor of settings does upgrade before Gui subclass registers type
-    TomahawkSettings::registerCustomSettingsHandlers();
-    new TomahawkSettings( &a );
+    // MUST register StateHash ****before*** initing HatchetSettingsGui as constructor of settings does upgrade before Gui subclass registers type
+    HatchetSettings::registerCustomSettingsHandlers();
+    new HatchetSettings( &a );
 
     #ifdef WITH_CRASHREPORTER
-    if ( !TomahawkUtils::headless() )
+    if ( !HatchetUtils::headless() )
     {
-        handler->setActive( TomahawkSettings::instance()->crashReporterEnabled() );
+        handler->setActive( HatchetSettings::instance()->crashReporterEnabled() );
     }
     #endif
 
@@ -199,7 +199,7 @@ main( int argc, char *argv[] )
     int returnCode = 0;
 
     // catch unhandled exceptions to log them
-    // setupLogfile must be called from TomahawkApp.init to have the logging working
+    // setupLogfile must be called from HatchetApp.init to have the logging working
     // unfortunately MinGW does not catch std::exceptions as system exceptions
     // so we need to crash to make the crashreporter come up
     try
@@ -210,13 +210,13 @@ main( int argc, char *argv[] )
             returnCode = a.exec();
         }
         else
-            qDebug() << "Tomahawk is already running, shutting down.";
+            qDebug() << "Hatchet is already running, shutting down.";
     }
     catch( std::exception& exception )
     {
         tLog() << "Uncaught exception: what(): " << exception.what();
         #ifdef __MINGW32__
-        TomahawkUtils::crash();
+        HatchetUtils::crash();
         #else
         throw;
         #endif
@@ -225,7 +225,7 @@ main( int argc, char *argv[] )
     {
         tLog() << "Uncaught non std::exception";
         #ifdef __MINGW32__
-        TomahawkUtils::crash();
+        HatchetUtils::crash();
         #else
         throw;
         #endif
@@ -266,7 +266,7 @@ static pascal OSErr appleEventHandler( const AppleEvent* e, AppleEvent*, long )
             buf[size] = '\0';
 
             QString url = QString::fromUtf8( buf );
-            static_cast<TomahawkApp*>(qApp)->loadUrl( url );
+            static_cast<HatchetApp*>(qApp)->loadUrl( url );
             return noErr;
         }
 

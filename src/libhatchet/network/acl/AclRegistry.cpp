@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "AclRegistry.h"
@@ -67,7 +67,7 @@ QDataStream& operator>>( QDataStream &in, ACLRegistry::User &user )
         }
         int aclIn;
         in >> aclIn;
-        user.acl = (Tomahawk::ACLStatus::Type)( aclIn );
+        user.acl = (Hatchet::ACLStatus::Type)( aclIn );
     }
     return in;
 }
@@ -92,12 +92,12 @@ ACLRegistry::setInstance( ACLRegistry* instance )
 ACLRegistry::ACLRegistry( QObject* parent )
     : QObject( parent )
 {
-    qRegisterMetaType< Tomahawk::ACLStatus::Type >( "Tomahawk::ACLStatus::Type" );
+    qRegisterMetaType< Hatchet::ACLStatus::Type >( "Hatchet::ACLStatus::Type" );
     qRegisterMetaType< ACLRegistry::User >( "ACLRegistry::User" );
     qRegisterMetaTypeStreamOperators< ACLRegistry::User >( "ACLRegistry::User" );
 
-    connect( this, SIGNAL( aclResult( QString, QString, Tomahawk::ACLStatus::Type ) ),
-             SLOT( aclResultForRequest(QString,QString,Tomahawk::ACLStatus::Type ) ) );
+    connect( this, SIGNAL( aclResult( QString, QString, Hatchet::ACLStatus::Type ) ),
+             SLOT( aclResultForRequest(QString,QString,Hatchet::ACLStatus::Type ) ) );
 }
 
 
@@ -107,14 +107,14 @@ ACLRegistry::~ACLRegistry()
 
 
 void
-ACLRegistry::isAuthorizedRequest( const Tomahawk::Network::ACL::aclrequest_ptr& request )
+ACLRegistry::isAuthorizedRequest( const Hatchet::Network::ACL::aclrequest_ptr& request )
 {
     m_aclRequests.insert( request );
     // Ensure that we calling the registry in its own function and do not block the caller thread.
     QMetaObject::invokeMethod( this, "isAuthorizedUser", Qt::QueuedConnection,
                                Q_ARG( QString, request->nodeid() ),
                                Q_ARG( QString, request->username() ),
-                               Q_ARG( Tomahawk::ACLStatus::Type, request->status() ) );
+                               Q_ARG( Hatchet::ACLStatus::Type, request->status() ) );
 }
 
 
@@ -124,12 +124,12 @@ ACLRegistry::load()
 }
 
 void
-ACLRegistry::aclResultForRequest( QString nodeid, QString username, Tomahawk::ACLStatus::Type peerStatus )
+ACLRegistry::aclResultForRequest( QString nodeid, QString username, Hatchet::ACLStatus::Type peerStatus )
 {
-    QMutableListIterator<Tomahawk::Network::ACL::aclrequest_wptr> iter = m_aclRequests.iter();
+    QMutableListIterator<Hatchet::Network::ACL::aclrequest_wptr> iter = m_aclRequests.iter();
     while ( iter.hasNext() )
     {
-        Tomahawk::Network::ACL::aclrequest_wptr wptr = iter.next();
+        Hatchet::Network::ACL::aclrequest_wptr wptr = iter.next();
 
         // Remove dangling objects
         if ( wptr.isNull() )
@@ -139,10 +139,10 @@ ACLRegistry::aclResultForRequest( QString nodeid, QString username, Tomahawk::AC
         }
 
         // Try to (greedy) match all possible AclRequests
-        Tomahawk::Network::ACL::aclrequest_ptr request = wptr.toStrongRef();
+        Hatchet::Network::ACL::aclrequest_ptr request = wptr.toStrongRef();
         if ( request->nodeid() == nodeid && request->username() == username )
         {
-            QMetaObject::invokeMethod( request.data(), "emitDecision", Q_ARG( Tomahawk::ACLStatus::Type, peerStatus ) );
+            QMetaObject::invokeMethod( request.data(), "emitDecision", Q_ARG( Hatchet::ACLStatus::Type, peerStatus ) );
             // We made a decision, so strip this request from the queue
             iter.remove();
         }

@@ -1,22 +1,22 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *   Copyright 2013,      Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef JSRESOLVER_H
@@ -30,7 +30,7 @@
 
 #include "DllMacro.h"
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 class ScriptInfoPlugin;
@@ -41,7 +41,7 @@ class ScriptJob;
 class ScriptObject;
 class ScriptAccount;
 
-class DLLEXPORT JSResolver : public Tomahawk::ExternalResolverGui, public ScriptPlugin
+class DLLEXPORT JSResolver : public Hatchet::ExternalResolverGui, public ScriptPlugin
 {
 Q_OBJECT
 
@@ -80,7 +80,7 @@ public:
 
 
 public slots:
-    void resolve( const Tomahawk::query_ptr& query ) override;
+    void resolve( const Hatchet::query_ptr& query ) override;
     void stop() override;
     void start() override;
 
@@ -112,13 +112,13 @@ private:
 
 // TODO: move lookupUrl stuff to its own plugin type
     QString instanceUUID();
-    static Tomahawk::query_ptr parseTrack( const QVariantMap& track );
+    static Hatchet::query_ptr parseTrack( const QVariantMap& track );
     QString m_pendingUrl;
-    Tomahawk::album_ptr m_pendingAlbum;
+    Hatchet::album_ptr m_pendingAlbum;
 private slots:
-    void tracksAdded( const QList<Tomahawk::query_ptr>& tracks, const Tomahawk::ModelMode, const Tomahawk::collection_ptr& collection );
-    void pltemplateTracksLoadedForUrl( const QString& url, const Tomahawk::playlisttemplate_ptr& pltemplate );
+    void tracksAdded( const QList<Hatchet::query_ptr>& tracks, const Hatchet::ModelMode, const Hatchet::collection_ptr& collection );
+    void pltemplateTracksLoadedForUrl( const QString& url, const Hatchet::playlisttemplate_ptr& pltemplate );
 };
 
-} // ns: Tomahawk
+} // ns: Hatchet
 #endif // JSRESOLVER_H

@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef TREEMODEL_H
@@ -46,48 +46,48 @@ public:
     explicit TreeModel( QObject* parent = 0 );
     virtual ~TreeModel();
 
-    virtual Tomahawk::ModelMode mode() const { return m_mode; }
-    virtual void setMode( Tomahawk::ModelMode mode );
+    virtual Hatchet::ModelMode mode() const { return m_mode; }
+    virtual void setMode( Hatchet::ModelMode mode );
 
-    Tomahawk::collection_ptr collection() const;
+    Hatchet::collection_ptr collection() const;
 
-    void addCollection( const Tomahawk::collection_ptr& collection );
+    void addCollection( const Hatchet::collection_ptr& collection );
     //TODO: Unused, but will be useful for supporting filtered queries. - Teo 1/2013
-    //void addFilteredCollection( const Tomahawk::collection_ptr& collection, unsigned int amount, DatabaseCommand_AllArtists::SortOrder order );
+    //void addFilteredCollection( const Hatchet::collection_ptr& collection, unsigned int amount, DatabaseCommand_AllArtists::SortOrder order );
 
-    void addArtists( const Tomahawk::artist_ptr& artist );
-    void fetchAlbums( const Tomahawk::artist_ptr& artist );
+    void addArtists( const Hatchet::artist_ptr& artist );
+    void fetchAlbums( const Hatchet::artist_ptr& artist );
 
     void getCover( const QModelIndex& index );
 
-    virtual PlayableItem* itemFromResult( const Tomahawk::result_ptr& result ) const;
+    virtual PlayableItem* itemFromResult( const Hatchet::result_ptr& result ) const;
 
-    virtual QModelIndex indexFromArtist( const Tomahawk::artist_ptr& artist ) const;
-    virtual QModelIndex indexFromAlbum( const Tomahawk::album_ptr& album ) const;
-    virtual QModelIndex indexFromResult( const Tomahawk::result_ptr& result ) const;
-    virtual QModelIndex indexFromQuery( const Tomahawk::query_ptr& query ) const;
+    virtual QModelIndex indexFromArtist( const Hatchet::artist_ptr& artist ) const;
+    virtual QModelIndex indexFromAlbum( const Hatchet::album_ptr& album ) const;
+    virtual QModelIndex indexFromResult( const Hatchet::result_ptr& result ) const;
+    virtual QModelIndex indexFromQuery( const Hatchet::query_ptr& query ) const;
 
 public slots:
-    void addAlbums( const QModelIndex& parent, const QList<Tomahawk::album_ptr>& albums );
-    void addTracks( const Tomahawk::album_ptr& album, const QModelIndex& parent );
+    void addAlbums( const QModelIndex& parent, const QList<Hatchet::album_ptr>& albums );
+    void addTracks( const Hatchet::album_ptr& album, const QModelIndex& parent );
 
 signals:
-    void modeChanged( Tomahawk::ModelMode mode );
+    void modeChanged( Hatchet::ModelMode mode );
 
 protected:
     bool canFetchMore( const QModelIndex& parent ) const;
     void fetchMore( const QModelIndex& parent );
 
 private slots:
-    void onArtistsAdded( const QList<Tomahawk::artist_ptr>& artists );
-    void onAlbumsFound( const QList<Tomahawk::album_ptr>& albums, Tomahawk::ModelMode mode );
-    void onTracksAdded( const QList<Tomahawk::query_ptr>& tracks, const QModelIndex& index );
+    void onArtistsAdded( const QList<Hatchet::artist_ptr>& artists );
+    void onAlbumsFound( const QList<Hatchet::album_ptr>& albums, Hatchet::ModelMode mode );
+    void onTracksAdded( const QList<Hatchet::query_ptr>& tracks, const QModelIndex& index );
 
 private:
-    Tomahawk::ModelMode m_mode;
-    Tomahawk::collection_ptr m_collection;
+    Hatchet::ModelMode m_mode;
+    Hatchet::collection_ptr m_collection;
 
-    QList<Tomahawk::artist_ptr> m_artistsFilter;
+    QList<Hatchet::artist_ptr> m_artistsFilter;
 };
 
 #endif // ALBUMMODEL_H

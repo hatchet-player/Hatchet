@@ -1,7 +1,7 @@
 # src build file
 #============================================================================
 
-tomahawk_inc += include_directories('.')
+hatchet_inc += include_directories('.')
 
 src_dirs = [
     'libhatchet',

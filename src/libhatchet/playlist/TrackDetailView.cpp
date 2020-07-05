@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "TrackDetailView.h"
@@ -26,9 +26,9 @@
 #include "widgets/ClickableLabel.h"
 #include "widgets/CaptionLabel.h"
 #include "PlaylistInterface.h"
-#include "utils/TomahawkStyle.h"
+#include "utils/HatchetStyle.h"
 #include "utils/ImageRegistry.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/Closure.h"
 #include "utils/WebPopup.h"
 #include "utils/Logger.h"
@@ -40,7 +40,7 @@
 #include <QVBoxLayout>
 #include <QDesktopServices>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 TrackDetailView::TrackDetailView( QWidget* parent )
     : QWidget( parent )
@@ -51,7 +51,7 @@ TrackDetailView::TrackDetailView( QWidget* parent )
     setContentsMargins( 0, 0, 0, 0 );
 
     QPalette pal( palette() );
-    pal.setColor( QPalette::Background, TomahawkStyle::PAGE_BACKGROUND );
+    pal.setColor( QPalette::Background, HatchetStyle::PAGE_BACKGROUND );
     setPalette( pal );
     setAutoFillBackground( true );
 
@@ -63,20 +63,20 @@ TrackDetailView::TrackDetailView( QWidget* parent )
 
     QFont f = font();
     m_nameLabel = new QueryLabel( this );
-    f.setPointSize( TomahawkUtils::defaultFontSize() + 3 );
+    f.setPointSize( HatchetUtils::defaultFontSize() + 3 );
     m_nameLabel->setFont( f );
 
     m_dateLabel = new QLabel( this );
-    f.setPointSize( TomahawkUtils::defaultFontSize() + 1 );
+    f.setPointSize( HatchetUtils::defaultFontSize() + 1 );
     m_dateLabel->setFont( f );
     m_dateLabel->setStyleSheet( "QLabel { color: rgba( 0, 0, 0, 70% ) }" );
     m_dateLabel->hide(); //TODO
 
     m_lovedIcon = new QLabel( this );
-    m_lovedIcon->setFixedWidth( TomahawkUtils::defaultFontSize() + 2 );
+    m_lovedIcon->setFixedWidth( HatchetUtils::defaultFontSize() + 2 );
     m_lovedLabel = new QLabel( this );
     f.setWeight( QFont::DemiBold );
-    f.setPointSize( TomahawkUtils::defaultFontSize() + 1 );
+    f.setPointSize( HatchetUtils::defaultFontSize() + 1 );
     m_lovedLabel->setFont( f );
     m_lovedLabel->setStyleSheet( "QLabel { color: rgba( 0, 0, 0, 50% ) }" );
     m_lovedIcon->setPixmap( ImageRegistry::instance()->pixmap( RESPATH "images/love.svg", QSize( m_lovedIcon->width(), m_lovedIcon->width() ) ) );
@@ -84,7 +84,7 @@ TrackDetailView::TrackDetailView( QWidget* parent )
 
     m_infoBox = new QWidget;
     QHBoxLayout* hboxl = new QHBoxLayout;
-    TomahawkUtils::unmarginLayout( hboxl );
+    HatchetUtils::unmarginLayout( hboxl );
     hboxl->setSpacing( 8 );
     hboxl->setContentsMargins( 0, 32, 0, 0 );
     hboxl->addWidget( m_lovedIcon );
@@ -93,7 +93,7 @@ TrackDetailView::TrackDetailView( QWidget* parent )
     m_infoBox->hide();
 
     f.setWeight( QFont::Normal );
-    f.setPointSize( TomahawkUtils::defaultFontSize() - 1 );
+    f.setPointSize( HatchetUtils::defaultFontSize() - 1 );
 
     m_resultsBoxLabel = new CaptionLabel( this );
     m_resultsBoxLabel->setFont( f );
@@ -105,7 +105,7 @@ TrackDetailView::TrackDetailView( QWidget* parent )
 
     m_resultsBox = new QWidget;
     QVBoxLayout* resultsLayout = new QVBoxLayout;
-    TomahawkUtils::unmarginLayout( resultsLayout );
+    HatchetUtils::unmarginLayout( resultsLayout );
     resultsLayout->setSpacing( 8 );
     resultsLayout->setContentsMargins( 0, 0, 0, 0 );
     resultsLayout->setSizeConstraint( QLayout::SetMinAndMaxSize );
@@ -119,7 +119,7 @@ TrackDetailView::TrackDetailView( QWidget* parent )
     m_resultsScrollArea->setAttribute( Qt::WA_MacShowFocusRect, 0 );
     m_resultsScrollArea->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     m_resultsScrollArea->setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Preferred );
-    TomahawkStyle::styleScrollBar( m_resultsScrollArea->verticalScrollBar() );
+    HatchetStyle::styleScrollBar( m_resultsScrollArea->verticalScrollBar() );
     m_resultsScrollArea->hide();
 
     m_buyButton = new QPushButton;
@@ -131,7 +131,7 @@ TrackDetailView::TrackDetailView( QWidget* parent )
     connect( m_buyButton, SIGNAL( clicked() ), SLOT( onBuyButtonClicked() ) );
 
     QVBoxLayout* layout = new QVBoxLayout;
-    TomahawkUtils::unmarginLayout( layout );
+    HatchetUtils::unmarginLayout( layout );
     layout->addWidget( m_playableCover );
     layout->addSpacerItem( new QSpacerItem( 0, 8, QSizePolicy::Minimum, QSizePolicy::Fixed ) );
     layout->addWidget( m_nameLabel );
@@ -160,14 +160,14 @@ TrackDetailView::~TrackDetailView()
 
 
 void
-TrackDetailView::setPlaylistInterface( const Tomahawk::playlistinterface_ptr& playlistInterface )
+TrackDetailView::setPlaylistInterface( const Hatchet::playlistinterface_ptr& playlistInterface )
 {
     m_playlistInterface = playlistInterface;
 }
 
 
 void
-TrackDetailView::setQuery( const Tomahawk::query_ptr& query )
+TrackDetailView::setQuery( const Hatchet::query_ptr& query )
 {
     if ( m_query )
     {
@@ -326,7 +326,7 @@ TrackDetailView::onCoverUpdated()
 {
     if ( !m_query || m_query->track()->cover( QSize( 0, 0 ) ).isNull() )
     {
-        m_playableCover->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::DefaultTrackImage, TomahawkUtils::Original, m_playableCover->size() ) );
+        m_playableCover->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::DefaultTrackImage, HatchetUtils::Original, m_playableCover->size() ) );
         return;
     }
 
@@ -377,16 +377,16 @@ TrackDetailView::onResultsChanged()
     if ( m_query )
     {
         QFont f = font();
-        f.setPointSize( TomahawkUtils::defaultFontSize() );
+        f.setPointSize( HatchetUtils::defaultFontSize() );
 
-        foreach ( const Tomahawk::result_ptr& result, m_query->results() )
+        foreach ( const Hatchet::result_ptr& result, m_query->results() )
         {
             if ( !result->isOnline() )
                 continue;
 
             QLabel* resolverIcon = new QLabel( this );
             resolverIcon->setFixedWidth( 12 );
-            resolverIcon->setPixmap( result->sourceIcon( TomahawkUtils::RoundedCorners, QSize( 12, 12 ) ) );
+            resolverIcon->setPixmap( result->sourceIcon( HatchetUtils::RoundedCorners, QSize( 12, 12 ) ) );
 
             ClickableLabel* resolverLabel = new ClickableLabel( this );
             resolverLabel->setFont( f );
@@ -404,12 +404,12 @@ TrackDetailView::onResultsChanged()
             resolverLabel->setFixedWidth( width() - 32 - 4 );
 
             NewClosure( resolverLabel, SIGNAL( clicked() ), const_cast< TrackDetailView* >( this ),
-                                        SLOT( onResultClicked( Tomahawk::playlistinterface_ptr, Tomahawk::result_ptr, Tomahawk::query_ptr ) ),
+                                        SLOT( onResultClicked( Hatchet::playlistinterface_ptr, Hatchet::result_ptr, Hatchet::query_ptr ) ),
                                         m_playlistInterface, result, m_query )->setAutoDelete( false );
 
             QWidget* hbox = new QWidget;
             QHBoxLayout* hboxl = new QHBoxLayout;
-            TomahawkUtils::unmarginLayout( hboxl );
+            HatchetUtils::unmarginLayout( hboxl );
             hboxl->setSpacing( 8 );
             hboxl->addWidget( resolverIcon );
             hboxl->addWidget( resolverLabel );
@@ -444,7 +444,7 @@ TrackDetailView::setBuyButtonVisible( bool visible )
 
 
 void
-TrackDetailView::onResultClicked( const Tomahawk::playlistinterface_ptr& playlist, const Tomahawk::result_ptr& result, const Tomahawk::query_ptr& fromQuery )
+TrackDetailView::onResultClicked( const Hatchet::playlistinterface_ptr& playlist, const Hatchet::result_ptr& result, const Hatchet::query_ptr& fromQuery )
 {
     fromQuery->setPreferredResult( result );
     if (AudioEngine::instance()->isPlaying() && fromQuery->results().contains( AudioEngine::instance()->currentTrack() )) {

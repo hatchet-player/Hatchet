@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "TreeProxyModelPlaylistInterface.h"
@@ -29,7 +29,7 @@
 #include "PlayableItem.h"
 #include "utils/Logger.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 TreeProxyModelPlaylistInterface::TreeProxyModelPlaylistInterface( TreeProxyModel* proxyModel )
@@ -148,26 +148,26 @@ TreeProxyModelPlaylistInterface::siblingIndex( int itemsAway, qint64 rootIndex )
 }
 
 
-Tomahawk::result_ptr
+Hatchet::result_ptr
 TreeProxyModelPlaylistInterface::currentItem() const
 {
     if ( m_proxyModel.isNull() )
-        return Tomahawk::result_ptr();
+        return Hatchet::result_ptr();
     TreeProxyModel* proxyModel = m_proxyModel.data();
 
     PlayableItem* item = proxyModel->itemFromIndex( proxyModel->mapToSource( proxyModel->currentIndex() ) );
     if ( item && !item->result().isNull() && item->result()->isOnline() )
         return item->result();
 
-    return Tomahawk::result_ptr();
+    return Hatchet::result_ptr();
 }
 
 
-QList< Tomahawk::query_ptr >
+QList< Hatchet::query_ptr >
 TreeProxyModelPlaylistInterface::tracks() const
 {
     Q_ASSERT( false );
-    QList< Tomahawk::query_ptr > queries;
+    QList< Hatchet::query_ptr > queries;
     return queries;
 }
 
@@ -204,7 +204,7 @@ TreeProxyModelPlaylistInterface::indexOfQuery( const query_ptr& query ) const
 }
 
 
-Tomahawk::query_ptr
+Hatchet::query_ptr
 TreeProxyModelPlaylistInterface::queryAt( qint64 index ) const
 {
     if ( m_proxyModel.isNull() )
@@ -220,7 +220,7 @@ TreeProxyModelPlaylistInterface::queryAt( qint64 index ) const
 }
 
 
-Tomahawk::result_ptr
+Hatchet::result_ptr
 TreeProxyModelPlaylistInterface::resultAt( qint64 index ) const
 {
     if ( m_proxyModel.isNull() )

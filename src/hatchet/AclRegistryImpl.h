@@ -1,24 +1,24 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOMAHAWK_ACLREGISTRYIMPL_H
-#define TOMAHAWK_ACLREGISTRYIMPL_H
+#ifndef HATCHET_ACLREGISTRYIMPL_H
+#define HATCHET_ACLREGISTRYIMPL_H
 
 #include "network/acl/AclRegistry.h"
 #include "HeadlessCheck.h"
@@ -43,11 +43,11 @@ public slots:
      * @param dbid DBID of peer
      * @param globalType Global ACL to store if peer not found; if ACLRegistry::NotFound, does not store the peer Defaults to ACLRegistry::NotFound.
      * @param username If not empty, will store the given username along with the new ACL value. Defaults to QString().
-     * @return Tomahawk::ACLStatus::Type
+     * @return Hatchet::ACLStatus::Type
      **/
-    Tomahawk::ACLStatus::Type isAuthorizedUser( const QString &dbid,
+    Hatchet::ACLStatus::Type isAuthorizedUser( const QString &dbid,
                                                 const QString &username,
-                                                Tomahawk::ACLStatus::Type globalType = Tomahawk::ACLStatus::NotFound,
+                                                Hatchet::ACLStatus::Type globalType = Hatchet::ACLStatus::NotFound,
                                                 bool skipEmission = false ) override;
     void wipeEntries() override;
 
@@ -66,4 +66,4 @@ private:
     int m_jobCount;
 };
 
-#endif // TOMAHAWK_ACLREGISTRYIMPL_H
+#endif // HATCHET_ACLREGISTRYIMPL_H

@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2012,      Christopher Reichert <creichert07@gmail.com>
  *   Copyright 2012-2016, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "LovedTracksItem.h"
@@ -34,7 +34,7 @@
 #include "utils/ImageRegistry.h"
 #include "utils/Logger.h"
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 
 LovedTracksItem::LovedTracksItem( SourcesModel* mdl, SourceTreeItem* parent )
@@ -76,7 +76,7 @@ LovedTracksItem::activate()
     {
         SourceItem* par = dynamic_cast< SourceItem* >( parent() );
         PlaylistViewPage* pv = new PlaylistViewPage( ViewManager::instance()->widget() );
-        pv->setPixmap( TomahawkUtils::defaultPixmap( TomahawkUtils::LovedPlaylist, TomahawkUtils::Original, QSize( 128, 128 ) ) );
+        pv->setPixmap( HatchetUtils::defaultPixmap( HatchetUtils::LovedPlaylist, HatchetUtils::Original, QSize( 128, 128 ) ) );
 
         TopLovedTracksModel* raModel = new TopLovedTracksModel( pv );
         raModel->setTitle( text() );
@@ -121,8 +121,8 @@ LovedTracksItem::willAcceptDrag( const QMimeData* data ) const
 SourceTreeItem::DropTypes
 LovedTracksItem::supportedDropTypes( const QMimeData* data ) const
 {
-    if ( data->hasFormat( "application/tomahawk.result.list" ) ||
-         data->hasFormat( "application/tomahawk.query.list" ) )
+    if ( data->hasFormat( "application/hatchet.result.list" ) ||
+         data->hasFormat( "application/hatchet.query.list" ) )
         return DropTypeThisTrack;
 
     return DropTypesNone;
@@ -134,7 +134,7 @@ LovedTracksItem::dropMimeData( const QMimeData* data, Qt::DropAction action )
 {
     Q_UNUSED( action );
 
-    QList< Tomahawk::query_ptr > queries;
+    QList< Hatchet::query_ptr > queries;
     if ( !DropJob::acceptsMimeData( data, DropJob::Track ) )
         return false;
 
@@ -142,8 +142,8 @@ LovedTracksItem::dropMimeData( const QMimeData* data, Qt::DropAction action )
     dj->setDropTypes( DropJob::Track );
     dj->setDropAction( DropJob::Append );
 
-    connect( dj, SIGNAL( tracks( QList< Tomahawk::query_ptr > ) ),
-             this, SLOT( loveDroppedTracks( QList< Tomahawk::query_ptr > ) ) );
+    connect( dj, SIGNAL( tracks( QList< Hatchet::query_ptr > ) ),
+             this, SLOT( loveDroppedTracks( QList< Hatchet::query_ptr > ) ) );
 
     dj->tracksFromMimeData( data, false, false );
     return true;
@@ -165,9 +165,9 @@ LovedTracksItem::setSortValue(int value)
 
 
 void
-LovedTracksItem::loveDroppedTracks( QList< Tomahawk::query_ptr > qrys )
+LovedTracksItem::loveDroppedTracks( QList< Hatchet::query_ptr > qrys )
 {
-    foreach( Tomahawk::query_ptr qry, qrys )
+    foreach( Hatchet::query_ptr qry, qrys )
         qry->track()->setLoved( true );
 }
 

@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2013, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #pragma once
@@ -24,7 +24,7 @@
 
 #include "DatabaseCommand.h"
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 class DatabaseCommand_LoadAllPlaylistsPrivate;
@@ -44,7 +44,7 @@ public:
         Descending = 2
     };
 
-    explicit DatabaseCommand_LoadAllPlaylists( const Tomahawk::source_ptr& s, QObject* parent = 0 );
+    explicit DatabaseCommand_LoadAllPlaylists( const Hatchet::source_ptr& s, QObject* parent = 0 );
 
     virtual void exec( DatabaseImpl* );
     virtual bool doesMutates() const { return false; }
@@ -65,17 +65,17 @@ public:
     void setReturnPlEntryIds( bool returnPlEntryIds );
 
 signals:
-    void done( const QList<Tomahawk::playlist_ptr>& playlists );
+    void done( const QList<Hatchet::playlist_ptr>& playlists );
 
     /**
      * This signal is only emitted if returnTrackIds == true.
      */
-    void done( const QHash< Tomahawk::playlist_ptr, QStringList >& playlists );
+    void done( const QHash< Hatchet::playlist_ptr, QStringList >& playlists );
 
 private:
     Q_DECLARE_PRIVATE( DatabaseCommand_LoadAllPlaylists )
 };
 
-} // namespace Tomahawk
+} // namespace Hatchet
 
 #endif // DATABASECOMMAND_LOADALLPLAYLIST_H

@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ScanManager.h"
@@ -23,19 +23,19 @@
 #include "database/DatabaseCommand_FileMTimes.h"
 #include "database/DatabaseCommand_DeleteFiles.h"
 #include "utils/Logger.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 
 #include "MusicScanner.h"
 #include "PlaylistEntry.h"
 #include "SourceList.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 
 #include <QThread>
 #include <QCoreApplication>
 #include <QTimer>
 #include <QSet>
 
-using namespace Tomahawk;
+using namespace Hatchet;
 
 MusicScannerThreadController::MusicScannerThreadController( QObject* parent )
     : QThread( parent )
@@ -90,7 +90,7 @@ ScanManager::ScanManager( QObject* parent )
 
     m_scanTimer = new QTimer( this );
     m_scanTimer->setSingleShot( false );
-    m_scanTimer->setInterval( TomahawkSettings::instance()->scannerTime() * 1000 );
+    m_scanTimer->setInterval( HatchetSettings::instance()->scannerTime() * 1000 );
 }
 
 
@@ -113,14 +113,14 @@ ScanManager::~ScanManager()
 void
 ScanManager::init()
 {
-    connect( TomahawkSettings::instance(), SIGNAL( changed() ), SLOT( onSettingsChanged() ) );
+    connect( HatchetSettings::instance(), SIGNAL( changed() ), SLOT( onSettingsChanged() ) );
     connect( m_scanTimer, SIGNAL( timeout() ), SLOT( scanTimerTimeout() ) );
 
-    if ( TomahawkSettings::instance()->hasScannerPaths() )
+    if ( HatchetSettings::instance()->hasScannerPaths() )
     {
-        m_cachedScannerDirs = TomahawkSettings::instance()->scannerPaths();
+        m_cachedScannerDirs = HatchetSettings::instance()->scannerPaths();
         m_scanTimer->start();
-        if ( TomahawkSettings::instance()->watchForChanges() )
+        if ( HatchetSettings::instance()->watchForChanges() )
             QTimer::singleShot( 1000, this, SLOT( runStartupScan() ) );
     }
 }
@@ -129,19 +129,19 @@ ScanManager::init()
 void
 ScanManager::onSettingsChanged()
 {
-    if ( !TomahawkSettings::instance()->watchForChanges() && m_scanTimer->isActive() )
+    if ( !HatchetSettings::instance()->watchForChanges() && m_scanTimer->isActive() )
         m_scanTimer->stop();
 
-    m_scanTimer->setInterval( TomahawkSettings::instance()->scannerTime() * 1000 );
+    m_scanTimer->setInterval( HatchetSettings::instance()->scannerTime() * 1000 );
 
-    if ( TomahawkSettings::instance()->hasScannerPaths() &&
-        m_cachedScannerDirs != TomahawkSettings::instance()->scannerPaths() )
+    if ( HatchetSettings::instance()->hasScannerPaths() &&
+        m_cachedScannerDirs != HatchetSettings::instance()->scannerPaths() )
     {
-        m_cachedScannerDirs = TomahawkSettings::instance()->scannerPaths();
+        m_cachedScannerDirs = HatchetSettings::instance()->scannerPaths();
         runNormalScan();
     }
 
-    if ( TomahawkSettings::instance()->watchForChanges() && !m_scanTimer->isActive() )
+    if ( HatchetSettings::instance()->watchForChanges() && !m_scanTimer->isActive() )
         m_scanTimer->start();
 }
 
@@ -161,7 +161,7 @@ void
 ScanManager::scanTimerTimeout()
 {
     tLog( LOGVERBOSE ) << Q_FUNC_INFO;
-    if ( !TomahawkSettings::instance()->watchForChanges() ||
+    if ( !HatchetSettings::instance()->watchForChanges() ||
          !Database::instance() ||
          ( Database::instance() && !Database::instance()->isReady() ) )
         return;
@@ -261,7 +261,7 @@ ScanManager::runFileScan( const QStringList& paths, bool updateGUI )
 void
 ScanManager::fileMtimesCheck( const QMap< QString, QMap< unsigned int, unsigned int > >& mtimes )
 {
-    if ( !mtimes.isEmpty() && m_currScanMode == MusicScanner::DirScan && TomahawkSettings::instance()->scannerPaths().isEmpty() )
+    if ( !mtimes.isEmpty() && m_currScanMode == MusicScanner::DirScan && HatchetSettings::instance()->scannerPaths().isEmpty() )
     {
         DatabaseCommand_DeleteFiles *cmd = new DatabaseCommand_DeleteFiles( SourceList::instance()->getLocal() );
         connect( cmd, SIGNAL( finished() ), SLOT( filesDeleted() ) );
@@ -276,7 +276,7 @@ ScanManager::fileMtimesCheck( const QMap< QString, QMap< unsigned int, unsigned 
 void
 ScanManager::filesDeleted()
 {
-    if ( !TomahawkSettings::instance()->scannerPaths().isEmpty() )
+    if ( !HatchetSettings::instance()->scannerPaths().isEmpty() )
         QMetaObject::invokeMethod( this, "runScan", Qt::QueuedConnection );
     else
         scannerFinished();
@@ -288,7 +288,7 @@ ScanManager::runScan()
 {
     tLog( LOGVERBOSE ) << Q_FUNC_INFO;
 
-    QStringList paths = m_currScannerPaths.empty() ? TomahawkSettings::instance()->scannerPaths() : m_currScannerPaths.toList();
+    QStringList paths = m_currScannerPaths.empty() ? HatchetSettings::instance()->scannerPaths() : m_currScannerPaths.toList();
 
     m_musicScannerThreadController->setScanMode( m_currScanMode );
     m_musicScannerThreadController->setPaths( paths );

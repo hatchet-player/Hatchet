@@ -1,25 +1,25 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2013,      Teo Mrnjavac <teo@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOMAHAWK_WEBAPI_V1
-#define TOMAHAWK_WEBAPI_V1
+#ifndef HATCHET_WEBAPI_V1
+#define HATCHET_WEBAPI_V1
 
 // See: http://doc.libqxt.org/tip/qxtweb.html
 
@@ -37,13 +37,13 @@
 
 class Api_v1_5;
 
-namespace Tomahawk
+namespace Hatchet
 {
     class Result;
     typedef QSharedPointer< Result > result_ptr;
 }
 
-class TOMAHAWK_PLAYDARAPI_EXPORT Api_v1 : public QxtWebSlotService
+class HATCHET_PLAYDARAPI_EXPORT Api_v1 : public QxtWebSlotService
 {
 Q_OBJECT
 
@@ -89,7 +89,7 @@ protected:
     void sendPlain404( QxtWebRequestEvent* event, const QString& message, const QString& statusmessage );
 
 private:
-    void processSid( QxtWebRequestEvent* event, const Tomahawk::result_ptr, const QString url, QSharedPointer< QIODevice > );
+    void processSid( QxtWebRequestEvent* event, const Hatchet::result_ptr, const QString url, QSharedPointer< QIODevice > );
 
     QSharedPointer< QIODevice > m_ioDevice;
     Api_v1_5* m_api_v1_5;
