@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Hugo Lindström <hugolm84@gmail.com>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef ChartsPlugin_H
@@ -29,7 +29,7 @@
 
 class QNetworkReply;
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 namespace InfoSystem
@@ -37,9 +37,9 @@ namespace InfoSystem
 
 class INFOPLUGINDLLEXPORT ChartsPlugin : public InfoPlugin
 {
-    Q_PLUGIN_METADATA( IID "org.tomahawk-player.Player.InfoPlugin" )
+    Q_PLUGIN_METADATA( IID "org.hatchet-player.Player.InfoPlugin" )
     Q_OBJECT
-    Q_INTERFACES( Tomahawk::InfoSystem::InfoPlugin )
+    Q_INTERFACES( Hatchet::InfoSystem::InfoPlugin )
 
 public:
     ChartsPlugin();
@@ -57,10 +57,10 @@ public:
 
 protected slots:
     virtual void init();
-    virtual void getInfo( Tomahawk::InfoSystem::InfoRequestData requestData );
-    virtual void notInCacheSlot( Tomahawk::InfoSystem::InfoStringHash criteria, Tomahawk::InfoSystem::InfoRequestData requestData );
+    virtual void getInfo( Hatchet::InfoSystem::InfoRequestData requestData );
+    virtual void notInCacheSlot( Hatchet::InfoSystem::InfoStringHash criteria, Hatchet::InfoSystem::InfoRequestData requestData );
 
-    virtual void pushInfo( Tomahawk::InfoSystem::InfoPushData pushData )
+    virtual void pushInfo( Hatchet::InfoSystem::InfoPushData pushData )
     {
         Q_UNUSED( pushData );
     }
@@ -94,13 +94,13 @@ private:
      * Fetches a specific chart from a particular source.
      * Updates the cache.
      */
-    void fetchChart( Tomahawk::InfoSystem::InfoRequestData requestData, const QString& source, const QString& chart_id );
+    void fetchChart( Hatchet::InfoSystem::InfoRequestData requestData, const QString& source, const QString& chart_id );
     void fetchSource( const QString& source );
-    void fetchChartFromCache( Tomahawk::InfoSystem::InfoRequestData requestData );
+    void fetchChartFromCache( Hatchet::InfoSystem::InfoRequestData requestData );
     void fetchExpiredSources();
 
-    void fetchChartCapabilitiesFromCache( Tomahawk::InfoSystem::InfoRequestData requestData );
-    void dataError( Tomahawk::InfoSystem::InfoRequestData requestData );
+    void fetchChartCapabilitiesFromCache( Hatchet::InfoSystem::InfoRequestData requestData );
+    void dataError( Hatchet::InfoSystem::InfoRequestData requestData );
 
     QString countryName( const QString& cc );
 
@@ -109,7 +109,7 @@ private:
 
     QVariantMap m_allChartsMap;
     QHash< QString, QString > m_cachedCountries;
-    QList< Tomahawk::InfoSystem::InfoStringHash > m_chartResources;
+    QList< Hatchet::InfoSystem::InfoStringHash > m_chartResources;
     QList< InfoRequestData > m_cachedRequests;
     QStringList m_refetchSource;
     QString m_cacheIdentifier;

@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <libcrashreporter-gui/CrashReporter.h>
@@ -25,7 +25,7 @@
 #include <QApplication>
 #include <QFileInfo>
 
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
 
 #include <numeric>
@@ -154,13 +154,13 @@ int main( int argc, char* argv[] )
 
     // used by some Qt stuff, eg QSettings
     // leave first! As Settings object is created quickly
-    QCoreApplication::setOrganizationName( QLatin1String( TOMAHAWK_ORGANIZATION_NAME ) );
-    QCoreApplication::setOrganizationDomain( QLatin1String( TOMAHAWK_ORGANIZATION_DOMAIN ) );
-    QCoreApplication::setApplicationName( QLatin1String( TOMAHAWK_APPLICATION_NAME ) );
-    QCoreApplication::setApplicationVersion( QLatin1String( TOMAHAWK_VERSION ) );
+    QCoreApplication::setOrganizationName( QLatin1String( HATCHET_ORGANIZATION_NAME ) );
+    QCoreApplication::setOrganizationDomain( QLatin1String( HATCHET_ORGANIZATION_DOMAIN ) );
+    QCoreApplication::setApplicationName( QLatin1String( HATCHET_APPLICATION_NAME ) );
+    QCoreApplication::setApplicationVersion( QLatin1String( HATCHET_VERSION ) );
 
     QApplication app( argc, argv );
-    TomahawkUtils::installTranslator( &app );
+    HatchetUtils::installTranslator( &app );
 
     if ( app.arguments().size() != 2 )
     {
@@ -190,8 +190,8 @@ int main( int argc, char* argv[] )
 //        QList<Pair> pairs;
 //        pairs  //<< Pair( "BuildID", buildId.toUtf8() )
 //        << Pair( )
-//        //<< Pair( "Version", TomahawkUtils::appFriendlyVersion().toLocal8Bit() )
-//        //<< Pair( "Vendor", "Tomahawk" )
+//        //<< Pair( "Version", HatchetUtils::appFriendlyVersion().toLocal8Bit() )
+//        //<< Pair( "Vendor", "Hatchet" )
 //        //<< Pair(  )
 
         //            << Pair("InstallTime", "1357622062")
@@ -220,9 +220,9 @@ int main( int argc, char* argv[] )
         ;
 
     // send log
-    QFile logFile( TomahawkUtils::logFilePath() );
+    QFile logFile( HatchetUtils::logFilePath() );
     logFile.open( QFile::ReadOnly );
-    reporter.setReportData( "upload_file_tomahawklog", gzip_compress( logFile.readAll() ), "application/x-gzip", QFileInfo( logFile ).fileName().toUtf8());
+    reporter.setReportData( "upload_file_hatchetlog", gzip_compress( logFile.readAll() ), "application/x-gzip", QFileInfo( logFile ).fileName().toUtf8());
     logFile.close();
 
     reporter.show();

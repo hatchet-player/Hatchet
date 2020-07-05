@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Hugo Lindström <hugolm84@gmail.com>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "HypemPlugin.h"
@@ -28,8 +28,8 @@
 
 #include "Album.h"
 #include "Typedefs.h"
-#include "TomahawkSettings.h"
-#include "utils/TomahawkUtils.h"
+#include "HatchetSettings.h"
+#include "utils/HatchetUtils.h"
 #include "infosystem/InfoSystemWorker.h"
 #include "utils/Json.h"
 #include "utils/Logger.h"
@@ -39,7 +39,7 @@
 #define HYPEM_URL "http://hypem.com/playlist/"
 #define HYPEM_END_URL "json/1/data.js"
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 namespace InfoSystem
@@ -112,7 +112,7 @@ HypemPlugin::init()
 
 
 void
-HypemPlugin::dataError( Tomahawk::InfoSystem::InfoRequestData requestData )
+HypemPlugin::dataError( Hatchet::InfoSystem::InfoRequestData requestData )
 {
     emit info( requestData, QVariant() );
     return;
@@ -120,12 +120,12 @@ HypemPlugin::dataError( Tomahawk::InfoSystem::InfoRequestData requestData )
 
 
 void
-HypemPlugin::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
+HypemPlugin::getInfo( Hatchet::InfoSystem::InfoRequestData requestData )
 {
     qDebug() << Q_FUNC_INFO << requestData.caller;
     qDebug() << Q_FUNC_INFO << requestData.customData;
 
-    InfoStringHash hash = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+    InfoStringHash hash = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
     switch ( requestData.type )
     {
         case InfoChart:
@@ -149,16 +149,16 @@ HypemPlugin::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
 
 
 void
-HypemPlugin::fetchChart( Tomahawk::InfoSystem::InfoRequestData requestData )
+HypemPlugin::fetchChart( Hatchet::InfoSystem::InfoRequestData requestData )
 {
-    if ( !requestData.input.canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !requestData.input.canConvert< Hatchet::InfoSystem::InfoStringHash >() )
     {
         dataError( requestData );
         return;
     }
 
-    InfoStringHash hash = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
-    Tomahawk::InfoSystem::InfoStringHash criteria;
+    InfoStringHash hash = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
+    Hatchet::InfoSystem::InfoStringHash criteria;
 
     /// Each request needs to contain both a id and source
     if ( !hash.contains( "chart_id" ) && !hash.contains( "chart_source" ) )
@@ -177,23 +177,23 @@ HypemPlugin::fetchChart( Tomahawk::InfoSystem::InfoRequestData requestData )
 
 
 void
-HypemPlugin::fetchChartCapabilities( Tomahawk::InfoSystem::InfoRequestData requestData )
+HypemPlugin::fetchChartCapabilities( Hatchet::InfoSystem::InfoRequestData requestData )
 {
-    if ( !requestData.input.canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !requestData.input.canConvert< Hatchet::InfoSystem::InfoStringHash >() )
     {
         dataError( requestData );
         return;
     }
 
-    Tomahawk::InfoSystem::InfoStringHash criteria;
+    Hatchet::InfoSystem::InfoStringHash criteria;
     emit getCachedInfo( criteria, Q_INT64_C(0), requestData );
 }
 
 
 void
-HypemPlugin::notInCacheSlot( QHash<QString, QString> criteria, Tomahawk::InfoSystem::InfoRequestData requestData )
+HypemPlugin::notInCacheSlot( QHash<QString, QString> criteria, Hatchet::InfoSystem::InfoRequestData requestData )
 {
-    tDebug( LOGVERBOSE ) << "HypemPlugin thread: " << QThread::currentThread() << ", InfoSystemWorker thread: " << Tomahawk::InfoSystem::InfoSystem::instance()->workerThread().data()->currentThread();
+    tDebug( LOGVERBOSE ) << "HypemPlugin thread: " << QThread::currentThread() << ", InfoSystemWorker thread: " << Hatchet::InfoSystem::InfoSystem::instance()->workerThread().data()->currentThread();
     switch ( requestData.type )
     {
         case InfoChart:
@@ -203,8 +203,8 @@ HypemPlugin::notInCacheSlot( QHash<QString, QString> criteria, Tomahawk::InfoSys
             QUrl url = QUrl( QString( HYPEM_URL "%1/%2" ).arg( criteria["chart_id"].toLower() ).arg(HYPEM_END_URL) );
             qDebug() << Q_FUNC_INFO << "Getting chart url" << url;
 
-            QNetworkReply* reply = Tomahawk::Utils::nam()->get( QNetworkRequest( url ) );
-            reply->setProperty( "requestData", QVariant::fromValue< Tomahawk::InfoSystem::InfoRequestData >( requestData ) );
+            QNetworkReply* reply = Hatchet::Utils::nam()->get( QNetworkRequest( url ) );
+            reply->setProperty( "requestData", QVariant::fromValue< Hatchet::InfoSystem::InfoRequestData >( requestData ) );
             connect( reply, SIGNAL( finished() ), SLOT( chartReturned() ) );
             return;
         }
@@ -314,7 +314,7 @@ HypemPlugin::chartReturned()
     {
         bool ok;
         QByteArray jsonData = reply->readAll();
-        QVariantMap res = TomahawkUtils::parseJson( jsonData, &ok ).toMap();
+        QVariantMap res = HatchetUtils::parseJson( jsonData, &ok ).toMap();
 
         if ( !ok )
         {
@@ -369,12 +369,12 @@ HypemPlugin::chartReturned()
             returnedData["type"] = "artists";
         }
 
-        Tomahawk::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
+        Hatchet::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
         emit info( requestData, returnedData );
 
         // update cache
-        Tomahawk::InfoSystem::InfoStringHash criteria;
-        Tomahawk::InfoSystem::InfoStringHash origData = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+        Hatchet::InfoSystem::InfoStringHash criteria;
+        Hatchet::InfoSystem::InfoStringHash origData = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
         criteria[ "chart_id" ] = origData[ "chart_id" ];
         criteria[ "chart_source" ] = origData[ "chart_source" ];
         /// @todo
@@ -389,4 +389,4 @@ HypemPlugin::chartReturned()
 
 }
 
-Q_EXPORT_PLUGIN2( Tomahawk::InfoSystem::InfoPlugin, Tomahawk::InfoSystem::HypemPlugin )
+Q_EXPORT_PLUGIN2( Hatchet::InfoSystem::InfoPlugin, Hatchet::InfoSystem::HypemPlugin )

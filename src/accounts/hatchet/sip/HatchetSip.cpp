@@ -1,13 +1,13 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
- *   Copyright 2012, Jeff Mitchell <jeff@tomahawk-player.org>
+ *   Copyright 2012, Jeff Mitchell <jeff@hatchet-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
@@ -37,7 +37,7 @@
 #include <QHostInfo>
 #include <QUuid>
 
-HatchetSipPlugin::HatchetSipPlugin( Tomahawk::Accounts::Account *account )
+HatchetSipPlugin::HatchetSipPlugin( Hatchet::Accounts::Account *account )
     : SipPlugin( account )
     , m_sipState( Closed )
     , m_version( 0 )
@@ -83,7 +83,7 @@ HatchetSipPlugin::~HatchetSipPlugin()
 
     m_sipState = Closed;
 
-    hatchetAccount()->setConnectionState( Tomahawk::Accounts::Account::Disconnected );
+    hatchetAccount()->setConnectionState( Hatchet::Accounts::Account::Disconnected );
 }
 
 
@@ -95,10 +95,10 @@ HatchetSipPlugin::isValid() const
 }
 
 
-Tomahawk::Accounts::HatchetAccount*
+Hatchet::Accounts::HatchetAccount*
 HatchetSipPlugin::hatchetAccount() const
 {
-    return qobject_cast< Tomahawk::Accounts::HatchetAccount* >( m_account );
+    return qobject_cast< Hatchet::Accounts::HatchetAccount* >( m_account );
 }
 
 
@@ -113,7 +113,7 @@ HatchetSipPlugin::connectPlugin()
         return;
     }
 
-    hatchetAccount()->setConnectionState( Tomahawk::Accounts::Account::Connecting );
+    hatchetAccount()->setConnectionState( Hatchet::Accounts::Account::Connecting );
     hatchetAccount()->fetchAccessToken( "dreamcatcher" );
 }
 
@@ -187,7 +187,7 @@ HatchetSipPlugin::webSocketConnected()
         return;
     }
 
-    hatchetAccount()->setConnectionState( Tomahawk::Accounts::Account::Connected );
+    hatchetAccount()->setConnectionState( Hatchet::Accounts::Account::Connected );
     m_sipState = AcquiringVersion;
 
     /*
@@ -223,7 +223,7 @@ HatchetSipPlugin::webSocketDisconnected()
     m_sipState = Closed;
     m_version = 0;
 
-    hatchetAccount()->setConnectionState( Tomahawk::Accounts::Account::Disconnected );
+    hatchetAccount()->setConnectionState( Hatchet::Accounts::Account::Disconnected );
 
     if ( hatchetAccount()->enabled() )
     {
@@ -306,7 +306,7 @@ HatchetSipPlugin::messageReceived( const QByteArray &msg )
         QVariantMap registerMap;
         registerMap[ "command" ] = "register";
         registerMap[ "token" ] = m_token;
-        registerMap[ "dbid" ] = Tomahawk::Database::instance()->impl()->dbid();
+        registerMap[ "dbid" ] = Hatchet::Database::instance()->impl()->dbid();
         registerMap[ "alias" ] = QHostInfo::localHostName();
 
         QList< SipInfo > sipinfos = Servent::instance()->getLocalSipInfos( "default", "default" );
@@ -338,7 +338,7 @@ HatchetSipPlugin::messageReceived( const QByteArray &msg )
         {
             tLog() << Q_FUNC_INFO << "Registered successfully";
             m_sipState = Connected;
-            hatchetAccount()->setConnectionState( Tomahawk::Accounts::Account::Connected );
+            hatchetAccount()->setConnectionState( Hatchet::Accounts::Account::Connected );
             m_reconnectTimer.setInterval( 0 );
             QTimer::singleShot(0, this, SLOT( dbSyncTriggered() ) );
             return;
@@ -405,7 +405,7 @@ HatchetSipPlugin::newPeer( const QVariantMap& valMap )
     if ( !checkKeys( keys, valMap ) )
         return;
 
-    Tomahawk::peerinfo_ptr peerInfo = Tomahawk::PeerInfo::get( this, dbid, Tomahawk::PeerInfo::AutoCreate );
+    Hatchet::peerinfo_ptr peerInfo = Hatchet::PeerInfo::get( this, dbid, Hatchet::PeerInfo::AutoCreate );
     peerInfo->setContactId( username );
     peerInfo->setFriendlyName( username );
     QVariantMap data;
@@ -440,12 +440,12 @@ HatchetSipPlugin::newPeer( const QVariantMap& valMap )
 
     m_sipInfoHash[ dbid ] = sipInfos;
 
-    peerInfo->setStatus( Tomahawk::PeerInfo::Online );
+    peerInfo->setStatus( Hatchet::PeerInfo::Online );
 }
 
 
 void
-HatchetSipPlugin::sendSipInfos(const Tomahawk::peerinfo_ptr& receiver, const QList< SipInfo >& infos)
+HatchetSipPlugin::sendSipInfos(const Hatchet::peerinfo_ptr& receiver, const QList< SipInfo >& infos)
 {
     if ( infos.size() == 0 )
     {
@@ -477,7 +477,7 @@ HatchetSipPlugin::peerAuthorization( const QVariantMap& valMap )
 
     QString dbid = valMap[ "dbid" ].toString();
 
-    Tomahawk::peerinfo_ptr peerInfo = Tomahawk::PeerInfo::get( this, dbid );
+    Hatchet::peerinfo_ptr peerInfo = Hatchet::PeerInfo::get( this, dbid );
     if( peerInfo.isNull() )
     {
         tLog() << Q_FUNC_INFO << "Received a peer-authorization for a peer we don't know about";
@@ -505,7 +505,7 @@ HatchetSipPlugin::dbSyncTriggered()
 
     QVariantMap sourceMap;
     sourceMap[ "command" ] = "synctrigger";
-    const Tomahawk::source_ptr src = SourceList::instance()->getLocal();
+    const Hatchet::source_ptr src = SourceList::instance()->getLocal();
     sourceMap[ "name" ] = src->friendlyName();
     sourceMap[ "alias" ] = QHostInfo::localHostName();
     sourceMap[ "friendlyname" ] = src->dbFriendlyName();
@@ -522,9 +522,9 @@ void
 HatchetSipPlugin::sendOplog( const QVariantMap& valMap ) const
 {
     tDebug() << Q_FUNC_INFO;
-    Tomahawk::DatabaseCommand_loadOps* cmd = new Tomahawk::DatabaseCommand_loadOps( SourceList::instance()->getLocal(), valMap[ "lastrevision" ].toString() );
+    Hatchet::DatabaseCommand_loadOps* cmd = new Hatchet::DatabaseCommand_loadOps( SourceList::instance()->getLocal(), valMap[ "lastrevision" ].toString() );
     connect( cmd, SIGNAL( done( QString, QString, QList< dbop_ptr > ) ), SLOT( oplogFetched( QString, QString, QList< dbop_ptr > ) ) );
-    Tomahawk::Database::instance()->enqueue( Tomahawk::dbcmd_ptr( cmd ) );
+    Hatchet::Database::instance()->enqueue( Hatchet::dbcmd_ptr( cmd ) );
 }
 
 

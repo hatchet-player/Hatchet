@@ -2,7 +2,7 @@
 # author: max@last.fm, muesli@tomahawk-player.org
 # brief:  Produces a compressed DMG from a bundle directory
 # usage:  Pass the bundle directory as the only parameter
-# note:   This script depends on the Tomahawk build system, and must be run from
+# note:   This script depends on the Hatchet build system, and must be run from
 #         the build directory
 ################################################################################
 

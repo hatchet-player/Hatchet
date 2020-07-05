@@ -1,4 +1,4 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2011, Leo Franchi <lfranchi@kde.org>
@@ -6,25 +6,25 @@
  *   Copyright 2012, Hugo Lindström <hugolm84@gmail.com>
  *   Copyright 2014, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ChartsWidget.h"
 #include "ui_ChartsWidget.h"
 
 #include "MetaPlaylistInterface.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 
 #include "audio/AudioEngine.h"
 #include "playlist/GridItemDelegate.h"
@@ -32,12 +32,12 @@
 #include "utils/AnimatedSpinner.h"
 #include "utils/DpiScaler.h"
 #include "utils/Logger.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 
 #include <QStandardItemModel>
 
-using namespace Tomahawk;
-using namespace Tomahawk::Widgets;
+using namespace Hatchet;
+using namespace Hatchet::Widgets;
 
 static QString s_chartsIdentifier = QString( "ChartsWidget" );
 
@@ -52,24 +52,24 @@ ChartsWidget::ChartsWidget( QWidget* parent )
 {
     ui->setupUi( this );
 
-    TomahawkUtils::unmarginLayout( layout() );
-    TomahawkUtils::unmarginLayout( ui->stackLeft->layout() );
-    TomahawkUtils::unmarginLayout( ui->horizontalLayout->layout() );
-    TomahawkUtils::unmarginLayout( ui->horizontalLayout_2->layout() );
-    TomahawkUtils::unmarginLayout( ui->breadCrumbLeft->layout() );
-    TomahawkUtils::unmarginLayout( ui->verticalLayout->layout() );
+    HatchetUtils::unmarginLayout( layout() );
+    HatchetUtils::unmarginLayout( ui->stackLeft->layout() );
+    HatchetUtils::unmarginLayout( ui->horizontalLayout->layout() );
+    HatchetUtils::unmarginLayout( ui->horizontalLayout_2->layout() );
+    HatchetUtils::unmarginLayout( ui->breadCrumbLeft->layout() );
+    HatchetUtils::unmarginLayout( ui->verticalLayout->layout() );
 
     m_crumbModelLeft = new QStandardItemModel( this );
     m_sortedProxy = new QSortFilterProxyModel( this );
     m_sortedProxy->setDynamicSortFilter( true );
     m_sortedProxy->setFilterCaseSensitivity( Qt::CaseInsensitive );
 
-    ui->breadCrumbLeft->setRootIcon( TomahawkUtils::defaultPixmap( TomahawkUtils::Charts, TomahawkUtils::Original ) );
+    ui->breadCrumbLeft->setRootIcon( HatchetUtils::defaultPixmap( HatchetUtils::Charts, HatchetUtils::Original ) );
     connect( ui->breadCrumbLeft, SIGNAL( activateIndex( QModelIndex ) ), SLOT( leftCrumbIndexChanged( QModelIndex ) ) );
 
-    ui->artistsView->setItemWidth( TomahawkUtils::DpiScaler::scaledX( this, 190 ) );
-    ui->albumsView->setItemWidth( TomahawkUtils::DpiScaler::scaledX( this, 190 ) );
-    ui->tracksView->setItemWidth( TomahawkUtils::DpiScaler::scaledX( this, 190 ) );
+    ui->artistsView->setItemWidth( HatchetUtils::DpiScaler::scaledX( this, 190 ) );
+    ui->albumsView->setItemWidth( HatchetUtils::DpiScaler::scaledX( this, 190 ) );
+    ui->tracksView->setItemWidth( HatchetUtils::DpiScaler::scaledX( this, 190 ) );
     ui->albumsView->delegate()->setWordWrapping( true );
     ui->tracksView->delegate()->setWordWrapping( true );
     ui->artistsView->delegate()->setShowPosition( true );
@@ -79,14 +79,14 @@ ChartsWidget::ChartsWidget( QWidget* parent )
     m_workerThread = new QThread( this );
     m_workerThread->start();
 
-    connect( Tomahawk::InfoSystem::InfoSystem::instance(),
-             SIGNAL( info( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ),
-             SLOT( infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData, QVariant ) ) );
+    connect( Hatchet::InfoSystem::InfoSystem::instance(),
+             SIGNAL( info( Hatchet::InfoSystem::InfoRequestData, QVariant ) ),
+             SLOT( infoSystemInfo( Hatchet::InfoSystem::InfoRequestData, QVariant ) ) );
 
-    connect( Tomahawk::InfoSystem::InfoSystem::instance(), SIGNAL( finished( QString ) ), SLOT( infoSystemFinished( QString ) ) );
+    connect( Hatchet::InfoSystem::InfoSystem::instance(), SIGNAL( finished( QString ) ), SLOT( infoSystemFinished( QString ) ) );
 
     // Read last viewed charts, to be used as defaults
-    m_currentVIds = TomahawkSettings::instance()->lastChartIds();
+    m_currentVIds = HatchetSettings::instance()->lastChartIds();
     tDebug( LOGVERBOSE ) << "Reloading last chartIds:" << m_currentVIds;
 
     MetaPlaylistInterface* mpl = new MetaPlaylistInterface();
@@ -110,7 +110,7 @@ ChartsWidget::~ChartsWidget()
     tDebug( LOGVERBOSE ) << Q_FUNC_INFO;
 
     // Write the settings
-    TomahawkSettings::instance()->setLastChartIds( m_currentVIds );
+    HatchetSettings::instance()->setLastChartIds( m_currentVIds );
 
     qDeleteAll( m_workers );
     m_workers.clear();
@@ -121,7 +121,7 @@ ChartsWidget::~ChartsWidget()
 }
 
 
-Tomahawk::playlistinterface_ptr
+Hatchet::playlistinterface_ptr
 ChartsWidget::playlistInterface() const
 {
     return m_playlistInterface;
@@ -154,23 +154,23 @@ ChartsWidget::jumpToCurrentTrack()
 void
 ChartsWidget::fetchData()
 {
-    Tomahawk::InfoSystem::InfoStringHash criteria;
+    Hatchet::InfoSystem::InfoStringHash criteria;
 
-    Tomahawk::InfoSystem::InfoRequestData requestData;
+    Hatchet::InfoSystem::InfoRequestData requestData;
     requestData.caller = s_chartsIdentifier;
     requestData.customData = QVariantMap();
-    requestData.input = QVariant::fromValue< Tomahawk::InfoSystem::InfoStringHash >( criteria );
-    requestData.type = Tomahawk::InfoSystem::InfoChartCapabilities;
+    requestData.input = QVariant::fromValue< Hatchet::InfoSystem::InfoStringHash >( criteria );
+    requestData.type = Hatchet::InfoSystem::InfoChartCapabilities;
     requestData.timeoutMillis = 20000;
     requestData.allSources = true;
-    Tomahawk::InfoSystem::InfoSystem::instance()->getInfo( requestData );
+    Hatchet::InfoSystem::InfoSystem::instance()->getInfo( requestData );
 
     tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "requested InfoChartCapabilities";
 }
 
 
 void
-ChartsWidget::infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData requestData, QVariant output )
+ChartsWidget::infoSystemInfo( Hatchet::InfoSystem::InfoRequestData requestData, QVariant output )
 {
     if ( requestData.caller != s_chartsIdentifier )
         return;
@@ -200,17 +200,17 @@ ChartsWidget::infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData requestData,
             {
                 tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "Info came back with error!";
 
-                Tomahawk::InfoSystem::InfoStringHash criteria;
+                Hatchet::InfoSystem::InfoStringHash criteria;
                 criteria.insert( "chart_refetch", returnedData[ "chart_source" ].value< QString >() );
 
-                Tomahawk::InfoSystem::InfoRequestData requestData;
+                Hatchet::InfoSystem::InfoRequestData requestData;
                 requestData.caller = s_chartsIdentifier;
                 requestData.customData = QVariantMap();
-                requestData.input = QVariant::fromValue< Tomahawk::InfoSystem::InfoStringHash >( criteria );
-                requestData.type = Tomahawk::InfoSystem::InfoChartCapabilities;
+                requestData.input = QVariant::fromValue< Hatchet::InfoSystem::InfoStringHash >( criteria );
+                requestData.type = Hatchet::InfoSystem::InfoChartCapabilities;
                 requestData.timeoutMillis = 20000;
                 requestData.allSources = false;
-                Tomahawk::InfoSystem::InfoSystem::instance()->getInfo( requestData );
+                Hatchet::InfoSystem::InfoSystem::instance()->getInfo( requestData );
 
                 tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "re-requesting InfoChartCapabilities";
                 break;
@@ -223,7 +223,7 @@ ChartsWidget::infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData requestData,
             if ( !returnedData.contains( type ) )
                 break;
 
-            const QString chartId = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >().value( "chart_id" );
+            const QString chartId = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >().value( "chart_id" );
 
             m_queuedFetches.remove( chartId );
 
@@ -236,7 +236,7 @@ ChartsWidget::infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData requestData,
                 loader->setType( ChartDataLoader::Artist );
                 loader->setData( returnedData[ "artists" ].value< QStringList >() );
 
-                connect( loader, SIGNAL( artists( Tomahawk::ChartDataLoader*, QList< Tomahawk::artist_ptr > ) ), SLOT( chartArtistsLoaded( Tomahawk::ChartDataLoader*, QList< Tomahawk::artist_ptr > ) ) );
+                connect( loader, SIGNAL( artists( Hatchet::ChartDataLoader*, QList< Hatchet::artist_ptr > ) ), SLOT( chartArtistsLoaded( Hatchet::ChartDataLoader*, QList< Hatchet::artist_ptr > ) ) );
 
                 PlayableModel* artistsModel = new PlayableModel( ui->artistsView );
                 artistsModel->startLoading();
@@ -249,9 +249,9 @@ ChartsWidget::infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData requestData,
             else if ( type == "albums" )
             {
                 loader->setType( ChartDataLoader::Album );
-                loader->setData( returnedData[ "albums" ].value< QList< Tomahawk::InfoSystem::InfoStringHash > >() );
+                loader->setData( returnedData[ "albums" ].value< QList< Hatchet::InfoSystem::InfoStringHash > >() );
 
-                connect( loader, SIGNAL( albums( Tomahawk::ChartDataLoader*, QList< Tomahawk::album_ptr > ) ), SLOT( chartAlbumsLoaded( Tomahawk::ChartDataLoader*, QList< Tomahawk::album_ptr > ) ) );
+                connect( loader, SIGNAL( albums( Hatchet::ChartDataLoader*, QList< Hatchet::album_ptr > ) ), SLOT( chartAlbumsLoaded( Hatchet::ChartDataLoader*, QList< Hatchet::album_ptr > ) ) );
 
                 PlayableModel* albumModel = new PlayableModel( ui->albumsView );
                 albumModel->startLoading();
@@ -264,9 +264,9 @@ ChartsWidget::infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData requestData,
             else if ( type == "tracks" )
             {
                 loader->setType( ChartDataLoader::Track );
-                loader->setData( returnedData[ "tracks" ].value< QList< Tomahawk::InfoSystem::InfoStringHash > >() );
+                loader->setData( returnedData[ "tracks" ].value< QList< Hatchet::InfoSystem::InfoStringHash > >() );
 
-                connect( loader, SIGNAL( tracks( Tomahawk::ChartDataLoader*, QList< Tomahawk::query_ptr > ) ), SLOT( chartTracksLoaded( Tomahawk::ChartDataLoader*, QList< Tomahawk::query_ptr > ) ) );
+                connect( loader, SIGNAL( tracks( Hatchet::ChartDataLoader*, QList< Hatchet::query_ptr > ) ), SLOT( chartTracksLoaded( Hatchet::ChartDataLoader*, QList< Hatchet::query_ptr > ) ) );
 
                 PlayableModel* trackModel = new PlayableModel( ui->tracksView );
                 trackModel->startLoading();
@@ -298,7 +298,7 @@ ChartsWidget::setViewData( const QVariantMap& data )
     QString defaultSource = returnedData.take( "defaultSource" ).toString();
     QVariantMap defaults = returnedData.take( "defaults" ).toMap();
     // Here, we dont want current sessions last view, but rather what was current on previus quit
-    QString lastSeen = TomahawkSettings::instance()->lastChartIds().value( "lastseen" ).toString();
+    QString lastSeen = HatchetSettings::instance()->lastChartIds().value( "lastseen" ).toString();
 
     if ( !lastSeen.isEmpty() )
         defaultSource = lastSeen;
@@ -416,24 +416,24 @@ ChartsWidget::leftCrumbIndexChanged( QModelIndex index )
         return;
     }
 
-    Tomahawk::InfoSystem::InfoStringHash criteria;
+    Hatchet::InfoSystem::InfoStringHash criteria;
     criteria.insert( "chart_id", chartId );
     criteria.insert( "chart_expires", QString::number( chartExpires ) );
     /// Remember to lower the source!
     criteria.insert( "chart_source",  index.data().toString().toLower() );
 
-    Tomahawk::InfoSystem::InfoRequestData requestData;
+    Hatchet::InfoSystem::InfoRequestData requestData;
     QVariantMap customData;
     customData.insert( "whatshot_side", "left" );
     requestData.caller = s_chartsIdentifier;
     requestData.customData = customData;
-    requestData.input = QVariant::fromValue< Tomahawk::InfoSystem::InfoStringHash >( criteria );
-    requestData.type = Tomahawk::InfoSystem::InfoChart;
+    requestData.input = QVariant::fromValue< Hatchet::InfoSystem::InfoStringHash >( criteria );
+    requestData.type = Hatchet::InfoSystem::InfoChart;
     requestData.timeoutMillis = 20000;
     requestData.allSources = true;
 
     qDebug() << "Making infosystem request for chart of type:" << chartId;
-    Tomahawk::InfoSystem::InfoSystem::instance()->getInfo( requestData );
+    Hatchet::InfoSystem::InfoSystem::instance()->getInfo( requestData );
 
     m_queuedFetches.insert( chartId );
     m_queueItemToShow = chartId;
@@ -464,11 +464,11 @@ ChartsWidget::parseNode( QStandardItem* parentItem, const QString& label, const 
 
     QStandardItem* sourceItem = new QStandardItem( label );
 
-    if ( data.canConvert< QList< Tomahawk::InfoSystem::InfoStringHash > >() )
+    if ( data.canConvert< QList< Hatchet::InfoSystem::InfoStringHash > >() )
     {
-        QList< Tomahawk::InfoSystem::InfoStringHash > charts = data.value< QList< Tomahawk::InfoSystem::InfoStringHash > >();
+        QList< Hatchet::InfoSystem::InfoStringHash > charts = data.value< QList< Hatchet::InfoSystem::InfoStringHash > >();
 
-        foreach ( Tomahawk::InfoSystem::InfoStringHash chart, charts )
+        foreach ( Hatchet::InfoSystem::InfoStringHash chart, charts )
         {
             QStandardItem* childItem= new QStandardItem( chart[ "label" ] );
             childItem->setData( chart[ "id" ], Breadcrumb::ChartIdRole );

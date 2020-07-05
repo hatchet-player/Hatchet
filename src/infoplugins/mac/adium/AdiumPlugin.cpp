@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <string.h>
@@ -25,7 +25,7 @@
 #include "infosystem/InfoSystemWorker.h"
 #include "Artist.h"
 #include "Result.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "utils/LinkGenerator.h"
 #include "utils/Logger.h"
 
@@ -47,7 +47,7 @@ static void setStatus(const QString &status)
     script( scriptstr );
 }
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 namespace InfoSystem
@@ -70,9 +70,9 @@ AdiumPlugin::AdiumPlugin()
 
     m_supportedPushTypes << InfoNowPlaying << InfoNowPaused << InfoNowResumed << InfoNowStopped;
 
-    m_active = TomahawkSettings::instance()->nowPlayingEnabled();
+    m_active = HatchetSettings::instance()->nowPlayingEnabled();
 
-    connect( TomahawkSettings::instance(), SIGNAL( changed() ),
+    connect( HatchetSettings::instance(), SIGNAL( changed() ),
                                              SLOT( settingsChanged() ), Qt::QueuedConnection );
 
     m_pauseTimer = new QTimer( this );
@@ -101,12 +101,12 @@ AdiumPlugin::clearStatus()
 void
 AdiumPlugin::settingsChanged()
 {
-    m_active = TomahawkSettings::instance()->nowPlayingEnabled();
+    m_active = HatchetSettings::instance()->nowPlayingEnabled();
 }
 
 
 void
-AdiumPlugin::pushInfo( Tomahawk::InfoSystem::InfoPushData pushData )
+AdiumPlugin::pushInfo( Hatchet::InfoSystem::InfoPushData pushData )
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -139,20 +139,20 @@ AdiumPlugin::pushInfo( Tomahawk::InfoSystem::InfoPushData pushData )
 
 /** Audio state slots */
 void
-AdiumPlugin::audioStarted( const Tomahawk::InfoSystem::PushInfoPair pushInfoPair )
+AdiumPlugin::audioStarted( const Hatchet::InfoSystem::PushInfoPair pushInfoPair )
 {
     if ( !pushInfoPair.second.canConvert< QVariantMap >() )
         return;
 
     QVariantMap map = pushInfoPair.second.toMap();
 
-    if ( map.contains( "private" ) && map[ "private" ] == TomahawkSettings::FullyPrivate )
+    if ( map.contains( "private" ) && map[ "private" ] == HatchetSettings::FullyPrivate )
         return;
 
-    if ( !map.contains( "trackinfo" ) || !map[ "trackinfo" ].canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !map.contains( "trackinfo" ) || !map[ "trackinfo" ].canConvert< Hatchet::InfoSystem::InfoStringHash >() )
         return;
 
-    InfoStringHash hash = map[ "trackinfo" ].value< Tomahawk::InfoSystem::InfoStringHash >();
+    InfoStringHash hash = map[ "trackinfo" ].value< Hatchet::InfoSystem::InfoStringHash >();
 
     if ( !hash.contains( "title" ) || !hash.contains( "artist" ) )
         return;
@@ -218,7 +218,7 @@ AdiumPlugin::audioPaused()
 }
 
 void
-AdiumPlugin::audioResumed( const Tomahawk::InfoSystem::PushInfoPair pushInfoPair )
+AdiumPlugin::audioResumed( const Hatchet::InfoSystem::PushInfoPair pushInfoPair )
 {
     qDebug() << Q_FUNC_INFO;
     audioStarted( pushInfoPair );
@@ -226,6 +226,6 @@ AdiumPlugin::audioResumed( const Tomahawk::InfoSystem::PushInfoPair pushInfoPair
 
 } //ns InfoSystem
 
-} //ns Tomahawk
+} //ns Hatchet
 
-Q_EXPORT_PLUGIN2( Tomahawk::InfoSystem::InfoPlugin, Tomahawk::InfoSystem::AdiumPlugin )
+Q_EXPORT_PLUGIN2( Hatchet::InfoSystem::InfoPlugin, Hatchet::InfoSystem::AdiumPlugin )

@@ -1,4 +1,4 @@
-# tomahawk accounts build file
+# Hatchet accounts build file
 #============================================================================
 
 

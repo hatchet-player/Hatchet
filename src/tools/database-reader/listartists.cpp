@@ -1,7 +1,7 @@
 #include "database/Database.h"
 #include "database/DatabaseCommand_AllArtists.h"
-#include "utils/TomahawkUtils.h"
-#include "TomahawkVersion.h"
+#include "utils/HatchetUtils.h"
+#include "HatchetVersion.h"
 #include "Typedefs.h"
 
 #include <QCoreApplication>
@@ -16,13 +16,13 @@ Q_OBJECT
 public:
     Q_INVOKABLE void startDatabase( QString dbpath )
     {
-        database = QSharedPointer<Tomahawk::Database>( new Tomahawk::Database( dbpath ) );
+        database = QSharedPointer<Hatchet::Database>( new Hatchet::Database( dbpath ) );
         connect( database.data(), SIGNAL( ready() ), SLOT( runDbCmd() ), Qt::QueuedConnection );
         database->loadIndex();
     }
 
-    Tomahawk::dbcmd_ptr cmd;
-    QSharedPointer<Tomahawk::Database> database;
+    Hatchet::dbcmd_ptr cmd;
+    QSharedPointer<Hatchet::Database> database;
 
 public slots:
     void runDbCmd()
@@ -30,10 +30,10 @@ public slots:
         database->enqueue( cmd );
     }
 
-    void dbCmdDone( const QList<Tomahawk::artist_ptr>& artists )
+    void dbCmdDone( const QList<Hatchet::artist_ptr>& artists )
     {
         std::cout << "=== ARTISTS - START ===" << std::endl;
-        foreach ( const Tomahawk::artist_ptr& artist, artists )
+        foreach ( const Hatchet::artist_ptr& artist, artists )
         {
             std::cout << artist->name().toStdString() << std::endl;
         }
@@ -49,7 +49,7 @@ int main( int argc, char* argv[] )
 {
     QCoreApplication app( argc, argv );
     // TODO: Add an argument to change the path
-    app.setOrganizationName( TOMAHAWK_ORGANIZATION_NAME );
+    app.setOrganizationName( HATCHET_ORGANIZATION_NAME );
 
     // Helper QObject to connect slots and actions in the correct thread.
     Tasks tasks;
@@ -63,14 +63,14 @@ int main( int argc, char* argv[] )
     tasks.moveToThread( &thread );
 
     // Load the Database
-    Tomahawk::DatabaseCommand_AllArtists* cmd = new Tomahawk::DatabaseCommand_AllArtists();
-    tasks.cmd = Tomahawk::dbcmd_ptr( cmd );
+    Hatchet::DatabaseCommand_AllArtists* cmd = new Hatchet::DatabaseCommand_AllArtists();
+    tasks.cmd = Hatchet::dbcmd_ptr( cmd );
     tasks.cmd->moveToThread( &thread );
-    qRegisterMetaType< QList< Tomahawk::artist_ptr > >();
-    QObject::connect( cmd, SIGNAL( artists( QList<Tomahawk::artist_ptr>  ) ),
-                      &tasks, SLOT( dbCmdDone( QList<Tomahawk::artist_ptr> ) ),
+    qRegisterMetaType< QList< Hatchet::artist_ptr > >();
+    QObject::connect( cmd, SIGNAL( artists( QList<Hatchet::artist_ptr>  ) ),
+                      &tasks, SLOT( dbCmdDone( QList<Hatchet::artist_ptr> ) ),
                       Qt::QueuedConnection );
-    QString dbpath = TomahawkUtils::appDataDir().absoluteFilePath( "tomahawk.db" );
+    QString dbpath = HatchetUtils::appDataDir().absoluteFilePath( "hatchet.db" );
     QMetaObject::invokeMethod( &tasks, "startDatabase", Qt::QueuedConnection, Q_ARG( QString, dbpath ) );
 
     // Wait until the dbcmd was executed.

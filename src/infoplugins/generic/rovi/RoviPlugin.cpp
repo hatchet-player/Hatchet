@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "RoviPlugin.h"
@@ -27,7 +27,7 @@
 #include <QDateTime>
 #include <QNetworkReply>
 
-using namespace Tomahawk::InfoSystem;
+using namespace Hatchet::InfoSystem;
 
 
 RoviPlugin::RoviPlugin()
@@ -50,21 +50,21 @@ RoviPlugin::~RoviPlugin()
 
 
 void
-RoviPlugin::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
+RoviPlugin::getInfo( Hatchet::InfoSystem::InfoRequestData requestData )
 {
-    if ( !requestData.input.canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !requestData.input.canConvert< Hatchet::InfoSystem::InfoStringHash >() )
     {
         emit info( requestData, QVariant() );
         return;
     }
-    InfoStringHash hash = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+    InfoStringHash hash = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
     if ( !hash.contains( "artist" ) || !hash.contains( "album" ) )
     {
         emit info( requestData, QVariant() );
         return;
     }
 
-    Tomahawk::InfoSystem::InfoStringHash criteria;
+    Hatchet::InfoSystem::InfoStringHash criteria;
     criteria["artist"] = hash["artist"];
     criteria["album"] = hash["album"];
 
@@ -73,7 +73,7 @@ RoviPlugin::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
 
 
 void
-RoviPlugin::notInCacheSlot( Tomahawk::InfoSystem::InfoStringHash criteria, Tomahawk::InfoSystem::InfoRequestData requestData )
+RoviPlugin::notInCacheSlot( Hatchet::InfoSystem::InfoStringHash criteria, Hatchet::InfoSystem::InfoRequestData requestData )
 {
     switch ( requestData.type )
     {
@@ -81,13 +81,13 @@ RoviPlugin::notInCacheSlot( Tomahawk::InfoSystem::InfoStringHash criteria, Tomah
         {
             QUrl baseUrl = QUrl( "http://api.rovicorp.com/search/v2/music/search" );
 
-            TomahawkUtils::urlAddQueryItem( baseUrl, "query", QString( "%1 %2" ).arg( criteria[ "artist" ] ).arg( criteria[ "album" ] ) );
-            TomahawkUtils::urlAddQueryItem( baseUrl, "entitytype", "album" );
-            TomahawkUtils::urlAddQueryItem( baseUrl, "include", "album:tracks" );
+            HatchetUtils::urlAddQueryItem( baseUrl, "query", QString( "%1 %2" ).arg( criteria[ "artist" ] ).arg( criteria[ "album" ] ) );
+            HatchetUtils::urlAddQueryItem( baseUrl, "entitytype", "album" );
+            HatchetUtils::urlAddQueryItem( baseUrl, "include", "album:tracks" );
 
             QNetworkReply* reply = makeRequest( baseUrl );
 
-            reply->setProperty( "requestData", QVariant::fromValue< Tomahawk::InfoSystem::InfoRequestData >( requestData ) );
+            reply->setProperty( "requestData", QVariant::fromValue< Hatchet::InfoSystem::InfoRequestData >( requestData ) );
             connect( reply, SIGNAL( finished() ), this, SLOT( albumLookupFinished() ) );
             connect( reply, SIGNAL( error( QNetworkReply::NetworkError ) ), this, SLOT( albumLookupError( QNetworkReply::NetworkError ) ) );
             break;
@@ -111,7 +111,7 @@ RoviPlugin::albumLookupError( QNetworkReply::NetworkError error )
     QNetworkReply* reply = qobject_cast<QNetworkReply*>( sender() );
     Q_ASSERT( reply );
 
-    Tomahawk::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
+    Hatchet::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
 
     emit info( requestData, QVariant() );
 }
@@ -127,11 +127,11 @@ RoviPlugin::albumLookupFinished()
     if ( reply->error() != QNetworkReply::NoError )
         return;
 
-    Tomahawk::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
+    Hatchet::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
 
     bool ok;
     QByteArray jsonData = reply->readAll();
-    QVariantMap response = TomahawkUtils::parseJson( jsonData, &ok ).toMap();
+    QVariantMap response = HatchetUtils::parseJson( jsonData, &ok ).toMap();
 
     if ( !ok || response.isEmpty() || !response.contains( "searchResponse" ) )
     {
@@ -169,9 +169,9 @@ RoviPlugin::albumLookupFinished()
 
     emit info( requestData, returnedData );
 
-    Tomahawk::InfoSystem::InfoStringHash criteria;
-    criteria["artist"] = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash>()["artist"];
-    criteria["album"] = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash>()["album"];
+    Hatchet::InfoSystem::InfoStringHash criteria;
+    criteria["artist"] = requestData.input.value< Hatchet::InfoSystem::InfoStringHash>()["artist"];
+    criteria["album"] = requestData.input.value< Hatchet::InfoSystem::InfoStringHash>()["album"];
 
     emit updateCache( criteria, Q_INT64_C(0), requestData.type, returnedData );
 }
@@ -180,11 +180,11 @@ RoviPlugin::albumLookupFinished()
 QNetworkReply*
 RoviPlugin::makeRequest( QUrl url )
 {
-    TomahawkUtils::urlAddQueryItem( url, "apikey", m_apiKey );
-    TomahawkUtils::urlAddQueryItem( url, "sig", generateSig() );
+    HatchetUtils::urlAddQueryItem( url, "apikey", m_apiKey );
+    HatchetUtils::urlAddQueryItem( url, "sig", generateSig() );
 
     qDebug() << "Rovi request url:" << url.toString();
-    return Tomahawk::Utils::nam()->get( QNetworkRequest( url ) );
+    return Hatchet::Utils::nam()->get( QNetworkRequest( url ) );
 }
 
 
@@ -192,8 +192,8 @@ QByteArray
 RoviPlugin::generateSig() const
 {
     const QByteArray raw = m_apiKey + m_secret + QString::number( QDateTime::currentMSecsSinceEpoch() / 1000 ).toLatin1();
-    return TomahawkUtils::md5( raw ).toLatin1();
+    return HatchetUtils::md5( raw ).toLatin1();
 }
 
 
-Q_EXPORT_PLUGIN2( Tomahawk::InfoSystem::InfoPlugin, Tomahawk::InfoSystem::RoviPlugin )
+Q_EXPORT_PLUGIN2( Hatchet::InfoSystem::InfoPlugin, Hatchet::InfoSystem::RoviPlugin )

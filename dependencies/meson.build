@@ -1,4 +1,4 @@
-# tomahawk dependencies build file
+# Hatchet dependencies build file
 #============================================================================
 
 

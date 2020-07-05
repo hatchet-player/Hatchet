@@ -1,0 +1,56 @@
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
+ *
+ *   Copyright 2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
+ *
+ *   Hatchet is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   Hatchet is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef DROPDOWNBUTTON_H
+#define DROPDOWNBUTTON_H
+
+#include <QComboBox>
+
+#include "Typedefs.h"
+#include "DllMacro.h"
+
+class DLLEXPORT DropDownButton : public QComboBox
+{
+Q_OBJECT
+
+public:
+    explicit DropDownButton( QWidget* parent = 0 );
+    virtual ~DropDownButton();
+
+    static void drawPrimitive( QPainter* p, const QRect& rect, const QString& text, bool hovering, bool itemsAvailable );
+
+public slots:
+
+signals:
+    void clicked();
+
+protected:
+    void paintEvent( QPaintEvent* event );
+    void mousePressEvent( QMouseEvent* event );
+    void enterEvent( QEvent* event );
+    void leaveEvent( QEvent* event );
+
+private slots:
+
+protected:
+    static void setupPainter( QPainter* p );
+
+    bool m_hovering;
+};
+
+#endif // DROPDOWNBUTTON_H

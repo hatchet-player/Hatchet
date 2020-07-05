@@ -1,26 +1,26 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2012, Casey Link <unnamedrambler@gmail.com>
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2011, Leo Franchi <lfranchi@kde.org>
  *   Copyright 2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOMAHAWK_NEWRELEASESWIDGET_H
-#define TOMAHAWK_NEWRELEASESWIDGET_H
+#ifndef HATCHET_NEWRELEASESWIDGET_H
+#define HATCHET_NEWRELEASESWIDGET_H
 
 #include "../ViewPageDllMacro.h"
 #include "ViewPagePlugin.h"
@@ -37,19 +37,19 @@ namespace Ui
     class NewReleasesWidget;
 }
 
-namespace Tomahawk
+namespace Hatchet
 {
     class ChartDataLoader;
 }
 
-namespace Tomahawk
+namespace Hatchet
 {
 namespace Widgets
 {
 
 /**
  * \class
- * \brief The tomahawk page that shows new releases.
+ * \brief The hatchet page that shows new releases.
  */
 class NewReleasesWidget : public QWidget
 {
@@ -59,7 +59,7 @@ public:
     NewReleasesWidget( QWidget* parent = 0 );
     ~NewReleasesWidget();
 
-    Tomahawk::playlistinterface_ptr playlistInterface() const;
+    Hatchet::playlistinterface_ptr playlistInterface() const;
     virtual bool isBeingPlayed() const;
     virtual bool jumpToCurrentTrack();
 
@@ -73,11 +73,11 @@ public slots:
     void fetchData();
 
 private slots:
-    void infoSystemInfo( Tomahawk::InfoSystem::InfoRequestData requestData, QVariant output );
+    void infoSystemInfo( Hatchet::InfoSystem::InfoRequestData requestData, QVariant output );
     void infoSystemFinished( QString target );
     void leftCrumbIndexChanged( QModelIndex );
 
-    void newReleasesLoaded( Tomahawk::ChartDataLoader*, const QList< Tomahawk::album_ptr >& );
+    void newReleasesLoaded( Hatchet::ChartDataLoader*, const QList< Hatchet::album_ptr >& );
 
 private:
     void setLeftViewAlbums( PlayableModel* albumModel );
@@ -85,7 +85,7 @@ private:
 
     QStandardItem* parseNode( QStandardItem* parentItem, const QString &label, const QVariant &data );
     Ui::NewReleasesWidget *ui;
-    Tomahawk::playlistinterface_ptr m_playlistInterface;
+    Hatchet::playlistinterface_ptr m_playlistInterface;
 
     QStandardItemModel* m_crumbModelLeft;
     QSortFilterProxyModel* m_sortedProxy;
@@ -94,7 +94,7 @@ private:
     // {Artist,Album,Track}::get() calls are all synchronous db calls
     // and we don't want to lock up out UI in case the db is busy (e.g. on startup)
     QThread* m_workerThread;
-    QSet< Tomahawk::ChartDataLoader* > m_workers;
+    QSet< Hatchet::ChartDataLoader* > m_workers;
 
     // Cache our model data
     QHash< QString, PlayableModel* > m_albumModels;
@@ -106,11 +106,11 @@ private:
 
 const QString NEWRELEASES_VIEWPAGE_NAME = "newreleases";
 
-class TOMAHAWK_VIEWPAGE_EXPORT NewReleasesPage : public Tomahawk::ViewPageLazyLoader< NewReleasesWidget >
+class HATCHET_VIEWPAGE_EXPORT NewReleasesPage : public Hatchet::ViewPageLazyLoader< NewReleasesWidget >
 {
     Q_OBJECT
-    Q_INTERFACES( Tomahawk::ViewPagePlugin )
-    Q_PLUGIN_METADATA( IID "org.tomahawk-player.Player.ViewPagePlugin" )
+    Q_INTERFACES( Hatchet::ViewPagePlugin )
+    Q_PLUGIN_METADATA( IID "org.hatchet-player.Player.ViewPagePlugin" )
 
 public:
     NewReleasesPage( QWidget* parent = 0 );
@@ -127,6 +127,6 @@ public:
 
 
 } // Widgets
-} // Tomahawk
+} // Hatchet
 
-#endif // TOMAHAWK_NEWRELEASESWIDGET_H
+#endif // HATCHET_NEWRELEASESWIDGET_H

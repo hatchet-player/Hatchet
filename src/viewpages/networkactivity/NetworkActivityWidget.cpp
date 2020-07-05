@@ -1,24 +1,24 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "NetworkActivityWidget_p.h"
 
-#include "libtomahawk-widgets/PlaylistDelegate.h"
+#include "libhatchet-widgets/PlaylistDelegate.h"
 
 #include "audio/AudioEngine.h"
 #include "database/Database.h"
@@ -31,8 +31,8 @@
 #include "utils/AnimatedSpinner.h"
 #include "utils/ImageRegistry.h"
 #include "utils/Logger.h"
-#include "utils/TomahawkStyle.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetStyle.h"
+#include "utils/HatchetUtilsGui.h"
 #include "utils/DpiScaler.h"
 #include "widgets/OverlayWidget.h"
 #include "widgets/PlaylistsModel.h"
@@ -46,8 +46,8 @@
 #include <QScrollArea>
 #include <QtConcurrentRun>
 
-using namespace Tomahawk;
-using namespace Tomahawk::Widgets;
+using namespace Hatchet;
+using namespace Hatchet::Widgets;
 
 NetworkActivityWidget::NetworkActivityWidget( QWidget* parent )
     : QWidget( parent )
@@ -61,7 +61,7 @@ NetworkActivityWidget::NetworkActivityWidget( QWidget* parent )
     d->crumbModelLeft = new QStandardItemModel( this );
     d->sortedProxy = new QSortFilterProxyModel( this );
 
-    // d_func()->ui->breadCrumbLeft->setRootIcon( TomahawkUtils::defaultPixmap( TomahawkUtils::NetworkActivity, TomahawkUtils::Original ) );
+    // d_func()->ui->breadCrumbLeft->setRootIcon( HatchetUtils::defaultPixmap( HatchetUtils::NetworkActivity, HatchetUtils::Original ) );
     connect( d->ui->breadCrumbLeft, SIGNAL( activateIndex( QModelIndex ) ), SLOT( leftCrumbIndexChanged( QModelIndex ) ) );
 
     // Build up breadcrumb
@@ -108,16 +108,16 @@ NetworkActivityWidget::NetworkActivityWidget( QWidget* parent )
         d->ui->tracksViewLeft->setEmptyTip( tr( "Sorry, we are still loading the charts." ) );
 
         QPalette p = d->ui->tracksViewLeft->palette();
-        p.setColor( QPalette::Text, TomahawkStyle::PAGE_TRACKLIST_TRACK_SOLVED );
-        p.setColor( QPalette::BrightText, TomahawkStyle::PAGE_TRACKLIST_TRACK_UNRESOLVED );
-        p.setColor( QPalette::Foreground, TomahawkStyle::PAGE_TRACKLIST_NUMBER );
-        p.setColor( QPalette::Highlight, TomahawkStyle::PAGE_TRACKLIST_HIGHLIGHT );
-        p.setColor( QPalette::HighlightedText, TomahawkStyle::PAGE_TRACKLIST_HIGHLIGHT_TEXT );
+        p.setColor( QPalette::Text, HatchetStyle::PAGE_TRACKLIST_TRACK_SOLVED );
+        p.setColor( QPalette::BrightText, HatchetStyle::PAGE_TRACKLIST_TRACK_UNRESOLVED );
+        p.setColor( QPalette::Foreground, HatchetStyle::PAGE_TRACKLIST_NUMBER );
+        p.setColor( QPalette::Highlight, HatchetStyle::PAGE_TRACKLIST_HIGHLIGHT );
+        p.setColor( QPalette::HighlightedText, HatchetStyle::PAGE_TRACKLIST_HIGHLIGHT_TEXT );
 
         d->ui->tracksViewLeft->setPalette( p );
 
-        TomahawkStyle::stylePageFrame( d->ui->tracksViewLeft );
-        TomahawkStyle::stylePageFrame( d->ui->chartsFrame );
+        HatchetStyle::stylePageFrame( d->ui->tracksViewLeft );
+        HatchetStyle::stylePageFrame( d->ui->chartsFrame );
     }
 
     // Trending Tracks
@@ -132,23 +132,23 @@ NetworkActivityWidget::NetworkActivityWidget( QWidget* parent )
         d->trendingTracksModel->startLoading();
 
         QPalette p = d->ui->trendingTracksView->palette();
-        p.setColor( QPalette::Text, TomahawkStyle::PAGE_TRACKLIST_TRACK_SOLVED );
-        p.setColor( QPalette::BrightText, TomahawkStyle::PAGE_TRACKLIST_TRACK_UNRESOLVED );
-        p.setColor( QPalette::Foreground, TomahawkStyle::PAGE_TRACKLIST_NUMBER );
-        p.setColor( QPalette::Highlight, TomahawkStyle::PAGE_TRACKLIST_HIGHLIGHT );
-        p.setColor( QPalette::HighlightedText, TomahawkStyle::PAGE_TRACKLIST_HIGHLIGHT_TEXT );
+        p.setColor( QPalette::Text, HatchetStyle::PAGE_TRACKLIST_TRACK_SOLVED );
+        p.setColor( QPalette::BrightText, HatchetStyle::PAGE_TRACKLIST_TRACK_UNRESOLVED );
+        p.setColor( QPalette::Foreground, HatchetStyle::PAGE_TRACKLIST_NUMBER );
+        p.setColor( QPalette::Highlight, HatchetStyle::PAGE_TRACKLIST_HIGHLIGHT );
+        p.setColor( QPalette::HighlightedText, HatchetStyle::PAGE_TRACKLIST_HIGHLIGHT_TEXT );
 
         d->ui->trendingTracksView->setPalette( p );
 
-        TomahawkStyle::stylePageFrame( d->ui->trendingTracksView );
-        TomahawkStyle::stylePageFrame( d->ui->trendingTracksFrame );
+        HatchetStyle::stylePageFrame( d->ui->trendingTracksView );
+        HatchetStyle::stylePageFrame( d->ui->trendingTracksFrame );
     }
     {
         QFont f = d->ui->trendingTracksLabel->font();
         f.setFamily( "Roboto" );
 
         QPalette p = d->ui->trendingTracksLabel->palette();
-        p.setColor( QPalette::Foreground, TomahawkStyle::PAGE_CAPTION );
+        p.setColor( QPalette::Foreground, HatchetStyle::PAGE_CAPTION );
 
         d->ui->trendingTracksLabel->setFont( f );
         d->ui->trendingTracksLabel->setPalette( p );
@@ -156,13 +156,13 @@ NetworkActivityWidget::NetworkActivityWidget( QWidget* parent )
 
     // Hot Playlists
     {
-        TomahawkStyle::stylePageFrame( d->ui->playlistsFrame );
+        HatchetStyle::stylePageFrame( d->ui->playlistsFrame );
 
         QFont f = d->ui->hotPlaylistsLabel->font();
         f.setFamily( "Roboto" );
 
         QPalette p = d->ui->hotPlaylistsLabel->palette();
-        p.setColor( QPalette::Foreground, TomahawkStyle::PAGE_CAPTION );
+        p.setColor( QPalette::Foreground, HatchetStyle::PAGE_CAPTION );
 
         d->ui->hotPlaylistsLabel->setFont( f );
         d->ui->hotPlaylistsLabel->setPalette( p );
@@ -173,17 +173,17 @@ NetworkActivityWidget::NetworkActivityWidget( QWidget* parent )
         d->ui->playlistView->setVerticalScrollMode( QAbstractItemView::ScrollPerPixel );
 
         QPalette p = d->ui->playlistView->palette();
-        p.setColor( QPalette::Text, TomahawkStyle::PAGE_FOREGROUND );
-        p.setColor( QPalette::BrightText, TomahawkStyle::PAGE_FOREGROUND );
-        p.setColor( QPalette::Foreground, TomahawkStyle::PAGE_FOREGROUND );
-        p.setColor( QPalette::Highlight, TomahawkStyle::PAGE_FOREGROUND );
-        p.setColor( QPalette::HighlightedText, TomahawkStyle::PAGE_BACKGROUND );
+        p.setColor( QPalette::Text, HatchetStyle::PAGE_FOREGROUND );
+        p.setColor( QPalette::BrightText, HatchetStyle::PAGE_FOREGROUND );
+        p.setColor( QPalette::Foreground, HatchetStyle::PAGE_FOREGROUND );
+        p.setColor( QPalette::Highlight, HatchetStyle::PAGE_FOREGROUND );
+        p.setColor( QPalette::HighlightedText, HatchetStyle::PAGE_BACKGROUND );
 
         d->ui->playlistView->setPalette( p );
         d->ui->playlistView->overlay()->setPalette( p );
-        TomahawkStyle::styleScrollBar( d->ui->playlistView->verticalScrollBar() );
-        TomahawkStyle::stylePageFrame( d->ui->playlistView );
-        TomahawkStyle::stylePageFrame( d->ui->playlistsFrame );
+        HatchetStyle::styleScrollBar( d->ui->playlistView->verticalScrollBar() );
+        HatchetStyle::stylePageFrame( d->ui->playlistView );
+        HatchetStyle::stylePageFrame( d->ui->playlistsFrame );
 
         connect( d->ui->playlistView, SIGNAL( activated( QModelIndex ) ), SLOT( onPlaylistActivated( QModelIndex ) ) );
     }
@@ -200,15 +200,15 @@ NetworkActivityWidget::NetworkActivityWidget( QWidget* parent )
 
         d->ui->trendingArtistsView->setAutoResize( true );
         d->ui->trendingArtistsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-        TomahawkStyle::stylePageFrame( d->ui->trendingArtistsView );
-        TomahawkStyle::stylePageFrame( d->ui->trendingArtistsFrame );
+        HatchetStyle::stylePageFrame( d->ui->trendingArtistsView );
+        HatchetStyle::stylePageFrame( d->ui->trendingArtistsFrame );
     }
     {
         QFont f = d->ui->trendingArtistsLabel->font();
         f.setFamily( "Roboto" );
 
         QPalette p = d->ui->trendingArtistsLabel->palette();
-        p.setColor( QPalette::Foreground, TomahawkStyle::PAGE_CAPTION );
+        p.setColor( QPalette::Foreground, HatchetStyle::PAGE_CAPTION );
 
         d->ui->trendingArtistsLabel->setFont( f );
         d->ui->trendingArtistsLabel->setPalette( p );
@@ -221,7 +221,7 @@ NetworkActivityWidget::NetworkActivityWidget( QWidget* parent )
         area->setWidget( widget );
 
         QPalette pal = palette();
-        pal.setBrush( backgroundRole(), TomahawkStyle::PAGE_BACKGROUND );
+        pal.setBrush( backgroundRole(), HatchetStyle::PAGE_BACKGROUND );
         area->setPalette( pal );
         area->setAutoFillBackground( true );
         area->setFrameShape( QFrame::NoFrame );
@@ -230,7 +230,7 @@ NetworkActivityWidget::NetworkActivityWidget( QWidget* parent )
         QVBoxLayout* layout = new QVBoxLayout();
         layout->addWidget( area );
         setLayout( layout );
-        TomahawkUtils::unmarginLayout( layout );
+        HatchetUtils::unmarginLayout( layout );
     }
 
     MetaPlaylistInterface* mpl = new MetaPlaylistInterface();
@@ -243,14 +243,14 @@ NetworkActivityWidget::NetworkActivityWidget( QWidget* parent )
     d->workerThread->start();
     d->worker = new NetworkActivityWorker();
     d->worker->moveToThread( d->workerThread );
-    connect( d->worker, SIGNAL( trendingTracks( QList<Tomahawk::track_ptr> ) ),
-             SLOT( trendingTracks( QList<Tomahawk::track_ptr> ) ),
+    connect( d->worker, SIGNAL( trendingTracks( QList<Hatchet::track_ptr> ) ),
+             SLOT( trendingTracks( QList<Hatchet::track_ptr> ) ),
              Qt::QueuedConnection );
-    connect( d->worker, SIGNAL( hotPlaylists(QList<Tomahawk::playlist_ptr>) ),
-             SLOT(hotPlaylists(QList<Tomahawk::playlist_ptr>)),
+    connect( d->worker, SIGNAL( hotPlaylists(QList<Hatchet::playlist_ptr>) ),
+             SLOT(hotPlaylists(QList<Hatchet::playlist_ptr>)),
              Qt::QueuedConnection );
-    connect( d->worker, SIGNAL( trendingArtists( QList< Tomahawk::artist_ptr > ) ),
-             SLOT( trendingArtists( QList< Tomahawk::artist_ptr > ) ),
+    connect( d->worker, SIGNAL( trendingArtists( QList< Hatchet::artist_ptr > ) ),
+             SLOT( trendingArtists( QList< Hatchet::artist_ptr > ) ),
              Qt::QueuedConnection );
     connect( d->worker, SIGNAL( finished() ),
              d->workerThread, SLOT( quit() ),
@@ -266,7 +266,7 @@ NetworkActivityWidget::~NetworkActivityWidget()
 }
 
 
-Tomahawk::playlistinterface_ptr
+Hatchet::playlistinterface_ptr
 NetworkActivityWidget::playlistInterface() const
 {
     Q_D( const NetworkActivityWidget );
@@ -306,7 +306,7 @@ NetworkActivityWidget::jumpToCurrentTrack()
 
 
 void
-NetworkActivityWidget::weeklyCharts( const QList<Tomahawk::track_ptr>& tracks )
+NetworkActivityWidget::weeklyCharts( const QList<Hatchet::track_ptr>& tracks )
 {
     Q_D( NetworkActivityWidget );
 
@@ -321,7 +321,7 @@ NetworkActivityWidget::weeklyCharts( const QList<Tomahawk::track_ptr>& tracks )
 
 
 void
-NetworkActivityWidget::monthlyCharts( const QList<Tomahawk::track_ptr>& tracks )
+NetworkActivityWidget::monthlyCharts( const QList<Hatchet::track_ptr>& tracks )
 {
     Q_D( NetworkActivityWidget );
 
@@ -336,7 +336,7 @@ NetworkActivityWidget::monthlyCharts( const QList<Tomahawk::track_ptr>& tracks )
 
 
 void
-NetworkActivityWidget::yearlyCharts( const QList<Tomahawk::track_ptr>& tracks )
+NetworkActivityWidget::yearlyCharts( const QList<Hatchet::track_ptr>& tracks )
 {
     Q_D( NetworkActivityWidget );
 
@@ -434,7 +434,7 @@ NetworkActivityWidget::leftCrumbIndexChanged( const QModelIndex& index )
 void
 NetworkActivityWidget::onPlaylistActivated( const QModelIndex& item )
 {
-    Tomahawk::playlist_ptr pl = item.data( RecentlyPlayedPlaylistsModel::PlaylistRole ).value< Tomahawk::playlist_ptr >();
+    Hatchet::playlist_ptr pl = item.data( RecentlyPlayedPlaylistsModel::PlaylistRole ).value< Hatchet::playlist_ptr >();
     ViewManager::instance()->show( pl );
 }
 
@@ -446,8 +446,8 @@ NetworkActivityWidget::fetchYearCharts()
     QDateTime yearAgo = to.addYears( -1 );
     DatabaseCommand_NetworkCharts* yearCharts = new DatabaseCommand_NetworkCharts( yearAgo, to );
     yearCharts->setLimit( numberOfNetworkChartEntries );
-    connect( yearCharts, SIGNAL( done( QList<Tomahawk::track_ptr> ) ), SLOT( yearlyCharts( QList<Tomahawk::track_ptr> ) ) );
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( yearCharts ) );
+    connect( yearCharts, SIGNAL( done( QList<Hatchet::track_ptr> ) ), SLOT( yearlyCharts( QList<Hatchet::track_ptr> ) ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( yearCharts ) );
 }
 
 
@@ -456,8 +456,8 @@ NetworkActivityWidget::fetchOverallCharts()
 {
     DatabaseCommand_NetworkCharts* overallCharts = new DatabaseCommand_NetworkCharts();
     overallCharts->setLimit( numberOfNetworkChartEntries );
-    connect( overallCharts, SIGNAL( done( QList<Tomahawk::track_ptr> ) ), SLOT( overallCharts( QList<Tomahawk::track_ptr> ) ) );
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( overallCharts ) );
+    connect( overallCharts, SIGNAL( done( QList<Hatchet::track_ptr> ) ), SLOT( overallCharts( QList<Hatchet::track_ptr> ) ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( overallCharts ) );
 }
 
 
@@ -468,8 +468,8 @@ NetworkActivityWidget::fetchWeekCharts()
     QDateTime weekAgo = to.addDays( -7 );
     DatabaseCommand_NetworkCharts* weekCharts = new DatabaseCommand_NetworkCharts( weekAgo, to );
     weekCharts->setLimit( numberOfNetworkChartEntries );
-    connect( weekCharts, SIGNAL( done( QList<Tomahawk::track_ptr> ) ), SLOT( weeklyCharts( QList<Tomahawk::track_ptr> ) ) );
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( weekCharts ) );
+    connect( weekCharts, SIGNAL( done( QList<Hatchet::track_ptr> ) ), SLOT( weeklyCharts( QList<Hatchet::track_ptr> ) ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( weekCharts ) );
 }
 
 
@@ -480,8 +480,8 @@ NetworkActivityWidget::fetchMonthCharts()
     QDateTime monthAgo = to.addMonths( -1 );
     DatabaseCommand_NetworkCharts* monthCharts = new DatabaseCommand_NetworkCharts( monthAgo, to );
     monthCharts->setLimit( numberOfNetworkChartEntries );
-    connect( monthCharts, SIGNAL( done( QList<Tomahawk::track_ptr> ) ), SLOT( monthlyCharts( QList<Tomahawk::track_ptr> ) ) );
-    Database::instance()->enqueue( Tomahawk::dbcmd_ptr( monthCharts ) );
+    connect( monthCharts, SIGNAL( done( QList<Hatchet::track_ptr> ) ), SLOT( monthlyCharts( QList<Hatchet::track_ptr> ) ) );
+    Database::instance()->enqueue( Hatchet::dbcmd_ptr( monthCharts ) );
 }
 
 

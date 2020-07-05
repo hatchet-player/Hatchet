@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TARGET_NAME="Tomahawk"
+TARGET_NAME="Hatchet"
 
 set -e
 
@@ -54,6 +54,6 @@ CERT_SIGNER=$2
     mv "${TARGET_NAME}.dmg" "${TARGET_NAME}-$VERSION.dmg"
 
     header "Creating signed Sparkle update"
-#     $ROOT/../admin/mac/sign_bundle.rb "${TARGET_NAME}" $VERSION ~/tomahawk_sparkle_privkey.pem
+#     $ROOT/../admin/mac/sign_bundle.rb "${TARGET_NAME}" $VERSION ~/hatchet_sparkle_privkey.pem
 
     header "Done!"

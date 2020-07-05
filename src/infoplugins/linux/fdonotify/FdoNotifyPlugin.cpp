@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2014, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2013-2014, Uwe L. Korn <uwelk@xhochy.com>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 // Marked portions of this file are subject to the following copyright:
@@ -43,19 +43,19 @@
 #include "ImageConverter.h"
 #include "FreedesktopNotificationsProxy.h"
 
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtilsGui.h"
 
-#include "TomahawkVersion.h"
+#include "HatchetVersion.h"
 
 #include <QDBusConnection>
 #include <QDBusPendingCallWatcher>
 #include <QImage>
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 namespace InfoSystem
@@ -106,35 +106,35 @@ FdoNotifyPlugin::dbusCapabilitiesReplyReceived( QDBusPendingCallWatcher* watcher
 
 
 void
-FdoNotifyPlugin::pushInfo( Tomahawk::InfoSystem::InfoPushData pushData )
+FdoNotifyPlugin::pushInfo( Hatchet::InfoSystem::InfoPushData pushData )
 {
-    tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "showing notification:" << TomahawkSettings::instance()->songChangeNotificationEnabled();
+    tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "showing notification:" << HatchetSettings::instance()->songChangeNotificationEnabled();
 
-    if ( !TomahawkSettings::instance()->songChangeNotificationEnabled() )
+    if ( !HatchetSettings::instance()->songChangeNotificationEnabled() )
         return;
 
     QVariant inputData = pushData.infoPair.second;
 
     switch ( pushData.type )
     {
-        case Tomahawk::InfoSystem::InfoTrackUnresolved:
+        case Hatchet::InfoSystem::InfoTrackUnresolved:
             notifyUser( tr( "The current track could not be resolved. %applicationName will pick back up with the next resolvable track from this source." ) );
             return;
 
-        case Tomahawk::InfoSystem::InfoNotifyUser:
+        case Hatchet::InfoSystem::InfoNotifyUser:
             notifyUser( pushData.infoPair.second.toString() );
             return;
 
-        case Tomahawk::InfoSystem::InfoNowStopped:
+        case Hatchet::InfoSystem::InfoNowStopped:
             notifyUser( tr( "%applicationName is stopped." ) );
             return;
 
-        case Tomahawk::InfoSystem::InfoNowPlaying:
-        case Tomahawk::InfoSystem::InfoNowResumed:
+        case Hatchet::InfoSystem::InfoNowPlaying:
+        case Hatchet::InfoSystem::InfoNowResumed:
             nowPlaying( pushData.infoPair.second );
             return;
 
-        case Tomahawk::InfoSystem::InfoInboxReceived:
+        case Hatchet::InfoSystem::InfoInboxReceived:
             inboxReceived( pushData.infoPair.second );
             return;
 
@@ -151,7 +151,7 @@ FdoNotifyPlugin::pushInfo( Tomahawk::InfoSystem::InfoPushData pushData )
 int
 FdoNotifyPlugin::getNotificationIconHeight()
 {
-     return 6 * TomahawkUtils::defaultFontHeight();
+     return 6 * HatchetUtils::defaultFontHeight();
 }
 
 
@@ -159,13 +159,13 @@ void
 FdoNotifyPlugin::notifyUser( const QString& messageText )
 {
     QVariantMap hints;
-    hints["desktop-entry"] = QString( "tomahawk" );
-    hints[ "image_data" ] = ImageConverter::variantForImage( QImage( RESPATH "icons/tomahawk-icon-512x512.png" ).scaledToHeight( getNotificationIconHeight() ) );
+    hints["desktop-entry"] = QString( "hatchet" );
+    hints[ "image_data" ] = ImageConverter::variantForImage( QImage( RESPATH "icons/hatchet-icon-512x512.png" ).scaledToHeight( getNotificationIconHeight() ) );
     notifications_interface->Notify(
-        "Tomahawk",    // app_name
+        "Hatchet",    // app_name
         0,             // notification_id
         "",            // app_icon
-        "Tomahawk",    // summary
+        "Hatchet",    // summary
         messageText,   // body
         QStringList(), // actions
         hints,         // hints
@@ -182,16 +182,16 @@ void FdoNotifyPlugin::inboxReceived( const QVariant& input )
 
     QVariantMap map = input.toMap();
 
-    if ( !map.contains( "trackinfo" ) || !map[ "trackinfo" ].canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !map.contains( "trackinfo" ) || !map[ "trackinfo" ].canConvert< Hatchet::InfoSystem::InfoStringHash >() )
         return;
-    if ( !map.contains( "sourceinfo" ) || !map[ "sourceinfo" ].canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !map.contains( "sourceinfo" ) || !map[ "sourceinfo" ].canConvert< Hatchet::InfoSystem::InfoStringHash >() )
         return;
 
-    InfoStringHash hash = map[ "trackinfo" ].value< Tomahawk::InfoSystem::InfoStringHash >();
+    InfoStringHash hash = map[ "trackinfo" ].value< Hatchet::InfoSystem::InfoStringHash >();
     if ( !hash.contains( "title" ) || !hash.contains( "artist" ) )
         return;
 
-    InfoStringHash src = map[ "sourceinfo" ].value< Tomahawk::InfoSystem::InfoStringHash >();
+    InfoStringHash src = map[ "sourceinfo" ].value< Hatchet::InfoSystem::InfoStringHash >();
     if ( !src.contains( "friendlyname" ) )
         return;
 
@@ -220,15 +220,15 @@ void FdoNotifyPlugin::inboxReceived( const QVariant& input )
     tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "sending message" << messageText;
 
     QVariantMap hints;
-    hints["desktop-entry"] = QString( "tomahawk" );
+    hints["desktop-entry"] = QString( "hatchet" );
 
     // Convert image to QVariant and scale to a consistent size.
     hints[ "image_data" ] = ImageConverter::variantForImage( QImage( RESPATH "images/inbox-512x512.png" ).scaledToHeight( getNotificationIconHeight() ) );
     notifications_interface->Notify(
-        "Tomahawk",                  // app_name
+        "Hatchet",                  // app_name
         m_nowPlayingId,              // notification_id
         "",                          // app_icon
-        "Tomahawk - Track received", // summary
+        "Hatchet - Track received", // summary
         messageText,                 // body
         QStringList(),               // actions
         hints,                       // hints
@@ -245,10 +245,10 @@ FdoNotifyPlugin::nowPlaying( const QVariant& input )
         return;
 
     QVariantMap map = input.toMap();
-    if ( !map.contains( "trackinfo" ) || !map[ "trackinfo" ].canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !map.contains( "trackinfo" ) || !map[ "trackinfo" ].canConvert< Hatchet::InfoSystem::InfoStringHash >() )
         return;
 
-    InfoStringHash hash = map[ "trackinfo" ].value< Tomahawk::InfoSystem::InfoStringHash >();
+    InfoStringHash hash = map[ "trackinfo" ].value< Hatchet::InfoSystem::InfoStringHash >();
     if ( !hash.contains( "title" ) || !hash.contains( "artist" ) || !hash.contains( "album" ) )
         return;
 
@@ -287,20 +287,20 @@ FdoNotifyPlugin::nowPlaying( const QVariant& input )
     tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "sending message" << messageText;
 
     QVariantMap hints;
-    hints["desktop-entry"] = QString( "tomahawk" );
+    hints["desktop-entry"] = QString( "hatchet" );
 
-    // If there is a cover availble use it, else use Tomahawk logo as default.
+    // If there is a cover availble use it, else use Hatchet logo as default.
     QImage image;
     if ( map.contains( "coveruri" ) && map[ "coveruri" ].canConvert< QString >() )
         image = QImage( map[ "coveruri" ].toString(), "PNG" );
     else
-        image = QImage( RESPATH "icons/tomahawk-icon-512x512.png" );
+        image = QImage( RESPATH "icons/hatchet-icon-512x512.png" );
     // Convert image to QVariant and scale to a consistent size.
     hints[ "image_data" ] = ImageConverter::variantForImage( image.scaledToHeight( getNotificationIconHeight() ) );
 
 
     QDBusPendingReply<> reply = notifications_interface->Notify(
-        TOMAHAWK_APPLICATION_NAME,      // app_name
+        HATCHET_APPLICATION_NAME,      // app_name
         m_nowPlayingId,                 // notification_id
         "",                             // app_icon
         tr( "%applicationName - Now Playing" ), // summary
@@ -337,6 +337,6 @@ FdoNotifyPlugin::dbusPlayingReplyReceived( QDBusPendingCallWatcher* watcher )
 
 } //ns InfoSystem
 
-} //ns Tomahawk
+} //ns Hatchet
 
-Q_EXPORT_PLUGIN2( Tomahawk::InfoSystem::InfoPlugin, Tomahawk::InfoSystem::FdoNotifyPlugin )
+Q_EXPORT_PLUGIN2( Hatchet::InfoSystem::InfoPlugin, Hatchet::InfoSystem::FdoNotifyPlugin )

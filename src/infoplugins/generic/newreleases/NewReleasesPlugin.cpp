@@ -1,4 +1,4 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2012, Casey Link <unnamedrambler@gmail.com>
  *   Copyright 2011-2012, Hugo Lindström <hugolm84@gmail.com>
@@ -6,18 +6,18 @@
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "NewReleasesPlugin.h"
@@ -26,11 +26,11 @@
 #include "CountryUtils.h"
 #include "Typedefs.h"
 #include "audio/AudioEngine.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "utils/Json.h"
-#include "utils/TomahawkUtils.h"
+#include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
-#include "utils/TomahawkCache.h"
+#include "utils/HatchetCache.h"
 #include "Source.h"
 #include "utils/NetworkAccessManager.h"
 
@@ -41,10 +41,10 @@
 #include <QNetworkConfiguration>
 #include <QNetworkReply>
 
-#define CHART_URL "http://charts.tomahawk-player.org/"
+#define CHART_URL "http://charts.hatchet-player.org/"
 //#define CHART_URL "http://localhost:8080/"
 
-using namespace Tomahawk::InfoSystem;
+using namespace Hatchet::InfoSystem;
 
 
 bool
@@ -91,11 +91,11 @@ NewReleasesPlugin::~NewReleasesPlugin()
 void
 NewReleasesPlugin::init()
 {
-    QVariant data = TomahawkUtils::Cache::instance()->getData( "NewReleasesPlugin", "nr_sources" );
-    if ( data.canConvert< QList< Tomahawk::InfoSystem::InfoStringHash > >() )
+    QVariant data = HatchetUtils::Cache::instance()->getData( "NewReleasesPlugin", "nr_sources" );
+    if ( data.canConvert< QList< Hatchet::InfoSystem::InfoStringHash > >() )
     {
-         const QList< Tomahawk::InfoSystem::InfoStringHash > sourceList = data.value< QList< Tomahawk::InfoSystem::InfoStringHash > >();
-         foreach ( const Tomahawk::InfoSystem::InfoStringHash &sourceHash, sourceList )
+         const QList< Hatchet::InfoSystem::InfoStringHash > sourceList = data.value< QList< Hatchet::InfoSystem::InfoStringHash > >();
+         foreach ( const Hatchet::InfoSystem::InfoStringHash &sourceHash, sourceList )
          {
              bool ok;
              qlonglong maxAge = getMaxAge( QString( sourceHash[ "nr_expires" ] ).toLongLong( &ok ) );
@@ -133,7 +133,7 @@ NewReleasesPlugin::dataError( InfoRequestData requestData )
 void
 NewReleasesPlugin::getInfo( InfoRequestData requestData )
 {
-    InfoStringHash hash = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+    InfoStringHash hash = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
     bool foundSource = false;
 
     switch( requestData.type )
@@ -148,7 +148,7 @@ NewReleasesPlugin::getInfo( InfoRequestData requestData )
         }
         else
         {
-            foreach ( const Tomahawk::InfoSystem::InfoStringHash &sourceHash, m_nrSources )
+            foreach ( const Hatchet::InfoSystem::InfoStringHash &sourceHash, m_nrSources )
             {
                 if ( sourceHash[ "nr_source" ] == hash[ "nr_source" ] )
                 {
@@ -181,15 +181,15 @@ NewReleasesPlugin::getInfo( InfoRequestData requestData )
 void
 NewReleasesPlugin::fetchNRFromCache( InfoRequestData requestData )
 {
-    if ( !requestData.input.canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !requestData.input.canConvert< Hatchet::InfoSystem::InfoStringHash >() )
     {
         tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "Hash did not contain source " << requestData.input;
         dataError( requestData );
         return;
     }
 
-    InfoStringHash hash = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
-    Tomahawk::InfoSystem::InfoStringHash criteria;
+    InfoStringHash hash = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
+    Hatchet::InfoSystem::InfoStringHash criteria;
 
     /// Each request needs to contain both a id, source a expire header
     if ( !hash.contains( "nr_id" ) && !hash.contains( "nr_source" ) && !hash.contains( "nr_expires" ) )
@@ -221,14 +221,14 @@ NewReleasesPlugin::fetchNRFromCache( InfoRequestData requestData )
 void
 NewReleasesPlugin::fetchNRCapabilitiesFromCache( InfoRequestData requestData )
 {
-    if ( !requestData.input.canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !requestData.input.canConvert< Hatchet::InfoSystem::InfoStringHash >() )
     {
         tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "Could not convert requestData to InfoStringHash!";
         dataError( requestData );
         return;
     }
 
-    Tomahawk::InfoSystem::InfoStringHash criteria;
+    Hatchet::InfoSystem::InfoStringHash criteria;
     criteria[ "InfoNewReleaseCapabilities" ] = "newreleasesplugin";
     criteria[ "InfoNewReleaseVersion" ] = m_nrVersion;
 
@@ -267,9 +267,9 @@ NewReleasesPlugin::notInCacheSlot( InfoStringHash criteria, InfoRequestData requ
 
             QUrl url = QUrl( QString ( CHART_URL "newreleases" ) );
 
-            TomahawkUtils::urlAddQueryItem( url, "version", TomahawkUtils::appFriendlyVersion() );
+            HatchetUtils::urlAddQueryItem( url, "version", HatchetUtils::appFriendlyVersion() );
 
-            QNetworkReply* reply = Tomahawk::Utils::nam()->get( QNetworkRequest ( url ) );
+            QNetworkReply* reply = Hatchet::Utils::nam()->get( QNetworkRequest ( url ) );
             reply->setProperty( "only_source_list", true );
 
             tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "fetching:" << url;
@@ -309,7 +309,7 @@ NewReleasesPlugin::nrSourcesList()
     {
         bool ok;
         QByteArray jsonData = reply->readAll();
-        const QVariantMap res = TomahawkUtils::parseJson( jsonData, &ok ).toMap();
+        const QVariantMap res = HatchetUtils::parseJson( jsonData, &ok ).toMap();
         const QVariantList sources = res.value ( "sources" ).toList();
 
         if ( !ok )
@@ -337,7 +337,7 @@ NewReleasesPlugin::nrSourcesList()
             {
                 for ( int i = 0; i < m_nrSources.size(); i++ )
                 {
-                    const Tomahawk::InfoSystem::InfoStringHash &hash = m_nrSources.at( i );
+                    const Hatchet::InfoSystem::InfoStringHash &hash = m_nrSources.at( i );
                     if ( hash[ "nr_source" ] == source )
                     {
                         tDebug() << Q_FUNC_INFO  << "Removing invalid source" << source;
@@ -359,7 +359,7 @@ NewReleasesPlugin::nrSourcesList()
 
             const qlonglong maxAge = getMaxAge( headerExpiration.toLocal8Bit() );
             const qlonglong expires = headerExpiration.toLongLong(&ok);
-            Tomahawk::InfoSystem::InfoStringHash source_expire;
+            Hatchet::InfoSystem::InfoStringHash source_expire;
 
             if ( ok )
             {
@@ -380,7 +380,7 @@ NewReleasesPlugin::nrSourcesList()
          * In init, we check expiration for each source, and refetch if invalid
          * 2 days seems fair enough though
          */
-        TomahawkUtils::Cache::instance()->putData( "NewReleasesPlugin", 172800000 /* 2 days */, "nr_sources", QVariant::fromValue< QList< Tomahawk::InfoSystem::InfoStringHash > > ( m_nrSources ) );
+        HatchetUtils::Cache::instance()->putData( "NewReleasesPlugin", 172800000 /* 2 days */, "nr_sources", QVariant::fromValue< QList< Hatchet::InfoSystem::InfoStringHash > > ( m_nrSources ) );
         m_nrFetchJobs--;
 
         if( !reply->property( "only_source_list" ).toBool() )
@@ -398,13 +398,13 @@ NewReleasesPlugin::fetchAllNRSources()
     if ( !m_nrSources.isEmpty() && m_allNRsMap.isEmpty() )
     {
         tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "InfoNewRelease fetching source data";
-        foreach ( const Tomahawk::InfoSystem::InfoStringHash source, m_nrSources )
+        foreach ( const Hatchet::InfoSystem::InfoStringHash source, m_nrSources )
         {
             QUrl url = QUrl( QString( CHART_URL "newreleases/%1" ).arg( source[ "nr_source" ] ) );
 
-            TomahawkUtils::urlAddQueryItem( url, "version", TomahawkUtils::appFriendlyVersion() );
+            HatchetUtils::urlAddQueryItem( url, "version", HatchetUtils::appFriendlyVersion() );
 
-            QNetworkReply* reply = Tomahawk::Utils::nam()->get( QNetworkRequest( url ) );
+            QNetworkReply* reply = Hatchet::Utils::nam()->get( QNetworkRequest( url ) );
             reply->setProperty( "nr_source", source[ "nr_source" ] );
 
             tDebug() << Q_FUNC_INFO << "fetching:" << url;
@@ -422,12 +422,12 @@ NewReleasesPlugin::fetchNR( InfoRequestData requestData, const QString& source, 
     /// Fetch the chart, we need source and id
     QUrl url = QUrl ( QString ( CHART_URL "newreleases/%1/%2" ).arg( source ).arg( nr_id ) );
 
-    TomahawkUtils::urlAddQueryItem( url, "version", TomahawkUtils::appFriendlyVersion() );
+    HatchetUtils::urlAddQueryItem( url, "version", HatchetUtils::appFriendlyVersion() );
 
     tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "fetching: " << url;
 
-    QNetworkReply* reply = Tomahawk::Utils::nam()->get( QNetworkRequest( url ) );
-    reply->setProperty( "requestData", QVariant::fromValue< Tomahawk::InfoSystem::InfoRequestData >( requestData ) );
+    QNetworkReply* reply = Hatchet::Utils::nam()->get( QNetworkRequest( url ) );
+    reply->setProperty( "requestData", QVariant::fromValue< Hatchet::InfoSystem::InfoRequestData >( requestData ) );
 
     connect ( reply, SIGNAL( finished() ), SLOT( nrReturned() ) );
 }
@@ -444,7 +444,7 @@ NewReleasesPlugin::nrList()
     {
         bool ok;
         QByteArray jsonData = reply->readAll();
-        const QVariantMap res = TomahawkUtils::parseJson( jsonData, &ok ).toMap();
+        const QVariantMap res = HatchetUtils::parseJson( jsonData, &ok ).toMap();
 
         if ( !ok )
         {
@@ -493,7 +493,7 @@ NewReleasesPlugin::nrList()
                     {
                         if ( !m_cachedCountries.contains( geo ) )
                         {
-                            extra = Tomahawk::CountryUtils::fullCountryFromCode( geo );
+                            extra = Hatchet::CountryUtils::fullCountryFromCode( geo );
                             if ( extra.isEmpty() || extra.isNull() ){
                                 qWarning() << "Geo string seems to be off!" << geo;
                                 continue;
@@ -531,9 +531,9 @@ NewReleasesPlugin::nrList()
                     if ( isDefault )
                         nr[ "default" ] = "true";
 
-                    QList< Tomahawk::InfoSystem::InfoStringHash > extraTypeData = extraType[ nrExtraType ][ extra ].value< QList< Tomahawk::InfoSystem::InfoStringHash > >();
+                    QList< Hatchet::InfoSystem::InfoStringHash > extraTypeData = extraType[ nrExtraType ][ extra ].value< QList< Hatchet::InfoSystem::InfoStringHash > >();
                     extraTypeData.append( nr );
-                    extraType[ nrExtraType ][ extra ] = QVariant::fromValue< QList< Tomahawk::InfoSystem::InfoStringHash > >( extraTypeData );
+                    extraType[ nrExtraType ][ extra ] = QVariant::fromValue< QList< Hatchet::InfoSystem::InfoStringHash > >( extraTypeData );
 
                     if ( isDefault )
                     {
@@ -578,9 +578,9 @@ NewReleasesPlugin::nrList()
 
                         if ( !extra.isEmpty() )
                         {
-                            QList< Tomahawk::InfoSystem::InfoStringHash > extraTypeData = extraType[ extra ][ type ].value< QList< Tomahawk::InfoSystem::InfoStringHash > >();
+                            QList< Hatchet::InfoSystem::InfoStringHash > extraTypeData = extraType[ extra ][ type ].value< QList< Hatchet::InfoSystem::InfoStringHash > >();
                             extraTypeData.append( nr );
-                            extraType[ extra ][ type ] = QVariant::fromValue< QList< Tomahawk::InfoSystem::InfoStringHash > >( extraTypeData );
+                            extraType[ extra ][ type ] = QVariant::fromValue< QList< Hatchet::InfoSystem::InfoStringHash > >( extraTypeData );
                         }
                         else
                             albumNRs.append( nr );
@@ -599,7 +599,7 @@ NewReleasesPlugin::nrList()
             }
 
             if ( !albumNRs.isEmpty() )
-                newreleases.insert ( tr ( "Albums" ), QVariant::fromValue< QList< Tomahawk::InfoSystem::InfoStringHash > >( albumNRs ) );
+                newreleases.insert ( tr ( "Albums" ), QVariant::fromValue< QList< Hatchet::InfoSystem::InfoStringHash > >( albumNRs ) );
 
             /// @note For displaying purposes, upper the first letter
             /// @note Remeber to lower it when fetching this!
@@ -624,7 +624,7 @@ NewReleasesPlugin::nrList()
         {
             emit info( request, m_allNRsMap );
             // update cache
-            Tomahawk::InfoSystem::InfoStringHash criteria;
+            Hatchet::InfoSystem::InfoStringHash criteria;
             criteria[ "InfoNewReleaseCapabilities" ] = "newreleasesplugin";
             criteria[ "InfoNewReleaseVersion" ] = m_nrVersion;
             /**
@@ -676,7 +676,7 @@ NewReleasesPlugin::nrReturned()
     {
         bool ok;
         QByteArray jsonData = reply->readAll();
-        QVariantMap res = TomahawkUtils::parseJson( jsonData, &ok ).toMap();
+        QVariantMap res = HatchetUtils::parseJson( jsonData, &ok ).toMap();
 
         if ( !ok )
         {
@@ -689,7 +689,7 @@ NewReleasesPlugin::nrReturned()
 
         /// SO we have a result, parse it!
         QVariantList albumList = res.value( "list" ).toList();
-        QList< Tomahawk::InfoSystem::InfoStringHash >newreleases;
+        QList< Hatchet::InfoSystem::InfoStringHash >newreleases;
 
         foreach( const QVariant & albumObj, albumList )
         {
@@ -700,7 +700,7 @@ NewReleasesPlugin::nrReturned()
                 const QString artist = albumMap.value( "artist" ).toString();
                 const QString date = albumMap.value( "date" ).toString();
                 const QString rank = albumMap.value( "rank" ).toString();
-                Tomahawk::InfoSystem::InfoStringHash pair;
+                Hatchet::InfoSystem::InfoStringHash pair;
                 pair[ "artist" ] = artist;
                 pair[ "album" ] = album;
                 pair[ "date" ] = date;
@@ -711,15 +711,15 @@ NewReleasesPlugin::nrReturned()
 
         qSort( newreleases.begin(), newreleases.end(), newReleaseSort );
 
-        returnedData[ "albums" ] = QVariant::fromValue< QList< Tomahawk::InfoSystem::InfoStringHash > >( newreleases );
+        returnedData[ "albums" ] = QVariant::fromValue< QList< Hatchet::InfoSystem::InfoStringHash > >( newreleases );
         returnedData[ "type" ] = "albums";
-        Tomahawk::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
+        Hatchet::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
 
         emit info( requestData, returnedData );
 
         // update cache
-        Tomahawk::InfoSystem::InfoStringHash criteria;
-        Tomahawk::InfoSystem::InfoStringHash origData = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+        Hatchet::InfoSystem::InfoStringHash criteria;
+        Hatchet::InfoSystem::InfoStringHash origData = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
         criteria[ "nr_id" ] = origData[ "nr_id" ];
         criteria[ "nr_source" ] = origData[ "nr_source" ];
         criteria[ "nr_expires" ] = ( ok ? QString::number( expires ) : QString::number( 0 ) );
@@ -733,4 +733,4 @@ NewReleasesPlugin::nrReturned()
         tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "Network error in fetching newrelease:" << reply->url().toString();
 }
 
-Q_EXPORT_PLUGIN2( Tomahawk::InfoSystem::InfoPlugin, Tomahawk::InfoSystem::NewReleasesPlugin )
+Q_EXPORT_PLUGIN2( Hatchet::InfoSystem::InfoPlugin, Hatchet::InfoSystem::NewReleasesPlugin )

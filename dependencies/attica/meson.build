@@ -18,4 +18,4 @@ config_h.set(
     kf5attica_dep.found(),
     description : 
         'Provides support for installation of resolvers from the' +
-        'Tomahawk website')
+        'Hatchet website')

@@ -5,23 +5,23 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>@TOMAHAWK_APPLICATION_NAME@</string>
+	<string>@HATCHET_APPLICATION_NAME@</string>
 	<key>CFBundleIdentifier</key>
-	<string>@TOMAHAWK_APPLICATION_PACKAGE_NAME@</string>
+	<string>@HATCHET_APPLICATION_PACKAGE_NAME@</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleVersion</key>
-	<string>@TOMAHAWK_VERSION@</string>
+	<string>@HATCHET_VERSION@</string>
 	<key>CFBundleShortVersionString</key>
-	<string>@TOMAHAWK_VERSION@</string>
+	<string>@HATCHET_VERSION@</string>
 	<key>CFBundleSignature</key>
-	<string>@TOMAHAWK_BASE_TARGET_NAME@</string>
+	<string>@HATCHET_BASE_TARGET_NAME@</string>
 	<key>CFBundleIconFile</key>
-	<string>@TOMAHAWK_APPLICATION_NAME@.icns</string>
+	<string>@HATCHET_APPLICATION_NAME@.icns</string>
 	<key>CFBundleName</key>
-	<string>@TOMAHAWK_APPLICATION_NAME@</string>
+	<string>@HATCHET_APPLICATION_NAME@</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>10.7.0</string>
 	<key>NSPrincipalClass</key>
@@ -29,7 +29,7 @@
 	<key>NSHighResolutionCapable</key>
 	<true />
 	<key>SUFeedURL</key>
-	<string>@TOMAHAWK_SPARKLE_UPDATE_URL@</string>
+	<string>@HATCHET_SPARKLE_UPDATE_URL@</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>sparkle_pub.pem</string>
 	<key>SUEnableSystemProfiling</key>
@@ -38,10 +38,10 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>Tomahawk URL</string>
+			<string>Hatchet URL</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>tomahawk</string>
+				<string>hatchet</string>
 			</array>
 		</dict>
 	</array>

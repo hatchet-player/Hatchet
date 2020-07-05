@@ -1,4 +1,4 @@
-;Tomahawk installer script.
+;Hatchet installer script.
 
 ;-----------------------------------------------------------------------------
 ; Some installer script options (comment-out options not required)
@@ -21,7 +21,7 @@
 !define APPLICATION_NAME "@CPACK_PACKAGE_NAME@"
 !define TARGET_NAME "@CPACK_PACKAGE_TARGET_NAME@"
 ;define app id needed for Windows 8 notifications
-!define AppUserModelId "@TOMAHAWK_APPLICATION_PACKAGE_NAME@"
+!define AppUserModelId "@HATCHET_APPLICATION_PACKAGE_NAME@"
 
 !define MINGW_BIN "${MINGW_ROOT}/bin"
 !define MINGW_LIB "${MINGW_ROOT}/lib"
@@ -114,7 +114,7 @@ ReserveFile "${NSISDIR}\Plugins\InstallOptions.dll"
 !define MUI_COMPONENTSPAGE_SMALLDESC
 !define MUI_FINISHPAGE_TITLE "@CPACK_PACKAGE_NAME@ Install Completed"
 !define MUI_FINISHPAGE_LINK "Click here to visit the @CPACK_PACKAGE_NAME@ website."
-!define MUI_FINISHPAGE_LINK_LOCATION "http://@TOMAHAWK_ORGANIZATION_DOMAIN@"
+!define MUI_FINISHPAGE_LINK_LOCATION "http://@HATCHET_ORGANIZATION_DOMAIN@"
 !define MUI_FINISHPAGE_NOREBOOTSUPPORT
 !ifdef OPTION_FINISHPAGE_RELEASE_NOTES
    !define MUI_FINISHPAGE_SHOWREADME_NOTCHECKED
@@ -124,7 +124,7 @@ ReserveFile "${NSISDIR}\Plugins\InstallOptions.dll"
 !ifdef OPTION_FINISHPAGE_LAUNCHER
    !define MUI_FINISHPAGE_NOAUTOCLOSE
    !define MUI_FINISHPAGE_RUN
-   !define MUI_FINISHPAGE_RUN_FUNCTION "LaunchTomahawk"
+   !define MUI_FINISHPAGE_RUN_FUNCTION "LaunchHatchet"
 !endif
 
 ;-----------------------------------------------------------------------------
@@ -156,11 +156,11 @@ UninstPage custom un.UnPageUserAppData un.UnPageUserAppDataLeave
 #                                                                            #
 ##############################################################################
 
-Function LaunchTomahawk
-   ${UAC.CallFunctionAsUser} LaunchTomahawkAsUser
+Function LaunchHatchet
+   ${UAC.CallFunctionAsUser} LaunchHatchetAsUser
 FunctionEnd
 
-Function LaunchTomahawkAsUser
+Function LaunchHatchetAsUser
    Exec "$INSTDIR\${APPLICATION_NAME}.exe"
 FunctionEnd
 
@@ -194,7 +194,7 @@ FunctionEnd
    no_process_${processTitle}_to_end:
 !macroend
 
-Function EnsureTomahawkShutdown
+Function EnsureHatchetShutdown
    !insertmacro CheckAndConfirmEndProcess "${TARGET_NAME}" "${APPLICATION_NAME}.exe"
 FunctionEnd
 
@@ -274,7 +274,7 @@ FunctionEnd
 #   INSTALLER SECTIONS                                                       #
 #                                                                            #
 ##############################################################################
-Section "${APPLICATION_NAME}" SEC_TOMAHAWK_PLAYER
+Section "${APPLICATION_NAME}" SEC_HATCHET_PLAYER
    SectionIn 1 2 3 RO
    SetDetailsPrint listonly
 
@@ -497,7 +497,7 @@ ${MementoSectionDone}
 ; Installer section descriptions
 ;--------------------------------
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-!insertmacro MUI_DESCRIPTION_TEXT ${SEC_TOMAHAWK_PLAYER} "${APPLICATION_NAME} essentials."
+!insertmacro MUI_DESCRIPTION_TEXT ${SEC_HATCHET_PLAYER} "${APPLICATION_NAME} essentials."
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC_START_MENU} "${APPLICATION_NAME} program group."
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC_DESKTOP} "Desktop shortcut for ${APPLICATION_NAME}."
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC_QUICK_LAUNCH} "Quick Launch shortcut for ${APPLICATION_NAME}."
@@ -527,22 +527,22 @@ Section -post
    WriteRegExpandStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "UninstallString" '"$INSTDIR\Uninstall.exe"'
    WriteRegExpandStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "InstallLocation" "$INSTDIR"
    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "DisplayName" "${APPLICATION_NAME}"
-   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "Publisher" "@TOMAHAWK_ORGANIZATION_DOMAIN@"
+   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "Publisher" "@HATCHET_ORGANIZATION_DOMAIN@"
    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "DisplayIcon" "$INSTDIR\Uninstall.exe,0"
    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "DisplayVersion" "${VERSION}"
    WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "VersionMajor" "${VER_MAJOR}"
    WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "VersionMinor" "${VER_MINOR}.${REVISION}"
-   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "URLInfoAbout" "http://@TOMAHAWK_ORGANIZATION_DOMAIN@/"
-   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "HelpLink" "http://@TOMAHAWK_ORGANIZATION_DOMAIN@/"
+   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "URLInfoAbout" "http://@HATCHET_ORGANIZATION_DOMAIN@/"
+   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "HelpLink" "http://@HATCHET_ORGANIZATION_DOMAIN@/"
    WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "NoModify" "1"
    WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "NoRepair" "1"
 
-   ; Register tomahawk:// protocol handler
-   WriteRegStr HKCR "tomahawk" "" "URL:Tomahawk Protocol"
-   WriteRegStr HKCR "tomahawk" "URL Protocol" ""
-   WriteRegStr HKCR "tomahawk\DefaultIcon" "" "$INSTDIR\${APPLICATION_NAME}.exe,1"
-   WriteRegStr HKCR "tomahawk\shell" "" "open"
-   WriteRegStr HKCR "tomahawk\shell\open\command" "" '"$INSTDIR\${APPLICATION_NAME}.exe" "%1"'
+   ; Register hatchet:// protocol handler
+   WriteRegStr HKCR "hatchet" "" "URL:Hatchet Protocol"
+   WriteRegStr HKCR "hatchet" "URL Protocol" ""
+   WriteRegStr HKCR "hatchet\DefaultIcon" "" "$INSTDIR\${APPLICATION_NAME}.exe,1"
+   WriteRegStr HKCR "hatchet\shell" "" "open"
+   WriteRegStr HKCR "hatchet\shell\open\command" "" '"$INSTDIR\${APPLICATION_NAME}.exe" "%1"'
 
    ; Register file associations
    WriteRegStr HKCR ".mp3" "" "MPEG Audio Layer 3"
@@ -655,10 +655,10 @@ Function un.UnPageUserAppDataLeave
 FunctionEnd
 
 Section Uninstall
-   IfFileExists "$INSTDIR\${APPLICATION_NAME}.exe" tomahawk_installed
-      MessageBox MB_YESNO "It does not appear that ${APPLICATION_NAME} is installed in the directory '$INSTDIR'.$\r$\nContinue anyway (not recommended)?" IDYES tomahawk_installed
+   IfFileExists "$INSTDIR\${APPLICATION_NAME}.exe" hatchet_installed
+      MessageBox MB_YESNO "It does not appear that ${APPLICATION_NAME} is installed in the directory '$INSTDIR'.$\r$\nContinue anyway (not recommended)?" IDYES hatchet_installed
       Abort "Uninstall aborted by user"
-   tomahawk_installed:
+   hatchet_installed:
 
    ;Delete registry keys.
    DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}"
@@ -743,7 +743,7 @@ Function .onInit
       goto UAC_Elevate
 
    ;Prevent multiple instances.
-   System::Call 'kernel32::CreateMutexA(i 0, i 0, t "tomahawkInstaller") i .r1 ?e'
+   System::Call 'kernel32::CreateMutexA(i 0, i 0, t "hatchetInstaller") i .r1 ?e'
    Pop $R0
    StrCmp $R0 0 +3
       MessageBox MB_OK|MB_ICONEXCLAMATION "The installer is already running."
@@ -756,8 +756,8 @@ Function .onInit
    StrCpy $INSTDIR $R0
    SkipSetInstDir:
 
-   ;Shutdown Tomahawk in case Add/Remove re-installer option used.
-   Call EnsureTomahawkShutdown
+   ;Shutdown Hatchet in case Add/Remove re-installer option used.
+   Call EnsureHatchetShutdown
 FunctionEnd
 
 Function .onInstSuccess
@@ -797,7 +797,7 @@ Function un.onInit
       goto UAC_Elevate
 
    ;Prevent multiple instances.
-   System::Call 'kernel32::CreateMutexA(i 0, i 0, t "tomahawkUninstaller") i .r1 ?e'
+   System::Call 'kernel32::CreateMutexA(i 0, i 0, t "hatchetUninstaller") i .r1 ?e'
    Pop $R0
    StrCmp $R0 0 +3
       MessageBox MB_OK|MB_ICONEXCLAMATION "This uninstaller is already running."

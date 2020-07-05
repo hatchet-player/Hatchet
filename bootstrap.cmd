@@ -16,7 +16,7 @@ REM ---------------------------------------------------
 meson setup build %meson_vars%
 
 
-REM  Build tomahawk
+REM  Build hatchet
 REM ---------------------------------------------------
 cd build
 ninja

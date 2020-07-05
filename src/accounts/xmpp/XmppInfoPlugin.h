@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2012, Dominik Schmidt <domme@tomahawk-player.org>
  *   Copyright 2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef XMPPINFOPLUGIN_H
@@ -26,7 +26,7 @@
 
 class XmppSipPlugin;
 
-namespace Tomahawk {
+namespace Hatchet {
 
     namespace InfoSystem {
 
@@ -41,18 +41,18 @@ namespace Tomahawk {
             const QString friendlyName() const override;
 
         signals:
-            void publishTune( QUrl url, Tomahawk::InfoSystem::InfoStringHash trackInfo );
+            void publishTune( QUrl url, Hatchet::InfoSystem::InfoStringHash trackInfo );
 
         public slots:
-            void notInCacheSlot( const Tomahawk::InfoSystem::InfoStringHash criteria, Tomahawk::InfoSystem::InfoRequestData requestData ) override;
+            void notInCacheSlot( const Hatchet::InfoSystem::InfoStringHash criteria, Hatchet::InfoSystem::InfoRequestData requestData ) override;
 
         protected slots:
             void init() override;
-            void pushInfo( Tomahawk::InfoSystem::InfoPushData pushData ) override;
-            void getInfo( Tomahawk::InfoSystem::InfoRequestData requestData ) override;
+            void pushInfo( Hatchet::InfoSystem::InfoPushData pushData ) override;
+            void getInfo( Hatchet::InfoSystem::InfoRequestData requestData ) override;
 
         private slots:
-            void audioStarted( const Tomahawk::InfoSystem::PushInfoPair& pushInfoPair );
+            void audioStarted( const Hatchet::InfoSystem::PushInfoPair& pushInfoPair );
             void audioStopped();
             void audioPaused();
             void onQueryLinkReady( const QVariantMap& data );

@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <QApplication>
@@ -26,21 +26,21 @@
 #include "audio/AudioEngine.h"
 #include "infosystem/InfoSystemWorker.h"
 #include "utils/Logger.h"
-#include "utils/TomahawkUtils.h"
-#include "utils/TomahawkUtilsGui.h"
+#include "utils/HatchetUtils.h"
+#include "utils/HatchetUtilsGui.h"
 #include "Album.h"
 #include "Artist.h"
 #include "GlobalActionManager.h"
 #include "PlaylistInterface.h"
 #include "Result.h"
 #include "Source.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 
 #include "MprisPlugin.h"
 #include "MprisPluginRootAdaptor.h"
 #include "MprisPluginPlayerAdaptor.h"
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 namespace InfoSystem
@@ -72,18 +72,18 @@ MprisPlugin::init()
     new MprisPluginPlayerAdaptor( this );
     QDBusConnection dbus = QDBusConnection::sessionBus();
     dbus.registerObject( "/org/mpris/MediaPlayer2", this );
-    dbus.registerService( "org.mpris.MediaPlayer2.tomahawk" );
+    dbus.registerService( "org.mpris.MediaPlayer2.hatchet" );
 
     // Listen to volume changes
     connect( AudioEngine::instance(), SIGNAL( volumeChanged( int ) ),
                                         SLOT( onVolumeChanged( int ) ) );
 
     // When the playlist changes, signals for several properties are sent
-    connect( AudioEngine::instance(), SIGNAL( playlistChanged( Tomahawk::playlistinterface_ptr ) ),
-                                        SLOT( onPlaylistChanged( Tomahawk::playlistinterface_ptr ) ) );
+    connect( AudioEngine::instance(), SIGNAL( playlistChanged( Hatchet::playlistinterface_ptr ) ),
+                                        SLOT( onPlaylistChanged( Hatchet::playlistinterface_ptr ) ) );
 
     // When a track is added or removed, CanGoNext updated signal is sent
-    Tomahawk::playlistinterface_ptr playlist = AudioEngine::instance()->playlist();
+    Hatchet::playlistinterface_ptr playlist = AudioEngine::instance()->playlist();
     if ( !playlist.isNull() )
     {
         connect( playlist.data(), SIGNAL( itemCountChanged( unsigned int ) ),
@@ -122,14 +122,14 @@ MprisPlugin::hasTrackList() const
 QString
 MprisPlugin::identity() const
 {
-    return QString( "Tomahawk" );
+    return QString( "Hatchet" );
 }
 
 
 QString
 MprisPlugin::desktopEntry() const
 {
-    return QString( "tomahawk" );
+    return QString( "hatchet" );
 }
 
 
@@ -137,7 +137,7 @@ QStringList
 MprisPlugin::supportedUriSchemes() const
 {
     QStringList uriSchemes;
-    uriSchemes << "tomahawk" << "spotify";
+    uriSchemes << "hatchet" << "spotify";
     return uriSchemes;
 }
 
@@ -152,7 +152,7 @@ MprisPlugin::supportedMimeTypes() const
 void
 MprisPlugin::Raise()
 {
-  TomahawkUtils::bringToFront();
+  HatchetUtils::bringToFront();
 }
 
 
@@ -197,7 +197,7 @@ bool
 MprisPlugin::canPlay() const
 {
     // If there is a currently playing track, or if there is a playlist with at least 1 track, you can hit play
-    Tomahawk::playlistinterface_ptr p = AudioEngine::instance()->playlist();
+    Hatchet::playlistinterface_ptr p = AudioEngine::instance()->playlist();
     return AudioEngine::instance()->currentTrack() || ( !p.isNull() && p->trackCount() );
 }
 
@@ -205,7 +205,7 @@ MprisPlugin::canPlay() const
 bool
 MprisPlugin::canSeek() const
 {
-    Tomahawk::playlistinterface_ptr p = AudioEngine::instance()->playlist();
+    Hatchet::playlistinterface_ptr p = AudioEngine::instance()->playlist();
     if ( p.isNull() )
         return false;
     return p->seekRestrictions() != PlaylistModes::NoSeek;
@@ -216,7 +216,7 @@ MprisPlugin::canSeek() const
 QString
 MprisPlugin::loopStatus() const
 {
-    Tomahawk::playlistinterface_ptr p = AudioEngine::instance()->playlist();
+    Hatchet::playlistinterface_ptr p = AudioEngine::instance()->playlist();
     if ( p.isNull() )
         return "None";
     PlaylistModes::RepeatMode mode = p->repeatMode();
@@ -243,7 +243,7 @@ MprisPlugin::loopStatus() const
 void
 MprisPlugin::setLoopStatus( const QString& value )
 {
-    Tomahawk::playlistinterface_ptr p = AudioEngine::instance()->playlist();
+    Hatchet::playlistinterface_ptr p = AudioEngine::instance()->playlist();
     if ( p.isNull() )
         return;
     if ( value == "Track" )
@@ -266,7 +266,7 @@ QVariantMap
 MprisPlugin::metadata() const
 {
     QVariantMap metadataMap;
-    Tomahawk::result_ptr track = AudioEngine::instance()->currentTrack();
+    Hatchet::result_ptr track = AudioEngine::instance()->currentTrack();
     if ( track )
     {
         metadataMap.insert( "mpris:trackid", QVariant::fromValue(QDBusObjectPath(QString( "/track/" ) + track->id().replace( "-", "" ))) );
@@ -275,11 +275,11 @@ MprisPlugin::metadata() const
         metadataMap.insert( "xesam:artist", QStringList( track->track()->artist() ) );
         metadataMap.insert( "xesam:title", track->track()->track() );
 
-        // Only return art if tempfile exists, and if its name contains the same "artist_album_tomahawk_cover.png"
+        // Only return art if tempfile exists, and if its name contains the same "artist_album_hatchet_cover.png"
         if ( !m_coverTempFile.isEmpty() )
         {
             QFile coverFile( m_coverTempFile );
-            if ( coverFile.exists() && coverFile.fileName().contains( track->track()->artist() + "_" + track->track()->album() + "_tomahawk_cover.png" ) )
+            if ( coverFile.exists() && coverFile.fileName().contains( track->track()->artist() + "_" + track->track()->album() + "_hatchet_cover.png" ) )
                 metadataMap.insert( "mpris:artUrl", QString( QUrl::fromLocalFile( m_coverTempFile ).toEncoded() ) );
         }
     }
@@ -305,7 +305,7 @@ MprisPlugin::playbackStatus() const
 qlonglong
 MprisPlugin::position() const
 {
-    // Convert Tomahawk's milliseconds to microseconds
+    // Convert Hatchet's milliseconds to microseconds
     return (qlonglong) ( AudioEngine::instance()->currentTime() * 1000 );
 }
 
@@ -327,7 +327,7 @@ MprisPlugin::setRate( double value )
 bool
 MprisPlugin::shuffle() const
 {
-    Tomahawk::playlistinterface_ptr p = AudioEngine::instance()->playlist();
+    Hatchet::playlistinterface_ptr p = AudioEngine::instance()->playlist();
     if ( p.isNull() )
         return false;
     return p->shuffled();
@@ -337,7 +337,7 @@ MprisPlugin::shuffle() const
 void
 MprisPlugin::setShuffle( bool value )
 {
-    Tomahawk::playlistinterface_ptr p = AudioEngine::instance()->playlist();
+    Hatchet::playlistinterface_ptr p = AudioEngine::instance()->playlist();
     if ( p.isNull() )
         return;
     return p->setShuffled( value );
@@ -444,7 +444,7 @@ MprisPlugin::Stop()
 
 // InfoPlugin Methods
 void
-MprisPlugin::pushInfo( Tomahawk::InfoSystem::InfoPushData pushData )
+MprisPlugin::pushInfo( Hatchet::InfoSystem::InfoPushData pushData )
 {
     bool isPlayingInfo = false;
 
@@ -493,10 +493,10 @@ MprisPlugin::audioStarted( const QVariant& input )
 
     QVariantMap map = input.toMap();
 
-    if ( !map.contains( "trackinfo" ) || !map[ "trackinfo" ].canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !map.contains( "trackinfo" ) || !map[ "trackinfo" ].canConvert< Hatchet::InfoSystem::InfoStringHash >() )
         return;
 
-    InfoStringHash hash = map[ "trackinfo" ].value< Tomahawk::InfoSystem::InfoStringHash >();
+    InfoStringHash hash = map[ "trackinfo" ].value< Hatchet::InfoSystem::InfoStringHash >();
     if ( !hash.contains( "title" ) || !hash.contains( "artist" ) || !hash.contains( "album" ) )
         return;
 
@@ -546,7 +546,7 @@ MprisPlugin::onVolumeChanged( int volume )
 
 
 void
-MprisPlugin::onPlaylistChanged( Tomahawk::playlistinterface_ptr playlist )
+MprisPlugin::onPlaylistChanged( Hatchet::playlistinterface_ptr playlist )
 {
     disconnect( this, SLOT( onTrackCountChanged( unsigned int ) ) );
 
@@ -596,6 +596,6 @@ MprisPlugin::notifyPropertyChanged( const QString& interface, const QString& pro
 
 } //ns InfoSystem
 
-} //ns Tomahawk
+} //ns Hatchet
 
-Q_EXPORT_PLUGIN2( Tomahawk::InfoSystem::InfoPlugin, Tomahawk::InfoSystem::MprisPlugin )
+Q_EXPORT_PLUGIN2( Hatchet::InfoSystem::InfoPlugin, Hatchet::InfoSystem::MprisPlugin )

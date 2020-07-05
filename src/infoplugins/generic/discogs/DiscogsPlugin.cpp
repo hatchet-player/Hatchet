@@ -1,19 +1,19 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2012 Leo Franchi <lfranchi@kde.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "DiscogsPlugin.h"
@@ -27,14 +27,14 @@
 #include <QNetworkReply>
 #include <QDomDocument>
 
-using namespace Tomahawk::InfoSystem;
+using namespace Hatchet::InfoSystem;
 
 
 DiscogsPlugin::DiscogsPlugin()
     : InfoPlugin()
 {
     qDebug() << Q_FUNC_INFO;
-    m_supportedGetTypes << Tomahawk::InfoSystem::InfoAlbumSongs;
+    m_supportedGetTypes << Hatchet::InfoSystem::InfoAlbumSongs;
 }
 
 
@@ -42,15 +42,15 @@ DiscogsPlugin::~DiscogsPlugin() {}
 
 
 void
-DiscogsPlugin::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
+DiscogsPlugin::getInfo( Hatchet::InfoSystem::InfoRequestData requestData )
 {
-    if ( !requestData.input.canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !requestData.input.canConvert< Hatchet::InfoSystem::InfoStringHash >() )
     {
         emit info( requestData, QVariant() );
         return;
     }
 
-    InfoStringHash hash = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+    InfoStringHash hash = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
     if ( !hash.contains( "artist" ) || !hash.contains( "album" ) )
     {
         emit info( requestData, QVariant() );
@@ -62,7 +62,7 @@ DiscogsPlugin::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
         case InfoAlbumSongs:
         {
 
-            Tomahawk::InfoSystem::InfoStringHash criteria;
+            Hatchet::InfoSystem::InfoStringHash criteria;
             criteria["artist"] = hash["artist"];
             criteria["album"] = hash["album"];
 
@@ -90,15 +90,15 @@ DiscogsPlugin::notInCacheSlot( InfoStringHash criteria, InfoRequestData requestD
             QString requestString( "http://api.discogs.com/database/search" );
             QUrl url( requestString );
 
-            TomahawkUtils::urlAddQueryItem( url, "type", "release" );
-            TomahawkUtils::urlAddQueryItem( url, "release_title", criteria[ "album" ] );
-            TomahawkUtils::urlAddQueryItem( url, "artist", criteria[ "artist" ] );
+            HatchetUtils::urlAddQueryItem( url, "type", "release" );
+            HatchetUtils::urlAddQueryItem( url, "release_title", criteria[ "album" ] );
+            HatchetUtils::urlAddQueryItem( url, "artist", criteria[ "artist" ] );
 
             QNetworkRequest req( url );
-            req.setRawHeader( "User-Agent", "TomahawkPlayer/1.0 +http://tomahawk-player.org" );
-            QNetworkReply* reply = Tomahawk::Utils::nam()->get( req );
+            req.setRawHeader( "User-Agent", "HatchetPlayer/1.0 +http://hatchet-player.org" );
+            QNetworkReply* reply = Hatchet::Utils::nam()->get( req );
 
-            NewClosure( reply, SIGNAL( finished() ),  this, SLOT( albumSearchSlot( Tomahawk::InfoSystem::InfoRequestData, QNetworkReply* ) ), requestData, reply );
+            NewClosure( reply, SIGNAL( finished() ),  this, SLOT( albumSearchSlot( Hatchet::InfoSystem::InfoRequestData, QNetworkReply* ) ), requestData, reply );
             break;
         }
 
@@ -114,7 +114,7 @@ DiscogsPlugin::notInCacheSlot( InfoStringHash criteria, InfoRequestData requestD
 void
 DiscogsPlugin::albumSearchSlot( const InfoRequestData &requestData, QNetworkReply *reply )
 {
-    QVariantMap results = TomahawkUtils::parseJson( reply->readAll() ).toMap();
+    QVariantMap results = HatchetUtils::parseJson( reply->readAll() ).toMap();
 
     if ( !results.contains( "results" ) || results.value( "results" ).toList().isEmpty() )
     {
@@ -132,17 +132,17 @@ DiscogsPlugin::albumSearchSlot( const InfoRequestData &requestData, QNetworkRepl
     const int id = result.value( "id" ).toInt();
     QUrl url( QString( "http://api.discogs.com/release/%1" ).arg( id ) );
     QNetworkRequest req( url );
-    req.setRawHeader( "User-Agent", "TomahawkPlayer/1.0 +http://tomahawk-player.org" );
+    req.setRawHeader( "User-Agent", "HatchetPlayer/1.0 +http://hatchet-player.org" );
 
-    QNetworkReply* reply2 = Tomahawk::Utils::nam()->get( req );
-    NewClosure( reply2, SIGNAL( finished() ),  this, SLOT( albumInfoSlot( Tomahawk::InfoSystem::InfoRequestData, QNetworkReply* ) ), requestData, reply2 );
+    QNetworkReply* reply2 = Hatchet::Utils::nam()->get( req );
+    NewClosure( reply2, SIGNAL( finished() ),  this, SLOT( albumInfoSlot( Hatchet::InfoSystem::InfoRequestData, QNetworkReply* ) ), requestData, reply2 );
 }
 
 
 void
 DiscogsPlugin::albumInfoSlot( const InfoRequestData& requestData, QNetworkReply* reply )
 {
-    QVariantMap results = TomahawkUtils::parseJson( reply->readAll() ).toMap();
+    QVariantMap results = HatchetUtils::parseJson( reply->readAll() ).toMap();
 
     if ( !results.contains( "resp" ) )
     {
@@ -177,13 +177,13 @@ DiscogsPlugin::albumInfoSlot( const InfoRequestData& requestData, QNetworkReply*
 
     emit info( requestData, returnedData );
 
-    Tomahawk::InfoSystem::InfoStringHash criteria;
-    criteria["artist"] = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash>()["artist"];
-    criteria["album"] = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash>()["album"];
+    Hatchet::InfoSystem::InfoStringHash criteria;
+    criteria["artist"] = requestData.input.value< Hatchet::InfoSystem::InfoStringHash>()["artist"];
+    criteria["album"] = requestData.input.value< Hatchet::InfoSystem::InfoStringHash>()["album"];
 
     emit updateCache( criteria, Q_INT64_C(0), requestData.type, returnedData );
 }
 
 
 
-Q_EXPORT_PLUGIN2( Tomahawk::InfoSystem::InfoPlugin, Tomahawk::InfoSystem::DiscogsPlugin )
+Q_EXPORT_PLUGIN2( Hatchet::InfoSystem::InfoPlugin, Hatchet::InfoSystem::DiscogsPlugin )

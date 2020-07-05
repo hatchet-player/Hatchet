@@ -1,5 +1,5 @@
 # Linux MinGW-w64 Cross Build
-this file contains instructions for cross compiling Tomahawk
+this file contains instructions for cross compiling Hatchet
 for windows using MinGW64-w64.
 
 ---
@@ -36,7 +36,7 @@ apt intsall gobjc++-mingw-w64-x86-64
 ---
 
 # Install Boost
-Boost is a C++ library required by Tomahawk. To build, first grab the source
+Boost is a C++ library required by Hatchet. To build, first grab the source
 tarball & unpack.
 
 ```

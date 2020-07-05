@@ -1,0 +1,21 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Hatchet
+GenericName=Music Player
+GenericName[de]=Musik Player
+GenericName[fi]=Musiikkisoitin
+GenericName[pl]=Odtwarzacz Muzyki
+GenericName[ro]=Redare muzică
+GenericName[se]=Musikspelare
+TryExec=hatchet
+Exec=hatchet %u
+Comment=Hatchet — Multi Source Music Player
+Comment[fi]=Hatchet – sosiaalinen musiikkisoitin
+Comment[pl]=Hatchet – Społecznościowy Odtwarzacz Muzyki
+Comment[ro]=Hatchet – Redare muzică în mod social
+Comment[se]=Hatchet — Den Sociala Musikspelaren
+Icon=hatchet
+Terminal=false
+Categories=Qt;AudioVideo;Audio;Player;
+MimeType=x-scheme-handler/hatchet;x-scheme-handler/spotify;audio/aac;audio/mp4;audio/mpeg;audio/mpegurl;audio/vorbis;audio/x-flac;audio/x-mp3;audio/x-mpegurl;audio/x-ms-wma;audio/x-musepack;audio/x-oggflac;audio/opus;application/opus;audio/x-vorbis;application/x-ogm-audio;audio/x-vorbis+ogg;audio/ogg;application/xspf+xml;application/jspf;

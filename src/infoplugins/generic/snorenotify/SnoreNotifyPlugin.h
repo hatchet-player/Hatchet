@@ -1,21 +1,21 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2013-2015, Hannah von Reth <vonreth@kde.org>
  *   Copyright 2010-2011, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef SNORENOTIFYPLUGIN_H
@@ -26,7 +26,7 @@
 #include "infosystem/InfoSystem.h"
 #include <libsnore/snore.h>
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 namespace InfoSystem
@@ -34,9 +34,9 @@ namespace InfoSystem
 
 class INFOPLUGINDLLEXPORT SnoreNotifyPlugin : public InfoPlugin
 {
-    Q_PLUGIN_METADATA( IID "org.tomahawk-player.Player.InfoPlugin" )
+    Q_PLUGIN_METADATA( IID "org.hatchet-player.Player.InfoPlugin" )
     Q_OBJECT
-    Q_INTERFACES( Tomahawk::InfoSystem::InfoPlugin )
+    Q_INTERFACES( Hatchet::InfoSystem::InfoPlugin )
 
 public:
     SnoreNotifyPlugin();
@@ -46,14 +46,14 @@ public:
 protected slots:
     virtual void init() {}
 
-    virtual void getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
+    virtual void getInfo( Hatchet::InfoSystem::InfoRequestData requestData )
     {
         Q_UNUSED( requestData );
     }
 
-    virtual void pushInfo( Tomahawk::InfoSystem::InfoPushData pushData );
+    virtual void pushInfo( Hatchet::InfoSystem::InfoPushData pushData );
 
-    virtual void notInCacheSlot( Tomahawk::InfoSystem::InfoStringHash criteria, Tomahawk::InfoSystem::InfoRequestData requestData )
+    virtual void notInCacheSlot( Hatchet::InfoSystem::InfoStringHash criteria, Hatchet::InfoSystem::InfoRequestData requestData )
     {
         Q_UNUSED( criteria );
         Q_UNUSED( requestData );
@@ -64,10 +64,10 @@ protected slots:
 
 private:
     void notifyUser( InfoType type, const QString &messageText, Snore::Icon icon );
-    void addAlert( Tomahawk::InfoSystem::InfoType type, const QString &title );
+    void addAlert( Hatchet::InfoSystem::InfoType type, const QString &title );
     Snore::Application m_application;
     Snore::Icon m_defaultIcon;
-    QHash< Tomahawk::InfoSystem::InfoType, Snore::Alert > m_alerts;
+    QHash< Hatchet::InfoSystem::InfoType, Snore::Alert > m_alerts;
 
     void nowPlaying( const QVariant &input );
     void inboxReceived( const QVariant &input );

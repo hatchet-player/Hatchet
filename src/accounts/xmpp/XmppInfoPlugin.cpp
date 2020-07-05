@@ -1,20 +1,20 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2012, Dominik Schmidt <domme@tomahawk-player.org>
  *   Copyright 2012, Jeff Mitchell <jeff@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 
@@ -23,13 +23,13 @@
 #include "utils/LinkGenerator.h"
 #include "sip/XmppSip.h"
 #include "utils/Logger.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 
 
 // remove now playing status after PAUSE_TIMEOUT seconds
 static const int PAUSE_TIMEOUT = 10;
 
-Tomahawk::InfoSystem::XmppInfoPlugin::XmppInfoPlugin( XmppSipPlugin* sipPlugin )
+Hatchet::InfoSystem::XmppInfoPlugin::XmppInfoPlugin( XmppSipPlugin* sipPlugin )
     : m_sipPlugin( sipPlugin )
     , m_pauseTimer( this )
 {
@@ -43,15 +43,15 @@ Tomahawk::InfoSystem::XmppInfoPlugin::XmppInfoPlugin( XmppSipPlugin* sipPlugin )
 }
 
 
-Tomahawk::InfoSystem::XmppInfoPlugin::~XmppInfoPlugin()
+Hatchet::InfoSystem::XmppInfoPlugin::~XmppInfoPlugin()
 {
 }
 
 
 void
-Tomahawk::InfoSystem::XmppInfoPlugin::init()
+Hatchet::InfoSystem::XmppInfoPlugin::init()
 {
-    if ( QThread::currentThread() != Tomahawk::InfoSystem::InfoSystem::instance()->workerThread().data() )
+    if ( QThread::currentThread() != Hatchet::InfoSystem::InfoSystem::instance()->workerThread().data() )
     {
         QMetaObject::invokeMethod( this, "init", Qt::QueuedConnection );
         return;
@@ -60,19 +60,19 @@ Tomahawk::InfoSystem::XmppInfoPlugin::init()
     if ( m_sipPlugin.isNull() )
         return;
 
-    connect( this, SIGNAL( publishTune( QUrl, Tomahawk::InfoSystem::InfoStringHash ) ), m_sipPlugin.data(), SLOT( publishTune( QUrl, Tomahawk::InfoSystem::InfoStringHash ) ), Qt::QueuedConnection );
+    connect( this, SIGNAL( publishTune( QUrl, Hatchet::InfoSystem::InfoStringHash ) ), m_sipPlugin.data(), SLOT( publishTune( QUrl, Hatchet::InfoSystem::InfoStringHash ) ), Qt::QueuedConnection );
 }
 
 
 const QString
-Tomahawk::InfoSystem::XmppInfoPlugin::friendlyName() const
+Hatchet::InfoSystem::XmppInfoPlugin::friendlyName() const
 {
     return "xmpp";
 }
 
 
 void
-Tomahawk::InfoSystem::XmppInfoPlugin::pushInfo( Tomahawk::InfoSystem::InfoPushData pushData )
+Hatchet::InfoSystem::XmppInfoPlugin::pushInfo( Hatchet::InfoSystem::InfoPushData pushData )
 {
     switch ( pushData.type )
     {
@@ -97,7 +97,7 @@ Tomahawk::InfoSystem::XmppInfoPlugin::pushInfo( Tomahawk::InfoSystem::InfoPushDa
 
 
 void
-Tomahawk::InfoSystem::XmppInfoPlugin::audioStarted( const Tomahawk::InfoSystem::PushInfoPair &pushInfoPair )
+Hatchet::InfoSystem::XmppInfoPlugin::audioStarted( const Hatchet::InfoSystem::PushInfoPair &pushInfoPair )
 {
     if ( !pushInfoPair.second.canConvert< QVariantMap >() )
     {
@@ -106,19 +106,19 @@ Tomahawk::InfoSystem::XmppInfoPlugin::audioStarted( const Tomahawk::InfoSystem::
     }
 
     QVariantMap map = pushInfoPair.second.toMap();
-    if ( map.contains( "private" ) && map[ "private" ] == TomahawkSettings::FullyPrivate )
+    if ( map.contains( "private" ) && map[ "private" ] == HatchetSettings::FullyPrivate )
     {
-        emit publishTune( QUrl(), Tomahawk::InfoSystem::InfoStringHash() );
+        emit publishTune( QUrl(), Hatchet::InfoSystem::InfoStringHash() );
         return;
     }
 
-    if ( !map.contains( "trackinfo" ) || !map[ "trackinfo" ].canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !map.contains( "trackinfo" ) || !map[ "trackinfo" ].canConvert< Hatchet::InfoSystem::InfoStringHash >() )
     {
         tDebug() << Q_FUNC_INFO << "did not find an infostringhash";
         return;
     }
 
-    Tomahawk::InfoSystem::InfoStringHash info = map[ "trackinfo" ].value< Tomahawk::InfoSystem::InfoStringHash >();
+    Hatchet::InfoSystem::InfoStringHash info = map[ "trackinfo" ].value< Hatchet::InfoSystem::InfoStringHash >();
 
     ScriptJob* job = Utils::LinkGenerator::instance()->openLink( info.value( "title" ), info.value( "artist" ), info.value( "album" ) );
     connect( job, SIGNAL( done( QVariantMap ) ), SLOT( onQueryLinkReady( QVariantMap ) ) );
@@ -128,36 +128,36 @@ Tomahawk::InfoSystem::XmppInfoPlugin::audioStarted( const Tomahawk::InfoSystem::
 
 
 void
-Tomahawk::InfoSystem::XmppInfoPlugin::onQueryLinkReady( const QVariantMap& data )
+Hatchet::InfoSystem::XmppInfoPlugin::onQueryLinkReady( const QVariantMap& data )
 {
-    emit publishTune( data[ "url" ].toUrl(), sender()->property("infoStringHash").value< Tomahawk::InfoSystem::InfoStringHash >() );
+    emit publishTune( data[ "url" ].toUrl(), sender()->property("infoStringHash").value< Hatchet::InfoSystem::InfoStringHash >() );
 
     sender()->deleteLater();
 }
 
 
 void
-Tomahawk::InfoSystem::XmppInfoPlugin::audioPaused()
+Hatchet::InfoSystem::XmppInfoPlugin::audioPaused()
 {
 }
 
 
 void
-Tomahawk::InfoSystem::XmppInfoPlugin::audioStopped()
+Hatchet::InfoSystem::XmppInfoPlugin::audioStopped()
 {
-    emit publishTune( QUrl(), Tomahawk::InfoSystem::InfoStringHash() );
+    emit publishTune( QUrl(), Hatchet::InfoSystem::InfoStringHash() );
 }
 
 
 void
-Tomahawk::InfoSystem::XmppInfoPlugin::getInfo(Tomahawk::InfoSystem::InfoRequestData requestData)
+Hatchet::InfoSystem::XmppInfoPlugin::getInfo(Hatchet::InfoSystem::InfoRequestData requestData)
 {
     Q_UNUSED( requestData );
 }
 
 
 void
-Tomahawk::InfoSystem::XmppInfoPlugin::notInCacheSlot(const Tomahawk::InfoSystem::InfoStringHash criteria, Tomahawk::InfoSystem::InfoRequestData requestData)
+Hatchet::InfoSystem::XmppInfoPlugin::notInCacheSlot(const Hatchet::InfoSystem::InfoStringHash criteria, Hatchet::InfoSystem::InfoRequestData requestData)
 {
     Q_UNUSED( criteria );
     Q_UNUSED( requestData );

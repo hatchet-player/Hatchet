@@ -1,4 +1,4 @@
-/* === This file is part of Tomahawk Player - <http://tomahawk-player.org> ===
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
  *   Copyright 2012, Casey Link <unnamedrambler@gmail.com>
  *   Copyright 2011-2012, Hugo Lindström <hugolm84@gmail.com>
@@ -6,18 +6,18 @@
  *   Copyright 2010-2011, Jeff Mitchell <jeff@tomahawk-player.org>
  *   Copyright 2015, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
- *   Tomahawk is free software: you can redistribute it and/or modify
+ *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Tomahawk is distributed in the hope that it will be useful,
+ *   Hatchet is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Tomahawk. If not, see <http://www.gnu.org/licenses/>.
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ChartsPlugin.h"
@@ -26,10 +26,10 @@
 #include "CountryUtils.h"
 #include "Typedefs.h"
 #include "audio/AudioEngine.h"
-#include "TomahawkSettings.h"
+#include "HatchetSettings.h"
 #include "utils/Json.h"
 #include "utils/Logger.h"
-#include "utils/TomahawkCache.h"
+#include "utils/HatchetCache.h"
 #include "utils/NetworkAccessManager.h"
 #include "Source.h"
 
@@ -39,10 +39,10 @@
 #include <QNetworkReply>
 #include <QDateTime>
 
-#define CHART_URL "http://charts.tomahawk-player.org/"
+#define CHART_URL "http://charts.hatchet-player.org/"
 //#define CHART_URL "http://localhost:8080/"
 
-namespace Tomahawk
+namespace Hatchet
 {
 
 namespace InfoSystem
@@ -57,7 +57,7 @@ ChartsPlugin::ChartsPlugin()
 
     m_chartVersion = "2.6.6";
     m_supportedGetTypes <<  InfoChart << InfoChartCapabilities;
-    m_cacheIdentifier = TomahawkUtils::md5( QString("ChartsPlugin" + m_chartVersion ).toUtf8() );
+    m_cacheIdentifier = HatchetUtils::md5( QString("ChartsPlugin" + m_chartVersion ).toUtf8() );
 }
 
 
@@ -70,11 +70,11 @@ ChartsPlugin::~ChartsPlugin()
 void
 ChartsPlugin::init()
 {
-    QVariant data = TomahawkUtils::Cache::instance()->getData( m_cacheIdentifier, "chart_sources" );
-    if ( data.canConvert< QList< Tomahawk::InfoSystem::InfoStringHash > >() )
+    QVariant data = HatchetUtils::Cache::instance()->getData( m_cacheIdentifier, "chart_sources" );
+    if ( data.canConvert< QList< Hatchet::InfoSystem::InfoStringHash > >() )
     {
-         const QList< Tomahawk::InfoSystem::InfoStringHash > sourceList = data.value< QList< Tomahawk::InfoSystem::InfoStringHash > >();
-         foreach ( const Tomahawk::InfoSystem::InfoStringHash &sourceHash, sourceList )
+         const QList< Hatchet::InfoSystem::InfoStringHash > sourceList = data.value< QList< Hatchet::InfoSystem::InfoStringHash > >();
+         foreach ( const Hatchet::InfoSystem::InfoStringHash &sourceHash, sourceList )
          {
              bool ok;
              qlonglong maxAge = getMaxAge( QString( sourceHash[ "chart_expires" ] ).toLongLong( &ok ) );
@@ -86,7 +86,7 @@ ChartsPlugin::init()
              m_chartResources << sourceHash;
          }
 
-         data = TomahawkUtils::Cache::instance()->getData( m_cacheIdentifier, "allCharts" );
+         data = HatchetUtils::Cache::instance()->getData( m_cacheIdentifier, "allCharts" );
 
          if ( data.canConvert< QVariantMap >() )
          {
@@ -110,7 +110,7 @@ ChartsPlugin::init()
 
 
 void
-ChartsPlugin::dataError( Tomahawk::InfoSystem::InfoRequestData requestData )
+ChartsPlugin::dataError( Hatchet::InfoSystem::InfoRequestData requestData )
 {
     emit info( requestData, QVariant() );
     return;
@@ -118,9 +118,9 @@ ChartsPlugin::dataError( Tomahawk::InfoSystem::InfoRequestData requestData )
 
 
 void
-ChartsPlugin::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
+ChartsPlugin::getInfo( Hatchet::InfoSystem::InfoRequestData requestData )
 {
-    InfoStringHash hash = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+    InfoStringHash hash = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
     bool foundSource = false;
 
     switch ( requestData.type )
@@ -135,7 +135,7 @@ ChartsPlugin::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
             }
             else
             {
-                foreach ( const Tomahawk::InfoSystem::InfoStringHash &sourceHash, m_chartResources )
+                foreach ( const Hatchet::InfoSystem::InfoStringHash &sourceHash, m_chartResources )
                 {
                     if ( sourceHash[ "chart_source" ] == hash[ "chart_source" ] )
                     {
@@ -164,17 +164,17 @@ ChartsPlugin::getInfo( Tomahawk::InfoSystem::InfoRequestData requestData )
 
 
 void
-ChartsPlugin::fetchChartFromCache( Tomahawk::InfoSystem::InfoRequestData requestData )
+ChartsPlugin::fetchChartFromCache( Hatchet::InfoSystem::InfoRequestData requestData )
 {
-    if ( !requestData.input.canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !requestData.input.canConvert< Hatchet::InfoSystem::InfoStringHash >() )
     {
         tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "Could not convert requestData to InfoStringHash!";
         dataError( requestData );
         return;
     }
 
-    InfoStringHash hash = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
-    Tomahawk::InfoSystem::InfoStringHash criteria;
+    InfoStringHash hash = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
+    Hatchet::InfoSystem::InfoStringHash criteria;
 
     /// Each request needs to contain both a id, source and expires param
     if ( !hash.contains( "chart_id" ) && !hash.contains( "chart_source" ) && !hash.contains( "chart_expires" ) )
@@ -205,20 +205,20 @@ ChartsPlugin::fetchChartFromCache( Tomahawk::InfoSystem::InfoRequestData request
 
 
 void
-ChartsPlugin::fetchChartCapabilitiesFromCache( Tomahawk::InfoSystem::InfoRequestData requestData )
+ChartsPlugin::fetchChartCapabilitiesFromCache( Hatchet::InfoSystem::InfoRequestData requestData )
 {
-    if ( !requestData.input.canConvert< Tomahawk::InfoSystem::InfoStringHash >() )
+    if ( !requestData.input.canConvert< Hatchet::InfoSystem::InfoStringHash >() )
     {
         tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "Could not convert requestData to InfoStringHash!";
         dataError( requestData );
         return;
     }
 
-    Tomahawk::InfoSystem::InfoStringHash criteria;
+    Hatchet::InfoSystem::InfoStringHash criteria;
     criteria[ "InfoChartCapabilities" ] = "chartsplugin";
     criteria[ "InfoChartVersion" ] = m_chartVersion;
 
-    Tomahawk::InfoSystem::InfoStringHash inputData = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+    Hatchet::InfoSystem::InfoStringHash inputData = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
 
     /// @todo: Only fetch this source, and update charts map
     if( inputData.contains( "chart_refetch" ) )
@@ -243,7 +243,7 @@ ChartsPlugin::fetchChartCapabilitiesFromCache( Tomahawk::InfoSystem::InfoRequest
 
 
 void
-ChartsPlugin::notInCacheSlot( QHash<QString, QString> criteria, Tomahawk::InfoSystem::InfoRequestData requestData )
+ChartsPlugin::notInCacheSlot( QHash<QString, QString> criteria, Hatchet::InfoSystem::InfoRequestData requestData )
 {
     switch ( requestData.type )
     {
@@ -277,9 +277,9 @@ ChartsPlugin::fetchChartSourcesList( bool fetchOnlySourceList )
 {
     QUrl url = QUrl( QString ( CHART_URL "charts" ) );
 
-    TomahawkUtils::urlAddQueryItem( url, "version", TomahawkUtils::appFriendlyVersion() );
+    HatchetUtils::urlAddQueryItem( url, "version", HatchetUtils::appFriendlyVersion() );
 
-    QNetworkReply* reply = Tomahawk::Utils::nam()->get( QNetworkRequest( url ) );
+    QNetworkReply* reply = Hatchet::Utils::nam()->get( QNetworkRequest( url ) );
     reply->setProperty( "only_source_list", fetchOnlySourceList );
 
     connect( reply, SIGNAL( finished() ), SLOT( chartSourcesList() ) );
@@ -297,7 +297,7 @@ ChartsPlugin::chartSourcesList()
     {
         bool ok;
         QByteArray jsonData = reply->readAll();
-        const QVariantMap res = TomahawkUtils::parseJson( jsonData, &ok ).toMap();
+        const QVariantMap res = HatchetUtils::parseJson( jsonData, &ok ).toMap();
         const QVariantList sources = res.value( "sources" ).toList();
 
         if ( !ok )
@@ -320,7 +320,7 @@ ChartsPlugin::chartSourcesList()
             const QString headerExpiration = reply->rawHeader( QString( tmpSource ).toLocal8Bit() );
             const qlonglong maxAge = getMaxAge( headerExpiration.toLocal8Bit() );
             const qlonglong expires = headerExpiration.toLongLong(&ok);
-            Tomahawk::InfoSystem::InfoStringHash source_expire;
+            Hatchet::InfoSystem::InfoStringHash source_expire;
 
             if ( ok )
             {
@@ -347,7 +347,7 @@ ChartsPlugin::chartSourcesList()
         /// In init, we check expiration for each source, and refetch if invalid
         /// 2 days seems fair enough though
         tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "storing sources in cache" << m_chartResources;
-        TomahawkUtils::Cache::instance()->putData( m_cacheIdentifier, 172800000 /* 2 days */, "chart_sources", QVariant::fromValue< QList< Tomahawk::InfoSystem::InfoStringHash > > ( m_chartResources ) );
+        HatchetUtils::Cache::instance()->putData( m_cacheIdentifier, 172800000 /* 2 days */, "chart_sources", QVariant::fromValue< QList< Hatchet::InfoSystem::InfoStringHash > > ( m_chartResources ) );
 
         if( !reply->property( "only_source_list" ).toBool() )
         {
@@ -374,9 +374,9 @@ void
 ChartsPlugin::fetchSource(const QString& source)
 {
     QUrl url = QUrl( QString( CHART_URL "charts/%1" ).arg( source ) );
-    TomahawkUtils::urlAddQueryItem( url, "version", TomahawkUtils::appFriendlyVersion() );
+    HatchetUtils::urlAddQueryItem( url, "version", HatchetUtils::appFriendlyVersion() );
 
-    QNetworkReply* reply = Tomahawk::Utils::nam()->get( QNetworkRequest( url ) );
+    QNetworkReply* reply = Hatchet::Utils::nam()->get( QNetworkRequest( url ) );
     reply->setProperty( "chart_source", source );
 
     tDebug() << Q_FUNC_INFO << "fetching:" << url;
@@ -404,7 +404,7 @@ ChartsPlugin::fetchAllChartSources()
 {
     if ( !m_chartResources.isEmpty() && m_allChartsMap.isEmpty() )
     {
-        foreach ( const Tomahawk::InfoSystem::InfoStringHash source, m_chartResources )
+        foreach ( const Hatchet::InfoSystem::InfoStringHash source, m_chartResources )
         {
             fetchSource(source[ "chart_source" ]);
         }
@@ -413,17 +413,17 @@ ChartsPlugin::fetchAllChartSources()
 
 
 void
-ChartsPlugin::fetchChart( Tomahawk::InfoSystem::InfoRequestData requestData, const QString& source, const QString& chart_id )
+ChartsPlugin::fetchChart( Hatchet::InfoSystem::InfoRequestData requestData, const QString& source, const QString& chart_id )
 {
     /// Fetch the chart, we need source and id
     QUrl url = QUrl ( QString ( CHART_URL "charts/%1/%2" ).arg( source ).arg( chart_id ) );
 
-    TomahawkUtils::urlAddQueryItem( url, "version", TomahawkUtils::appFriendlyVersion() );
+    HatchetUtils::urlAddQueryItem( url, "version", HatchetUtils::appFriendlyVersion() );
 
     tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "fetching: " << url;
 
-    QNetworkReply* reply = Tomahawk::Utils::nam()->get( QNetworkRequest( url ) );
-    reply->setProperty( "requestData", QVariant::fromValue< Tomahawk::InfoSystem::InfoRequestData >( requestData ) );
+    QNetworkReply* reply = Hatchet::Utils::nam()->get( QNetworkRequest( url ) );
+    reply->setProperty( "requestData", QVariant::fromValue< Hatchet::InfoSystem::InfoRequestData >( requestData ) );
 
     connect( reply, SIGNAL( finished() ), SLOT( chartReturned() ) );
 }
@@ -440,7 +440,7 @@ ChartsPlugin::chartsList()
     {
         bool ok;
         QByteArray jsonData = reply->readAll();
-        QVariantMap res = TomahawkUtils::parseJson( jsonData, &ok ).toMap();
+        QVariantMap res = HatchetUtils::parseJson( jsonData, &ok ).toMap();
 
         if ( !ok )
         {
@@ -522,9 +522,9 @@ ChartsPlugin::chartsList()
                     // If this item has expired, set it to 0.
                     c[ "expires" ] = ( ok ? QString::number (expires ) : QString::number( 0 ) );
 
-                    QList< Tomahawk::InfoSystem::InfoStringHash > extraTypeData = extraType[ extra ][ type ].value< QList< Tomahawk::InfoSystem::InfoStringHash > >();
+                    QList< Hatchet::InfoSystem::InfoStringHash > extraTypeData = extraType[ extra ][ type ].value< QList< Hatchet::InfoSystem::InfoStringHash > >();
                     extraTypeData.append( c );
-                    extraType[ extra ][ type ] = QVariant::fromValue< QList< Tomahawk::InfoSystem::InfoStringHash > >( extraTypeData );
+                    extraType[ extra ][ type ] = QVariant::fromValue< QList< Hatchet::InfoSystem::InfoStringHash > >( extraTypeData );
 
                 }
                 foreach ( const QString& c, extraType.keys() )
@@ -575,11 +575,11 @@ ChartsPlugin::chartsList()
                 }
 
                 if ( !artistCharts.isEmpty() )
-                    charts.insert( tr( "Artists" ), QVariant::fromValue< QList< Tomahawk::InfoSystem::InfoStringHash > >( artistCharts ) );
+                    charts.insert( tr( "Artists" ), QVariant::fromValue< QList< Hatchet::InfoSystem::InfoStringHash > >( artistCharts ) );
                 if ( !albumCharts.isEmpty() )
-                    charts.insert( tr( "Albums" ), QVariant::fromValue< QList< Tomahawk::InfoSystem::InfoStringHash > >( albumCharts ) );
+                    charts.insert( tr( "Albums" ), QVariant::fromValue< QList< Hatchet::InfoSystem::InfoStringHash > >( albumCharts ) );
                 if ( !trackCharts.isEmpty() )
-                    charts.insert( tr( "Tracks" ), QVariant::fromValue< QList< Tomahawk::InfoSystem::InfoStringHash > >( trackCharts ) );
+                    charts.insert( tr( "Tracks" ), QVariant::fromValue< QList< Hatchet::InfoSystem::InfoStringHash > >( trackCharts ) );
 
             }
         }
@@ -607,7 +607,7 @@ ChartsPlugin::chartsList()
             emit info( request, m_allChartsMap );
 
             tDebug( LOGVERBOSE ) << Q_FUNC_INFO << "Updating cache with" << m_allChartsMap.size() << "charts";
-            Tomahawk::InfoSystem::InfoStringHash criteria;
+            Hatchet::InfoSystem::InfoStringHash criteria;
             criteria[ "InfoChartCapabilities" ] = "chartsplugin";
             criteria[ "InfoChartVersion" ] = m_chartVersion;
 
@@ -615,7 +615,7 @@ ChartsPlugin::chartsList()
             emit updateCache( criteria, Q_INT64_C(172800000) /* 2 days */, request.type, m_allChartsMap );
         }
 
-        TomahawkUtils::Cache::instance()->putData( m_cacheIdentifier, 172800000 /* 2 days */, "allCharts", m_allChartsMap );
+        HatchetUtils::Cache::instance()->putData( m_cacheIdentifier, 172800000 /* 2 days */, "allCharts", m_allChartsMap );
         m_cachedRequests.clear();
     }
 }
@@ -633,7 +633,7 @@ ChartsPlugin::chartReturned()
     {
         bool ok;
         QByteArray jsonData = reply->readAll();
-        QVariantMap res = TomahawkUtils::parseJson( jsonData, &ok ).toMap();
+        QVariantMap res = HatchetUtils::parseJson( jsonData, &ok ).toMap();
 
         if ( !ok )
         {
@@ -646,8 +646,8 @@ ChartsPlugin::chartReturned()
 
         /// SO we have a result, parse it!
         QVariantList chartResponse = res.value( "list" ).toList();
-        QList< Tomahawk::InfoSystem::InfoStringHash > top_tracks;
-        QList< Tomahawk::InfoSystem::InfoStringHash > top_albums;
+        QList< Hatchet::InfoSystem::InfoStringHash > top_tracks;
+        QList< Hatchet::InfoSystem::InfoStringHash > top_albums;
         QStringList top_artists;
 
         /// Deside what type, we need to handle it differently
@@ -684,7 +684,7 @@ ChartsPlugin::chartReturned()
                     }
                     else
                     {
-                        Tomahawk::InfoSystem::InfoStringHash pair;
+                        Hatchet::InfoSystem::InfoStringHash pair;
                         pair["artist"] = artist;
                         pair["album"] = album;
                         top_albums.append( pair );
@@ -698,7 +698,7 @@ ChartsPlugin::chartReturned()
                     }
                     else
                     {
-                        Tomahawk::InfoSystem::InfoStringHash pair;
+                        Hatchet::InfoSystem::InfoStringHash pair;
                         pair["artist"] = artist;
                         pair["track"] = title;
                         pair["streamUrl"] = streamUrl;
@@ -728,22 +728,22 @@ ChartsPlugin::chartReturned()
         else if ( chartType() == Track )
         {
             tDebug( LOGVERBOSE ) << "ChartsPlugin:" << "got" << top_tracks.size() << "tracks";
-            returnedData[ "tracks" ] = QVariant::fromValue< QList< Tomahawk::InfoSystem::InfoStringHash > >( top_tracks );
+            returnedData[ "tracks" ] = QVariant::fromValue< QList< Hatchet::InfoSystem::InfoStringHash > >( top_tracks );
             returnedData[ "type" ] = "tracks";
         }
         else if ( chartType() == Album )
         {
             tDebug( LOGVERBOSE ) << "ChartsPlugin:" << "got" << top_albums.size() << "albums";
-            returnedData[ "albums" ] = QVariant::fromValue< QList< Tomahawk::InfoSystem::InfoStringHash > >( top_albums );
+            returnedData[ "albums" ] = QVariant::fromValue< QList< Hatchet::InfoSystem::InfoStringHash > >( top_albums );
             returnedData[ "type" ] = "albums";
         }
 
-        Tomahawk::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
+        Hatchet::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
 
         emit info( requestData, returnedData );
         // update cache
-        Tomahawk::InfoSystem::InfoStringHash criteria;
-        Tomahawk::InfoSystem::InfoStringHash origData = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+        Hatchet::InfoSystem::InfoStringHash criteria;
+        Hatchet::InfoSystem::InfoStringHash origData = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
         criteria[ "chart_id" ] = origData[ "chart_id" ];
         criteria[ "chart_source" ] = origData[ "chart_source" ];
         criteria[ "chart_expires" ] = ( ok ? QString::number( expires ) : QString::number( 0 ) );
@@ -754,8 +754,8 @@ ChartsPlugin::chartReturned()
     else
     {
         tDebug() << Q_FUNC_INFO << "Network error in fetching chart:" << reply->url().toString();
-        Tomahawk::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Tomahawk::InfoSystem::InfoRequestData >();
-        Tomahawk::InfoSystem::InfoStringHash origData = requestData.input.value< Tomahawk::InfoSystem::InfoStringHash >();
+        Hatchet::InfoSystem::InfoRequestData requestData = reply->property( "requestData" ).value< Hatchet::InfoSystem::InfoRequestData >();
+        Hatchet::InfoSystem::InfoStringHash origData = requestData.input.value< Hatchet::InfoSystem::InfoStringHash >();
         returnedData[ "chart_error" ] = "Invalid ID";
         returnedData[ "chart_source" ] = origData[ "chart_source" ];
         returnedData[ "chart_id" ] = origData[ "chart_id" ];
@@ -770,7 +770,7 @@ ChartsPlugin::countryName( const QString& cc )
     if ( m_cachedCountries.contains( cc ) )
         return m_cachedCountries[ cc ];
 
-    QString name = Tomahawk::CountryUtils::fullCountryFromCode( cc );
+    QString name = Hatchet::CountryUtils::fullCountryFromCode( cc );
     for ( int i = 1; i < name.size(); i++ )
     {
         if ( name.at( i ).isUpper() )
@@ -813,4 +813,4 @@ ChartsPlugin::getMaxAge( const qlonglong expires ) const
 
 }
 
-Q_EXPORT_PLUGIN2( Tomahawk::InfoSystem::InfoPlugin, Tomahawk::InfoSystem::ChartsPlugin )
+Q_EXPORT_PLUGIN2( Hatchet::InfoSystem::InfoPlugin, Hatchet::InfoSystem::ChartsPlugin )

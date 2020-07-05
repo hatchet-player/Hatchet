@@ -1,0 +1,406 @@
+/* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
+ *
+ *   Copyright 2013, Teo Mrnjavac <teo@kde.org>
+ *
+ *   Hatchet is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   Hatchet is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+#include "ScriptCollection.h"
+
+#include "Source.h"
+#include "utils/HatchetUtilsGui.h"
+#include "utils/NetworkAccessManager.h"
+#include "utils/Logger.h"
+#include "resolvers/ScriptCommand_AllArtists.h"
+#include "resolvers/ScriptCommand_AllAlbums.h"
+#include "resolvers/ScriptCommand_AllTracks.h"
+#include "resolvers/ScriptJob.h"
+#include "ScriptAccount.h"
+#include "Result.h"
+#include "Pipeline.h"
+
+#include <QImageReader>
+#include <QPainter>
+#include <QFileInfo>
+
+
+using namespace Hatchet;
+
+
+ScriptCollection::ScriptCollection( const scriptobject_ptr& scriptObject,
+                                    const source_ptr& source,
+                                    ScriptAccount* scriptAccount,
+                                    QObject* parent )
+    : Collection( source, QString( "scriptcollection:" + scriptAccount->name() + ":" + uuid() ), parent )
+    , ScriptPlugin( scriptObject )
+    , m_scriptAccount( scriptAccount )
+    , m_trackCount( -1 ) //null value
+    , m_isOnline( true )
+{
+    Q_ASSERT( scriptAccount );
+    qDebug() << Q_FUNC_INFO << scriptAccount->name() << Collection::name();
+
+    m_servicePrettyName = scriptAccount->name();
+    m_weight  = readMetaData().value( "weight", 99 ).toUInt();
+}
+
+
+ScriptCollection::~ScriptCollection()
+{
+}
+
+
+ScriptAccount*
+ScriptCollection::scriptAccount() const
+{
+    return m_scriptAccount;
+}
+
+
+void
+ScriptCollection::setServiceName( const QString& name )
+{
+    m_servicePrettyName = name;
+}
+
+
+QString
+ScriptCollection::prettyName() const
+{
+    return tr( "%1 Collection",
+               "Name of a collection based on a script pluginsc, e.g. Subsonic Collection" )
+               .arg( m_servicePrettyName );
+}
+
+
+QString
+ScriptCollection::itemName() const
+{
+    return m_servicePrettyName;
+}
+
+
+bool ScriptCollection::isOnline() const
+{
+    return m_isOnline;
+}
+
+
+void
+ScriptCollection::setOnline( bool isOnline )
+{
+    m_isOnline = isOnline;
+
+    if ( isOnline )
+    {
+        emit online();
+    }
+    else
+    {
+        emit offline();
+    }
+
+
+    emit changed();
+}
+
+
+void
+ScriptCollection::setIcon( const QPixmap& icon )
+{
+    m_icon = icon;
+    emit changed();
+}
+
+
+QPixmap
+ScriptCollection::icon( const QSize& size ) const
+{
+    if ( !size.isEmpty() && !m_icon.isNull() )
+        return m_icon.scaled( size, Qt::KeepAspectRatio, Qt::SmoothTransformation );
+
+    return m_icon;
+}
+
+
+QPixmap
+ScriptCollection::bigIcon() const
+{
+    QPixmap big = Collection::bigIcon();
+    QPixmap base = icon( big.size() );
+
+    if ( !source()->isLocal() )
+    {
+        big = big.scaled( HatchetUtils::defaultIconSize(),
+                          Qt::KeepAspectRatio,
+                          Qt::SmoothTransformation );
+
+        QPainter painter( &base );
+        painter.drawPixmap( base.width() - big.width(),
+                            base.height() - big.height(),
+                            big.width(),
+                            big.height(),
+                            big );
+        painter.end();
+    }
+
+    return base;
+}
+
+
+void
+ScriptCollection::setDescription( const QString& text )
+{
+    m_description = text;
+}
+
+
+QString
+ScriptCollection::description() const
+{
+    return m_description;
+}
+
+
+Hatchet::ArtistsRequest*
+ScriptCollection::requestArtists()
+{
+    Hatchet::ArtistsRequest* cmd = new ScriptCommand_AllArtists( weakRef().toStrongRef() );
+
+    return cmd;
+}
+
+
+Hatchet::AlbumsRequest*
+ScriptCollection::requestAlbums( const Hatchet::artist_ptr& artist )
+{
+    Hatchet::AlbumsRequest* cmd = new ScriptCommand_AllAlbums( weakRef().toStrongRef(), artist );
+
+    return cmd;
+}
+
+
+Hatchet::TracksRequest*
+ScriptCollection::requestTracks( const Hatchet::album_ptr& album )
+{
+    Hatchet::TracksRequest* cmd = new ScriptCommand_AllTracks( weakRef().toStrongRef(), album );
+
+    return cmd;
+}
+
+
+void
+ScriptCollection::setTrackCount( int count )
+{
+    m_trackCount = count;
+}
+
+
+int
+ScriptCollection::trackCount() const
+{
+    return m_trackCount;
+}
+
+
+QVariantMap
+ScriptCollection::readMetaData()
+{
+    return scriptObject()->syncInvoke( "collection" ).toMap();
+}
+
+
+void ScriptCollection::parseMetaData()
+{
+    return parseMetaData( readMetaData() );
+}
+
+ScriptJob*
+ScriptCollection::getStreamUrl( const result_ptr& result )
+{
+    QVariantMap arguments;
+    arguments["url"] = result->url();
+
+    return scriptObject()->invoke( "getStreamUrl", arguments );
+}
+
+ScriptJob*
+ScriptCollection::getDownloadUrl( const result_ptr& result, const DownloadFormat& format )
+{
+    QVariantMap arguments;
+    arguments["url"] = format.url.toString();
+    arguments["extension"] = format.extension;
+    arguments["mimetype"] = format.mimetype;
+
+    return scriptObject()->invoke( "getDownloadUrl", arguments );
+}
+
+void
+ScriptCollection::parseMetaData( const QVariantMap& metadata )
+{
+    tLog() << Q_FUNC_INFO;
+
+    const QString prettyname = metadata.value( "prettyname" ).toString();
+    const QString desc = metadata.value( "description" ).toString();
+
+    setServiceName( prettyname );
+    setDescription( desc );
+
+    if ( metadata.contains( "trackcount" ) ) //a resolver might not expose this
+    {
+        bool ok = false;
+        int trackCount = metadata.value( "trackcount" ).toInt( &ok );
+        if ( ok )
+            setTrackCount( trackCount );
+    }
+
+    if ( metadata.contains( "iconfile" ) )
+    {
+        QString iconPath = QFileInfo( scriptAccount()->filePath() ).path() + "/"
+                            + metadata.value( "iconfile" ).toString();
+
+        QPixmap iconPixmap;
+        bool ok = iconPixmap.load( iconPath );
+        if ( ok && !iconPixmap.isNull() )
+            setIcon( iconPixmap );
+        else
+        {
+            //see if it is a new way of specifying path
+            //like "contents/images/icon.png"
+            iconPath = QFileInfo( scriptAccount()->filePath() ).path();
+            for(int i = 0; i < 3 && !ok ; ++i)
+            {
+                iconPath += "/../";
+                ok = iconPixmap.load(iconPath + metadata.value("iconfile").toString());
+            }
+
+            if ( ok && !iconPixmap.isNull() )
+                setIcon( iconPixmap );
+        }
+
+        fetchIcon( metadata.value( "iconurl" ).toString() );
+    }
+
+    if ( metadata.contains( "capabilities" ) )
+    {
+        QVariantList list = metadata[ "capabilities" ].toList();
+
+        foreach( const QVariant& type, list )
+        {
+            bool ok;
+            int intType = type.toInt( &ok );
+            if ( ok )
+            {
+                m_browseCapabilities << static_cast< BrowseCapability >( intType );
+            }
+        }
+
+    }
+    else
+    {
+        m_browseCapabilities << CapabilityBrowseArtists;
+    }
+}
+
+
+void
+ScriptCollection::fetchIcon( const QString& iconUrlString )
+{
+    if ( !iconUrlString.isEmpty() )
+    {
+        QUrl iconUrl = QUrl::fromEncoded( iconUrlString.toLatin1() );
+        if ( iconUrl.isValid() )
+        {
+            QNetworkRequest req( iconUrl );
+            tDebug() << "Creating a QNetworkReply with url:" << req.url().toString();
+            QNetworkReply* reply = Hatchet::Utils::nam()->get( req );
+
+            connect( reply, SIGNAL( finished() ),
+                        this, SLOT( onIconFetched() ) );
+        }
+    }
+}
+
+
+void
+ScriptCollection::onIconFetched()
+{
+    QNetworkReply* reply = qobject_cast< QNetworkReply* >( sender() );
+    if ( reply != 0 )
+    {
+        if( reply->error() == QNetworkReply::NoError )
+        {
+            QImageReader imageReader( reply );
+            setIcon( QPixmap::fromImageReader( &imageReader ) );
+        }
+
+        reply->deleteLater();
+    }
+}
+
+
+unsigned int
+ScriptCollection::timeout() const
+{
+    return 0;
+}
+
+
+unsigned int
+ScriptCollection::weight() const
+{
+    return m_weight;
+}
+
+
+void
+ScriptCollection::resolve( const Hatchet::query_ptr& query )
+{
+    ScriptJob* job = scriptAccount()->resolve( scriptObject(), query, "collection" );
+
+    connect( job, SIGNAL( done( QVariantMap ) ), SLOT( onResolveRequestDone( QVariantMap ) ) );
+
+    job->start();
+}
+
+
+void
+ScriptCollection::onResolveRequestDone( const QVariantMap& data )
+{
+    Q_ASSERT( QThread::currentThread() == thread() );
+
+    ScriptJob* job = qobject_cast< ScriptJob* >( sender() );
+
+    QID qid = job->property( "qid" ).toString();
+
+    if ( job->error() )
+    {
+        Hatchet::Pipeline::instance()->reportError( qid, this );
+    }
+    else
+    {
+        QList< Hatchet::result_ptr > results = scriptAccount()->parseResultVariantList( data.value( "tracks" ).toList() );
+
+        foreach( const result_ptr& result, results )
+        {
+            result->setResolvedByCollection( weakRef().toStrongRef() );
+            result->setFriendlySource( prettyName() );
+        }
+
+        Hatchet::Pipeline::instance()->reportResults( qid, this, results );
+    }
+
+    sender()->deleteLater();
+}

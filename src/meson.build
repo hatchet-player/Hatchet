@@ -1,16 +1,16 @@
 # src build file
 #============================================================================
 
-tomahawk_inc += include_directories('.')
+hatchet_inc += include_directories('.')
 
 src_dirs = [
-    'libtomahawk',
-    'libtomahawk-widgets',
-    'libtomahawk-playdarapi',
+    'libhatchet',
+    'libhatchet-widgets',
+    'libhatchet-playdarapi',
     # 'accounts',
     # 'infoplugins',
     'viewpages',
-    'tomahawk'
+    'hatchet'
 ]
 
 if (get_option('with_tools'))
