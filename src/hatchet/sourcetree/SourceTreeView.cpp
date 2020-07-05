@@ -34,7 +34,7 @@
 #include "DropJob.h"
 #include "items/GenericPageItems.h"
 #include "items/TemporaryPageItem.h"
-#include "database/DatabaseCommand_SocialAction.h"
+#include "database/commands/SocialAction.h"
 #include "database/Database.h"
 #include "LatchManager.h"
 #include "GlobalActionManager.h"

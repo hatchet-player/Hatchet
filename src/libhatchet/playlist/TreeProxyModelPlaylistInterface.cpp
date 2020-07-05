@@ -25,7 +25,7 @@
 #include "Query.h"
 #include "database/Database.h"
 #include "database/DatabaseImpl.h"
-#include "database/DatabaseCommand_AllAlbums.h"
+#include "database/commands/AllAlbums.h"
 #include "PlayableItem.h"
 #include "utils/Logger.h"
 

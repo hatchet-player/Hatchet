@@ -29,7 +29,7 @@
 #include "Result.h"
 #include "PlayableModel.h"
 #include "PlaylistInterface.h"
-#include "database/DatabaseCommand_AllArtists.h"
+#include "database/commands/AllArtists.h"
 
 #include "DllMacro.h"
 #include "Typedefs.h"

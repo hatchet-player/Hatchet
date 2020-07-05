@@ -24,7 +24,7 @@
 #include "Source.h"
 #include "SourceList.h"
 #include "database/Database.h"
-#include "database/DatabaseCommand_AllTracks.h"
+#include "database/commands/AllTracks.h"
 #include "utils/HatchetUtils.h"
 #include "utils/Logger.h"
 

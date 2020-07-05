@@ -24,7 +24,7 @@
 
 #include "Album.h"
 #include "PlaylistInterface.h"
-#include "database/DatabaseCommand_AllAlbums.h"
+#include "database/commands/AllAlbums.h"
 #include "PlayableModel.h"
 
 #include "DllMacro.h"

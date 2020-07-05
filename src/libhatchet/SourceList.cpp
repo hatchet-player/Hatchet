@@ -21,7 +21,7 @@
 
 #include "database/Database.h"
 #include "database/DatabaseImpl.h"
-#include "database/DatabaseCommand_LoadAllSources.h"
+#include "database/commands/LoadAllSources.h"
 #include "network/RemoteCollection.h"
 #include "network/ControlConnection.h"
 #include "infosystem/InfoSystemCache.h"

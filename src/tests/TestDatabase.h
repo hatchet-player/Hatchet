@@ -22,7 +22,7 @@
 #include <QtTest>
 
 #include "database/Database.h"
-#include "database/DatabaseCommand_LogPlayback.h"
+#include "database/commands/LogPlayback.h"
 
 
 class TestDatabaseCommand : public Hatchet::DatabaseCommand

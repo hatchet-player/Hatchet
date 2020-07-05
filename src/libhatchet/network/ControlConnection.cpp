@@ -21,7 +21,7 @@
 #include "ControlConnection_p.h"
 
 #include "database/Database.h"
-#include "database/DatabaseCommand_CollectionStats.h"
+#include "database/commands/CollectionStats.h"
 #include "network/DbSyncConnection.h"
 #include "network/Msg.h"
 #include "network/MsgProcessor.h"

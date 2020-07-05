@@ -21,7 +21,7 @@
 
 #include "collection/Collection.h"
 #include "database/Database.h"
-#include "database/DatabaseCommand_AllTracks.h"
+#include "database/commands/AllTracks.h"
 #include "utils/Logger.h"
 
 #include "Artist.h"

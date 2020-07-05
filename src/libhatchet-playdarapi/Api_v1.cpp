@@ -22,8 +22,8 @@
 #include "Api_v1.h"
 
 #include "database/Database.h"
-#include "database/DatabaseCommand_AddClientAuth.h"
-#include "database/DatabaseCommand_ClientAuthValid.h"
+#include "database/commands/AddClientAuth.h"
+#include "database/commands/ClientAuthValid.h"
 #include "network/Servent.h"
 #include "utils/Json.h"
 #include "utils/Logger.h"

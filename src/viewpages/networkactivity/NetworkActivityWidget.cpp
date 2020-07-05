@@ -22,8 +22,8 @@
 
 #include "audio/AudioEngine.h"
 #include "database/Database.h"
-#include "database/DatabaseCommand_NetworkCharts.h"
-#include "database/DatabaseCommand_TrendingTracks.h"
+#include "database/commands/NetworkCharts.h"
+#include "database/commands/TrendingTracks.h"
 #include "playlist/RecentlyLovedTracksModel.h"
 #include "playlist/TopLovedTracksModel.h"
 #include "playlist/TreeProxyModel.h"

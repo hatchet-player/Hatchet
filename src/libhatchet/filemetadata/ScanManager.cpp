@@ -20,8 +20,8 @@
 #include "ScanManager.h"
 
 #include "database/Database.h"
-#include "database/DatabaseCommand_FileMTimes.h"
-#include "database/DatabaseCommand_DeleteFiles.h"
+#include "database/commands/FileMTimes.h"
+#include "database/commands/DeleteFiles.h"
 #include "utils/Logger.h"
 #include "utils/HatchetUtils.h"
 

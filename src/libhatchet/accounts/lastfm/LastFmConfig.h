@@ -21,7 +21,7 @@
 
 #include "Track.h"
 #include "accounts/AccountConfigWidget.h"
-#include "database/DatabaseCommand_LoadSocialActions.h"
+#include "database/commands/LoadSocialActions.h"
 
 #include <QWidget>
 #include <QSet>

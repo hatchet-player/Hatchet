@@ -27,7 +27,7 @@
 #include "playlist/RecentlyPlayedModel.h"
 
 #include "database/Database.h"
-#include "database/DatabaseCommand_AllAlbums.h"
+#include "database/commands/AllAlbums.h"
 
 #include "utils/HatchetUtilsGui.h"
 #include "utils/Logger.h"

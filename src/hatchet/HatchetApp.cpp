@@ -55,7 +55,7 @@
 #include "audio/AudioEngine.h"
 #include "database/Database.h"
 #include "database/DatabaseCollection.h"
-#include "database/DatabaseCommand_CollectionStats.h"
+#include "database/commands/CollectionStats.h"
 #include "database/DatabaseResolver.h"
 #include "playlist/PlaylistTemplate.h"
 #include "jobview/ErrorStatusMessage.h"

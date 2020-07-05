@@ -24,7 +24,7 @@
 #include "collection/TracksRequest.h"
 #include "database/Database.h"
 #include "database/DatabaseImpl.h"
-#include "database/DatabaseCommand_AllTracks.h"
+#include "database/commands/AllTracks.h"
 
 #include "Artist.h"
 #include "Pipeline.h"

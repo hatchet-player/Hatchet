@@ -27,7 +27,7 @@
 #include "database/DatabaseImpl.h"
 #include "collection/AlbumsRequest.h"
 #include "collection/ArtistsRequest.h"
-#include "database/DatabaseCommand_AllAlbums.h"
+#include "database/commands/AllAlbums.h"
 #include "PlayableItem.h"
 #include "utils/Logger.h"
 

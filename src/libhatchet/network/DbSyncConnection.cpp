@@ -33,8 +33,8 @@
 
 #include "database/Database.h"
 #include "database/DatabaseCommand.h"
-#include "database/DatabaseCommand_CollectionStats.h"
-#include "database/DatabaseCommand_LoadOps.h"
+#include "database/commands/CollectionStats.h"
+#include "database/commands/LoadOps.h"
 #include "utils/Logger.h"
 
 #include "Msg.h"
