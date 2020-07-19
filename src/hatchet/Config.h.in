@@ -25,7 +25,7 @@
 #cmakedefine HATCHET_FINEGRAINED_MESSAGES
 #cmakedefine COMPLEX_TAGLIB_FILENAME
 #cmakedefine HAVE_VLC_ALBUMARTIST
-#cmakedefine HAVE_X11
+#cmakedefine HAVE_QT5_X11
 
 #cmakedefine OFSTREAM_CAN_OPEN_WCHAR_FILE_NAMES
 
