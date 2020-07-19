@@ -12,7 +12,7 @@
 #---------------------------------------------------
 project(
     'hatchet',
-    ['c', 'cpp', 'objcpp'],
+    ['c', 'cpp'],
     default_options : [
         'cpp_std=c++11',
         'warning_level=3',
@@ -25,19 +25,15 @@ project(
     license : 'GPLv3'
 )
 
-# add_languages('c')
-# add_languages('cpp')
-# add_languages('objcpp')
-
-
-#message ( build_machine.system() )
-message ( host_machine.system() )
-
+sys_name = host_machine.system().to_lower()
 
 # init compiler 
 #---------------------------------------------------
 cpp = meson.get_compiler('cpp')
-objcpp = meson.get_compiler('objcpp')
+
+if sys_name.contains('darwin')
+    objcpp = meson.get_compiler('objcpp')
+endif
 
 add_project_arguments(get_option('cxxflags'), language : 'cpp')
 add_project_link_arguments(get_option('ldflags'), language: 'cpp')

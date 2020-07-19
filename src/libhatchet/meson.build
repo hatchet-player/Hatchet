@@ -77,13 +77,13 @@ libhatchet_gui_src = files(
     join_paths(libhatchet_dir, 'LatchManager.cpp'))
 
 
-libhatchet_h = files()
-
-
-libhatchet_moc_ui = files()
+libhatchet_obj_src = files()
 
 
 libhatchet_moc_src = files()
+
+
+libhatchet_h = files()
 
 
 libhatchet_moc_h = files(
@@ -118,6 +118,9 @@ libhatchet_moc_h = files(
     join_paths(libhatchet_dir, 'UrlHandler_p.h'),
     join_paths(libhatchet_dir, 'ViewManager.h'),
     join_paths(libhatchet_dir, 'ViewPagePlugin.h'))
+
+
+libhatchet_moc_ui = files()
 
 
 libhatchet_dirs = [
@@ -164,6 +167,10 @@ libhatchet_link_args = []
 
 if (get_option('with_gui'))
     libhatchet_src += libhatchet_gui_src
+endif
+
+if (sys_name.contains('darwin'))
+    libhatchet_src += libhatchet_obj_src
 endif
 
 

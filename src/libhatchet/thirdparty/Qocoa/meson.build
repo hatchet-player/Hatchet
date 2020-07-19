@@ -22,8 +22,6 @@ libhatchet_moc_h += files(
     join_paths(libhatchet_thirdparty_qocoa_dir, 'qsearchfield.h'))
 
 
-if (sys_name.contains('darwin'))
-    libhatchet_src += files(
-        join_paths(libhatchet_thirdparty_qocoa_dir, 'qbutton_mac.mm'),
-        join_paths(libhatchet_thirdparty_qocoa_dir, 'qsearchfield_mac.mm'))
-endif
+libhatchet_obj_src += files(
+    join_paths(libhatchet_thirdparty_qocoa_dir, 'qbutton_mac.mm'),
+    join_paths(libhatchet_thirdparty_qocoa_dir, 'qsearchfield_mac.mm'))
