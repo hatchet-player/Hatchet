@@ -22,7 +22,7 @@
 #ifndef JSRESOLVER_H
 #define JSRESOLVER_H
 
-#include "config.h"
+#include "Config.h"
 #include "ExternalResolverGui.h"
 #include "Typedefs.h"
 #include "ScriptPlugin.h"

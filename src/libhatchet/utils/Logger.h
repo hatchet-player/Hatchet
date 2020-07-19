@@ -23,7 +23,7 @@
 #include <QFile>
 
 #include "DllMacro.h"
-#include "config.h"
+#include "Config.h"
 
 #define LOGDEBUG 1
 #define LOGINFO 2

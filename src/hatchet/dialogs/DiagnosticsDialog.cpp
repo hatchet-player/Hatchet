@@ -21,7 +21,7 @@
 #include "DiagnosticsDialog.h"
 #include "ui_DiagnosticsDialog.h"
 
-#include "config.h"
+#include "Config.h"
 #include "HatchetVersion.h"
 
 #include "SourceList.h"

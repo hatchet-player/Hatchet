@@ -20,7 +20,7 @@
 
 #include "MacDelegate.h"
 #include "MacShortcutHandler.h"
-#include "config.h"
+#include "Config.h"
 #include "HatchetWindow.h"
 #include "audio/AudioEngine.h"
 #include "ViewManager.h"

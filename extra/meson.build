@@ -1,7 +1,6 @@
 # Hatchet Extra Build File
 #============================================================================
 
-hatchet_inc += include_directories('.')
 hatchet_dir = meson.current_source_dir()
 
 # build config.h
@@ -10,17 +9,11 @@ hatchet_dir = meson.current_source_dir()
 config_h.set('WITH_BINARY_ATTICA', true)
 config_h.set('WITH_UPOWER', true)
 config_h.set('WITH_GNOMESHORTCUTHANDLER', true)
-#  #undef QTSPARKLE_FOUND */
-#  #undef HATCHET_FINEGRAINED_MESSAGES */
-#  #undef COMPLEX_TAGLIB_FILENAME */
-#  #define HAVE_VLC_ALBUMARTIST
-#  #define HAVE_X11
 
 config_h = configure_file(
-    output : 'config.h',
+    input : 'Config.h.in',
+    output : 'Config.h',
     configuration : config_h)
-
-add_project_arguments('-include', 'extra/config.h', language : 'cpp')
 
 
 # build HatchetVersion.h
@@ -40,8 +33,6 @@ hatchetversion_h = configure_file(
     output : 'HatchetVersion.h',
     configuration : version_hh)
 
-add_project_arguments('-include', 'extra/HatchetVersion.h', language : 'cpp')
-
 
 # install headers
 #---------------------------------------------------
@@ -52,4 +43,18 @@ install_headers(
 install_headers(
     hatchetversion_h,
     install_dir : join_paths(includedir, 'hatchet'))
+
+
+# include directories
+#============================================================================
+
+hatchet_inc += include_directories('.')
+
+# extra_dirs = [
+#     'admin',
+#     'lang']
+
+# foreach dir : extra_dirs
+#     subdir(dir)
+# endforeach
 

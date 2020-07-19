@@ -29,7 +29,7 @@
 #include "utils/PluginLoader.h"
 
 #include "CredentialsManager.h"
-#include "config.h"
+#include "Config.h"
 #include "ResolverAccount.h"
 #include "SourceList.h"
 #include "HatchetSettings.h"
