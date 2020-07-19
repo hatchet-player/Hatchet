@@ -21,7 +21,7 @@
 #include "HatchetUtilsGui.h"
 
 #include "playlist/PlayableItem.h"
-#include "config.h"
+#include "Config.h"
 #include "DpiScaler.h"
 #include "Query.h"
 #include "Result.h"

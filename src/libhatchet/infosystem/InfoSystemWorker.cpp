@@ -23,7 +23,7 @@
 #include "utils/Logger.h"
 #include "utils/ShortLinkHelper.h"
 #include "utils/HatchetUtils.h"
-#include "config.h"
+#include "Config.h"
 #include "utils/LinkGenerator.h"
 #include "InfoSystemCache.h"
 #include "PlaylistEntry.h"

@@ -33,7 +33,7 @@
 #include "SourceList.h"
 #include "HatchetSettings.h"
 
-#include "config.h"
+#include "Config.h"
 
 using namespace Hatchet;
 

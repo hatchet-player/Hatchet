@@ -30,7 +30,7 @@
 #include "utils/NetworkReply.h"
 #include "utils/Logger.h"
 
-#include "config.h"
+#include "Config.h"
 #include "JSResolver_p.h"
 #include "Pipeline.h"
 #include "Result.h"

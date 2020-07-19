@@ -34,7 +34,7 @@
 #include "sip/PeerInfo.h"
 #include "utils/NetworkProxyFactory.h"
 
-#include "config.h"
+#include "Config.h"
 #include "HatchetVersion.h"
 
 #include <jreen/jid.h>

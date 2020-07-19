@@ -87,7 +87,7 @@
 #include "utils/GuiHelpers.h"
 #include "libhatchet/widgets/ImageButton.h"
 
-#include "config.h"
+#include "Config.h"
 
 #if defined( Q_OS_WIN )
     #if defined ( QTSPARKLE_FOUND )

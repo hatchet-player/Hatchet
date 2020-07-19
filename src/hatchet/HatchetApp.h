@@ -31,7 +31,7 @@
 #include "kdsingleapplicationguard.h"
 
 #include "HeadlessCheck.h"
-#include "config.h"
+#include "Config.h"
 
 #include <QRegExp>
 #include <QFile>

@@ -21,7 +21,7 @@
 
 #include "utils/HatchetUtils.h"
 
-#include "config.h"
+#include "Config.h"
 
 #include "BinaryExtractWorker.h"
 #include "Query.h"

@@ -78,7 +78,7 @@
 #include "widgets/HeaderLabel.h"
 #include "utils/HatchetStyle.h"
 
-#include "config.h"
+#include "Config.h"
 
 #ifdef WITH_UPOWER
     #include "linux/UPowerHandler.h"

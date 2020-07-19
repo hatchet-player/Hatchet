@@ -23,7 +23,7 @@
 #include "HatchetSettings.h"
 #include "Pipeline.h"
 #include "Source.h"
-#include "config.h"
+#include "Config.h"
 
 #include "utils/Logger.h"
 #include "accounts/ResolverAccount.h"

@@ -36,7 +36,7 @@
 #include "Source.h"
 #include "Typedefs.h"
 
-#include "config.h"
+#include "Config.h"
 
 #include <QDialog>
 #include <QDialogButtonBox>

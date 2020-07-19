@@ -21,7 +21,7 @@
 #include "AudioEngine.h"
 #include "AudioEngine_p.h"
 
-#include "config.h"
+#include "Config.h"
 
 #include "audio/Qnr_IoDeviceStream.h"
 #include "filemetadata/MusicScanner.h"

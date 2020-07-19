@@ -38,7 +38,7 @@
 
 #include "Artist.h"
 #include "Album.h"
-#include "config.h"
+#include "Config.h"
 #include "GlobalActionManager.h"
 #include "Pipeline.h"
 #include "Result.h"

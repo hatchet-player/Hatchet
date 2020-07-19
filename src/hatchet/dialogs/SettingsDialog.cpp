@@ -27,7 +27,7 @@
 #include "ui_Settings_Advanced.h"
 #include "ui_Settings_Downloads.h"
 
-#include "config.h"
+#include "Config.h"
 
 #include "AtticaManager.h"
 #include "network/acl/AclRegistry.h"

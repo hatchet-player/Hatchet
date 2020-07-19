@@ -21,7 +21,7 @@
 #ifndef CLOSURE_H
 #define CLOSURE_H
 
-#include "config.h"
+#include "Config.h"
 #include "DllMacro.h"
 
 #include <QMetaMethod>

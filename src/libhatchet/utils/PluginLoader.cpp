@@ -23,7 +23,7 @@
 #include "PluginLoader.h"
 #include "PluginLoader_p.h"
 
-#include "config.h"
+#include "Config.h"
 #include "HatchetVersion.h"
 
 #include "utils/Logger.h"

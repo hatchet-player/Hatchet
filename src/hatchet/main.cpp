@@ -23,7 +23,7 @@
 #include "UbuntuUnityHack.h"
 #include "HatchetSettings.h"
 #include "utils/HatchetUtils.h"
-#include "config.h"
+#include "Config.h"
 #include "utils/Logger.h"
 
 #include "qca.h"

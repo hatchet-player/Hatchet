@@ -32,7 +32,7 @@
 
 #include "Artist.h"
 #include "Album.h"
-#include "config.h"
+#include "Config.h"
 #include "JSResolverHelper.h"
 #include "Pipeline.h"
 #include "Result.h"

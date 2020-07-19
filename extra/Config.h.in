@@ -1,0 +1,167 @@
+#ifndef CONFIG_H_IN
+#define CONFIG_H_IN
+
+/*
+package information
+============================================================================
+*/
+
+#mesondefine CMAKE_INSTALL_PREFIX 
+#mesondefine CMAKE_INSTALL_FULL_LIBEXECDIR
+#mesondefine CMAKE_INSTALL_LIBDIR
+
+/* Define to the address where bug reports for thispackage should be sent. */
+#mesondefine PACKAGE_BUGREPORT
+
+/* Define to the full name of this package. */
+#mesondefine PACKAGE_NAME
+
+/* Define to the full name and version of this package. */
+#mesondefine PACKAGE_STRING
+
+/* Define to the one symbol short name of this package. */
+#mesondefine PACKAGE_TARNAME
+
+/* Define to the home page for this package. */
+#mesondefine PACKAGE_URL
+
+/* Define to the version of this package. */
+#mesondefine PACKAGE_VERSION
+
+
+/*
+internal flags 
+============================================================================
+*/
+
+/* Define if the compiler supports basic C++17 syntax */
+#mesondefine HAVE_CXX17
+
+/* define if shared library is being build */
+#mesondefine HATCHET_DLLs
+
+/* Generic helper definitions for shared library support */
+#if defined _WIN32 || defined __CYGWIN__
+  #define HATCHET_DLL_IMPORT __declspec(dllimport)
+  #define HATCHET_DLL_EXPORT __declspec(dllexport)
+  #define HATCHET_DLL_LOCAL
+#else
+  #if __GNUC__ >= 4
+    #define HATCHET_DLL_IMPORT __attribute__ ((visibility ("default")))
+    #define HATCHET_DLL_EXPORT __attribute__ ((visibility ("default")))
+    #define HATCHET_DLL_LOCAL  __attribute__ ((visibility ("hidden")))
+  #else
+    #define HATCHET_DLL_IMPORT
+    #define HATCHET_DLL_EXPORT
+    #define HATCHET_DLL_LOCAL
+  #endif
+#endif
+
+/* Define api functions */
+#ifdef HATCHET_DLL
+  #ifdef HATCHET_BUILDING 
+    #define HATCHET_API HATCHET_DLL_EXPORT
+  #else
+    #define HATCHET_API HATCHET_DLL_IMPORT
+  #endif
+  #define HATCHET_LOCAL HATCHET_DLL_LOCAL
+#else
+  #define HATCHET_API
+  #define HATCHET_LOCAL
+#endif
+
+/*
+Dependencies 
+============================================================================
+*/
+
+/* Define if the Boost library is available. */
+#mesondefine HAVE_BOOST
+
+/* echonest is needed for intefacing with Echo Nest */
+#mesondefine HAVE_ECHONEST
+
+/* GnuTLS is a secure communications library implementing 
+the SSL, TLS, and DTLS protocols and technologies around them. */
+#mesondefine HAVE_GNUTLS
+
+/* Define if the Qt library modules are available. */
+#mesondefine HAVE_KDSINGLEAPPLICATIONGUARD
+
+/* Provides support for installation of resolvers from theHatchet website */
+#mesondefine HAVE_KF5ATTICA
+
+/* liblastfm is needed for reading meta data from audio files. */
+#mesondefine HAVE_LIBLASTFM
+
+/* Lucene++ is an open-source C++ search engine */
+#mesondefine HAVE_LIBLUCENE
+
+/* Define if libvls is available. */
+#mesondefine HAVE_LIBVLC
+
+/* Provides encryption
+and signing functions necessary for some resolvers and accounts */
+#mesondefine HAVE_QCA2
+
+/* Define if the Qt library modules are available. */
+#mesondefine HAVE_QT5
+
+/* Whether to build with QT5 X11 support */
+#mesondefine HAVE_QT5_X11
+
+/* Define if the Qt-Certificate-Addon library is available. */
+#mesondefine HAVE_QTCERTADDON
+
+/* Define if the QtKeychain library is available. */
+#mesondefine HAVE_QTKEYCHAIN
+
+/* Define if the QuaZip library is available. */
+#mesondefine HAVE_QUAZIP
+
+/* Define if the QxtWeb library is available. */
+#mesondefine HAVE_QXT
+
+/* Define if the Sparsehash library is available. */
+#mesondefine HAVE_SPARSEHASH
+
+/* Taglib is needed for reading meta data fromaudio files. */
+#mesondefine HAVE_TAGLIB
+
+/* Telepathy-Qt is needed for sharing Jabber/GTalk accounts with Telepathy. */
+#mesondefine HAVE_TELEPATHY
+
+/* Define if the Zlib library is available. */
+#mesondefine HAVE_ZLIB
+
+/* Define if the QtSparkle library is available.  */
+#mesondefine HAVE_QTSPARKLE
+
+/* Define whether to use the Gnome shortuct handler. */
+#mesondefine WITH_GNOMESHORTCUTHANDLER
+
+/* Define whether build hatchet with UPower */
+#mesondefine WITH_UPOWER
+
+/* Define whether build hatchet with Qt Crash Reporter */
+#mesondefine WITH_CRASHREPORTER
+
+/* Old tomahawk definitions. Will be refactored.  */
+#mesondefine MOUNTAIN_LION
+#mesondefine LION
+#mesondefine SNOW_LEOPARD
+#mesondefine LEOPARD
+#mesondefine HAVE_SPARKLE
+#mesondefine CXX_STD_FUNCTIONAL
+
+#mesondefine TOMAHAWK_FINEGRAINED_MESSAGES
+#mesondefine COMPLEX_TAGLIB_FILENAME
+#mesondefine HAVE_VLC_ALBUMARTIST
+#mesondefine HAVE_QT5_X11
+
+#mesondefine OFSTREAM_CAN_OPEN_WCHAR_FILE_NAMES
+
+
+#mesondefine WITH_BINARY_ATTICA
+
+#endif // CONFIG_H_IN

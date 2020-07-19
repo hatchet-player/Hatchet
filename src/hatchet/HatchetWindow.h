@@ -27,7 +27,7 @@
 #include "utils/XspfLoader.h"
 #include "utils/DpiScaler.h"
 
-#include "config.h"
+#include "Config.h"
 
 #include <QMainWindow>
 #include <QVariantMap>
