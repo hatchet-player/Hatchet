@@ -46,10 +46,10 @@ qt5_dep = declare_dependency(
 qdbusxml2cpp = find_program('qdbusxml2cpp', required : true)
 
 
-# Set HAVE_X11 in config.h
+# Set HAVE_QT5_X11 in config.h
 #---------------------------------------------------  
 config_h.set(
-    'HAVE_X11', 
+    'HAVE_QT5_X11', 
     check_qt5_x11.found(),
     description : 'Whether to build with QT5 X11 support')
 

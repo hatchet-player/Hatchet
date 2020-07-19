@@ -42,7 +42,7 @@
 #include <QDesktopServices>
 
 #include <QWindow>
-#ifdef HAVE_X11
+#ifdef HAVE_QT5_X11
     #include <QX11Info>
 #endif
 
@@ -329,7 +329,7 @@ bringToFront()
 
         widget->windowHandle()->requestActivate();
 
-        #ifdef HAVE_X11
+        #ifdef HAVE_QT5_X11
         if ( QX11Info::isPlatformX11() )
         {
             QX11Info::setAppTime( QX11Info::getTimestamp() );
