@@ -38,25 +38,12 @@ sudo pacman -S quazip
 sudo pacman -S qtkeychain
 ```
 
-
-# Install yay for easy installation of AUR packages
-this step is only required if you don't already have an AUR
-builder installed. Yay makes installing community packages a 
-lot easier. you can install it by running the following.
+# Install Hatchet
 ```
-cd /opt
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si
+git clone https://github.com/hatchet-player/hatchet
+
+cd hatchet
+./bootstrap.sh
+cd build
+sudo ninja install
 ```
-
-# Install AUR dependencies
-
-```
-
-# aur/libechonest-qt5
-yay -a libechonest-qt5
-
-```
-
-

@@ -21,8 +21,7 @@ libhatchet_dep_list = [
     liblucene_dep,
     libvlc_dep,
     libportfwd_dep,
-    telepathy_dep,
-    echonest_dep]
+    telepathy_dep]
 
 
 
@@ -39,7 +38,6 @@ endif
 
 
 libhatchet_src = files(
-    join_paths(libhatchet_dir, 'EchonestCatalogSynchronizer.cpp'),
     join_paths(libhatchet_dir, 'HatchetSettings.cpp'),
     join_paths(libhatchet_dir, 'SourceList.cpp'),
     join_paths(libhatchet_dir, 'Pipeline.cpp'),
@@ -97,7 +95,6 @@ libhatchet_moc_h = files(
     join_paths(libhatchet_dir, 'DownloadJob.h'),
     join_paths(libhatchet_dir, 'DownloadManager.h'),
     join_paths(libhatchet_dir, 'DropJob.h'),
-    join_paths(libhatchet_dir, 'EchonestCatalogSynchronizer.h'),
     join_paths(libhatchet_dir, 'FuncTimeout.h'),
     join_paths(libhatchet_dir, 'GlobalActionManager.h'),
     join_paths(libhatchet_dir, 'LatchManager.h'),

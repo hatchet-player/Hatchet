@@ -96,7 +96,6 @@ SourceItem::SourceItem( SourcesModel* mdl, SourceTreeItem* parent, const Hatchet
     // create category items if there are playlists to show, or stations to show
     QList< playlist_ptr > playlists = source->dbCollection()->playlists();
     QList< dynplaylist_ptr > autoplaylists = source->dbCollection()->autoPlaylists();
-    //QList< dynplaylist_ptr > stations = source->dbCollection()->stations(); // echonest is dead, disable stations
 
     if ( !playlists.isEmpty() || !autoplaylists.isEmpty() || source->isLocal() )
     {
@@ -104,20 +103,13 @@ SourceItem::SourceItem( SourcesModel* mdl, SourceTreeItem* parent, const Hatchet
         onPlaylistsAdded( playlists );
         onAutoPlaylistsAdded( autoplaylists );
     }
-    // echonest is dead, disable stations
-    /*
-    if ( !stations.isEmpty() || source->isLocal() )
-    {
-        m_stations = new CategoryItem( model(), this, SourcesModel::StationsCategory, source->isLocal() );
-        onStationsAdded( stations );
-    }
+
+    /*  tf this even do?? (*´･д･)?
+    if ( ViewManager::instance()->pageForCollection( source->collection() ) )
+        model()->linkSourceItemToPage( this, ViewManager::instance()->pageForCollection( source->collection() ) );
     */
 
-/*    if ( ViewManager::instance()->pageForCollection( source->collection() ) )
-        model()->linkSourceItemToPage( this, ViewManager::instance()->pageForCollection( source->collection() ) );*/
-
     // load auto playlists and stations!
-
     connect( source.data(), SIGNAL( stats( QVariantMap ) ), SIGNAL( updated() ) );
     connect( source.data(), SIGNAL( syncedWithDatabase() ), SIGNAL( updated() ) );
     connect( source.data(), SIGNAL( stateChanged() ), SIGNAL( updated() ) );

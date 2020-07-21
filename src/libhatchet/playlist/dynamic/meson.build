@@ -29,7 +29,6 @@ libhatchet_moc_h += files(
 
 libhatchet_playlist_dynamic_dirs = [
     'database',
-    'echonest',
     'widgets']
 
 

@@ -24,7 +24,6 @@ viewpage_newreleases_dep_list = [
     libvlc_dep,
     libportfwd_dep,
     telepathy_dep,
-    echonest_dep,
     taglib_dep,
 
     libhatchet_dep,
