@@ -33,25 +33,27 @@
 
 #include <QDir>
 #include <QMessageBox>
-#include <QWebFrame>
+#include <QWebEnginePage>
+#include <QWebEngineProfile>
 #include <QCoreApplication>
 
 using namespace Hatchet;
 
 ScriptEngine::ScriptEngine( JSAccount* parent )
-    : QWebPage( (QObject*) parent )
+    : QWebEnginePage( (QObject*) parent )
     , m_parent( parent )
-{
-    settings()->setAttribute( QWebSettings::OfflineStorageDatabaseEnabled, true );
-    settings()->setOfflineStoragePath( HatchetUtils::appDataDir().path() );
-    settings()->setAttribute(QWebSettings::LocalStorageEnabled, true );
-    settings()->setLocalStoragePath( HatchetUtils::appDataDir().path() );
-    settings()->setAttribute( QWebSettings::LocalStorageDatabaseEnabled, true );
-    settings()->setAttribute( QWebSettings::LocalContentCanAccessFileUrls, true );
-    settings()->setAttribute( QWebSettings::LocalContentCanAccessRemoteUrls, true );
-    settings()->setOfflineStorageDefaultQuota(100 * 1024 * 1024 /* 100 Mb */);
-    settings()->setOfflineWebApplicationCacheQuota(100 * 1024 * 1024 /* 100 Mb */);
-    settings()->setAttribute( QWebSettings::DeveloperExtrasEnabled, true );
+{   
+    // QT5.15 DISABLE
+    // settings()->setAttribute( QWebEngineSettings::OfflineStorageDatabaseEnabled, true );
+    // settings()->setOfflineStoragePath( HatchetUtils::appDataDir().path() );
+    // settings()->setAttribute(QWebEngineSettings::WebAttribute LocalStorageEnabled, true);
+    // settings()->setLocalStoragePath( HatchetUtils::appDataDir().path() );
+    // settings()->setAttribute( QWebEngineSettings::LocalStorageDatabaseEnabled, true );
+    // settings()->setAttribute( QWebEngineSettings::LocalContentCanAccessFileUrls, true );
+    // settings()->setAttribute( QWebEngineSettings::LocalContentCanAccessRemoteUrls, true );
+    // settings()->setOfflineStorageDefaultQuota(100 * 1024 * 1024 /* 100 Mb */);
+    // settings()->setOfflineWebApplicationCacheQuota(100 * 1024 * 1024 /* 100 Mb */);
+    // settings()->setAttribute( QWebEngineSettings::DeveloperExtrasEnabled, true );
 
     // HACK
     QStringList cmdArgs = QCoreApplication::instance()->arguments();
@@ -61,16 +63,22 @@ ScriptEngine::ScriptEngine( JSAccount* parent )
     }
 
     // Hatchet is not a user agent
-    m_header = QWebPage::userAgentForUrl( QUrl() ).replace( QString( "%1/%2" )
+    QWebEngineProfile profile;
+    QWebEnginePage m_header(&profile);
+    
+    profile.setHttpUserAgent(QString( "%1/%2" )
                .arg( HATCHET_APPLICATION_NAME )
-               .arg( HATCHET_VERSION )
-               , "" );
-    tLog( LOGVERBOSE ) << "JSResolver Using header" << m_header;
+               .arg( HATCHET_VERSION ) );
+    
+    // The user agent is updated after a page load.
+    m_header.load(QUrl("about:blank"));
 
-    mainFrame()->setHtml( "<html><body></body></html>", QUrl( "file:///invalid/file/for/security/policy" ) );
+    tLog( LOGVERBOSE ) << "JSResolver Using header" << profile.httpUserAgent();
 
-    connect( networkAccessManager(), SIGNAL( sslErrors( QNetworkReply*, QList<QSslError> ) ),
-                                       SLOT( sslErrorHandler( QNetworkReply*, QList<QSslError> ) ) );
+    m_header.setHtml( "<html><body></body></html>", QUrl( "file:///invalid/file/for/security/policy" ) );
+
+    connect(&m_header, SIGNAL( sslErrors( QNetworkReply*, QList<QSslError> ) ),
+                       SLOT( sslErrorHandler( QNetworkReply*, QList<QSslError> ) ) );
 }
 
 
@@ -140,6 +148,7 @@ ScriptEngine::setScriptPath( const QString& scriptPath )
 void
 ScriptEngine::showWebInspector()
 {
+    /* QT5.15 DISABLE
     if ( m_webInspector.isNull() )
     {
         m_webInspector.reset( new QWebInspector() );
@@ -149,6 +158,7 @@ ScriptEngine::showWebInspector()
     }
 
     m_webInspector->show();
+    */
 }
 
 

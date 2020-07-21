@@ -24,7 +24,7 @@
 #include <QScrollArea>
 #include <QScrollBar>
 #include <QStackedWidget>
-#include <QWebFrame>
+#include <QWebEnginePage>
 #include <QWheelEvent>
 
 #include "audio/AudioEngine.h"
@@ -121,18 +121,20 @@ ArtistInfoWidget::ArtistInfoWidget( const Hatchet::artist_ptr& artist, QWidget* 
     {
         ui->biography->setObjectName( "biography" );
         ui->biography->setContentsMargins( 0, 0, 0, 0 );
-        ui->biography->page()->mainFrame()->setScrollBarPolicy( Qt::Horizontal, Qt::ScrollBarAlwaysOff );
-        ui->biography->page()->mainFrame()->setScrollBarPolicy( Qt::Vertical, Qt::ScrollBarAsNeeded );
-        ui->biography->page()->setLinkDelegationPolicy( QWebPage::DelegateAllLinks );
+        /* QT5.15 DISABLE
+        ui->biography->page()->setScrollBarPolicy( Qt::Horizontal, Qt::ScrollBarAlwaysOff );
+        ui->biography->page()->setScrollBarPolicy( Qt::Vertical, Qt::ScrollBarAsNeeded );
+        ui->biography->page()->setLinkDelegationPolicy( QWebEnginePage::DelegateAllLinks );
         ui->biography->setTextSizeMultiplier( DpiScaler::ratioFromFontHeight() );
-        ui->biography->settings()->setFontFamily( QWebSettings::StandardFont,
+        ui->biography->settings()->setFontFamily( QWebEngineSettings::StandardFont,
                                                   ui->biography->settings()->
-                                                  fontFamily( QWebSettings::SansSerifFont ) );
+                                                  fontFamily( QWebEngineSettings::SansSerifFont ) );
         ui->biography->setRenderHints( QPainter::Antialiasing |
                                        QPainter::TextAntialiasing |
                                        QPainter::HighQualityAntialiasing |
                                        QPainter::SmoothPixmapTransform |
                                        QPainter::NonCosmeticDefaultPen );
+        */
         ui->biography->installEventFilter( this );
 
         HatchetStyle::stylePageWidget( ui->biography );

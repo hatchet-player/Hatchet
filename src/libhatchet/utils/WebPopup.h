@@ -23,31 +23,30 @@
 #include "DllMacro.h"
 #include "Typedefs.h"
 
-#include <QWebView>
-#include <QWebFrame>
+#include <QWebEngineView>
+#include <QWebEnginePage>
 
-class ExternalBrowserWebPage : public QWebPage
+class ExternalBrowserWebPage : public QWebEnginePage
 {
     Q_OBJECT
 public:
-    ExternalBrowserWebPage( QObject* parent )
-    : QWebPage(parent)
+    ExternalBrowserWebPage( QObject* parent ) : QWebEnginePage(parent)
     {
     }
 
 protected:
-    bool acceptNavigationRequest( QWebFrame*, const QNetworkRequest& request, NavigationType ) override;
+    bool acceptNavigationRequest( QWebEnginePage*, const QNetworkRequest& request, NavigationType );
 };
 
 
-class WebPopup : public QWebView
+class WebPopup : public QWebEngineView
 {
     Q_OBJECT
 
 public:
     WebPopup( const QUrl& url, const QSize& size );
 
-    QWebView* createWindow( QWebPage::WebWindowType );
+    QWebEngineView* createWindow( QWebEnginePage::WebWindowType );
 };
 
 #endif // WEBPOPUP_H

@@ -25,7 +25,7 @@
 #include "ScriptObject.h"
 #include "JSResolver.h"
 
-#include <QWebFrame>
+#include <QWebEnginePage>
 #include <QFile>
 #include <QThread>
 
@@ -41,7 +41,7 @@ JSAccount::JSAccount( const QString& name )
 void
 JSAccount::addToJavaScriptWindowObject( const QString& name, QObject* object )
 {
-    m_engine->mainFrame()->addToJavaScriptWindowObject( name, object );
+    // m_engine->addToJavaScriptWindowObject( name, object ); QT5.15 DISABLE
 }
 
 
@@ -120,7 +120,7 @@ JSAccount::loadScript( const QString& path )
     const QByteArray contents = file.readAll();
 
     m_engine->setScriptPath( path );
-    m_engine->mainFrame()->evaluateJavaScript( contents );
+    m_engine->runJavaScript( contents );
 
     file.close();
 }
@@ -217,7 +217,9 @@ JSAccount::reportNativeScriptJobError( int resultId, const QVariantMap& error )
 QVariant
 JSAccount::evaluateJavaScriptInternal( const QString& scriptSource )
 {
-    return m_engine->mainFrame()->evaluateJavaScript( scriptSource );
+    // return m_engine->mainFrame()->evaluateJavaScript( scriptSource ); QT5.15 DISABLE
+
+    return -1;
 }
 
 

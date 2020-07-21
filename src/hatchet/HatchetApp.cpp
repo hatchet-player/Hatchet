@@ -169,8 +169,10 @@ HatchetApp::init()
 
     tLog() << "Starting Hatchet...";
 
-    QWebSettings::globalSettings()->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
-    //QWebSettings::setOfflineStoragePath(QLatin1String("/tmp"));
+    /* QT5.15 DISABLE
+    QWebEngineSettings::defaultSettings()->setAttribute(QWebEngineSettings::OfflineStorageDatabaseEnabled, true);
+    QWebEngineSettings::setOfflineStoragePath(QLatin1String("/tmp"));  QT5.15 DISABLE
+    */
 
     m_headless = arguments().contains( "--headless" );
 
