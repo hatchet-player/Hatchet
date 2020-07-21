@@ -144,10 +144,6 @@ CREATE TABLE IF NOT EXISTS dynamic_playlist_revision (
     pltype TEXT
 );
 
---INSERT INTO dynamic_playlist_revision(guid, controls, plmode, pltype)
---      VALUES('revisionguid-1', '["controlid-1"]', 0, "echonest");
---INSERT INTO dynamic_playlist_revision(guid, controls, plmode, pltype)
---      VALUES('revisionguid-11', '["controlid-2"]', 1, "echonest");
 
 
 -- files on disk and joinage with catalogue. physical properties of files only:
