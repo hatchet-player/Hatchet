@@ -21,7 +21,6 @@ libhatchetwidgets_dep_list = [
     libvlc_dep,
     libportfwd_dep,
     telepathy_dep,
-    echonest_dep,
 
     libhatchet_dep]
 

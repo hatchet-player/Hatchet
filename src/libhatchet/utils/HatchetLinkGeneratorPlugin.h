@@ -37,8 +37,6 @@ public:
     ScriptJob* openLink( const QString& title, const QString& artist, const QString& album ) const override;
     ScriptJob* openLink( const Hatchet::artist_ptr& artist ) const override;
     ScriptJob* openLink( const Hatchet::album_ptr& album ) const override;
-    // echonest is dead, disable all echonest code
-    // ScriptJob* openLink( const Hatchet::dynplaylist_ptr& playlist ) const override;
 
 private:
     QString hostname() const;

@@ -37,6 +37,7 @@ DatabaseCommand_CollectionAttributes::exec( DatabaseImpl *lib )
 //    QString sourceStr;
 //    if ( source().isNull() )
 //        sourceStr = "id IS NULL";
+//        sourceStr = "id IS NULL";
 //    else
 //        sourceStr = QString( "id == %1" ).arg( source()->id() );
 

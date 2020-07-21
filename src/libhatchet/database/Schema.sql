@@ -116,11 +116,6 @@ CREATE TABLE IF NOT EXISTS dynamic_playlist (
     autoload BOOLEAN DEFAULT true -- if this playlist should be autoloaded or not. true except for the case of special playlists we want to display elsewhere
 );
 
---INSERT INTO dynamic_playlist(guid, pltype, plmode)
---      VALUES('dynamic_playlist-guid-1', 'echonest', 0);
---INSERT INTO dynamic_playlist(guid, pltype, plmode)
---      VALUES('dynamic_playlist-guid-2', 'echonest', 1);
-
 -- list of controls in each playlist. each control saves a selectedType, a match, and an input
 CREATE TABLE IF NOT EXISTS dynamic_playlist_controls (
     id TEXT PRIMARY KEY,
@@ -194,7 +189,7 @@ CREATE TABLE IF NOT EXISTS track_tags (
     id INTEGER PRIMARY KEY,   -- track id
     source INTEGER REFERENCES source(id) ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
     tag TEXT NOT NULL,        -- always store as lowercase
-    ns TEXT,                  -- ie 'last.fm', 'echonest'
+    ns TEXT,                  -- ie 'last.fm'
     weight float DEFAULT 1.0  -- range 0-1
 );
 CREATE INDEX track_tags_tag ON track_tags(tag);
@@ -203,7 +198,7 @@ CREATE TABLE IF NOT EXISTS album_tags (
     id INTEGER PRIMARY KEY,   -- album id
     source INTEGER REFERENCES source(id) ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
     tag TEXT NOT NULL,        -- always store as lowercase
-    ns TEXT,                  -- ie 'last.fm', 'echonest'
+    ns TEXT,                  -- ie 'last.fm'
     weight float DEFAULT 1.0  -- range 0-1
 );
 CREATE INDEX album_tags_tag ON album_tags(tag);
@@ -212,7 +207,7 @@ CREATE TABLE IF NOT EXISTS artist_tags (
     id INTEGER PRIMARY KEY,   -- artist id
     source INTEGER REFERENCES source(id) ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
     tag TEXT NOT NULL,        -- always store as lowercase
-    ns TEXT,                  -- ie 'last.fm', 'echonest'
+    ns TEXT,                  -- ie 'last.fm'
     weight float DEFAULT 1.0  -- range 0-1
 );
 CREATE INDEX artist_tags_tag ON artist_tags(tag);

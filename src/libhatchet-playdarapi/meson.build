@@ -20,7 +20,6 @@ libhatchetplaydarapi_dep_list = [
     libvlc_dep,
     libportfwd_dep,
     telepathy_dep,
-    echonest_dep,
     single_app_guard_dep,
     qtcertaddon_dep,
     qxt_dep,
