@@ -39,6 +39,7 @@
 #include <QDir>
 #include <QPersistentModelIndex>
 #include <QPointer>
+#include <QWebEngineSettings>
 
 class AudioEngine;
 class ScanManager;

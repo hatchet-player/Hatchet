@@ -13,7 +13,7 @@ qt5_mod_list = [
     'Sql',
     'Svg',
     'UiTools',
-    'WebKitWidgets',
+    'WebEngineWidgets',
     'Widgets',
     'Xml',
     'DBus']

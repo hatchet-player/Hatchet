@@ -26,9 +26,8 @@
 #include <QCoreApplication>
 #include <QtNetwork/QNetworkAccessManager>
 
-#include <QWebPage>
-#include <QWebFrame>
-#include <QWebElement>
+#include <QWebEnginePage>
+#include <QWebEngineSettings>
 
 #include "Query.h"
 #include "SourceList.h"
@@ -168,26 +167,28 @@ GroovesharkParser::trackPageFetchFinished()
 
     m_queries.remove( r );
 
-    QWebPage page;
-    page.settings()->setAttribute( QWebSettings::JavascriptEnabled, false );
-    page.settings()->setAttribute( QWebSettings::PluginsEnabled, false );
-    page.settings()->setAttribute( QWebSettings::JavaEnabled, false );
-    page.settings()->setAttribute( QWebSettings::AutoLoadImages, false );
-    page.mainFrame()->setHtml( QString::fromUtf8( r->reply()->readAll() ) );
-    QWebElement title = page.mainFrame()->findFirstElement("span[itemprop='name']");
-    QWebElement artist = page.mainFrame()->findFirstElement("noscript span[itemprop='byArtist']");
-    QWebElement album = page.mainFrame()->findFirstElement("noscript span[itemprop='inAlbum']");
+    QWebEnginePage page;
+    page.settings()->setAttribute( QWebEngineSettings::JavascriptEnabled, false );
+    page.settings()->setAttribute( QWebEngineSettings::PluginsEnabled, false );
+    page.settings()->setAttribute( QWebEngineSettings::AutoLoadImages, false);
+    /* QT5.15 DISABLE
+    // page.settings()->setAttribute( QWebEngineSettings::JavaEnabled, false );
+    // page->setHtml( QString::fromUtf8( r->reply()->readAll() ) );
+    // QWebElement title = page.mainFrame()->findFirstElement("span[itemprop='name']");
+    // QWebElement artist = page.mainFrame()->findFirstElement("noscript span[itemprop='byArtist']");
+    // QWebElement album = page.mainFrame()->findFirstElement("noscript span[itemprop='inAlbum']");
 
-    if ( !title.toPlainText().isEmpty() && !artist.toPlainText().isEmpty() )
-    {
-        tDebug() << "Got track info from grooveshark, enough to create a query:" << title.toPlainText() << artist.toPlainText() << album.toPlainText();
+    // if ( !title.toPlainText().isEmpty() && !artist.toPlainText().isEmpty() )
+    // {
+    //     tDebug() << "Got track info from grooveshark, enough to create a query:" << title.toPlainText() << artist.toPlainText() << album.toPlainText();
 
-        Hatchet::query_ptr q = Hatchet::Query::get( artist.toPlainText(), title.toPlainText(), album.toPlainText(), uuid(), true );
-        if ( !q.isNull() )
-            m_tracks << q;
-    }
+    //     Hatchet::query_ptr q = Hatchet::Query::get( artist.toPlainText(), title.toPlainText(), album.toPlainText(), uuid(), true );
+    //     if ( !q.isNull() )
+    //         m_tracks << q;
+    // }
 
-    checkTrackFinished();
+    // checkTrackFinished();
+    */
 }
 
 

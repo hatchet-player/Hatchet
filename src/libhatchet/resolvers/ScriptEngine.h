@@ -25,10 +25,7 @@
 #include "DllMacro.h"
 
 #include <QSslError>
-#include <QWebPage>
-
-// pimple
-#include <QWebInspector>
+#include <QWebEnginePage>
 
 class QNetworkReply;
 
@@ -37,7 +34,7 @@ namespace Hatchet
 
 class JSAccount;
 
-class DLLEXPORT ScriptEngine : public QWebPage
+class DLLEXPORT ScriptEngine : public QWebEnginePage
 {
 Q_OBJECT
 
@@ -61,7 +58,7 @@ private:
     JSAccount* m_parent;
     QString m_scriptPath;
     QString m_header;
-    QScopedPointer< QWebInspector > m_webInspector;
+    // QScopedPointer< QWebInspector > m_webInspector; QT5.15 DISABLE
 };
 
 } // ns: Hatchet

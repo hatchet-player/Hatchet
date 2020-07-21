@@ -45,7 +45,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QMap>
-#include <QWebFrame>
+#include <QWebEnginePage>
 #include <QLocale>
 #include <QNetworkReply>
 

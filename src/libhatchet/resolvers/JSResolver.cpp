@@ -58,7 +58,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QMetaProperty>
-#include <QWebFrame>
+#include <QWebEnginePage>
 
 using namespace Hatchet;
 

@@ -198,7 +198,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QWebView" name="biography">
+         <widget class="QWebEngineView" name="biography">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
             <horstretch>0</horstretch>
@@ -294,9 +294,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QWebView</class>
+   <class>QWebEngineView</class>
    <extends>QWidget</extends>
-   <header>QtWebKit/QWebView</header>
+   <header>QWebEngineView</header>
   </customwidget>
   <customwidget>
    <class>ClickableLabel</class>

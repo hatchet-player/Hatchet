@@ -23,7 +23,7 @@
 
 
 bool
-ExternalBrowserWebPage::acceptNavigationRequest( QWebFrame*, const QNetworkRequest& request, NavigationType )
+ExternalBrowserWebPage::acceptNavigationRequest( QWebEnginePage*, const QNetworkRequest& request, NavigationType )
 {
     QDesktopServices::openUrl( request.url() );
     return false;
@@ -31,14 +31,15 @@ ExternalBrowserWebPage::acceptNavigationRequest( QWebFrame*, const QNetworkReque
 
 
 WebPopup::WebPopup( const QUrl& url, const QSize& size )
-    : QWebView( 0 )
+    : QWebEngineView( 0 )
 {
     setAttribute( Qt::WA_DeleteOnClose, true );
-    settings()->setAttribute( QWebSettings::DeveloperExtrasEnabled, true );
-    settings()->setAttribute( QWebSettings::JavascriptCanCloseWindows, true );
-    page()->mainFrame()->setScrollBarPolicy( Qt::Vertical, Qt::ScrollBarAsNeeded );
-    page()->mainFrame()->setScrollBarPolicy( Qt::Horizontal, Qt::ScrollBarAsNeeded );
-
+    /* QT5.15 DISABLE
+    settings()->setAttribute( QWebEngineSettings::DeveloperExtrasEnabled, true ); TODO - fix/remove
+    settings()->setAttribute( QWebEngineSettings::JavascriptCanCloseWindows, true ); TODO - fix/remove
+    page()->setScrollBarPolicy( Qt::Vertical, Qt::ScrollBarAsNeeded );
+    page()->setScrollBarPolicy( Qt::Horizontal, Qt::ScrollBarAsNeeded );
+    */
     connect( page(), SIGNAL( windowCloseRequested() ), SLOT( close() ) );
 
     if ( !size.isEmpty() )
@@ -51,10 +52,10 @@ WebPopup::WebPopup( const QUrl& url, const QSize& size )
 }
 
 
-QWebView*
-WebPopup::createWindow( QWebPage::WebWindowType )
+QWebEngineView*
+WebPopup::createWindow( QWebEnginePage::WebWindowType )
 {
-    QWebView* fakeWindow = new QWebView();
+    QWebEngineView* fakeWindow = new QWebEngineView();
     fakeWindow->setPage( new ExternalBrowserWebPage( fakeWindow ) );
     fakeWindow->deleteLater();
     return fakeWindow;
