@@ -243,13 +243,6 @@ HatchetApp::init()
     QByteArray wand = QByteArray::fromBase64( QCoreApplication::applicationName().toLatin1() );
     int length = magic.length(), n2 = wand.length();
     for ( int i = 0; i < length; i++ ) magic[i] = magic[i] ^ wand[i%n2];
-    // echonest is dead, disable all echonest code
-    /*
-    Echonest::Config::instance()->setAPIKey( magic );
-
-    tDebug() << "Init Echonest Factory.";
-    GeneratorFactory::registerFactory( "echonest", new EchonestFactory );
-    */
     tDebug() << "Init Database Factory.";
     GeneratorFactory::registerFactory( "database", new DatabaseFactory );
 
@@ -633,12 +626,6 @@ HatchetApp::onInfoSystemReady()
 
     HatchetSettings* s = HatchetSettings::instance();
 
-    // echonest is dead, disable all echonest code
-    /*
-    Echonest::Config::instance()->setNetworkAccessManager( Hatchet::Utils::nam() );
-    EchonestGenerator::setupCatalogs();
-    */
-
     m_scanManager = QPointer<ScanManager>( new ScanManager( this ) );
     if ( !m_headless )
     {
@@ -682,12 +669,6 @@ HatchetApp::onInfoSystemReady()
     tDebug() << "Init Scrobbler.";
     m_scrobbler = new Scrobbler( this );
 #endif
-
-    // echonest is dead, disable all echonest code
-    /*
-    // Set up echonest catalog synchronizer
-    Hatchet::EchonestCatalogSynchronizer::instance();
-    */
 
     PlaylistUpdaterInterface::registerUpdaterFactory( new XspfUpdaterFactory );
 //    PlaylistUpdaterInterface::registerUpdaterFactory( new SpotifyUpdaterFactory );

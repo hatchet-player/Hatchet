@@ -9,24 +9,23 @@ dependencies_dirs = [
     'zlib',
     'sparsehash', 
     'lucene++',
-    'libportfwd',
     'libvlc',
     'gnutls',
     'qt5',
     'attica',
-    'kdsingleapplicationguard',
-    'qt-certificate-addon',
     'qxt',
     'qca2',
     'qtkeychain',
     'quazip',
+    'libportfwd',
+    'qt-certificate-addon',
+    'kdsingleapplicationguard',
     'telepathy-qt']
 
 # optional dependencies
 #---------------------------------------------------
 optional_dirs = [
     'taglib',
-    'echonest',
     'liblastfm']
 
 if (get_option('with_crashreporter'))
