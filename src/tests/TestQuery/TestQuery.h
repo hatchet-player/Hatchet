@@ -16,35 +16,25 @@
  *   along with Hatchet. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HATCHET_TESTRESULT_H
-#define HATCHET_TESTRESULT_H
+#ifndef HATCHET_TESTQUERY_H
+#define HATCHET_TESTQUERY_H
 
-#include "libhatchet/Result.h"
-#include "libhatchet/Track.h"
+#include <QtCore>
+#include <QtTest>
+
+#include "libhatchet/Query.h"
 #include "libhatchet/Source.h"
 
-class TestResult : public QObject
+
+class TestQuery : public QObject
 {
     Q_OBJECT
 
 private slots:
     void testGet()
     {
-        Hatchet::result_ptr r;
-
-        r = Hatchet::Result::get( "", Hatchet::track_ptr() );
-        QVERIFY( !r );
-
-        r = Hatchet::Result::get( "/tmp/test.mp3", Hatchet::track_ptr() );
-        QVERIFY( !r);
-
-        Hatchet::track_ptr t = Hatchet::Track::get( "Artist", "Track" );
-
-        r = Hatchet::Result::get( "", t );
-        QVERIFY( !r);
-
-        r = Hatchet::Result::get( "/tmp/test.mp3", t );
-        QVERIFY( r );
+        Hatchet::query_ptr q = Hatchet::Query::get( "", "", "" );
+        QVERIFY( !q );
     }
 };
 

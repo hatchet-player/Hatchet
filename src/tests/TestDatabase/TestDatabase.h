@@ -1,6 +1,6 @@
 /* === This file is part of Hatchet Player - <http://hatchet-player.org> ===
  *
- *   Copyright 2013, Dominik Schmidt <domme@tomahawk-player.org>
+ *   Copyright 2013, Christian Muehlhaeuser <muesli@tomahawk-player.org>
  *
  *   Hatchet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -19,10 +19,11 @@
 #ifndef HATCHET_TESTDATABASE_H
 #define HATCHET_TESTDATABASE_H
 
+#include <QtCore>
 #include <QtTest>
 
-#include "database/Database.h"
-#include "database/commands/LogPlayback.h"
+#include "libhatchet/database/Database.h"
+#include "libhatchet/database/commands/LogPlayback.h"
 
 
 class TestDatabaseCommand : public Hatchet::DatabaseCommand
@@ -75,4 +76,4 @@ private slots:
     }
 };
 
-#endif // HATCHET_TESTDATABASE_H
+#endif // TOMAHAWK_TESTDATABASE_H

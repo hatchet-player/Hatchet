@@ -19,6 +19,11 @@ qt5_mod_list = [
     'DBus']
 
 
+if (get_option('with_tests'))
+    qt5_mod_list += 'Test'
+endif
+
+
 # Check if X11Extras module is present
 #---------------------------------------------------
 message('checking if Qt5 X11 Extras is present')
