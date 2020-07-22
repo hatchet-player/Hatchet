@@ -19,11 +19,12 @@
 #ifndef HATCHET_TESTDATABASE_H
 #define HATCHET_TESTDATABASE_H
 
+#include <QtCore>
 #include <QNetworkInterface>
 #include <QtTest>
 
-#include "network/Servent.h"
-#include "sip/SipInfo.h"
+#include "libhatchet/network/Servent.h"
+#include "libhatchet/sip/SipInfo.h"
 
 class TestServent : public QObject
 {

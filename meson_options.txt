@@ -32,7 +32,7 @@ option(
 option(
     'with_tests',
     type : 'boolean',
-    value : 'false',
+    value : 'true',
     description : 'Build hatchet with tests')
 
 option(
