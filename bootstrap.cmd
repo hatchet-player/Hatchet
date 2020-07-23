@@ -1,23 +1,30 @@
 @echo off
 
 
-REM  Grab submodules
-REM ---------------------------------------------------
-git submodule update --init --recursive
-
-
 REM  Delete existing buildfiles
 REM ---------------------------------------------------
 rmdir /q /s build
 
 
+REM set path variables
+REM ---------------------------------------------------
+set prefix=C:\Hatchet
+set path=%prefix%;%path%
+set BOOST_ROOT=%prefix%\Boost
+set PKG_CONFIG_PATH=%prefix%\lib\pkgconfig
+set CMAKE_PREFIX_PATH=%prefix%;C:\Program Files;C:\Program Files (x86);
+
+
 REM  Call meson
 REM ---------------------------------------------------
-meson setup build %meson_vars%
+meson setup build ^
+    %meson_vars% ^
+    -Dcmake_prefix_path="%cmake_path%" ^
+    -Dprefix="%prefix%"
 
 
-REM  Build hatchet
+REM  Build lucene
 REM ---------------------------------------------------
 cd build
-ninja
+%prefix%\bin\ninja
 cd ..
