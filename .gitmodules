@@ -1,24 +1,28 @@
-[submodule "subprojects/libportfwd"]
-	path = subprojects/libportfwd
-	url = https://github.com/hatchet-player/libportfwd
-[submodule "subprojects/kdsingleapplicationguard"]
-	path = subprojects/kdsingleapplicationguard
-	url = https://github.com/hatchet-player/kdsingleapplicationguard
 [submodule "subprojects/hatchet-plugins"]
 	path = subprojects/hatchet-plugins
 	url = https://github.com/hatchet-player/hatchet-plugins
+	branch = main
+[submodule "subprojects/libportfwd"]
+	path = subprojects/libportfwd
+	url = https://github.com/hatchet-player/libportfwd
+	branch = main
+[submodule "subprojects/kdsingleapplicationguard"]
+	path = subprojects/kdsingleapplicationguard
+	url = https://github.com/hatchet-player/kdsingleapplicationguard
+	branch = main
 [submodule "subprojects/libcrashreporter-qt"]
 	path = subprojects/libcrashreporter-qt
 	url = https://github.com/hatchet-player/libcrashreporter-qt
+	branch = main
 [submodule "subprojects/qxtweb-standalone"]
 	path = subprojects/qxtweb-standalone
 	url = https://github.com/hatchet-player/qxtweb-standalone
+	branch = main
 [submodule "subprojects/qt-certificate-addon"]
 	path = subprojects/qt-certificate-addon
 	url = https://github.com/hatchet-player/qt-certificate-addon
-[submodule "subprojects/sparsehash"]
-	path = subprojects/sparsehash
-	url = https://github.com/hatchet-player/sparsehash
+	branch = main
 [submodule "subprojects/SPMediaKeyTap"]
 	path = subprojects/SPMediaKeyTap
 	url = https://github.com/hatchet-player/SPMediaKeyTap
+	branch = main
