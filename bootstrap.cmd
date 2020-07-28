@@ -15,6 +15,13 @@ set PKG_CONFIG_PATH=%prefix%\lib\pkgconfig
 set CMAKE_PREFIX_PATH=%prefix%;C:\Program Files;C:\Program Files (x86);
 
 
+REM set path variables
+REM ---------------------------------------------------
+REM nested meson subprojects dont currently work
+REM on MSCV. This promotes the nested subprojects.
+meson wrap promote miniupnpc
+
+
 REM  Call meson
 REM ---------------------------------------------------
 meson setup build ^
