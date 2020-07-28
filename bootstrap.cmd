@@ -1,6 +1,11 @@
 @echo off
 
 
+REM Grab submodules
+REM ---------------------------------------------------
+git submodule update --init --recursive
+
+
 REM  Delete existing buildfiles
 REM ---------------------------------------------------
 rmdir /q /s build
